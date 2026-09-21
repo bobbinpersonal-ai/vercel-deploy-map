@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">LoveMeAfter heart logo</title>
-  <desc id="desc">A lime heart on a deep green rounded square</desc>
-  <rect width="512" height="512" rx="112" fill="#182019"/>
-  <path d="M256 414S83 315 83 190c0-55 39-92 87-92 37 0 68 22 86 52 18-30 49-52 86-52 48 0 87 37 87 92 0 125-173 224-173 224Z" fill="#d5ec77"/>
+  <title id="title">LoveMeAfter black and white heart logo</title>
+  <desc id="desc">A white heart on a black rounded square</desc>
+  <rect width="512" height="512" rx="112" fill="#000000"/>
+  <path d="M256 414S83 315 83 190c0-55 39-92 87-92 37 0 68 22 86 52 18-30 49-52 86-52 48 0 87 37 87 92 0 125-173 224-173 224Z" fill="#ffffff"/>
 </svg>
