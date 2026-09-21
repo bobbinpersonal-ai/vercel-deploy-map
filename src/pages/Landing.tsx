@@ -128,8 +128,9 @@ export default function Landing() {
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
             poster="https://images.unsplash.com/photo-1503387762-59230de8b0d6?auto=format&fit=crop&w=1800&q=90"
+            disablePictureInPicture
             aria-label="LoveMeAfter home improvement project video"
           >
             <source src="https://drive.google.com/uc?export=download&id=1rWNC8tGHEFP9cH9z2_kug3k87cuasV2k" type="video/quicktime" />
