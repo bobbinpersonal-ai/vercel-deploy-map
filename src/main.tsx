@@ -18,6 +18,7 @@ const Financing = lazy(() => import("./pages/Financing.tsx"));
 const CallLists = lazy(() => import("./pages/CallLists.tsx"));
 const AreaLanding = lazy(() => import("./pages/AreaLanding.tsx"));
 const MarketCareers = lazy(() => import("./pages/MarketCareers.tsx"));
+const ProjectProcess = lazy(() => import("./pages/ProjectProcess.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
@@ -130,8 +131,10 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/careers" element={<Careers />} />
               <Route path="/careers/:slug" element={<MarketCareers />} />
               <Route path="/services" element={<Services />} />
+              <Route path="/services/:service" element={<ProjectProcess />} />
               <Route path="/areas" element={<Areas />} />
               <Route path="/areas/:slug" element={<AreaLanding />} />
+              <Route path="/areas/:slug/:city" element={<AreaLanding />} />
               <Route path="/insights" element={<Insights />} />
               <Route path="/financing" element={<Financing />} />
               <Route
