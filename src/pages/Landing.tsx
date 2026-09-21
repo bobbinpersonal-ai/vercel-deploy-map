@@ -104,7 +104,7 @@ export default function Landing() {
             <a href="/areas" className="transition-colors hover:text-white">Service areas</a>
             <a href="/insights" className="transition-colors hover:text-white">Expert guides</a>
             <a href="/financing" className="transition-colors hover:text-white">Financing</a>
-            <a href="/careers" className="transition-colors hover:text-white">Sell with us</a>
+            <a href="/contractors" className="transition-colors hover:text-white">Work with us</a>
             <a href={PHONE_HREF} className="flex items-center gap-2 text-white"><Phone className="size-4" /> {PHONE_DISPLAY}</a>
             <Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] px-5 text-[#1d211d] hover:bg-[#e1f895]">Get an estimate <ArrowUpRight className="ml-1 size-4" /></Button>
           </div>
@@ -113,7 +113,7 @@ export default function Landing() {
         {menuOpen && (
           <div className="absolute inset-x-4 top-20 rounded-2xl bg-[#182019] p-5 shadow-2xl md:hidden">
             <button onClick={() => setMenuOpen(false)} className="absolute right-4 top-4"><X className="size-5" /></button>
-            <div className="flex flex-col gap-5 pt-4 text-sm"><a href="/services" onClick={() => setMenuOpen(false)}>Services</a><a href="/areas" onClick={() => setMenuOpen(false)}>Service areas</a><a href="/insights" onClick={() => setMenuOpen(false)}>Expert guides</a><a href="/financing" onClick={() => setMenuOpen(false)}>Financing</a><a href="/careers" onClick={() => setMenuOpen(false)}>Sell with us</a><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] text-[#1d211d]">Get an estimate</Button></div>
+            <div className="flex flex-col gap-5 pt-4 text-sm"><a href="/services" onClick={() => setMenuOpen(false)}>Services</a><a href="/areas" onClick={() => setMenuOpen(false)}>Service areas</a><a href="/insights" onClick={() => setMenuOpen(false)}>Expert guides</a><a href="/financing" onClick={() => setMenuOpen(false)}>Financing</a><a href="/contractors" onClick={() => setMenuOpen(false)}>Work with us</a><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] text-[#1d211d]">Get an estimate</Button></div>
           </div>
         )}
       </header>
@@ -191,7 +191,7 @@ export default function Landing() {
 
       <section className="relative z-10 bg-[#d5ec77]/92 backdrop-blur-sm"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 px-5 py-16 sm:px-8 lg:flex-row lg:items-center lg:px-10 lg:py-20"><div><p className="text-xs font-semibold tracking-[.18em] text-[#657035] uppercase">Ready when you are</p><h2 className="mt-3 max-w-2xl text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-6xl">Find out what it actually costs.</h2></div><div className="flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#1d211d] px-7 text-base text-white hover:bg-[#30382f]">Get my free estimate <ArrowUpRight className="ml-2 size-5" /></Button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-[#1d211d]/25 px-6 text-sm font-semibold hover:bg-white/20"><Phone className="size-4" /> {PHONE_DISPLAY}</a></div></div></section>
 
-      <footer className="relative z-10 bg-[#1d211d]/95 text-white"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-10 text-sm sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10"><a href="#top" className="flex items-center gap-3 font-semibold"><span className="flex size-8 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]"><House className="size-4" /></span>LoveMeAfter</a><div className="flex flex-wrap gap-4 text-white/45"><p>Free estimates · same-day callback · clear scopes</p><a href="/careers" className="text-[#d5ec77]">Sales careers</a></div><a href={PHONE_HREF} className="font-medium text-[#d5ec77]">{PHONE_DISPLAY}</a></div></footer>
+      <footer className="relative z-10 bg-[#1d211d]/95 text-white"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-10 text-sm sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10"><a href="#top" className="flex items-center gap-3 font-semibold"><span className="flex size-8 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]"><House className="size-4" /></span>LoveMeAfter</a><div className="flex flex-wrap gap-4 text-white/45"><p>Free estimates · same-day callback · clear scopes</p><a href="/careers" className="text-[#d5ec77]">Sales careers</a><a href="/contractors" className="text-[#d5ec77]">Contractor partners</a></div><a href={PHONE_HREF} className="font-medium text-[#d5ec77]">{PHONE_DISPLAY}</a></div></footer>
     </main>
   );
 }
