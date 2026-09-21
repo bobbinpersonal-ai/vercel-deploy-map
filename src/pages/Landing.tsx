@@ -10,15 +10,15 @@ import {
   ClipboardCheck,
   Fence,
   House,
+  MapPin,
   Menu,
   Phone,
   ShieldCheck,
   Sparkles,
-  Star,
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+
 
 const PHONE_DISPLAY = "424 426 0760";
 const PHONE_HREF = "tel:+14244260760";
@@ -38,9 +38,23 @@ const FAQS = [
 ];
 
 export default function Landing() {
-  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const goToEstimate = () => navigate("/auth?returnTo=%2Fdashboard");
+  const [locationStatus, setLocationStatus] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
+  const scrollToEstimate = () => document.getElementById("estimate-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  const goToEstimate = () => scrollToEstimate();
+  const locateMe = () => {
+    if (!navigator.geolocation) {
+      setLocationStatus("Location is unavailable in this browser.");
+      return;
+    }
+    setLocationStatus("Finding your location…");
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => setLocationStatus(`Location found near ${coords.latitude.toFixed(3)}, ${coords.longitude.toFixed(3)} — add your street address below.`),
+      () => setLocationStatus("We couldn't access your location. You can enter your address manually."),
+      { enableHighAccuracy: false, timeout: 8000 },
+    );
+  };
 
   useEffect(() => {
     const previous = document.title;
@@ -60,6 +74,7 @@ export default function Landing() {
             <a href="#services" className="transition-colors hover:text-white">What we do</a>
             <a href="#process" className="transition-colors hover:text-white">How it works</a>
             <a href="#questions" className="transition-colors hover:text-white">Questions</a>
+            <a href="/careers" className="transition-colors hover:text-white">Sell with us</a>
             <a href={PHONE_HREF} className="flex items-center gap-2 text-white"><Phone className="size-4" /> {PHONE_DISPLAY}</a>
             <Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] px-5 text-[#1d211d] hover:bg-[#e1f895]">Get an estimate <ArrowUpRight className="ml-1 size-4" /></Button>
           </div>
@@ -68,7 +83,7 @@ export default function Landing() {
         {menuOpen && (
           <div className="absolute inset-x-4 top-20 rounded-2xl bg-[#182019] p-5 shadow-2xl md:hidden">
             <button onClick={() => setMenuOpen(false)} className="absolute right-4 top-4"><X className="size-5" /></button>
-            <div className="flex flex-col gap-5 pt-4 text-sm"><a href="#services" onClick={() => setMenuOpen(false)}>What we do</a><a href="#process" onClick={() => setMenuOpen(false)}>How it works</a><a href="#questions" onClick={() => setMenuOpen(false)}>Questions</a><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] text-[#1d211d]">Get an estimate</Button></div>
+            <div className="flex flex-col gap-5 pt-4 text-sm"><a href="#services" onClick={() => setMenuOpen(false)}>What we do</a><a href="#process" onClick={() => setMenuOpen(false)}>How it works</a><a href="#questions" onClick={() => setMenuOpen(false)}>Questions</a><a href="/careers" onClick={() => setMenuOpen(false)}>Sell with us</a><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] text-[#1d211d]">Get an estimate</Button></div>
           </div>
         )}
       </header>
@@ -86,12 +101,30 @@ export default function Landing() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, delay: .15 }} className="self-end rounded-3xl bg-[#f7f5f0] p-6 text-[#1d211d] shadow-2xl sm:p-8 lg:mb-1">
             <div className="flex items-start justify-between"><div><p className="text-xs font-semibold tracking-[.16em] text-[#78834e] uppercase">Your first step</p><h2 className="mt-3 text-3xl font-semibold tracking-[-.05em]">Tell us what needs doing.</h2></div><span className="flex size-11 items-center justify-center rounded-full bg-[#e8efc7]"><ArrowUpRight className="size-5" /></span></div>
             <p className="mt-4 text-sm leading-6 text-[#5f655d]">A few details helps us make your callback useful — not a sales pitch.</p>
-            <form onSubmit={(event) => { event.preventDefault(); goToEstimate(); }} className="mt-7 space-y-3">
-              <input required pattern="[0-9]{5}" inputMode="numeric" placeholder="ZIP code" aria-label="ZIP code" className="h-14 w-full rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none transition focus:border-[#8da044]" />
-              <select aria-label="Service needed" className="h-14 w-full rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none focus:border-[#8da044]">{SERVICES.map((service) => <option key={service.title}>{service.title}</option>)}<option>Not sure yet</option></select>
-              <Button type="submit" className="h-14 w-full rounded-xl bg-[#1d211d] text-sm font-semibold text-white hover:bg-[#30382f]">Request my callback <ChevronRight className="ml-1 size-4" /></Button>
-            </form>
-            <p className="mt-4 text-center text-xs text-[#7a8076]">Most callbacks happen the same day.</p>
+            {submitted ? (
+              <div className="mt-7 rounded-2xl bg-[#eaf0d0] p-5 text-sm leading-6 text-[#4f5d3b]">
+                <p className="font-semibold text-[#1d211d]">Thanks — your estimate request is in.</p>
+                <p className="mt-1">A LoveMeAfter coordinator will call you back the same day in active markets.</p>
+              </div>
+            ) : (
+              <form id="estimate-form" onSubmit={(event) => { event.preventDefault(); setSubmitted(true); }} className="mt-7 space-y-3">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <input name="name" required placeholder="Full name" aria-label="Full name" className="h-14 w-full rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none transition focus:border-[#8da044]" />
+                  <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className="h-14 w-full rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none transition focus:border-[#8da044]" />
+                </div>
+                <div className="flex gap-2">
+                  <input name="address" required placeholder="Street address" aria-label="Street address" className="h-14 min-w-0 flex-1 rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none transition focus:border-[#8da044]" />
+                  <button type="button" onClick={locateMe} aria-label="Locate me" className="flex h-14 shrink-0 items-center gap-2 rounded-xl border border-[#d9ddd2] bg-white px-3 text-xs font-semibold text-[#657035] transition hover:border-[#8da044]" title="Use my location"><MapPin className="size-4" /> <span className="hidden sm:inline">Locate me</span></button>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <input name="cityStateZip" required placeholder="City, state & ZIP" aria-label="City, state and ZIP" className="h-14 w-full rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none transition focus:border-[#8da044]" />
+                  <select name="service" aria-label="Service needed" className="h-14 w-full rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none focus:border-[#8da044]">{SERVICES.map((service) => <option key={service.title}>{service.title}</option>)}<option>Not sure yet</option></select>
+                </div>
+                {locationStatus && <p className="flex items-start gap-2 text-xs leading-5 text-[#657035]"><MapPin className="mt-0.5 size-3.5 shrink-0" />{locationStatus}</p>}
+                <Button type="submit" className="h-14 w-full rounded-xl bg-[#1d211d] text-sm font-semibold text-white hover:bg-[#30382f]">Request my callback <ChevronRight className="ml-1 size-4" /></Button>
+              </form>
+            )}
+            <p className="mt-4 text-center text-xs text-[#7a8076]">Free estimate · no obligation · same-day callback in active markets</p>
           </motion.div>
         </div>
       </section>
@@ -113,7 +146,7 @@ export default function Landing() {
 
       <section className="bg-[#d5ec77]"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 px-5 py-16 sm:px-8 lg:flex-row lg:items-center lg:px-10 lg:py-20"><div><p className="text-xs font-semibold tracking-[.18em] text-[#657035] uppercase">Ready when you are</p><h2 className="mt-3 max-w-2xl text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-6xl">Find out what it actually costs.</h2></div><div className="flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#1d211d] px-7 text-base text-white hover:bg-[#30382f]">Get my free estimate <ArrowUpRight className="ml-2 size-5" /></Button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-[#1d211d]/25 px-6 text-sm font-semibold hover:bg-white/20"><Phone className="size-4" /> {PHONE_DISPLAY}</a></div></div></section>
 
-      <footer className="bg-[#1d211d] text-white"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-10 text-sm sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10"><a href="#top" className="flex items-center gap-3 font-semibold"><span className="flex size-8 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]"><House className="size-4" /></span>LoveMeAfter</a><p className="text-white/45">Free estimates · same-day callback · CO · MO · KS · IN · WY</p><a href={PHONE_HREF} className="font-medium text-[#d5ec77]">{PHONE_DISPLAY}</a></div></footer>
+      <footer className="bg-[#1d211d] text-white"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-10 text-sm sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10"><a href="#top" className="flex items-center gap-3 font-semibold"><span className="flex size-8 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]"><House className="size-4" /></span>LoveMeAfter</a><div className="flex flex-wrap gap-4 text-white/45"><p>Free estimates · same-day callback · CO · MO · KS · IN · WY</p><a href="/careers" className="text-[#d5ec77]">Sales careers</a></div><a href={PHONE_HREF} className="font-medium text-[#d5ec77]">{PHONE_DISPLAY}</a></div></footer>
     </main>
   );
 }
