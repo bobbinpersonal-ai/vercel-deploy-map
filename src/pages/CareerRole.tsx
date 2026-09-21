@@ -53,6 +53,18 @@ const ROLES: Record<string, Role> = {
     steps: [["01", "Train", "Learn the conversation, project basics, compliance boundaries, and how to use the lead workflow."], ["02", "Work a territory", "Visit assigned neighborhoods with clear expectations and field support."], ["03", "Qualify interest", "Capture homeowner needs accurately and schedule the right next step."], ["04", "Grow", "Move toward appointment setting, partnership outreach, or sales as you build results."]],
     subject: "Door knocker application",
   },
+  "inside-sales-dispatch": {
+    eyebrow: "Remote operations · inside sales & dispatch",
+    title: "Keep the conversation, calendar, and crew connected.",
+    intro: "Help homeowners take the next step, coordinate qualified appointments, and keep field representatives and installation partners informed from a comfortable remote workspace.",
+    image: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=1800&q=90",
+    accent: "Inside sales & dispatch",
+    stats: [["3–4", "quality appointments / day"], ["Human", "calls and follow-up"], ["Remote", "operations role"]],
+    benefits: [[Phone, "Human conversations", "Talk with real people, understand what they need, and follow up clearly without pressure or automated cold scripts."], [CalendarCheck, "Own the handoff", "Schedule qualified appointments, confirm the details, and keep the field representative informed before the visit."], [BadgeCheck, "See the outcome", "Our CRM is designed to connect appointment, dispatch, project, and closeout activity so you spend less time on duplicate admin work."]],
+    fit: ["You communicate clearly in English and can build trust over the phone", "You are organized enough to manage follow-up, appointment details, and changing schedules", "You can work toward a target of approximately 3–4 quality appointments per day without sacrificing fit", "You are comfortable coordinating across time zones, field reps, subcontractors, and homeowners"],
+    steps: [["01", "Learn the workflow", "Get familiar with services, qualification standards, appointment notes, and dispatch expectations."], ["02", "Talk with homeowners", "Use a human, respectful approach to understand interest and schedule the right next step."], ["03", "Coordinate the field", "Confirm the visit, share accurate context, and keep field representatives updated."], ["04", "Grow with results", "Compensation may include hourly or project-based pay, appointment incentives, close bonuses, and documented spiffs depending on role and location." ]],
+    subject: "Inside sales and dispatch application",
+  },
   partnerships: {
     eyebrow: "Partnership specialists · business development",
     title: "Build relationships that keep working.",
