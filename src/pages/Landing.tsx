@@ -40,17 +40,36 @@ const FAQS = [
 export default function Landing() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [locationStatus, setLocationStatus] = useState<string | null>(null);
+  const [address, setAddress] = useState("");
+  const [cityStateZip, setCityStateZip] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const scrollToEstimate = () => document.getElementById("estimate-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   const goToEstimate = () => scrollToEstimate();
   const locateMe = () => {
     if (!navigator.geolocation) {
-      setLocationStatus("Location is unavailable in this browser.");
+      setLocationStatus("Location is unavailable in this browser. Enter your address manually.");
       return;
     }
-    setLocationStatus("Finding your location…");
+    setLocationStatus("Finding your address…");
     navigator.geolocation.getCurrentPosition(
-      ({ coords }) => setLocationStatus(`Location found near ${coords.latitude.toFixed(3)}, ${coords.longitude.toFixed(3)} — add your street address below.`),
+      async ({ coords }) => {
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&lat=${coords.latitude}&lon=${coords.longitude}`,
+          );
+          if (!response.ok) throw new Error("Address lookup failed");
+          const result = await response.json() as { display_name?: string; address?: Record<string, string> };
+          const parts = result.address ?? {};
+          const street = [parts.house_number, parts.road].filter(Boolean).join(" ");
+          const city = parts.city ?? parts.town ?? parts.village ?? parts.hamlet ?? "";
+          const region = [city, parts.state, parts.postcode].filter(Boolean).join(", ");
+          if (street) setAddress(street);
+          if (region) setCityStateZip(region);
+          setLocationStatus(street || region ? "Address found — please confirm it before submitting." : "We found your location, but not a street address. Please enter it manually.");
+        } catch {
+          setLocationStatus("We found your location, but couldn't fill the address. Please enter it manually.");
+        }
+      },
       () => setLocationStatus("We couldn't access your location. You can enter your address manually."),
       { enableHighAccuracy: false, timeout: 8000 },
     );
@@ -113,11 +132,11 @@ export default function Landing() {
                   <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className="h-14 w-full rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none transition focus:border-[#8da044]" />
                 </div>
                 <div className="flex gap-2">
-                  <input name="address" required placeholder="Street address" aria-label="Street address" className="h-14 min-w-0 flex-1 rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none transition focus:border-[#8da044]" />
+                  <input name="address" required value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Street address" aria-label="Street address" className="h-14 min-w-0 flex-1 rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none transition focus:border-[#8da044]" />
                   <button type="button" onClick={locateMe} aria-label="Locate me" className="flex h-14 shrink-0 items-center gap-2 rounded-xl border border-[#d9ddd2] bg-white px-3 text-xs font-semibold text-[#657035] transition hover:border-[#8da044]" title="Use my location"><MapPin className="size-4" /> <span className="hidden sm:inline">Locate me</span></button>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <input name="cityStateZip" required placeholder="City, state & ZIP" aria-label="City, state and ZIP" className="h-14 w-full rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none transition focus:border-[#8da044]" />
+                  <input name="cityStateZip" required value={cityStateZip} onChange={(event) => setCityStateZip(event.target.value)} placeholder="City, state & ZIP" aria-label="City, state and ZIP" className="h-14 w-full rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none transition focus:border-[#8da044]" />
                   <select name="service" aria-label="Service needed" className="h-14 w-full rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none focus:border-[#8da044]">{SERVICES.map((service) => <option key={service.title}>{service.title}</option>)}<option>Not sure yet</option></select>
                 </div>
                 {locationStatus && <p className="flex items-start gap-2 text-xs leading-5 text-[#657035]"><MapPin className="mt-0.5 size-3.5 shrink-0" />{locationStatus}</p>}
