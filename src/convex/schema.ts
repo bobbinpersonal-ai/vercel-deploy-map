@@ -26,6 +26,7 @@ export const LEAD_SOURCES = {
   OUTBOUND: "outbound",
   B2B_PARTNER: "b2b_partner",
   REFERRAL: "referral",
+  INBOUND_WEB: "inbound_web",
 } as const;
 
 export const leadSourceValidator = v.union(
@@ -33,6 +34,7 @@ export const leadSourceValidator = v.union(
   v.literal(LEAD_SOURCES.OUTBOUND),
   v.literal(LEAD_SOURCES.B2B_PARTNER),
   v.literal(LEAD_SOURCES.REFERRAL),
+  v.literal(LEAD_SOURCES.INBOUND_WEB),
 );
 export type LeadSource = Infer<typeof leadSourceValidator>;
 
