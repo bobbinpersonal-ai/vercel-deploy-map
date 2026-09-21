@@ -11,6 +11,7 @@ import {
   ClipboardCheck,
   Fence,
   House,
+  Heart,
   MapPin,
   Menu,
   Phone,
@@ -97,7 +98,7 @@ export default function Landing() {
       <header className="absolute inset-x-0 top-0 z-50 text-white">
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-10">
           <a href="#top" className="flex items-center gap-3">
-            <span className="flex size-10 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]"><House className="size-5" strokeWidth={2.5} /></span>
+            <span className="flex size-10 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]"><Heart className="size-5 fill-current" strokeWidth={2.5} /></span>
             <span className="text-lg font-semibold tracking-[-0.03em]">LoveMeAfter</span>
           </a>
           <div className="hidden items-center gap-8 text-sm text-white/75 md:flex">
@@ -193,7 +194,7 @@ export default function Landing() {
 
       <section className="relative z-10 bg-[#d5ec77]/92 backdrop-blur-sm"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 px-5 py-16 sm:px-8 lg:flex-row lg:items-center lg:px-10 lg:py-20"><div><p className="text-xs font-semibold tracking-[.18em] text-[#657035] uppercase">Ready when you are</p><h2 className="mt-3 max-w-2xl text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-6xl">Find out what it actually costs.</h2></div><div className="flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#1d211d] px-7 text-base text-white hover:bg-[#30382f]">Get my free estimate <ArrowUpRight className="ml-2 size-5" /></Button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-[#1d211d]/25 px-6 text-sm font-semibold hover:bg-white/20"><Phone className="size-4" /> {PHONE_DISPLAY}</a></div></div></section>
 
-      <footer className="relative z-10 bg-[#1d211d]/95 text-white"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-10 text-sm sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10"><a href="#top" className="flex items-center gap-3 font-semibold"><span className="flex size-8 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]"><House className="size-4" /></span>LoveMeAfter</a><div className="flex flex-wrap gap-4 text-white/45"><p>Free estimates · same-day callback · clear scopes</p><Link to="/careers" className="text-[#d5ec77]">Sales careers</Link><Link to="/contractors" className="text-[#d5ec77]">Contractor partners</Link></div><a href={PHONE_HREF} className="font-medium text-[#d5ec77]">{PHONE_DISPLAY}</a></div></footer>
+      <footer className="relative z-10 bg-[#1d211d]/95 text-white"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-10 text-sm sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10"><a href="#top" className="flex items-center gap-3 font-semibold"><span className="flex size-8 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]"><Heart className="size-4 fill-current" /></span>LoveMeAfter</a><div className="flex flex-wrap gap-4 text-white/45"><p>Free estimates · same-day callback · clear scopes</p><Link to="/careers" className="text-[#d5ec77]">Careers</Link><Link to="/contractors" className="text-[#d5ec77]">Contractor partners</Link></div><a href={PHONE_HREF} className="font-medium text-[#d5ec77]">{PHONE_DISPLAY}</a></div></footer>
     </main>
   );
 }
