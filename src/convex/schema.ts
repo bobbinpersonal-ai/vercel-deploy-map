@@ -111,6 +111,7 @@ const schema = defineSchema(
       name: v.string(),
       phone: v.string(),
       city: v.string(),
+      address: v.optional(v.string()),
       service: v.string(),
       source: leadSourceValidator,
       stage: leadStageValidator,

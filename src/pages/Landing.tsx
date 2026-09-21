@@ -1,3 +1,4 @@
+import { api } from "@/convex/_generated/api";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -17,6 +18,7 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
+import { useMutation } from "convex/react";
 import { useEffect, useState } from "react";
 
 
@@ -30,6 +32,13 @@ const SERVICES = [
   { title: "Gutters", detail: "Seamless drainage that protects your home", icon: Fence },
 ];
 
+const SERVICE_ESTIMATES: Record<string, number> = {
+  Roofing: 15000,
+  Windows: 20000,
+  Siding: 25000,
+  Gutters: 5000,
+};
+
 const FAQS = [
   ["Is the estimate really free?", "Yes. We provide a no-obligation inspection, a written scope, and a clear price before you decide to move forward."],
   ["How quickly can someone come out?", "We offer same-day callbacks in our active markets and work hard to schedule inspections around your calendar."],
@@ -38,6 +47,7 @@ const FAQS = [
 ];
 
 export default function Landing() {
+  const createEstimateLead = useMutation(api.ops.createEstimateLead);
   const [menuOpen, setMenuOpen] = useState(false);
   const [locationStatus, setLocationStatus] = useState<string | null>(null);
   const [address, setAddress] = useState("");
@@ -143,7 +153,7 @@ export default function Landing() {
                 <p className="mt-1">A LoveMeAfter coordinator will call you back the same day in active markets.</p>
               </div>
             ) : (
-              <form id="estimate-form" onSubmit={(event) => { event.preventDefault(); setSubmitted(true); }} className="mt-7 space-y-3">
+              <form id="estimate-form" onSubmit={async (event) => { event.preventDefault(); const data = new FormData(event.currentTarget); try { await createEstimateLead({ name: String(data.get("name") ?? ""), phone: String(data.get("phone") ?? ""), address: String(data.get("address") ?? ""), city: String(data.get("cityStateZip") ?? ""), service: String(data.get("service") ?? "Not sure yet"), estimatedValue: SERVICE_ESTIMATES[String(data.get("service"))] ?? 15000 }); setSubmitted(true); } catch { setLocationStatus("We couldn't submit your request. Please call us at 424 426 0760."); } }} className="mt-7 space-y-3">
                 <div className="grid gap-3 sm:grid-cols-2">
                   <input name="name" required placeholder="Full name" aria-label="Full name" className="h-14 w-full rounded-xl border border-[#cfd7c2] bg-white px-4 text-sm text-[#1d211d] outline-none transition placeholder:text-[#7a8076] focus:border-[#71803d]" />
                   <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className="h-14 w-full rounded-xl border border-[#cfd7c2] bg-white px-4 text-sm text-[#1d211d] outline-none transition placeholder:text-[#7a8076] focus:border-[#71803d]" />

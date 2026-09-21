@@ -77,6 +77,29 @@ export const createLead = mutation({
   },
 });
 
+/** Public estimate intake. It intentionally does not require auth so homeowners can request a callback. */
+export const createEstimateLead = mutation({
+  args: {
+    name: v.string(),
+    phone: v.string(),
+    address: v.string(),
+    city: v.string(),
+    service: v.string(),
+    estimatedValue: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const now = Date.now();
+    return await ctx.db.insert("leads", {
+      ...args,
+      source: "inbound_web",
+      stage: "new",
+      notes: "Website free-estimate request",
+      createdAt: now,
+      updatedAt: now,
+    });
+  },
+});
+
 export const updateLeadStage = mutation({
   args: { id: v.id("leads"), stage: leadStageValidator },
   handler: async (ctx, { id, stage }) => {

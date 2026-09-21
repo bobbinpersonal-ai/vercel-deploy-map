@@ -66,6 +66,7 @@ const SOURCE_LABELS: Record<LeadSource, string> = {
   outbound: "Outbound dial",
   b2b_partner: "B2B partner",
   referral: "Referral",
+  inbound_web: "Website estimate",
 };
 
 const SERVICE_LINES = [
@@ -335,6 +336,7 @@ export default function Dashboard() {
               </h1>
             </div>
             <div className="flex flex-wrap items-center gap-2">
+              <Button onClick={() => navigate("/admin/call-lists")} className="rounded-full border border-[#252523]/15 bg-transparent px-4 text-xs font-medium text-[#252523] hover:bg-[#e7e3d9]"><Phone className="mr-2 size-3.5" /> Call lists</Button>
               <NewLeadDialog disabled={loading} />
             </div>
           </div>

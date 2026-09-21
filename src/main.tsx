@@ -15,6 +15,7 @@ const Services = lazy(() => import("./pages/Services.tsx"));
 const Areas = lazy(() => import("./pages/Areas.tsx"));
 const Insights = lazy(() => import("./pages/Insights.tsx"));
 const Financing = lazy(() => import("./pages/Financing.tsx"));
+const CallLists = lazy(() => import("./pages/CallLists.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
@@ -138,6 +139,28 @@ createRoot(document.getElementById("root")!).render(
                 element={
                   <RequireAuth>
                     <Dashboard />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <RequireAuth
+                    title="Sign in to manage LoveMeAfter"
+                    description="Leads, call lists, appointments, crews, and jobs live in the internal admin console."
+                  >
+                    <Dashboard />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/admin/call-lists"
+                element={
+                  <RequireAuth
+                    title="Sign in to manage call lists"
+                    description="The telemarketing queue is for internal callers and appointment setters."
+                  >
+                    <CallLists />
                   </RequireAuth>
                 }
               />
