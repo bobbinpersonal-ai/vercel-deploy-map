@@ -14,6 +14,7 @@ import type * as http from "../http.js";
 import type * as ops from "../ops.js";
 import type * as users from "../users.js";
 import type * as vercel from "../vercel.js";
+import type * as workspace from "../workspace.js";
 
 import type {
   ApiFromModules,
@@ -28,6 +29,7 @@ declare const fullApi: ApiFromModules<{
   ops: typeof ops;
   users: typeof users;
   vercel: typeof vercel;
+  workspace: typeof workspace;
 }>;
 
 /**

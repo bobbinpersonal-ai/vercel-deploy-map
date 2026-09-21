@@ -139,6 +139,49 @@ const schema = defineSchema(
       createdAt: v.number(),
     }).index("by_status", ["status"]).index("by_createdAt", ["createdAt"]),
 
+    // Protected internal workspace: SOPs, recruiting posts, projects, and tasks.
+    workspaceDocuments: defineTable({
+      title: v.string(),
+      category: v.string(),
+      content: v.string(),
+      status: v.union(v.literal("draft"), v.literal("published")),
+      createdBy: v.id("users"),
+      updatedAt: v.number(),
+    }).index("by_category", ["category"]).index("by_updatedAt", ["updatedAt"]),
+
+    workspaceProjects: defineTable({
+      name: v.string(),
+      description: v.string(),
+      status: v.union(v.literal("planning"), v.literal("active"), v.literal("on_hold"), v.literal("complete")),
+      ownerId: v.id("users"),
+      dueAt: v.optional(v.number()),
+      createdAt: v.number(),
+      updatedAt: v.number(),
+    }).index("by_status", ["status"]).index("by_updatedAt", ["updatedAt"]),
+
+    workspaceTasks: defineTable({
+      projectId: v.id("workspaceProjects"),
+      title: v.string(),
+      description: v.optional(v.string()),
+      status: v.union(v.literal("todo"), v.literal("in_progress"), v.literal("done")),
+      assigneeId: v.optional(v.id("users")),
+      dueAt: v.optional(v.number()),
+      createdAt: v.number(),
+      updatedAt: v.number(),
+    }).index("by_project", ["projectId"]).index("by_status", ["status"]),
+
+    workspaceJobPosts: defineTable({
+      title: v.string(),
+      department: v.string(),
+      location: v.string(),
+      description: v.string(),
+      compensation: v.string(),
+      status: v.union(v.literal("draft"), v.literal("open"), v.literal("closed")),
+      createdBy: v.id("users"),
+      createdAt: v.number(),
+      updatedAt: v.number(),
+    }).index("by_status", ["status"]).index("by_updatedAt", ["updatedAt"]),
+
     // Vetted local crew partners that fulfill scope on site.
     contractors: defineTable({
       name: v.string(),

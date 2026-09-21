@@ -25,6 +25,7 @@ const ContractorApplications = lazy(() => import("./pages/ContractorApplications
 const MarketContractors = lazy(() => import("./pages/MarketContractors.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
+const Workspace = lazy(() => import("./pages/Workspace.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 // Simple loading fallback for route transitions
@@ -165,6 +166,17 @@ createRoot(document.getElementById("root")!).render(
                     description="Leads, call lists, appointments, crews, and jobs live in the internal admin console."
                   >
                     <Dashboard />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/admin/workspace"
+                element={
+                  <RequireAuth
+                    title="Sign in to use the workspace"
+                    description="SOPs, projects, tasks, job posts, and internal work live here."
+                  >
+                    <Workspace />
                   </RequireAuth>
                 }
               />
