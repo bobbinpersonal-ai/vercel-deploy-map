@@ -37,30 +37,6 @@ const FAQS = [
   ["Do you work with insurance claims?", "We document storm damage and can meet your adjuster. We are not public insurance adjusters and will never promise to waive your deductible."],
 ];
 
-function ServiceVisual({ title, index }: { title: string; index: number }) {
-  const palettes = [
-    ["#1d211d", "#71803d", "#d5ec77"],
-    ["#263b46", "#6e9aaa", "#d9f0ed"],
-    ["#3c2c22", "#ae774e", "#f0d2a6"],
-    ["#27362e", "#6e9b78", "#c8e7cb"],
-  ];
-  const [background, mid, highlight] = palettes[index % palettes.length];
-  return (
-    <div className="relative mb-6 h-44 overflow-hidden rounded-xl" style={{ backgroundColor: background }} aria-label={`${title} illustration`}>
-      <svg viewBox="0 0 360 190" className="absolute inset-0 size-full" role="img" aria-hidden="true">
-        <defs><linearGradient id={`service-gradient-${index}`} x1="0" x2="1" y1="0" y2="1"><stop stopColor={highlight} stopOpacity=".85" /><stop offset="1" stopColor={mid} stopOpacity=".15" /></linearGradient></defs>
-        <circle cx="292" cy="38" r="58" fill={`url(#service-gradient-${index})`} opacity=".35" />
-        <path d="M0 153 80 115l80 35 75-39 125 42v37H0Z" fill="#0f1712" opacity=".55" />
-        {title === "Roofing" && <><path d="m52 128 78-63 102 49v41H52Z" fill="#24342b" stroke={highlight} strokeWidth="3" /><path d="m38 125 92-74 118 59-16 11-101-48-79 65Z" fill={mid} /><path d="M70 118 130 69l80 39" fill="none" stroke={highlight} strokeWidth="4" strokeDasharray="8 8" /><circle cx="282" cy="52" r="15" fill={highlight} opacity=".9" /></>}
-        {title === "Siding" && <><rect x="64" y="52" width="172" height="105" rx="4" fill="#d6e0d4" /><path d="M64 75h172M64 98h172M64 121h172M64 144h172" stroke={mid} strokeWidth="4" /><path d="m46 55 104-30 104 30-18 17-86-24-86 24Z" fill={mid} /><rect x="173" y="102" width="35" height="55" fill={background} /><rect x="88" y="97" width="48" height="33" fill={highlight} opacity=".8" /><path d="M88 113h48M112 97v33" stroke={mid} strokeWidth="3" /></>}
-        {title === "Gutters" && <><path d="m47 115 83-69 121 45v63H47Z" fill="#d8dfd5" /><path d="m37 116 94-78 128 48-11 15-117-42-83 70Z" fill={mid} /><path d="M48 112h208" stroke={highlight} strokeWidth="8" /><path d="M242 111v68" stroke={highlight} strokeWidth="9" /><path d="M250 179c0 0 7-9 0-18M269 179c0 0 7-9 0-18" fill="none" stroke="#8dc6df" strokeWidth="4" /></>}
-        {title === "Windows" && <><rect x="67" y="48" width="192" height="112" rx="5" fill={mid} /><rect x="82" y="63" width="72" height="82" fill="#b9d9df" /><rect x="171" y="63" width="72" height="82" fill="#b9d9df" /><path d="M118 63v82M207 63v82M82 104h72M171 104h72" stroke={background} strokeWidth="5" /><path d="m54 48 108-28 117 28-18 17-99-23-91 23Z" fill={highlight} /><path d="M95 77 137 128" stroke="white" strokeOpacity=".55" strokeWidth="8" /></>}
-      </svg>
-      <div className="absolute bottom-3 left-4 text-[10px] font-semibold tracking-[.16em] text-white/70 uppercase">Concept visual · {String(index + 1).padStart(2, "0")}</div>
-    </div>
-  );
-}
-
 export default function Landing() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [locationStatus, setLocationStatus] = useState<string | null>(null);
@@ -114,7 +90,7 @@ export default function Landing() {
             <span className="text-lg font-semibold tracking-[-0.03em]">LoveMeAfter</span>
           </a>
           <div className="hidden items-center gap-8 text-sm text-white/75 md:flex">
-            <a href="#services" className="transition-colors hover:text-white">What we do</a>
+            <a href="#process" className="transition-colors hover:text-white">Our approach</a>
             <a href="#process" className="transition-colors hover:text-white">How it works</a>
             <a href="#questions" className="transition-colors hover:text-white">Questions</a>
             <a href="/careers" className="transition-colors hover:text-white">Sell with us</a>
@@ -126,7 +102,7 @@ export default function Landing() {
         {menuOpen && (
           <div className="absolute inset-x-4 top-20 rounded-2xl bg-[#182019] p-5 shadow-2xl md:hidden">
             <button onClick={() => setMenuOpen(false)} className="absolute right-4 top-4"><X className="size-5" /></button>
-            <div className="flex flex-col gap-5 pt-4 text-sm"><a href="#services" onClick={() => setMenuOpen(false)}>What we do</a><a href="#process" onClick={() => setMenuOpen(false)}>How it works</a><a href="#questions" onClick={() => setMenuOpen(false)}>Questions</a><a href="/careers" onClick={() => setMenuOpen(false)}>Sell with us</a><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] text-[#1d211d]">Get an estimate</Button></div>
+            <div className="flex flex-col gap-5 pt-4 text-sm"><a href="#process" onClick={() => setMenuOpen(false)}>Our approach</a><a href="#process" onClick={() => setMenuOpen(false)}>How it works</a><a href="#questions" onClick={() => setMenuOpen(false)}>Questions</a><a href="/careers" onClick={() => setMenuOpen(false)}>Sell with us</a><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] text-[#1d211d]">Get an estimate</Button></div>
           </div>
         )}
       </header>
@@ -153,8 +129,8 @@ export default function Landing() {
             <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3 text-sm text-white/60"><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> No obligation</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> Written scope</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> 10-year workmanship warranty</span></div>
           </div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, delay: .15 }} className="self-end rounded-3xl border border-white/20 bg-white/10 p-6 text-white shadow-2xl backdrop-blur-md sm:p-8 lg:mb-1">
-            <div className="flex items-start justify-between"><div><p className="text-xs font-semibold tracking-[.16em] text-[#78834e] uppercase">Your first step</p><h2 className="mt-3 text-3xl font-semibold tracking-[-.05em]">Tell us what needs doing.</h2></div><span className="flex size-11 items-center justify-center rounded-full bg-[#e8efc7]"><ArrowUpRight className="size-5" /></span></div>
-            <p className="mt-4 text-sm leading-6 text-[#5f655d]">A few details helps us make your callback useful — not a sales pitch.</p>
+            <div className="flex items-start justify-between"><div><p className="text-xs font-semibold tracking-[.16em] text-[#d5ec77] uppercase">Your first step</p><h2 className="mt-3 text-3xl font-semibold tracking-[-.05em]">Tell us what needs doing.</h2></div><span className="flex size-11 items-center justify-center rounded-full bg-[#e8efc7]"><ArrowUpRight className="size-5" /></span></div>
+            <p className="mt-4 text-sm leading-6 text-white/75">A few details helps us make your callback useful — not a sales pitch.</p>
             {submitted ? (
               <div className="mt-7 rounded-2xl bg-[#eaf0d0] p-5 text-sm leading-6 text-[#4f5d3b]">
                 <p className="font-semibold text-[#1d211d]">Thanks — your estimate request is in.</p>
@@ -174,22 +150,17 @@ export default function Landing() {
                   <input name="cityStateZip" required value={cityStateZip} onChange={(event) => setCityStateZip(event.target.value)} placeholder="City, state & ZIP" aria-label="City, state and ZIP" className="h-14 w-full rounded-xl border border-white/25 bg-white/10 px-4 text-sm text-white outline-none transition placeholder:text-white/60 focus:border-[#d5ec77]" />
                   <select name="service" aria-label="Service needed" className="h-14 w-full rounded-xl border border-white/25 bg-white/10 px-4 text-sm text-white outline-none focus:border-[#d5ec77]">{SERVICES.map((service) => <option key={service.title}>{service.title}</option>)}<option>Not sure yet</option></select>
                 </div>
-                {locationStatus && <p className="flex items-start gap-2 text-xs leading-5 text-[#657035]"><MapPin className="mt-0.5 size-3.5 shrink-0" />{locationStatus}</p>}
+                {locationStatus && <p className="flex items-start gap-2 text-xs leading-5 text-[#d5ec77]"><MapPin className="mt-0.5 size-3.5 shrink-0" />{locationStatus}</p>}
                 <Button type="submit" className="h-14 w-full rounded-xl bg-[#1d211d] text-sm font-semibold text-white hover:bg-[#30382f]">Request my callback <ChevronRight className="ml-1 size-4" /></Button>
               </form>
             )}
-            <p className="mt-4 text-center text-xs text-[#7a8076]">Free estimate · no obligation · same-day callback in active markets</p>
+            <p className="mt-4 text-center text-xs text-white/70">Free estimate · no obligation · same-day callback in active markets</p>
           </motion.div>
         </div>
       </section>
 
       <section className="relative z-10 border-b border-[#1d211d]/10 bg-[#eaf0d0]/88 backdrop-blur-sm">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-7 sm:grid-cols-3 sm:px-8 lg:px-10"><div><p className="text-3xl font-semibold tracking-[-.05em]">5 states</p><p className="mt-1 text-sm text-[#65705e]">Colorado, Missouri, Kansas, Indiana & Wyoming</p></div><div><p className="text-3xl font-semibold tracking-[-.05em]">Same-day</p><p className="mt-1 text-sm text-[#65705e]">Callback in active markets</p></div><div><p className="text-3xl font-semibold tracking-[-.05em]">10 years</p><p className="mt-1 text-sm text-[#65705e]">Minimum workmanship warranty</p></div></div>
-      </section>
-
-      <section id="services" className="relative z-10 mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
-        <div className="grid gap-8 lg:grid-cols-[.75fr_1.25fr] lg:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">The outside of your home</p><h2 className="mt-4 max-w-lg text-4xl font-semibold leading-[1] tracking-[-.055em] sm:text-6xl">Good work should feel simple.</h2></div><p className="max-w-xl text-lg leading-8 text-[#62695f]">One job or the whole exterior. We would rather price the lot, explain what matters, and tell you honestly what can wait.</p></div>
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{SERVICES.map((service, index) => { const Icon = service.icon; return <motion.div key={service.title} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .07 }} className="group rounded-2xl border border-[#1d211d]/10 bg-white p-6 transition hover:-translate-y-1 hover:border-[#9aaa55] hover:shadow-xl"><ServiceVisual title={service.title} index={index} /><div className="flex items-start justify-between"><span className="flex size-12 items-center justify-center rounded-xl bg-[#edf2d7] text-[#71803d]"><Icon className="size-5" /></span><span className="text-xs text-[#a2a99e]">0{index + 1}</span></div><h3 className="mt-12 text-xl font-semibold tracking-[-.03em]">{service.title}</h3><p className="mt-2 text-sm leading-6 text-[#697068]">{service.detail}</p><ArrowUpRight className="mt-7 size-4 text-[#9aaa55] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" /></motion.div>; })}</div>
       </section>
 
       <section className="relative z-10 bg-[#f7f5f0]/90 backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10 lg:py-32"><div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">Built for the real world</p><h2 className="mt-4 max-w-xl text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-6xl">From first inspection to final detail.</h2></div><p className="max-w-xl text-lg leading-8 text-[#62695f]">See the kind of work we help homeowners plan: durable materials, careful prep, and a finish that makes the whole property feel looked after.</p></div><div className="mt-14 grid gap-4 md:grid-cols-3"><div className="group overflow-hidden rounded-2xl bg-[#1d211d] text-white"><div className="h-64 bg-[url('https://images.unsplash.com/photo-1632759145351-1d592919f522?auto=format&fit=crop&w=1000&q=85')] bg-cover bg-center transition duration-500 group-hover:scale-105" /><div className="p-6"><p className="text-xs font-semibold tracking-[.15em] text-[#d5ec77] uppercase">01 · Roofline</p><h3 className="mt-3 text-xl font-semibold">Protection that starts overhead.</h3></div></div><div className="group overflow-hidden rounded-2xl bg-[#1d211d] text-white"><div className="h-64 bg-[url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=85')] bg-cover bg-center transition duration-500 group-hover:scale-105" /><div className="p-6"><p className="text-xs font-semibold tracking-[.15em] text-[#d5ec77] uppercase">02 · Exterior</p><h3 className="mt-3 text-xl font-semibold">A better envelope for every season.</h3></div></div><div className="group overflow-hidden rounded-2xl bg-[#1d211d] text-white"><div className="h-64 bg-[url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=85')] bg-cover bg-center transition duration-500 group-hover:scale-105" /><div className="p-6"><p className="text-xs font-semibold tracking-[.15em] text-[#d5ec77] uppercase">03 · Finish</p><h3 className="mt-3 text-xl font-semibold">Details that hold up close.</h3></div></div></div></div></section>
