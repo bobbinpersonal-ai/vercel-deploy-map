@@ -104,12 +104,13 @@ export const setContractorActive = mutation({
 const HOUR = 60 * 60 * 1000;
 
 const DEMO_CONTRACTORS = [
-  { name: "Meridian Roofing Co.", trade: "Roofing", city: "Portland, OR", phone: "(503) 555-0142", rating: 4.9, jobsCompleted: 68, active: true, licensed: true },
-  { name: "Calder & Sons Carpentry", trade: "Kitchen Remodel", city: "Beaverton, OR", phone: "(503) 555-0188", rating: 4.7, jobsCompleted: 41, active: true, licensed: true },
-  { name: "Northbank Tile & Bath", trade: "Bath Remodel", city: "Vancouver, WA", phone: "(360) 555-0134", rating: 4.8, jobsCompleted: 55, active: true, licensed: true },
-  { name: "Halverson Floorworks", trade: "Flooring", city: "Salem, OR", phone: "(971) 555-0177", rating: 4.6, jobsCompleted: 33, active: true, licensed: true },
-  { name: "Summit Window & Door", trade: "Windows & Doors", city: "Gresham, OR", phone: "(503) 555-0163", rating: 4.5, jobsCompleted: 27, active: false, licensed: true },
-  { name: "Ridgeline Exteriors", trade: "Exterior Painting", city: "Hillsboro, OR", phone: "(971) 555-0110", rating: 4.8, jobsCompleted: 49, active: true, licensed: true },
+  { name: "Summit Peak Roofing", trade: "Roofing", city: "Denver, CO", phone: "(303) 555-0142", rating: 4.9, jobsCompleted: 68, active: true, licensed: true },
+  { name: "Front Range Siding Co.", trade: "Siding", city: "Aurora, CO", phone: "(720) 555-0188", rating: 4.7, jobsCompleted: 41, active: true, licensed: true },
+  { name: "Midwest Window Works", trade: "Windows", city: "Kansas City, MO", phone: "(816) 555-0134", rating: 4.8, jobsCompleted: 55, active: true, licensed: true },
+  { name: "Prairie Seamless Gutters", trade: "Gutters", city: "Wichita, KS", phone: "(316) 555-0177", rating: 4.6, jobsCompleted: 33, active: true, licensed: true },
+  { name: "Hoosier Fence & Post", trade: "Fencing", city: "Indianapolis, IN", phone: "(317) 555-0163", rating: 4.5, jobsCompleted: 27, active: false, licensed: true },
+  { name: "Casper Exteriors", trade: "Exterior Paint", city: "Casper, WY", phone: "(307) 555-0110", rating: 4.8, jobsCompleted: 49, active: true, licensed: true },
+  { name: "Front Range Overhead Doors", trade: "Garage Doors", city: "Denver, CO", phone: "(303) 555-0195", rating: 4.6, jobsCompleted: 22, active: true, licensed: true },
 ];
 
 type DemoLead = {
@@ -126,19 +127,19 @@ type DemoLead = {
 };
 
 const DEMO_LEADS: DemoLead[] = [
-  { name: "Dana Whitfield", phone: "(503) 555-0301", city: "Portland, OR", service: "Roofing", source: "google_search", stage: "new", estimatedValue: 18400, agent: "Maricel", notes: "Storm damage, three missing shingle fields. Wants us out before Friday.", ageHours: 0.2 },
-  { name: "Ellis Nakamura", phone: "(971) 555-0302", city: "Lake Oswego, OR", service: "Kitchen Remodel", source: "google_search", stage: "new", estimatedValue: 42750, agent: "Joel", notes: "Full gut, keeping the island. Photos of cabinet rot on file.", ageHours: 0.9 },
-  { name: "Priya Raghavan", phone: "(360) 555-0303", city: "Vancouver, WA", service: "Bath Remodel", source: "referral", stage: "contacted", estimatedValue: 21800, agent: "Maricel", notes: "Repeat client from the Gladstone job. Wants curbless shower.", ageHours: 3 },
-  { name: "Grant Buckley", phone: "(503) 555-0304", city: "Beaverton, OR", service: "Flooring", source: "google_search", stage: "contacted", estimatedValue: 9400, agent: "Aiko", notes: "1,400 sq ft LVP over slab. Moisture reading pending.", ageHours: 5 },
-  { name: "Willow Creek Property Mgmt", phone: "(503) 555-0305", city: "Portland, OR", service: "Drywall & Repairs", source: "b2b_partner", stage: "qualified", estimatedValue: 31200, agent: "Joel", notes: "14-unit portfolio. Recurring turn work, net-30 terms.", ageHours: 9 },
-  { name: "Theodore Lindqvist", phone: "(971) 555-0306", city: "Tigard, OR", service: "Windows & Doors", source: "google_search", stage: "qualified", estimatedValue: 14600, agent: "Aiko", notes: "9 double-hung replacements, second storey access.", ageHours: 14 },
-  { name: "Rosa Delgado", phone: "(503) 555-0307", city: "Gresham, OR", service: "Exterior Painting", source: "outbound", stage: "qualified", estimatedValue: 12800, agent: "Maricel", notes: "Dialed from a Craigslist listing, deck refinish bundled in.", ageHours: 20 },
-  { name: "Arden Blackwood", phone: "(360) 555-0308", city: "Camas, WA", service: "Basement Finishing", source: "referral", stage: "quoted", estimatedValue: 38900, agent: "Joel", notes: "Quote issued Tuesday. Financing pre-approval running.", ageHours: 30 },
-  { name: "Hollis Grant", phone: "(503) 555-0309", city: "Hillsboro, OR", service: "Gutters & Siding", source: "google_search", stage: "quoted", estimatedValue: 16750, agent: "Aiko", notes: "Seamless gutter run plus fascia repair.", ageHours: 44 },
-  { name: "Marlene Osei", phone: "(971) 555-0310", city: "Oregon City, OR", service: "Kitchen Remodel", source: "b2b_partner", stage: "won", estimatedValue: 46300, agent: "Maricel", notes: "Signed via e-signature. 30% deposit collected on card.", ageHours: 56 },
-  { name: "Silas Romero", phone: "(503) 555-0311", city: "Portland, OR", service: "Roofing", source: "outbound", stage: "won", estimatedValue: 22100, agent: "Joel", notes: "Tear-off and re-deck. Payout scheduled on completion.", ageHours: 70 },
-  { name: "June Halvorsen", phone: "(503) 555-0312", city: "Milwaukie, OR", service: "Decks & Fencing", source: "google_search", stage: "won", estimatedValue: 15400, agent: "Aiko", notes: "Cedar deck rebuild, 320 sq ft.", ageHours: 88 },
-  { name: "Bennett Cole", phone: "(360) 555-0313", city: "Battle Ground, WA", service: "Bath Remodel", source: "google_search", stage: "lost", estimatedValue: 19900, agent: "Maricel", notes: "Went with a cheaper handyman quote. Follow up next season.", ageHours: 96 },
+  { name: "Dana Whitfield", phone: "(303) 555-0301", city: "Denver, CO", service: "Roofing", source: "google_search", stage: "new", estimatedValue: 18400, agent: "Maricel", notes: "Storm damage, three missing shingle fields. Wants us up before Friday.", ageHours: 0.2 },
+  { name: "Ellis Nakamura", phone: "(720) 555-0302", city: "Aurora, CO", service: "Siding", source: "google_search", stage: "new", estimatedValue: 42750, agent: "Joel", notes: "Hail-bruised Hardie board on three elevations. Photos on file.", ageHours: 0.9 },
+  { name: "Priya Raghavan", phone: "(816) 555-0303", city: "Kansas City, MO", service: "Windows", source: "referral", stage: "contacted", estimatedValue: 21800, agent: "Maricel", notes: "Twelve double-hung replacements, second storey access.", ageHours: 3 },
+  { name: "Grant Buckley", phone: "(316) 555-0304", city: "Wichita, KS", service: "Gutters", source: "google_search", stage: "contacted", estimatedValue: 9400, agent: "Aiko", notes: "Seamless run plus fascia repair. Kansas AG registration verified.", ageHours: 5 },
+  { name: "Willow Creek Property Mgmt", phone: "(317) 555-0305", city: "Indianapolis, IN", service: "Exterior Paint", source: "b2b_partner", stage: "qualified", estimatedValue: 31200, agent: "Joel", notes: "14-unit portfolio repaint. Recurring work, net-30 terms.", ageHours: 9 },
+  { name: "Theodore Lindqvist", phone: "(317) 555-0306", city: "Fishers, IN", service: "Fence", source: "google_search", stage: "qualified", estimatedValue: 14600, agent: "Aiko", notes: "Cedar with steel posts, 180 linear ft. Wants it before winter.", ageHours: 14 },
+  { name: "Rosa Delgado", phone: "(303) 555-0307", city: "Lakewood, CO", service: "Garage Doors", source: "outbound", stage: "qualified", estimatedValue: 12800, agent: "Maricel", notes: "Two-door replacement plus opener. Dialed from a local listing.", ageHours: 20 },
+  { name: "Arden Blackwood", phone: "(816) 555-0308", city: "Lee's Summit, MO", service: "Roofing", source: "referral", stage: "quoted", estimatedValue: 38900, agent: "Joel", notes: "Hail claim filed. Meeting the adjuster on the roof Thursday.", ageHours: 30 },
+  { name: "Hollis Grant", phone: "(317) 555-0309", city: "Carmel, IN", service: "Siding", source: "google_search", stage: "quoted", estimatedValue: 16750, agent: "Aiko", notes: "Front elevation only. Estimate issued with two paint options.", ageHours: 44 },
+  { name: "Marlene Osei", phone: "(720) 555-0310", city: "Centennial, CO", service: "Windows", source: "b2b_partner", stage: "won", estimatedValue: 46300, agent: "Maricel", notes: "Signed via e-signature. Deposit collected on card, ACH for balance.", ageHours: 56 },
+  { name: "Silas Romero", phone: "(303) 555-0311", city: "Denver, CO", service: "Roofing", source: "outbound", stage: "won", estimatedValue: 22100, agent: "Joel", notes: "Tear-off and re-deck. Payout scheduled on completion.", ageHours: 70 },
+  { name: "June Halvorsen", phone: "(307) 555-0312", city: "Cheyenne, WY", service: "Gutters", source: "google_search", stage: "won", estimatedValue: 15400, agent: "Aiko", notes: "Full seamless run, colour-matched to trim.", ageHours: 88 },
+  { name: "Bennett Cole", phone: "(316) 555-0313", city: "Derby, KS", service: "Exterior Paint", source: "google_search", stage: "lost", estimatedValue: 19900, agent: "Maricel", notes: "Went with a cheaper one-coat quote. Follow up next season.", ageHours: 96 },
 ];
 
 type DemoJob = {
@@ -154,13 +155,13 @@ type DemoJob = {
 };
 
 const DEMO_JOBS: DemoJob[] = [
-  { title: "Kitchen gut remodel — Osei residence", address: "1420 Alder St", city: "Oregon City, OR", service: "Kitchen Remodel", contractValue: 46300, payout: 28700, status: "in_progress", contractor: "Calder & Sons Carpentry", scheduleInHours: 0 },
-  { title: "Full tear-off and re-deck", address: "88 Rowan Ave", city: "Portland, OR", service: "Roofing", contractValue: 22100, payout: 13500, status: "dispatched", contractor: "Meridian Roofing Co.", scheduleInHours: 20 },
-  { title: "Cedar deck rebuild, 320 sq ft", address: "7 Foxglove Ct", city: "Milwaukie, OR", service: "Decks & Fencing", contractValue: 15400, payout: 9200, status: "scheduled", contractor: "Calder & Sons Carpentry", scheduleInHours: 44 },
-  { title: "Primary bath — curbless shower conversion", address: "215 Larkspur Way", city: "Vancouver, WA", service: "Bath Remodel", contractValue: 21800, payout: 13200, status: "scheduled", contractor: "Northbank Tile & Bath", scheduleInHours: 68 },
-  { title: "1,400 sq ft LVP install over slab", address: "930 Meridian Rd", city: "Beaverton, OR", service: "Flooring", contractValue: 9400, payout: 5600, status: "complete", contractor: "Halverson Floorworks", scheduleInHours: -30 },
-  { title: "14-unit drywall turn — Willow Creek", address: "Multiple sites", city: "Portland, OR", service: "Drywall & Repairs", contractValue: 31200, payout: 18900, status: "complete", contractor: "Ridgeline Exteriors", scheduleInHours: -52 },
-  { title: "Exterior repaint + fascia repair", address: "64 Briar Patch Ln", city: "Gresham, OR", service: "Exterior Painting", contractValue: 12800, payout: 7400, status: "paid", contractor: "Ridgeline Exteriors", scheduleInHours: -120 },
+  { title: "Whole-house window replacement — Osei", address: "1420 Alder St", city: "Kansas City, MO", service: "Windows", contractValue: 46300, payout: 28700, status: "in_progress", contractor: "Midwest Window Works", scheduleInHours: 0 },
+  { title: "Full tear-off and re-deck", address: "88 Rowan Ave", city: "Denver, CO", service: "Roofing", contractValue: 22100, payout: 13500, status: "dispatched", contractor: "Summit Peak Roofing", scheduleInHours: 20 },
+  { title: "Seamless gutter run, colour-matched", address: "7 Foxglove Ct", city: "Wichita, KS", service: "Gutters", contractValue: 15400, payout: 9200, status: "scheduled", contractor: "Prairie Seamless Gutters", scheduleInHours: 44 },
+  { title: "Cedar fence with steel posts", address: "215 Larkspur Way", city: "Indianapolis, IN", service: "Fence", contractValue: 14600, payout: 8800, status: "scheduled", contractor: "Hoosier Fence & Post", scheduleInHours: 68 },
+  { title: "Hardie board, three elevations", address: "930 Meridian Rd", city: "Aurora, CO", service: "Siding", contractValue: 42750, payout: 25600, status: "complete", contractor: "Front Range Siding Co.", scheduleInHours: -30 },
+  { title: "14-unit exterior repaint — Willow Creek", address: "Multiple sites", city: "Casper, WY", service: "Exterior Paint", contractValue: 31200, payout: 18900, status: "complete", contractor: "Casper Exteriors", scheduleInHours: -52 },
+  { title: "Two-door garage replacement + opener", address: "64 Briar Patch Ln", city: "Lakewood, CO", service: "Garage Doors", contractValue: 12800, payout: 7400, status: "paid", contractor: "Front Range Overhead Doors", scheduleInHours: -120 },
 ];
 
 /** One-tap demo data so the console is never an empty shell. */

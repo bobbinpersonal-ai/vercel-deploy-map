@@ -70,15 +70,13 @@ const SOURCE_LABELS: Record<LeadSource, string> = {
 
 const SERVICE_LINES = [
   "Roofing",
-  "Kitchen Remodel",
-  "Bath Remodel",
-  "Flooring",
-  "Windows & Doors",
-  "Exterior Painting",
-  "Decks & Fencing",
-  "Drywall & Repairs",
-  "Basement Finishing",
-  "Gutters & Siding",
+  "Siding",
+  "Windows",
+  "Gutters",
+  "Fence",
+  "Garage Doors",
+  "Exterior Paint",
+  "Hail & Wind Inspection",
 ];
 
 const KPI_TARGETS = [
@@ -93,7 +91,7 @@ const PILLARS = [
     icon: Radar,
     summary: "Geofenced search campaigns and partner outreach, run from HQ with no local storefront.",
     points: [
-      "Home improvement keyword sets — roofing, remodel, bath, flooring, exterior",
+      "Keyword sets — roof replacement, siding, windows, gutters, fence, garage doors",
       "Reassurance copy: 24/7 live human, instant dispatch, vetted local pros",
       "Outbound to property managers, estate planners, brokers, storage facilities",
     ],
@@ -214,6 +212,14 @@ export default function Dashboard() {
     };
   }, [leads, jobs, contractors]);
 
+  useEffect(() => {
+    const previous = document.title;
+    document.title = "Ops console · LoveMeAfter";
+    return () => {
+      document.title = previous;
+    };
+  }, []);
+
   const handleSeed = async () => {
     setSeeding(true);
     try {
@@ -249,7 +255,7 @@ export default function Dashboard() {
           <span className="flex size-8 items-center justify-center rounded-full border border-[#252523]/25">
             <HardHat className="size-4" strokeWidth={1.6} />
           </span>
-          Ridgeline <span className="hidden font-normal text-[#9b9990] sm:inline">/ Ops console</span>
+          LoveMeAfter <span className="hidden font-normal text-[#9b9990] sm:inline">/ Ops console</span>
         </div>
         <div className="flex items-center gap-3">
           <span className="hidden items-center gap-2 border border-[#252523]/15 px-3 py-1.5 text-[10px] font-semibold tracking-[0.16em] text-[#6d6c67] uppercase md:flex">
