@@ -1,7 +1,9 @@
+import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Check, ChevronDown, Compass, GitBranch, Layers3, LogOut, MapPin, Minus, Plus, Rocket, Search, Settings2 } from "lucide-react";
+import { useAction } from "convex/react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -17,11 +19,20 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(places[0]);
   const [deployed, setDeployed] = useState(false);
+  const deploy = useAction(api.vercel.deploy);
 
-  const handleDeploy = () => {
+  const handleDeploy = async () => {
     setDeployed(true);
-    toast.success("Deployment queued", { description: "North Reach will update when the build is ready." });
-    window.setTimeout(() => setDeployed(false), 3600);
+    try {
+      await deploy({});
+      toast.success("Deployment queued", { description: "North Reach will update when the build is ready." });
+    } catch (error) {
+      toast.error("Deployment could not start", {
+        description: error instanceof Error ? error.message : "Check your Vercel connection.",
+      });
+    } finally {
+      setDeployed(false);
+    }
   };
 
   const handleSignOut = async () => {
