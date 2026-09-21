@@ -133,7 +133,7 @@ export default function Landing() {
             disablePictureInPicture
             aria-label="LoveMeAfter home improvement project video"
           >
-            <source src="https://drive.google.com/uc?export=download&id=1rWNC8tGHEFP9cH9z2_kug3k87cuasV2k" type="video/quicktime" />
+            <source src="/copy_5E397E73-24D9-4597-8204-60EA4CE89EDD.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(15,22,16,.95)_0%,rgba(15,22,16,.73)_46%,rgba(15,22,16,.2)_100%)]" />
         </div>
