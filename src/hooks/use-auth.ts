@@ -1,20 +1,41 @@
-import { api } from "@/convex/_generated/api";
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useConvexAuth, useQuery } from "convex/react";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  type User,
+} from "firebase/auth";
+import { useEffect, useState } from "react";
+import { auth } from "@/lib/firebase";
 
 export function useAuth() {
-  const { isLoading: isAuthLoading, isAuthenticated } = useConvexAuth();
-  const user = useQuery(api.users.currentUser);
-  const { signIn, signOut } = useAuthActions();
+  const [user, setUser] = useState<User | null>(auth.currentUser);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Derive isLoading directly from the dependencies instead of managing separate state
-  const isLoading = isAuthLoading || user === undefined;
+  useEffect(() => {
+    return onAuthStateChanged(auth, (nextUser) => {
+      setUser(nextUser);
+      setIsLoading(false);
+    });
+  }, []);
+
+  async function signIn(method: string, formData?: FormData) {
+    const email = String(formData?.get("email") ?? "").trim();
+    const password = String(formData?.get("password") ?? "");
+    if (!email || password.length < 6) {
+      throw new Error("Enter an email and a password with at least 6 characters.");
+    }
+    if (method === "signUp") {
+      return createUserWithEmailAndPassword(auth, email, password);
+    }
+    return signInWithEmailAndPassword(auth, email, password);
+  }
 
   return {
     isLoading,
-    isAuthenticated,
+    isAuthenticated: user !== null,
     user,
     signIn,
-    signOut,
+    signOut: () => firebaseSignOut(auth),
   };
 }

@@ -1,8 +1,6 @@
 import { Toaster } from "@/components/ui/sonner";
 import { RequireAuth } from "@/components/RequireAuth";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
-import { ConvexAuthProvider } from "@convex-dev/auth/react";
-import { ConvexReactClient } from "convex/react";
 import React, { StrictMode, useEffect, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
@@ -93,10 +91,6 @@ class RootErrorBoundary extends React.Component<
   }
 }
 
-const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
-
-
-
 function RouteSyncer() {
   const location = useLocation();
   useEffect(() => {
@@ -128,86 +122,34 @@ createRoot(document.getElementById("root")!).render(
       <ToolbarErrorBoundary>
         <VlyToolbar />
       </ToolbarErrorBoundary>
-      <ConvexAuthProvider client={convex}>
-        <BrowserRouter>
-          <RouteSyncer />
-          <Suspense fallback={<RouteLoading />}>
-            <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path="/careers" element={<Careers />} />
-              <Route path="/careers/roles/:role" element={<CareerRole />} />
-              <Route path="/careers/:slug" element={<MarketCareers />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/services/:service" element={<ProjectProcess />} />
-              <Route path="/contractors" element={<ContractorPartners />} />
-              <Route path="/contractors/:slug" element={<MarketContractors />} />
-              <Route path="/areas" element={<Areas />} />
-              <Route path="/areas/:slug" element={<AreaLanding />} />
-              <Route path="/areas/:slug/:city" element={<AreaLanding />} />
-              <Route path="/insights" element={<Insights />} />
-              <Route path="/financing" element={<Financing />} />
-              <Route
-                path="/auth"
-                element={<AuthPage redirectAfterAuth="/dashboard" />}
-              />
-              <Route
-                path="/dashboard"
-                element={
-                  <RequireAuth>
-                    <Dashboard />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/admin"
-                element={
-                  <RequireAuth
-                    title="Sign in to manage LoveMeAfter"
-                    description="Leads, call lists, appointments, crews, and jobs live in the internal admin console."
-                  >
-                    <Dashboard />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/admin/workspace"
-                element={
-                  <RequireAuth
-                    title="Sign in to use the workspace"
-                    description="SOPs, projects, tasks, job posts, and internal work live here."
-                  >
-                    <Workspace />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/admin/call-lists"
-                element={
-                  <RequireAuth
-                    title="Sign in to manage call lists"
-                    description="The telemarketing queue is for internal callers and appointment setters."
-                  >
-                    <CallLists />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/admin/contractors"
-                element={
-                  <RequireAuth
-                    title="Sign in to review contractors"
-                    description="Review partner applications and build the installation network."
-                  >
-                    <ContractorApplications />
-                  </RequireAuth>
-                }
-              />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-        <Toaster />
-      </ConvexAuthProvider>
+      <BrowserRouter>
+        <RouteSyncer />
+        <Suspense fallback={<RouteLoading />}>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/careers/roles/:role" element={<CareerRole />} />
+            <Route path="/careers/:slug" element={<MarketCareers />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/services/:service" element={<ProjectProcess />} />
+            <Route path="/contractors" element={<ContractorPartners />} />
+            <Route path="/contractors/:slug" element={<MarketContractors />} />
+            <Route path="/areas" element={<Areas />} />
+            <Route path="/areas/:slug" element={<AreaLanding />} />
+            <Route path="/areas/:slug/:city" element={<AreaLanding />} />
+            <Route path="/insights" element={<Insights />} />
+            <Route path="/financing" element={<Financing />} />
+            <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
+            <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
+            <Route path="/admin" element={<RequireAuth title="Sign in to manage LoveMeAfter" description="Leads, call lists, appointments, crews, and jobs live in the internal admin console."><Dashboard /></RequireAuth>} />
+            <Route path="/admin/workspace" element={<RequireAuth title="Sign in to use the workspace" description="SOPs, projects, tasks, job posts, and internal work live here."><Workspace /></RequireAuth>} />
+            <Route path="/admin/call-lists" element={<RequireAuth title="Sign in to manage call lists" description="The telemarketing queue is for internal callers and appointment setters."><CallLists /></RequireAuth>} />
+            <Route path="/admin/contractors" element={<RequireAuth title="Sign in to review contractors" description="Review partner applications and build the installation network."><ContractorApplications /></RequireAuth>} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+      <Toaster />
     </RootErrorBoundary>
   </StrictMode>,
 );

@@ -1,4 +1,5 @@
-import { api } from "@/convex/_generated/api";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -19,7 +20,6 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
-import { useMutation } from "convex/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
@@ -49,7 +49,6 @@ const FAQS = [
 ];
 
 export default function Landing() {
-  const createEstimateLead = useMutation(api.ops.createEstimateLead);
   const [menuOpen, setMenuOpen] = useState(false);
   const [locationStatus, setLocationStatus] = useState<string | null>(null);
   const [address, setAddress] = useState("");
@@ -155,7 +154,7 @@ export default function Landing() {
                 <p className="mt-1">A LoveMeAfter coordinator will call you back the same day in active markets.</p>
               </div>
             ) : (
-              <form id="estimate-form" onSubmit={async (event) => { event.preventDefault(); const data = new FormData(event.currentTarget); try { await createEstimateLead({ name: String(data.get("name") ?? ""), phone: String(data.get("phone") ?? ""), address: String(data.get("address") ?? ""), city: String(data.get("cityStateZip") ?? ""), service: String(data.get("service") ?? "Not sure yet"), estimatedValue: SERVICE_ESTIMATES[String(data.get("service"))] ?? 15000 }); setSubmitted(true); } catch { setLocationStatus("We couldn't submit your request. Please call us at 424 426 0760."); } }} className="mt-7 space-y-3">
+              <form id="estimate-form" onSubmit={async (event) => { event.preventDefault(); const data = new FormData(event.currentTarget); try { await addDoc(collection(db, "estimateLeads"), { name: String(data.get("name") ?? ""), phone: String(data.get("phone") ?? ""), address: String(data.get("address") ?? ""), city: String(data.get("cityStateZip") ?? ""), service: String(data.get("service") ?? "Not sure yet"), estimatedValue: SERVICE_ESTIMATES[String(data.get("service"))] ?? 15000, createdAt: serverTimestamp(), status: "new" }); setSubmitted(true); } catch { setLocationStatus("We couldn't submit your request. Please call us at 424 426 0760."); } }} className="mt-7 space-y-3">
                 <div className="grid gap-3 sm:grid-cols-2">
                   <input name="name" required placeholder="Full name" aria-label="Full name" className="h-14 w-full rounded-xl border border-white/55 bg-white/28 px-4 text-sm font-medium text-white outline-none backdrop-blur-[2px] transition placeholder:text-white/80 focus:border-[#d5ec77] focus:bg-white/38 focus:ring-2 focus:ring-[#d5ec77]/35" />
                   <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className="h-14 w-full rounded-xl border border-white/55 bg-white/28 px-4 text-sm font-medium text-white outline-none backdrop-blur-[2px] transition placeholder:text-white/80 focus:border-[#d5ec77] focus:bg-white/38 focus:ring-2 focus:ring-[#d5ec77]/35" />
