@@ -110,11 +110,11 @@ export default function Landing() {
       <section id="top" className="relative isolate min-h-[730px] bg-transparent text-white">
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,22,16,.95)_0%,rgba(15,22,16,.73)_46%,rgba(15,22,16,.15)_100%),url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=85')] bg-cover bg-[center_65%]" />
         <div className="fixed inset-0 z-0 overflow-hidden bg-[#182019] pointer-events-none">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1503387762-59230de8b0d6?auto=format&fit=crop&w=1800&q=90')] bg-cover bg-center sm:hidden" />
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1503387762-59230de8b0d6?auto=format&fit=crop&w=1800&q=90')] bg-cover bg-center hidden sm:block" />
           <iframe
             title="LoveMeAfter home improvement video"
             src="https://drive.google.com/file/d/1rWNC8tGHEFP9cH9z2_kug3k87cuasV2k/preview?autoplay=1&mute=1"
-            className="pointer-events-none hidden size-full border-0 object-cover sm:block"
+            className="pointer-events-none size-full border-0 object-cover sm:hidden"
             allow="autoplay; fullscreen"
             aria-hidden="true"
           />
