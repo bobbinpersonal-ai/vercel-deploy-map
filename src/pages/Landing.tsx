@@ -143,7 +143,7 @@ export default function Landing() {
                   <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className="h-14 w-full rounded-xl border border-white/25 bg-white/10 px-4 text-sm text-white outline-none transition placeholder:text-white/60 focus:border-[#d5ec77]" />
                 </div>
                 <div className="flex gap-2">
-                  <input name="address" required value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Street address" aria-label="Street address" className="h-14 min-w-0 flex-1 rounded-xl border border-[#d9ddd2] bg-white px-4 text-sm outline-none transition focus:border-[#8da044]" />
+                  <input name="address" required value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Street address" aria-label="Street address" className="h-14 min-w-0 flex-1 rounded-xl border border-white/25 bg-white/10 px-4 text-sm text-white outline-none transition placeholder:text-white/60 focus:border-[#d5ec77]" />
                   <button type="button" onClick={locateMe} aria-label="Locate me" className="flex h-14 shrink-0 items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-3 text-xs font-semibold text-[#d5ec77] transition hover:border-[#d5ec77]" title="Use my location"><MapPin className="size-4" /> <span className="hidden sm:inline">Locate me</span></button>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
