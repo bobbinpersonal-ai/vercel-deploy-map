@@ -133,9 +133,9 @@ export default function Landing() {
             <div className="mt-10 flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#d5ec77] px-7 text-base font-semibold text-[#1d211d] hover:bg-[#e1f895]">Start with a free estimate <ArrowUpRight className="ml-2 size-5" /></Button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-white/25 px-6 text-sm font-medium hover:bg-white/10"><Phone className="size-4" /> Talk to a human</a></div>
             <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3 text-sm text-white/75"><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> No obligation</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> Written scope</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> 10-year workmanship warranty</span></div>
           </div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, delay: .15 }} className="self-end rounded-3xl border border-white/20 bg-white/10 p-6 text-white shadow-2xl backdrop-blur-md sm:p-8 lg:mb-1">
-            <div className="flex items-start justify-between"><div><p className="text-xs font-semibold tracking-[.16em] text-[#d5ec77] uppercase">Your first step</p><h2 className="mt-3 text-3xl font-semibold tracking-[-.05em]">Tell us what needs doing.</h2></div><span className="flex size-11 items-center justify-center rounded-full bg-[#e8efc7]"><ArrowUpRight className="size-5" /></span></div>
-            <p className="mt-4 text-sm leading-6 text-white/75">A few details helps us make your callback useful — not a sales pitch.</p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, delay: .15 }} className="self-end rounded-3xl border border-[#cfd7c2] bg-[#f7f5f0] p-6 text-[#1d211d] shadow-2xl sm:p-8 lg:mb-1">
+            <div className="flex items-start justify-between"><div><p className="text-xs font-semibold tracking-[.16em] text-[#71803d] uppercase">YOUR FIRST STEP · 30 SECONDS</p><h2 className="mt-3 text-3xl font-semibold tracking-[-.05em]">Tell us what needs doing.</h2></div><span className="flex size-11 items-center justify-center rounded-full bg-[#e8efc7]"><ArrowUpRight className="size-5" /></span></div>
+            <p className="mt-4 text-sm leading-6 text-[#596357]">A few details helps us make your callback useful — not a sales pitch.</p>
             {submitted ? (
               <div className="mt-7 rounded-2xl bg-[#eaf0d0] p-5 text-sm leading-6 text-[#4f5d3b]">
                 <p className="font-semibold text-[#1d211d]">Thanks — your estimate request is in.</p>
@@ -144,22 +144,22 @@ export default function Landing() {
             ) : (
               <form id="estimate-form" onSubmit={(event) => { event.preventDefault(); setSubmitted(true); }} className="mt-7 space-y-3">
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <input name="name" required placeholder="Full name" aria-label="Full name" className="h-14 w-full rounded-xl border border-white/25 bg-white/10 px-4 text-sm text-white outline-none transition placeholder:text-white/75 focus:border-[#d5ec77]" />
-                  <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className="h-14 w-full rounded-xl border border-white/25 bg-white/10 px-4 text-sm text-white outline-none transition placeholder:text-white/75 focus:border-[#d5ec77]" />
+                  <input name="name" required placeholder="Full name" aria-label="Full name" className="h-14 w-full rounded-xl border border-[#cfd7c2] bg-white px-4 text-sm text-[#1d211d] outline-none transition placeholder:text-[#7a8076] focus:border-[#71803d]" />
+                  <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className="h-14 w-full rounded-xl border border-[#cfd7c2] bg-white px-4 text-sm text-[#1d211d] outline-none transition placeholder:text-[#7a8076] focus:border-[#71803d]" />
                 </div>
                 <div className="flex gap-2">
-                  <input name="address" required value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Street address" aria-label="Street address" className="h-14 min-w-0 flex-1 rounded-xl border border-white/25 bg-white/10 px-4 text-sm text-white outline-none transition placeholder:text-white/75 focus:border-[#d5ec77]" />
-                  <button type="button" onClick={locateMe} aria-label="Locate me" className="flex h-14 shrink-0 items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-3 text-xs font-semibold text-[#d5ec77] transition hover:border-[#d5ec77]" title="Use my location"><MapPin className="size-4" /> <span className="hidden sm:inline">Locate me</span></button>
+                  <input name="address" required value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Street address" aria-label="Street address" className="h-14 min-w-0 flex-1 rounded-xl border border-[#cfd7c2] bg-white px-4 text-sm text-[#1d211d] outline-none transition placeholder:text-[#7a8076] focus:border-[#71803d]" />
+                  <button type="button" onClick={locateMe} aria-label="Locate me" className="flex h-14 shrink-0 items-center gap-2 rounded-xl border border-[#cfd7c2] bg-white px-3 text-xs font-semibold text-[#71803d] transition hover:border-[#71803d]" title="Use my location"><MapPin className="size-4" /> <span className="hidden sm:inline">Locate me</span></button>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <input name="cityStateZip" required value={cityStateZip} onChange={(event) => setCityStateZip(event.target.value)} placeholder="City, state & ZIP" aria-label="City, state and ZIP" className="h-14 w-full rounded-xl border border-white/25 bg-white/10 px-4 text-sm text-white outline-none transition placeholder:text-white/75 focus:border-[#d5ec77]" />
-                  <select name="service" aria-label="Service needed" className="h-14 w-full rounded-xl border border-white/25 bg-white/10 px-4 text-sm text-white outline-none focus:border-[#d5ec77]">{SERVICES.map((service) => <option key={service.title}>{service.title}</option>)}<option>Not sure yet</option></select>
+                  <input name="cityStateZip" required value={cityStateZip} onChange={(event) => setCityStateZip(event.target.value)} placeholder="City, state & ZIP" aria-label="City, state and ZIP" className="h-14 w-full rounded-xl border border-[#cfd7c2] bg-white px-4 text-sm text-[#1d211d] outline-none transition placeholder:text-[#7a8076] focus:border-[#71803d]" />
+                  <select name="service" aria-label="Service needed" className="h-14 w-full rounded-xl border border-[#cfd7c2] bg-white px-4 text-sm text-[#1d211d] outline-none focus:border-[#71803d]">{SERVICES.map((service) => <option key={service.title}>{service.title}</option>)}<option>Not sure yet</option></select>
                 </div>
-                {locationStatus && <p className="flex items-start gap-2 text-xs leading-5 text-[#d5ec77]"><MapPin className="mt-0.5 size-3.5 shrink-0" />{locationStatus}</p>}
+                {locationStatus && <p className="flex items-start gap-2 text-xs leading-5 text-[#71803d]"><MapPin className="mt-0.5 size-3.5 shrink-0" />{locationStatus}</p>}
                 <Button type="submit" className="h-14 w-full rounded-xl bg-[#1d211d] text-sm font-semibold text-white hover:bg-[#30382f]">Request my callback <ChevronRight className="ml-1 size-4" /></Button>
               </form>
             )}
-            <p className="mt-4 text-center text-xs text-white/70">Free estimate · no obligation · same-day callback in active markets</p>
+            <p className="mt-4 text-center text-xs text-[#697568]">Free estimate · no obligation · same-day callback in active markets</p>
           </motion.div>
         </div>
       </section>

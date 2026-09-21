@@ -11,9 +11,12 @@ const SERVICE_DATA = [
 ];
 
 const BEFORE_AFTER = [
-  { location: "Bay Area · coastal home", before: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1000&q=88", after: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=88", title: "Exterior refresh" },
-  { location: "Colorado · storm-ready roofline", before: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1000&q=88", after: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1000&q=88", title: "Roof and siding update" },
-  { location: "Missouri · family home", before: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1000&q=88", after: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=88", title: "Windows and curb appeal" },
+  { location: "Bay Area · Oakland coastal home", before: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1000&q=88", after: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=88", title: "Exterior refresh" },
+  { location: "Colorado · Denver storm-ready roofline", before: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1000&q=88", after: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1000&q=88", title: "Roof and siding update" },
+  { location: "Missouri · Kansas City family home", before: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1000&q=88", after: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=88", title: "Windows and curb appeal" },
+  { location: "Kansas · Wichita exterior", before: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1000&q=88", after: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=88", title: "Siding and storm prep" },
+  { location: "Indiana · Indianapolis home", before: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1000&q=88", after: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=88", title: "Roof, gutters and drainage" },
+  { location: "Wyoming · Cheyenne property", before: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=88", after: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=88", title: "Wind-ready exterior" },
 ];
 
 export default function Services() {
