@@ -113,7 +113,7 @@ export default function Landing() {
           <iframe
             title="LoveMeAfter home improvement video"
             src="https://drive.google.com/file/d/1rWNC8tGHEFP9cH9z2_kug3k87cuasV2k/preview?autoplay=1&mute=1"
-            className="pointer-events-none size-full scale-[1.35] border-0 object-cover"
+            className="pointer-events-none size-full border-0 object-cover"
             allow="autoplay; fullscreen"
             aria-hidden="true"
           />
