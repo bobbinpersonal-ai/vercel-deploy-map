@@ -110,9 +110,13 @@ export default function Landing() {
       <section id="top" className="relative isolate min-h-[730px] bg-transparent text-white">
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,22,16,.95)_0%,rgba(15,22,16,.73)_46%,rgba(15,22,16,.15)_100%),url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=85')] bg-cover bg-[center_65%]" />
         <div className="fixed inset-0 z-0 overflow-hidden bg-[#182019] pointer-events-none">
-          <video className="size-full object-cover object-center" autoPlay muted loop playsInline preload="metadata" poster="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=85" aria-hidden="true">
-            <source src="https://drive.google.com/uc?export=download&id=1rWNC8tGHEFP9cH9z2_kug3k87cuasV2k" type="video/mp4" />
-          </video>
+          <iframe
+            title="LoveMeAfter home improvement video"
+            src="https://drive.google.com/file/d/1rWNC8tGHEFP9cH9z2_kug3k87cuasV2k/preview?autoplay=1&mute=1"
+            className="pointer-events-none size-full scale-[1.35] border-0 object-cover"
+            allow="autoplay; fullscreen"
+            aria-hidden="true"
+          />
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(15,22,16,.95)_0%,rgba(15,22,16,.73)_46%,rgba(15,22,16,.2)_100%)]" />
         </div>
         <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-5 pb-20 pt-36 sm:px-8 lg:grid-cols-[1.08fr_.92fr] lg:px-10 lg:pb-28 lg:pt-48">
