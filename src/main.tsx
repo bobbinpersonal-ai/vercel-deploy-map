@@ -21,6 +21,7 @@ const MarketCareers = lazy(() => import("./pages/MarketCareers.tsx"));
 const ProjectProcess = lazy(() => import("./pages/ProjectProcess.tsx"));
 const ContractorPartners = lazy(() => import("./pages/ContractorPartners.tsx"));
 const ContractorApplications = lazy(() => import("./pages/ContractorApplications.tsx"));
+const MarketContractors = lazy(() => import("./pages/MarketContractors.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
@@ -135,6 +136,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/services" element={<Services />} />
               <Route path="/services/:service" element={<ProjectProcess />} />
               <Route path="/contractors" element={<ContractorPartners />} />
+              <Route path="/contractors/:slug" element={<MarketContractors />} />
               <Route path="/areas" element={<Areas />} />
               <Route path="/areas/:slug" element={<AreaLanding />} />
               <Route path="/areas/:slug/:city" element={<AreaLanding />} />
