@@ -109,7 +109,13 @@ export default function Landing() {
 
       <section id="top" className="relative isolate min-h-[730px] bg-[#182019] text-white">
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,22,16,.95)_0%,rgba(15,22,16,.73)_46%,rgba(15,22,16,.15)_100%),url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=85')] bg-cover bg-[center_65%]" />
-        <div className="mx-auto grid max-w-7xl gap-12 px-5 pb-20 pt-36 sm:px-8 lg:grid-cols-[1.08fr_.92fr] lg:px-10 lg:pb-28 lg:pt-48">
+        <div className="absolute inset-0 -z-[5] overflow-hidden bg-[#182019]">
+          <video className="size-full object-cover object-center" autoPlay muted loop playsInline preload="metadata" poster="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=85" aria-hidden="true">
+            <source src="https://drive.google.com/uc?export=download&id=1rWNC8tGHEFP9cH9z2_kug3k87cuasV2k" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(15,22,16,.95)_0%,rgba(15,22,16,.73)_46%,rgba(15,22,16,.2)_100%)]" />
+        </div>
+        <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-5 pb-20 pt-36 sm:px-8 lg:grid-cols-[1.08fr_.92fr] lg:px-10 lg:pb-28 lg:pt-48">
           <div className="max-w-2xl">
             <div className="mb-7 flex items-center gap-2 text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase"><span className="size-2 rounded-full bg-[#d5ec77]" /> Free estimates · same-day callback</div>
             <h1 className="text-5xl leading-[.96] font-semibold tracking-[-.06em] sm:text-7xl lg:text-[6.4rem]">Make home feel <span className="text-[#d5ec77]">right again.</span></h1>
