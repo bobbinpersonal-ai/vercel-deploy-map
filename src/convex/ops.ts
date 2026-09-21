@@ -26,6 +26,14 @@ export const listLeads = query({
   },
 });
 
+export const listContractorApplications = query({
+  args: {},
+  handler: async (ctx) => {
+    await requireUser(ctx);
+    return await ctx.db.query("contractorApplications").withIndex("by_createdAt").order("desc").take(200);
+  },
+});
+
 export const listContractors = query({
   args: {},
   handler: async (ctx) => {
@@ -97,6 +105,38 @@ export const createEstimateLead = mutation({
       createdAt: now,
       updatedAt: now,
     });
+  },
+});
+
+export const updateLeadAppointment = mutation({
+  args: { id: v.id("leads"), appointmentAt: v.optional(v.number()), appointmentNotes: v.optional(v.string()) },
+  handler: async (ctx, { id, appointmentAt, appointmentNotes }) => {
+    await requireUser(ctx);
+    await ctx.db.patch(id, { appointmentAt, appointmentNotes, updatedAt: Date.now() });
+  },
+});
+
+export const createContractorApplication = mutation({
+  args: {
+    name: v.string(),
+    email: v.string(),
+    phone: v.string(),
+    company: v.string(),
+    city: v.string(),
+    trade: v.string(),
+    weeklyCapacity: v.number(),
+    notes: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.insert("contractorApplications", { ...args, status: "new", createdAt: Date.now() });
+  },
+});
+
+export const updateContractorApplicationStatus = mutation({
+  args: { id: v.id("contractorApplications"), status: v.union(v.literal("new"), v.literal("reviewing"), v.literal("approved"), v.literal("declined")) },
+  handler: async (ctx, { id, status }) => {
+    await requireUser(ctx);
+    await ctx.db.patch(id, { status });
   },
 });
 

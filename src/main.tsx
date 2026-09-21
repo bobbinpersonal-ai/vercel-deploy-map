@@ -20,6 +20,7 @@ const AreaLanding = lazy(() => import("./pages/AreaLanding.tsx"));
 const MarketCareers = lazy(() => import("./pages/MarketCareers.tsx"));
 const ProjectProcess = lazy(() => import("./pages/ProjectProcess.tsx"));
 const ContractorPartners = lazy(() => import("./pages/ContractorPartners.tsx"));
+const ContractorApplications = lazy(() => import("./pages/ContractorApplications.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
@@ -170,6 +171,17 @@ createRoot(document.getElementById("root")!).render(
                     description="The telemarketing queue is for internal callers and appointment setters."
                   >
                     <CallLists />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/admin/contractors"
+                element={
+                  <RequireAuth
+                    title="Sign in to review contractors"
+                    description="Review partner applications and build the installation network."
+                  >
+                    <ContractorApplications />
                   </RequireAuth>
                 }
               />

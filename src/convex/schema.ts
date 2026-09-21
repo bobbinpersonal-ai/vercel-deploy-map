@@ -113,6 +113,8 @@ const schema = defineSchema(
       city: v.string(),
       address: v.optional(v.string()),
       service: v.string(),
+      appointmentAt: v.optional(v.number()),
+      appointmentNotes: v.optional(v.string()),
       source: leadSourceValidator,
       stage: leadStageValidator,
       estimatedValue: v.number(),
@@ -123,6 +125,19 @@ const schema = defineSchema(
     })
       .index("by_stage", ["stage"])
       .index("by_createdAt", ["createdAt"]),
+
+    contractorApplications: defineTable({
+      name: v.string(),
+      email: v.string(),
+      phone: v.string(),
+      company: v.string(),
+      city: v.string(),
+      trade: v.string(),
+      weeklyCapacity: v.number(),
+      notes: v.optional(v.string()),
+      status: v.union(v.literal("new"), v.literal("reviewing"), v.literal("approved"), v.literal("declined")),
+      createdAt: v.number(),
+    }).index("by_status", ["status"]).index("by_createdAt", ["createdAt"]),
 
     // Vetted local crew partners that fulfill scope on site.
     contractors: defineTable({
