@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowUpRight, BadgeCheck, CalendarCheck, Check, ClipboardCheck, Heart, Phone, ShieldCheck, Users, Wrench } from "lucide-react";
-import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
+import { clip, usePageMeta } from "@/components/PageMeta";
 
 type Role = {
   eyebrow: string;
@@ -21,7 +21,7 @@ const ROLES: Record<string, Role> = {
     eyebrow: "In-home sales · independent opportunity",
     title: "Turn a homeowner question into a confident next step.",
     intro: "Run confirmed appointments, inspect the project, explain the options, and help homeowners decide what makes sense for their home, budget, and timing.",
-    image: "https://images.unsplash.com/photo-1503387762-59230de8b0d6?auto=format&fit=crop&w=1800&q=90",
+    image: "https://images.pexels.com/photos/38510717/pexels-photo-38510717.jpeg?auto=compress&cs=tinysrgb&w=1800",
     accent: "In-home sales",
     stats: [["2–3", "potential appointments / day"], ["$2.5k+", "illustrative deal upside"], ["Local", "territory ownership"]],
     benefits: [[CalendarCheck, "Confirmed conversations", "Spend more time consulting with homeowners and less time wondering where the next appointment will come from."], [ClipboardCheck, "A real scope", "Use inspection notes, photos, service knowledge, and financing education to make the recommendation useful."], [ShieldCheck, "A clean handoff", "Coordinate a checked crew with the information they need and build trust after the sale, not just before it."]],
@@ -106,9 +106,10 @@ export default function CareerRole() {
   const navigate = useNavigate();
   const content = role ? ROLES[role] : undefined;
 
-  useEffect(() => {
-    if (content) document.title = `${content.accent} | LoveMeAfter`;
-  }, [content]);
+  usePageMeta(
+    content ? `${content.accent} | LoveMeAfter` : "Careers | LoveMeAfter",
+    content ? clip(content.intro) : undefined,
+  );
 
   if (!content) {
     return <main className="flex min-h-screen items-center justify-center bg-[#f7f5f0] p-6 text-center"><div><p className="text-3xl font-semibold">Role not found</p><Button onClick={() => navigate("/careers")} className="mt-5 rounded-full">View all careers</Button></div></main>;

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowUpRight, Check, ChevronRight, Fence, House, Phone, ShieldCheck, Sparkles } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
+import { usePageMeta } from "@/components/PageMeta";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { ExpertTopic } from "@/components/ExpertTopic";
@@ -78,7 +79,10 @@ const REFERENCE_PROJECTS = [
 
 export default function Services() {
   const navigate = useNavigate();
-  useEffect(() => { const previous = document.title; document.title = "All Home Improvement Services | LoveMeAfter"; return () => { document.title = previous; }; }, []);
+  usePageMeta(
+    "All Home Improvement Services | LoveMeAfter",
+    "Every project we coordinate — roofing, siding, windows, doors, gutters, paving, fencing, concrete, kitchens, baths, HVAC, plumbing, electrical and solar.",
+  );
 
   return (
     <main className="min-h-screen bg-[#f7f5f0] text-[#1d211d]">

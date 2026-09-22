@@ -5,6 +5,7 @@ import { LogoMark } from "@/components/Logo";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ExpertTopic } from "@/components/ExpertTopic";
+import { usePageMeta } from "@/components/PageMeta";
 
 const BENEFITS = [
   [CalendarDays, "A steadier calendar", "Get matched with residential opportunities that fit your trade, geography, crew size, and actual capacity."],
@@ -33,6 +34,11 @@ export default function ContractorPartners() {
   const [submitted, setSubmitted] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  usePageMeta(
+    "Contractor & Installation Partners | LoveMeAfter",
+    "Join the LoveMeAfter network: homeowner demand in 17 states, clear written scopes, protected jobsites and paid milestones for vetted residential crews.",
+  );
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowUpRight, Check, MapPin, Phone } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
+import { usePageMeta } from "@/components/PageMeta";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import usaMap from "@svg-maps/usa";
@@ -14,7 +15,10 @@ export default function Areas() {
   const navigate = useNavigate();
   const [selectedSlug, setSelectedSlug] = useState(MARKETS[0].slug);
   const selectedMarket = useMemo(() => MARKETS.find((market) => market.slug === selectedSlug) ?? MARKETS[0], [selectedSlug]);
-  useEffect(() => { const previous = document.title; document.title = "Service Areas | LoveMeAfter"; return () => { document.title = previous; }; }, []);
+  usePageMeta(
+    "Service Areas | LoveMeAfter",
+    "Vetted home improvement crews in 17 states and 68 cities — from roofing and siding to kitchens, paving, fencing and solar.",
+  );
 
   return (
     <main className="min-h-screen bg-[#f7f5f0] text-[#1d211d]">

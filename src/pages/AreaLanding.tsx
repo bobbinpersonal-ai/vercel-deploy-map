@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowUpRight, Check, MapPin, Phone, ShieldCheck } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
+import { clip, usePageMeta } from "@/components/PageMeta";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { getMarket } from "@/data/markets";
@@ -56,7 +57,10 @@ export default function AreaLanding() {
   const market = getMarket(slug);
   const selectedCity = market?.cities.find((city) => city.toLowerCase().replace(/[^a-z0-9]+/g, "-") === cityParam) ?? market?.city ?? "";
   const navigate = useNavigate();
-  useEffect(() => { if (market) document.title = `${selectedCity}, ${market.state} Home Improvement | LoveMeAfter`; }, [market, selectedCity]);
+  usePageMeta(
+    market ? `${selectedCity}, ${market.state} Home Improvement | LoveMeAfter` : "Service areas | LoveMeAfter",
+    market ? clip(market.intro) : undefined,
+  );
   if (!market) return <div className="flex min-h-screen items-center justify-center bg-[#f7f5f0] p-6 text-center"><div><p className="font-serif text-3xl">Market not found</p><Button onClick={() => navigate("/areas")} className="mt-5 rounded-full">View service areas</Button></div></div>;
   const projectImages = [market.image, market.detailImage, market.workImage, market.image];
   const catalog = Array.from({ length: 8 }, (_, index) => ({ service: market.services[index % market.services.length], before: projectImages[index % projectImages.length], after: projectImages[(index + 1) % projectImages.length], label: `${selectedCity} ${market.services[index % market.services.length]} project ${Math.floor(index / market.services.length) + 1}` }));

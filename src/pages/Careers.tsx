@@ -2,6 +2,7 @@ import { ArrowLeft, ArrowUpRight, Heart, HardHat, Handshake, Home, MapPin, Phone
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { ExpertTopic } from "@/components/ExpertTopic";
+import { usePageMeta } from "@/components/PageMeta";
 
 const ROLES = [
   { href: "/careers/roles/outside-sales", label: "Outside sales", kicker: "Field sales · territory growth", title: "Build relationships in the neighborhoods you serve.", copy: "Meet homeowners and local contacts in the field, develop a territory, and move qualified opportunities toward a clear next step.", icon: MapPin, image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=90" },
@@ -33,7 +34,10 @@ const VEHICLE_IMAGES = [
 
 export default function Careers() {
   const navigate = useNavigate();
-  useEffect(() => { const previous = document.title; document.title = "Careers & Partner Opportunities | LoveMeAfter"; return () => { document.title = previous; }; }, []);
+  usePageMeta(
+    "Careers & Partner Opportunities | LoveMeAfter",
+    "Outside sales, inside sales, installer and B2B partnership opportunities. Real earnings math, clear expectations and a defined growth path.",
+  );
 
   return <main className="min-h-screen bg-[#f7f5f0] text-[#1d211d]"><header className="bg-[#182019] text-white"><nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-10"><Link to="/" className="flex items-center gap-3 font-semibold"><span className="flex size-10 items-center justify-center rounded-full bg-black text-white"><Heart className="size-5 fill-current" /></span>LoveMeAfter</Link><div className="flex items-center gap-4"><a href="tel:+14244260760" className="hidden items-center gap-2 text-sm text-white/75 sm:flex"><Phone className="size-4" /> 424 426 0760</a><button onClick={() => navigate("/")} className="flex items-center gap-2 rounded-full px-4 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white"><ArrowLeft className="size-4" /> Back home</button></div></nav></header>
     <section className="bg-[#182019] text-white"><div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[1fr_.8fr] lg:items-center lg:px-10 lg:py-28"><div><p className="text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase">Careers & partner opportunities</p><h1 className="mt-5 max-w-3xl text-5xl font-semibold leading-[.95] tracking-[-.06em] sm:text-7xl">There is more than one way to build with us.</h1><p className="mt-7 max-w-xl text-lg leading-8 text-white/70">Whether you install, sell, set appointments, knock doors, or build referral relationships, LoveMeAfter is creating a clearer path for people who want to do meaningful work around the home.</p><div className="mt-9 flex flex-wrap gap-3"><a href="mailto:hello@lovemeafter.com?subject=LoveMeAfter career conversation" className="flex h-14 items-center rounded-full bg-[#d5ec77] px-7 font-semibold text-[#1d211d] hover:bg-[#e1f895]">Start a conversation <ArrowUpRight className="ml-2 size-5" /></a><a href="#roles" className="flex h-14 items-center rounded-full border border-white/25 px-6 text-sm hover:bg-white/10">Explore the roles</a></div></div><div className="overflow-hidden rounded-3xl bg-[#263227]"><div className="h-64 bg-[url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=90')] bg-cover bg-center" /><div className="grid grid-cols-3 gap-3 p-6 text-center"><div><p className="text-2xl font-semibold">Field</p><p className="mt-1 text-xs text-white/55">hands-on work</p></div><div><p className="text-2xl font-semibold">Local</p><p className="mt-1 text-xs text-white/55">relationships</p></div><div><p className="text-2xl font-semibold">Room</p><p className="mt-1 text-xs text-white/55">to grow</p></div></div></div></div></section>

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowUpRight, AlertTriangle, Phone, ShieldCheck } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
+import { usePageMeta } from "@/components/PageMeta";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { CostDonut, DecisionFlow, PhaseTimeline, RoiBarChart, SeverityMeter, TradeShareChart } from "@/components/GeneratedGraphics";
@@ -111,13 +112,10 @@ const CONDITIONS: {
 
 export default function Conditions() {
   const navigate = useNavigate();
-  useEffect(() => {
-    const previous = document.title;
-    document.title = "Field Conditions & Damage Library | LoveMeAfter";
-    return () => {
-      document.title = previous;
-    };
-  }, []);
+  usePageMeta(
+    "Field Conditions & Damage Library | LoveMeAfter",
+    "Real damage conditions — roof leaks, water intrusion, rot, mold, foundation movement, hail and failed prior work — and what each one costs if you wait.",
+  );
 
   const mosaic = DAMAGE_PHOTOS.slice(0, 12);
   const hero = DAMAGE_PHOTOS[1];

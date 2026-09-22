@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowUpRight, Handshake, Phone } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
+import { usePageMeta } from "@/components/PageMeta";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { CostDonut, PhaseTimeline, RoiBarChart, TradeShareChart } from "@/components/GeneratedGraphics";
@@ -183,13 +184,10 @@ const TRADES: {
 
 export default function Trades() {
   const navigate = useNavigate();
-  useEffect(() => {
-    const previous = document.title;
-    document.title = "The Trades We Coordinate | LoveMeAfter";
-    return () => {
-      document.title = previous;
-    };
-  }, []);
+  usePageMeta(
+    "The Trades We Coordinate | LoveMeAfter",
+    "The 18 trades behind a home improvement project: what each one does, when you need them, and the question to ask before you hire.",
+  );
 
   const siteBand = JOBSITE_PHOTOS.slice(12, 20);
   const crewBand = WORKER_PHOTOS.slice(52, 58);

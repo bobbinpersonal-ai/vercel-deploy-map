@@ -1,17 +1,17 @@
 {
-  "name": "freebuff.com application",
-  "short_name": "freebuff.com",
-  "description": "freebuff.com application",
+  "name": "LoveMeAfter — Home Improvement",
+  "short_name": "LoveMeAfter",
+  "description": "Home improvement without the runaround: roofing, siding, windows, gutters, paint, paving, fencing and full interior work.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#f7f5f0",
+  "theme_color": "#1d211d",
   "icons": [
     {
-      "src": "/logo.png",
+      "src": "/logo.svg",
       "sizes": "any",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ]
 }
