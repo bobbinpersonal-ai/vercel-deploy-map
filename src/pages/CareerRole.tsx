@@ -29,6 +29,18 @@ const ROLES: Record<string, Role> = {
     steps: [["01", "Train on the work", "Learn the project categories, inspection basics, scope language, financing disclosures, and CRM workflow."], ["02", "Run the appointment", "Meet the homeowner, understand the problem, inspect the conditions, and explain practical paths forward."], ["03", "Recommend clearly", "Present a written scope and price, answer questions, and let the homeowner decide without artificial urgency."], ["04", "Own the handoff", "Coordinate the next step, communicate with the crew, and build repeat and referral opportunity through a strong closeout."]],
     subject: "In-home sales application",
   },
+  "outside-sales": {
+    eyebrow: "Outside sales · territory growth",
+    title: "Build the local relationships that move projects forward.",
+    intro: "Outside sales is the field role between a market and a qualified opportunity: meet homeowners and referral partners, understand the need, and create a professional next step for the sales and operations team.",
+    image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=90",
+    accent: "Outside sales",
+    stats: [["Local", "territory ownership"], ["Field", "relationship building"], ["Clear", "handoff process"]],
+    benefits: [[Users, "Build a territory", "Develop real relationships with homeowners, property professionals, neighborhood contacts, and local businesses."], [CalendarCheck, "Create qualified opportunities", "Ask useful questions about the home, project, timing, and decision makers before handing the conversation to the right next step."], [ClipboardCheck, "Protect the handoff", "Accurate notes, photos, expectations, and source tracking help the inside team, in-home rep, and crew deliver on the promise." ]],
+    fit: ["You enjoy being out in the community and starting respectful conversations", "You can manage a route, follow up consistently, and document every opportunity", "You understand that trust and qualification matter more than collecting weak leads", "You want a path toward senior outside sales, market lead, partnership specialist, or in-home sales"],
+    steps: [["01", "Learn the market", "Understand the local housing stock, project categories, service areas, and the homeowner problems we solve."], ["02", "Work the territory", "Visit neighborhoods, build referral relationships, and create conversations without manufactured urgency."], ["03", "Qualify and hand off", "Capture the address, project, timing, decision makers, photos, and next step so the opportunity is useful."], ["04", "Grow the book", "Track conversations, appointments, completed projects, referrals, and follow-through as your territory develops."]],
+    subject: "Outside sales application",
+  },
   installers: {
     eyebrow: "Installers · field opportunity",
     title: "Build great work into the homes that need it.",
