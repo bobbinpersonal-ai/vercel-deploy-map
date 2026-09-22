@@ -28,8 +28,7 @@ const ROLES: Record<string, Role> = {
     fit: ["You can listen first, explain clearly, and ask for the business without pressure", "You are comfortable in a homeowner’s space and can document what you observe", "You want an independent, performance-based opportunity with expectations explained up front", "You understand that long-term earnings come from fit, follow-through, and completed outcomes"],
     steps: [["01", "Train on the work", "Learn the project categories, inspection basics, scope language, financing disclosures, and CRM workflow."], ["02", "Run the appointment", "Meet the homeowner, understand the problem, inspect the conditions, and explain practical paths forward."], ["03", "Recommend clearly", "Present a written scope and price, answer questions, and let the homeowner decide without artificial urgency."], ["04", "Own the handoff", "Coordinate the next step, communicate with the crew, and build repeat and referral opportunity through a strong closeout."]],
     subject: "In-home sales application",
-  },
-  "outside-sales": {
+  },  "outside-sales": {
     eyebrow: "Outside sales · territory growth",
     title: "Build the local relationships that move projects forward.",
     intro: "Outside sales is the field role between a market and a qualified opportunity: meet homeowners and referral partners, understand the need, and create a professional next step for the sales and operations team.",
@@ -78,28 +77,27 @@ const ROLES: Record<string, Role> = {
     subject: "Door knocker application",
   },
   "inside-sales-dispatch": {
-    eyebrow: "Remote operations · inside sales & dispatch",
-    title: "Keep the conversation, calendar, and crew connected.",
+    eyebrow: "Inside sales · phone and scheduling",
+    title: "Turn a good conversation into a great appointment.",
     intro: "Help homeowners take the next step, coordinate qualified appointments, and keep field representatives and installation partners informed from a comfortable remote workspace.",
     image: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=1800&q=90",
-    accent: "Inside sales & dispatch",
+    accent: "Inside sales",
     stats: [["3–4", "quality appointments / day"], ["Human", "calls and follow-up"], ["Remote", "operations role"]],
     benefits: [[Phone, "Human conversations", "Talk with real people, understand what they need, and follow up clearly without pressure or automated cold scripts."], [CalendarCheck, "Own the handoff", "Schedule qualified appointments, confirm the details, and keep the field representative informed before the visit."], [BadgeCheck, "See the outcome", "Our CRM is designed to connect appointment, dispatch, project, and closeout activity so you spend less time on duplicate admin work."]],
     fit: ["You communicate clearly in English and can build trust over the phone", "You are organized enough to manage follow-up, appointment details, and changing schedules", "You can work toward a target of approximately 3–4 quality appointments per day without sacrificing fit", "You are comfortable coordinating across time zones, field reps, installation partners, and homeowners"],
     steps: [["01", "Learn the workflow", "Get familiar with services, qualification standards, appointment notes, and dispatch expectations."], ["02", "Talk with homeowners", "Use a human, respectful approach to understand interest and schedule the right next step."], ["03", "Coordinate the field", "Confirm the visit, share accurate context, and keep field representatives updated."], ["04", "Grow with results", "Compensation may include hourly or project-based pay, appointment incentives, close bonuses, and documented spiffs depending on role and location." ]],
     subject: "Inside sales and dispatch application",
-  },
-  partnerships: {
-    eyebrow: "Partnership specialists · business development",
-    title: "Build relationships that keep working.",
+  },  partnerships: {
+    eyebrow: "B2B partnerships · business development",
+    title: "Build referral relationships that keep working.",
     intro: "Create local referral partnerships with businesses that already serve homeowners, while helping our phone team turn inbound opportunities into well-run appointments.",
     image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1800&q=90",
-    accent: "Partnership specialists",
+    accent: "B2B partnerships",
     stats: [["Build", "a referral book"], ["Earn", "on qualified outcomes"], ["Support", "appointment setting"]],
     benefits: [[Users, "Build a book of business", "Develop durable relationships with real estate professionals, property managers, insurance contacts, and complementary local businesses."], [BadgeCheck, "Recurring referral upside", "Eligible referral arrangements may provide a kickback or bonus on qualified, completed business under a documented partner agreement."], [Phone, "Own the follow-through", "Partnership outreach and phone appointment setting work together, so you can develop relationships and help the calendar stay full."]],
     fit: ["You are organized, personable, and comfortable asking a business for an introduction", "You can explain our services honestly without promising outcomes we cannot control", "You will track contacts, follow-ups, referral source, appointment status, and next steps", "You enjoy both relationship-building and structured phone conversations"],
     steps: [["01", "Map your network", "Identify businesses and professionals who already have homeowner trust."], ["02", "Make the introduction", "Present a simple, compliant referral partnership and document the agreed terms."], ["03", "Set and support appointments", "Work phone leads and partner referrals into a clean scheduling process."], ["04", "Grow the book", "Track completed outcomes, nurture partners, and earn eligible bonuses or referral compensation under the partner plan."]],
-    subject: "Partnership specialist application",
+    subject: "B2B partnerships application",
   },
 };
 
