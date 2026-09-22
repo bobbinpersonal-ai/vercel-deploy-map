@@ -123,7 +123,7 @@ export default function Landing() {
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,22,16,.95)_0%,rgba(15,22,16,.73)_46%,rgba(15,22,16,.15)_100%),url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=85')] bg-cover bg-[center_65%]" />
         <div className="fixed inset-0 z-0 overflow-hidden bg-[#182019] pointer-events-none">
           <video
-            className="pointer-events-none size-full object-cover object-center"
+            className="pointer-events-none hidden size-full object-cover object-center md:block"
             autoPlay
             muted
             loop
