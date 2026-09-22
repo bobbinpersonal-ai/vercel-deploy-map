@@ -24,6 +24,7 @@ const MarketContractors = lazy(() => import("./pages/MarketContractors.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const Workspace = lazy(() => import("./pages/Workspace.tsx"));
+const InternalPreview = lazy(() => import("./pages/InternalPreview.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 // Simple loading fallback for route transitions
@@ -124,6 +125,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
             <Route path="/admin" element={<RequireAuth title="Sign in to manage LoveMeAfter" description="Leads, call lists, appointments, crews, and jobs live in the internal admin console."><Dashboard /></RequireAuth>} />
             <Route path="/admin/workspace" element={<RequireAuth title="Sign in to use the workspace" description="SOPs, projects, tasks, job posts, and internal work live here."><Workspace /></RequireAuth>} />
+            <Route path="/admin/internal-preview" element={<InternalPreview />} />
             <Route path="/admin/call-lists" element={<RequireAuth title="Sign in to manage call lists" description="The telemarketing queue is for internal callers and appointment setters."><CallLists /></RequireAuth>} />
             <Route path="/admin/contractors" element={<RequireAuth title="Sign in to review contractors" description="Review partner applications and build the installation network."><ContractorApplications /></RequireAuth>} />
             <Route path="*" element={<NotFound />} />
