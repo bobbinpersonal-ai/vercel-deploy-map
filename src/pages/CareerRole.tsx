@@ -17,6 +17,18 @@ type Role = {
 };
 
 const ROLES: Record<string, Role> = {
+  "in-home-sales": {
+    eyebrow: "In-home sales · independent opportunity",
+    title: "Turn a homeowner question into a confident next step.",
+    intro: "Run confirmed appointments, inspect the project, explain the options, and help homeowners decide what makes sense for their home, budget, and timing.",
+    image: "https://images.unsplash.com/photo-1503387762-59230de8b0d6?auto=format&fit=crop&w=1800&q=90",
+    accent: "In-home sales",
+    stats: [["2–3", "potential appointments / day"], ["$2.5k+", "illustrative deal upside"], ["Local", "territory ownership"]],
+    benefits: [[CalendarCheck, "Confirmed conversations", "Spend more time consulting with homeowners and less time wondering where the next appointment will come from."], [ClipboardCheck, "A real scope", "Use inspection notes, photos, service knowledge, and financing education to make the recommendation useful."], [ShieldCheck, "A clean handoff", "Coordinate a checked crew with the information they need and build trust after the sale, not just before it."]],
+    fit: ["You can listen first, explain clearly, and ask for the business without pressure", "You are comfortable in a homeowner’s space and can document what you observe", "You want an independent, performance-based opportunity with expectations explained up front", "You understand that long-term earnings come from fit, follow-through, and completed outcomes"],
+    steps: [["01", "Train on the work", "Learn the project categories, inspection basics, scope language, financing disclosures, and CRM workflow."], ["02", "Run the appointment", "Meet the homeowner, understand the problem, inspect the conditions, and explain practical paths forward."], ["03", "Recommend clearly", "Present a written scope and price, answer questions, and let the homeowner decide without artificial urgency."], ["04", "Own the handoff", "Coordinate the next step, communicate with the crew, and build repeat and referral opportunity through a strong closeout."]],
+    subject: "In-home sales application",
+  },
   installers: {
     eyebrow: "Installers · field opportunity",
     title: "Build great work into the homes that need it.",
