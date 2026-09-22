@@ -54,6 +54,7 @@ export default function Landing() {
   const [address, setAddress] = useState("");
   const [cityStateZip, setCityStateZip] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const scrollToEstimate = () => document.getElementById("estimate-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   const goToEstimate = () => scrollToEstimate();
   const locateMe = () => {
@@ -121,17 +122,24 @@ export default function Landing() {
 
       <section id="top" className="relative isolate min-h-[730px] bg-transparent text-white">
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,22,16,.95)_0%,rgba(15,22,16,.73)_46%,rgba(15,22,16,.15)_100%),url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=85')] bg-cover bg-[center_65%]" />
-        <div className="fixed inset-0 z-0 overflow-hidden bg-[#182019] pointer-events-none">
+        <div className={`fixed inset-0 z-0 overflow-hidden bg-[#182019] pointer-events-none transition-opacity duration-500 ${videoPlaying ? "opacity-100" : "opacity-0"}`}>
           <video
-            className="pointer-events-none hidden size-full object-cover object-center md:block"
+            className="pointer-events-none size-full object-cover object-center"
             autoPlay
             muted
             loop
             playsInline
+            controls={false}
             preload="auto"
             poster="https://images.unsplash.com/photo-1503387762-59230de8b0d6?auto=format&fit=crop&w=1800&q=90"
             disablePictureInPicture
             aria-label="LoveMeAfter home improvement project video"
+            onCanPlay={(event) => {
+              event.currentTarget.muted = true;
+              void event.currentTarget.play().catch(() => undefined);
+            }}
+            onPlay={() => setVideoPlaying(true)}
+            onPause={() => setVideoPlaying(false)}
           >
             <source src="/copy_5E397E73-24D9-4597-8204-60EA4CE89EDD.mp4" type="video/mp4" />
           </video>
