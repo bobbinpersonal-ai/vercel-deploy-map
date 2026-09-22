@@ -8,6 +8,7 @@ import { getGuide, relatedGuides } from "@/data/project-guides";
 import { CATEGORY_PHOTOS, px } from "@/data/photos";
 import { PhaseTimeline, SeverityMeter } from "@/components/GeneratedGraphics";
 import { FinancingShowcase } from "@/components/FinancingShowcase";
+import { ProjectVideo } from "@/components/ProjectVideo";
 
 /** Per-category field risk and phasing, so guides read differently by trade. */
 const CATEGORY_INSIGHT: Record<
@@ -186,6 +187,8 @@ export default function ProjectProcess() {
           </div>
         </div>
       </section>
+
+      <ProjectVideo category={project.category} />
 
       <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
         <div className="grid gap-5 md:grid-cols-2">
