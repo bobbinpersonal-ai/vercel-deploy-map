@@ -3,7 +3,95 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, Check, CircleDollarSign, House, Ph
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { getGuide, relatedGuides } from "@/data/project-guides";
-import { PHOTO_CREDIT, PHOTO_CREDIT_URL } from "@/data/photos";
+import { CATEGORY_PHOTOS, PHOTO_CREDIT, PHOTO_CREDIT_URL, px, pxPage } from "@/data/photos";
+import { PhaseTimeline, SeverityMeter } from "@/components/GeneratedGraphics";
+
+/** Per-category field risk and phasing, so guides read differently by trade. */
+const CATEGORY_INSIGHT: Record<
+  string,
+  { severity: number; severityLabel: string; severityCaption: string; phases: { label: string; start: number; duration: number }[] }
+> = {
+  "Exterior & protection": {
+    severity: 74,
+    severityLabel: "Moisture exposure risk if deferred",
+    severityCaption: "Envelope work protects everything inside it. A missed flashing detail can undo an entire interior remodel.",
+    phases: [
+      { label: "Inspect & document", start: 0, duration: 2 },
+      { label: "Permits & material", start: 2, duration: 5 },
+      { label: "Remove existing", start: 7, duration: 3 },
+      { label: "Repair substrate", start: 10, duration: 4 },
+      { label: "Install new material", start: 14, duration: 6 },
+      { label: "Flashing & detail", start: 20, duration: 3 },
+      { label: "Cleanup & walkthrough", start: 23, duration: 2 },
+    ],
+  },
+  "Kitchens, baths & interiors": {
+    severity: 58,
+    severityLabel: "Disruption and rework risk",
+    severityCaption: "Interior work is mostly sequencing. Trade order and material lead times decide the finish quality.",
+    phases: [
+      { label: "Design & permits", start: 0, duration: 14 },
+      { label: "Demolition", start: 14, duration: 3 },
+      { label: "Rough-in (MEP)", start: 17, duration: 6 },
+      { label: "Inspection", start: 23, duration: 2 },
+      { label: "Drywall & paint", start: 25, duration: 6 },
+      { label: "Cabinets & counters", start: 31, duration: 10 },
+      { label: "Tile & trim", start: 41, duration: 6 },
+      { label: "Punch list", start: 47, duration: 4 },
+    ],
+  },
+  "Systems & comfort": {
+    severity: 66,
+    severityLabel: "Safety and performance risk",
+    severityCaption: "Mechanical work is permitted, tested, and inspected. Sizing errors show up as comfort complaints within a season.",
+    phases: [
+      { label: "Diagnose & size", start: 0, duration: 2 },
+      { label: "Permits", start: 2, duration: 5 },
+      { label: "Equipment lead time", start: 7, duration: 8 },
+      { label: "Install", start: 15, duration: 3 },
+      { label: "Commission & test", start: 18, duration: 2 },
+      { label: "Seasonal follow-up", start: 20, duration: 14 },
+    ],
+  },
+  "Outdoor spaces & property": {
+    severity: 52,
+    severityLabel: "Water and ground movement risk",
+    severityCaption: "Ground work fails from the bottom up. Base preparation and drainage decide whether the finish lasts.",
+    phases: [
+      { label: "Layout & permits", start: 0, duration: 5 },
+      { label: "Excavate & prepare", start: 5, duration: 4 },
+      { label: "Base & drainage", start: 9, duration: 5 },
+      { label: "Install or pour", start: 14, duration: 4 },
+      { label: "Cure or finish", start: 18, duration: 7 },
+      { label: "Restore & clean", start: 25, duration: 3 },
+    ],
+  },
+  "Specialty projects": {
+    severity: 45,
+    severityLabel: "Documentation and compliance risk",
+    severityCaption: "Specialty work lives or dies on paperwork, evidence, and inspection. Get it in writing before work starts.",
+    phases: [
+      { label: "Assess & document", start: 0, duration: 3 },
+      { label: "Scope & approve", start: 3, duration: 4 },
+      { label: "Schedule crews", start: 7, duration: 5 },
+      { label: "Execute work", start: 12, duration: 10 },
+      { label: "Inspect & close out", start: 22, duration: 3 },
+    ],
+  },
+};
+
+const DEFAULT_INSIGHT = {
+  severity: 55,
+  severityLabel: "Rework risk when scoped loosely",
+  severityCaption: "Every trade has a failure mode. Documenting the existing condition is what prevents a surprise change order.",
+  phases: [
+    { label: "Assess", start: 0, duration: 2 },
+    { label: "Scope & approve", start: 2, duration: 3 },
+    { label: "Schedule crews", start: 5, duration: 3 },
+    { label: "Execute", start: 8, duration: 8 },
+    { label: "Close out", start: 16, duration: 3 },
+  ],
+};
 
 const STEPS = [
   ["01", "Tell us what needs doing", "A homeowner request, referral, call, or appointment starts the conversation."],
@@ -41,6 +129,8 @@ export default function ProjectProcess() {
 
   const related = relatedGuides(project, 3);
   const products = project.products ?? [];
+  const insight = CATEGORY_INSIGHT[project.category] ?? DEFAULT_INSIGHT;
+  const fieldPhotos = CATEGORY_PHOTOS[project.category] ?? CATEGORY_PHOTOS["Home improvement"];
 
   return (
     <main className="min-h-screen bg-[#f7f5f0] text-[#1d211d]">
@@ -148,6 +238,49 @@ export default function ProjectProcess() {
             </div>
           </div>
         )}
+
+        <div className="mt-16 grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,.95fr)] lg:items-start">
+          <div>
+            <p className="text-xs font-semibold tracking-[.18em] text-[#b4543a] uppercase">Before the work looks good</p>
+            <h2 className="mt-4 text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-5xl">
+              What we document in the field.
+            </h2>
+            <p className="mt-5 max-w-xl text-base leading-7 text-[#62695f]">
+              The condition behind the wall, under the shingle, or below the slab is what decides the real
+              scope. We photograph it, label it, and put it in the estimate so nothing is a surprise.
+            </p>
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              {fieldPhotos.map(([kind, label, id]) => (
+                <figure key={label} className="group overflow-hidden rounded-2xl border border-[#1d211d]/10 bg-white">
+                  <div
+                    className="h-40 bg-cover bg-center transition duration-700 group-hover:scale-[1.04]"
+                    style={{ backgroundImage: `url(${px(id, 700)})` }}
+                  />
+                  <figcaption className="p-3">
+                    <p className="text-[10px] font-semibold tracking-[.14em] text-[#9aa095] uppercase">{kind}</p>
+                    <p className="mt-1 text-xs font-semibold leading-5">{label}</p>
+                    <a
+                      href={pxPage(id)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-2 inline-block text-[10px] font-semibold text-[#71803d] underline underline-offset-2"
+                    >
+                      Pexels
+                    </a>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+          <div className="grid gap-4">
+            <SeverityMeter
+              value={insight.severity}
+              label={insight.severityLabel}
+              caption={insight.severityCaption}
+            />
+            <PhaseTimeline title="How this project is phased" phases={insight.phases} />
+          </div>
+        </div>
 
         <div className="mt-16 grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
           <div>
@@ -261,6 +394,35 @@ export default function ProjectProcess() {
                 </p>
               </details>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-[#1d211d]/10 bg-[#182019] text-white">
+        <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 sm:px-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:px-10">
+          <div>
+            <p className="text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase">One scope, many trades</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-[-.05em] sm:text-4xl">
+              This project is coordinated, not handed off.
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-white/70">
+              LoveMeAfter subcontracts every trade under one written scope. See the full network, or read the
+              field conditions library to learn what failing work actually looks like.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              to="/trades"
+              className="flex h-12 items-center rounded-full bg-[#d5ec77] px-6 text-sm font-semibold text-[#182019] hover:bg-[#e1f895]"
+            >
+              Trade network <ArrowUpRight className="ml-2 size-4" />
+            </Link>
+            <Link
+              to="/conditions"
+              className="flex h-12 items-center rounded-full border border-white/25 px-6 text-sm font-semibold hover:bg-white/10"
+            >
+              Field conditions
+            </Link>
           </div>
         </div>
       </section>

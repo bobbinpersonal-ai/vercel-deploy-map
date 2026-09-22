@@ -18,6 +18,8 @@ const CallLists = lazy(() => import("./pages/CallLists.tsx"));
 const AreaLanding = lazy(() => import("./pages/AreaLanding.tsx"));
 const MarketCareers = lazy(() => import("./pages/MarketCareers.tsx"));
 const ProjectProcess = lazy(() => import("./pages/ProjectProcess.tsx"));
+const Conditions = lazy(() => import("./pages/Conditions.tsx"));
+const Trades = lazy(() => import("./pages/Trades.tsx"));
 const ContractorPartners = lazy(() => import("./pages/ContractorPartners.tsx"));
 const ContractorApplications = lazy(() => import("./pages/ContractorApplications.tsx"));
 const MarketContractors = lazy(() => import("./pages/MarketContractors.tsx"));
@@ -112,6 +114,8 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/careers/:slug" element={<MarketCareers />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/:service" element={<ProjectProcess />} />
+            <Route path="/conditions" element={<Conditions />} />
+            <Route path="/trades" element={<Trades />} />
             <Route path="/contractors" element={<ContractorPartners />} />
             <Route path="/contractors/:slug" element={<MarketContractors />} />
             <Route path="/areas" element={<Areas />} />
