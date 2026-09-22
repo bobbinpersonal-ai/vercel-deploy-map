@@ -121,6 +121,14 @@
   animation: nav-pill-scroll 90s linear infinite;
 }
 
+/* The homepage video stays fixed behind the editorial content through the first
+   ~80% of the page. Cards retain their own surfaces for readable contrast. */
+.video-through-section {
+  background-color: transparent !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+}
+
 .nav-pill-track:hover {
   animation-play-state: paused;
 }
