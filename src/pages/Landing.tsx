@@ -27,6 +27,7 @@ import { ExpertTopic } from "@/components/ExpertTopic";
 
 const PHONE_DISPLAY = "424 426 0760";
 const PHONE_HREF = "tel:+14244260760";
+const SITE_VERSION = "V420";
 
 const SERVICES = [
   { title: "Roofing", detail: "Repair, replacement & storm damage", icon: House },
@@ -165,7 +166,7 @@ export default function Landing() {
         </div>
         <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-5 pb-20 pt-36 sm:px-8 lg:grid-cols-[1.08fr_.92fr] lg:px-10 lg:pb-28 lg:pt-48">
           <div className="max-w-2xl">
-            <div className="mb-7 flex items-center gap-2 text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase"><span className="size-2 rounded-full bg-[#d5ec77]" /> Free estimates · same-day callback</div>
+            <div className="mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase"><span className="rounded-full border border-[#d5ec77]/60 px-2.5 py-1 text-[10px] tracking-[.16em] text-[#d5ec77]">{SITE_VERSION}</span><span className="size-2 rounded-full bg-[#d5ec77]" /> Free estimates · same-day callback</div>
             <h1 className="text-5xl leading-[.96] font-semibold tracking-[-.06em] sm:text-7xl lg:text-[6.4rem]">Make home feel <span className="text-[#d5ec77]">right again.</span></h1>
             <p className="mt-8 max-w-lg text-lg leading-8 text-white/72">Roofing, windows, siding, gutters and more — clearly explained, carefully scoped, and built around the way you want your home to feel.</p>
             <div className="mt-10 flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#d5ec77] px-7 text-base font-semibold text-[#1d211d] hover:bg-[#e1f895]">Start with a free estimate <ArrowUpRight className="ml-2 size-5" /></Button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-white/25 px-6 text-sm font-medium hover:bg-white/10"><Phone className="size-4" /> Talk to a human</a></div>
