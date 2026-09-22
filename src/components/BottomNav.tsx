@@ -41,7 +41,7 @@ export function BottomNav() {
       >
         <div className="flex items-center">
           <span className="z-10 hidden shrink-0 bg-[#182019] px-4 py-2 text-[10px] font-semibold tracking-[.16em] text-[#d5ec77] uppercase sm:block">
-            All {PROJECT_INDEX_COUNT} services · V436
+            All {PROJECT_INDEX_COUNT} services · V437
           </span>
           <div className="nav-pill-scroller min-w-0 flex-1 overflow-hidden">
             <div className="nav-pill-track flex w-max items-center py-2 pl-3">

@@ -133,7 +133,8 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/admin" element={<RequireAuth title="Sign in to manage LoveMeAfter" description="Leads, call lists, appointments, crews, and jobs live in the internal admin console."><Dashboard /></RequireAuth>} />
             <Route path="/admin/workspace" element={<RequireAuth title="Sign in to use the workspace" description="SOPs, projects, tasks, job posts, and internal work live here."><Workspace /></RequireAuth>} />
             <Route path="/admin/internal-preview" element={<RequireAuth title="Sign in to review the internal playbook" description="Sales, appointments, installer economics, and operating standards live here."><InternalPreview /></RequireAuth>} />
-            <Route path="/admin/growth-engine" element={<RequireAuth title="Sign in to open the growth engine" description="Marketing, sales, operations, partnerships, and launch planning live here."><GrowthEngine /></RequireAuth>} />
+            {/* Temporary review mode: the operating map is intentionally open while the team evaluates it. */}
+            <Route path="/admin/growth-engine" element={<GrowthEngine />} />
             <Route path="/admin/call-lists" element={<RequireAuth title="Sign in to manage call lists" description="The telemarketing queue is for internal callers and appointment setters."><CallLists /></RequireAuth>} />
             <Route path="/admin/contractors" element={<RequireAuth title="Sign in to review contractors" description="Review partner applications and build the installation network."><ContractorApplications /></RequireAuth>} />
             <Route path="*" element={<NotFound />} />
