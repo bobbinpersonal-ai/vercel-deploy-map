@@ -7,6 +7,7 @@ import { Link, useNavigate, useParams } from "react-router";
 import { getGuide, relatedGuides } from "@/data/project-guides";
 import { CATEGORY_PHOTOS, PHOTO_CREDIT, PHOTO_CREDIT_URL, px, pxPage } from "@/data/photos";
 import { PhaseTimeline, SeverityMeter } from "@/components/GeneratedGraphics";
+import { FinancingShowcase } from "@/components/FinancingShowcase";
 
 /** Per-category field risk and phasing, so guides read differently by trade. */
 const CATEGORY_INSIGHT: Record<
@@ -291,6 +292,8 @@ export default function ProjectProcess() {
           <p className="text-lg leading-8 text-[#62695f]">{project.detail}</p>
         </div>
       </section>
+
+      <section className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-10"><FinancingShowcase project={project.title.toLowerCase()} compact /></section>
 
       <section className="border-y border-[#1d211d]/10 bg-[#eaf0d0]">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 sm:px-8 lg:grid-cols-[.72fr_1.28fr] lg:px-10 lg:py-24">
