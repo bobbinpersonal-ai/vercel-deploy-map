@@ -1,0 +1,14 @@
+{
+  // Cloudflare Workers configuration for the LoveMeAfter Vite SPA.
+  // The app is a static single-page app; Vite builds it into ./dist.
+  // Declaring `assets` here stops Wrangler from trying to auto-configure the
+  // leftover Deno/Hono `main.ts` file as the deploy target.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "vercel-deploy-map-hope",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./dist",
+    // Serve index.html for client-side routes (/services/roofing, /areas/idaho/boise, ...)
+    "not_found_handling": "single-page-application"
+  }
+}
