@@ -109,9 +109,7 @@ export default function Landing() {
             <Link to="/services" className="transition-colors hover:text-white">Services</Link>
             <Link to="/areas" className="transition-colors hover:text-white">Service areas</Link>
             <Link to="/insights" className="transition-colors hover:text-white">Expert guides</Link>
-            <Link to="/financing" className="transition-colors hover:text-white">Financing</Link>
-            <Link to="/contractors" className="transition-colors hover:text-white">Work with us</Link>
-            <a href={PHONE_HREF} className="flex items-center gap-2 text-white"><Phone className="size-4" /> {PHONE_DISPLAY}</a>
+            <Link to="/financing" className="transition-colors hover:text-white">Financing</Link><Link to="/contractors" className="transition-colors hover:text-white">Work with us</Link><Link to="/login" className="transition-colors hover:text-white">Team login</Link><a href={PHONE_HREF} className="flex items-center gap-2 text-white"><Phone className="size-4" /> {PHONE_DISPLAY}</a>
             <Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] px-5 text-[#1d211d] hover:bg-[#e1f895]">Get an estimate <ArrowUpRight className="ml-1 size-4" /></Button>
           </div>
           <button aria-label="Toggle menu" onClick={() => setMenuOpen(!menuOpen)} className="md:hidden"><Menu className="size-6" /></button>
@@ -119,7 +117,7 @@ export default function Landing() {
         {menuOpen && (
           <div className="absolute inset-x-4 top-20 rounded-2xl bg-[#182019] p-5 shadow-2xl md:hidden">
             <button onClick={() => setMenuOpen(false)} className="absolute right-4 top-4"><X className="size-5" /></button>
-            <div className="flex flex-col gap-5 pt-4 text-sm"><Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link><Link to="/areas" onClick={() => setMenuOpen(false)}>Service areas</Link><Link to="/insights" onClick={() => setMenuOpen(false)}>Expert guides</Link><Link to="/financing" onClick={() => setMenuOpen(false)}>Financing</Link><Link to="/contractors" onClick={() => setMenuOpen(false)}>Work with us</Link><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] text-[#1d211d]">Get an estimate</Button></div>
+            <div className="flex flex-col gap-5 pt-4 text-sm"><Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link><Link to="/areas" onClick={() => setMenuOpen(false)}>Service areas</Link><Link to="/insights" onClick={() => setMenuOpen(false)}>Expert guides</Link><Link to="/financing" onClick={() => setMenuOpen(false)}>Financing</Link><Link to="/contractors" onClick={() => setMenuOpen(false)}>Work with us</Link><Link to="/login" onClick={() => setMenuOpen(false)}>Team login</Link><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] text-[#1d211d]">Get an estimate</Button></div>
           </div>
         )}
       </header>

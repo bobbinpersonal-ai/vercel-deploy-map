@@ -118,6 +118,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/insights" element={<Insights />} />
             <Route path="/financing" element={<Financing />} />
             <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
+            <Route path="/login" element={<AuthPage redirectAfterAuth="/dashboard" />} />
             <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
             <Route path="/admin" element={<RequireAuth title="Sign in to manage LoveMeAfter" description="Leads, call lists, appointments, crews, and jobs live in the internal admin console."><Dashboard /></RequireAuth>} />
             <Route path="/admin/workspace" element={<RequireAuth title="Sign in to use the workspace" description="SOPs, projects, tasks, job posts, and internal work live here."><Workspace /></RequireAuth>} />
