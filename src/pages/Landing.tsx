@@ -15,9 +15,11 @@ import {
   Heart,
   MapPin,
   Menu,
+  Paintbrush,
   Phone,
   ShieldCheck,
   Sparkles,
+  Wrench,
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -30,10 +32,27 @@ const PHONE_HREF = "tel:+14244260760";
 const SITE_VERSION = "V422";
 
 const SERVICES = [
-  { title: "Roofing", detail: "Repair, replacement & storm damage", icon: House },
-  { title: "Windows", detail: "Energy-efficient comfort, installed right", icon: Sparkles },
-  { title: "Siding", detail: "Durable protection with a clean finish", icon: ShieldCheck },
-  { title: "Gutters", detail: "Seamless drainage that protects your home", icon: Fence },
+  { title: "Roofing", detail: "Repair, replacement, ventilation & storm damage", icon: House },
+  { title: "Windows & doors", detail: "Comfort, security, glass, entry & garage doors", icon: Sparkles },
+  { title: "Siding & exterior", detail: "Vinyl, fiber cement, trim, fascia & soffit", icon: ShieldCheck },
+  { title: "Gutters & drainage", detail: "Seamless gutters, downspouts, grading & runoff", icon: Fence },
+  { title: "Exterior painting", detail: "Prep, repair, prime and finish coats", icon: Paintbrush },
+  { title: "Fencing & gates", detail: "Privacy, picket, chain link, wood & access gates", icon: Fence },
+  { title: "Driveways & paving", detail: "Concrete, asphalt, pavers, walkways & repair", icon: Wrench },
+  { title: "Concrete & masonry", detail: "Flatwork, patios, retaining walls & masonry", icon: House },
+  { title: "Decks & porches", detail: "Build, repair, stain, railings & outdoor living", icon: House },
+  { title: "Kitchens", detail: "Cabinets, counters, backsplashes, flooring & layout", icon: House },
+  { title: "Bathrooms", detail: "Showers, tile, vanities, accessibility & finishes", icon: Sparkles },
+  { title: "Basements & interiors", detail: "Finishing, drywall, flooring, trim & storage", icon: House },
+  { title: "Flooring & tile", detail: "Hardwood, LVP, carpet, tile and transitions", icon: Wrench },
+  { title: "HVAC & comfort", detail: "Heating, cooling, ventilation and air quality", icon: Sparkles },
+  { title: "Plumbing", detail: "Repair, fixtures, water heaters and repipes", icon: Wrench },
+  { title: "Electrical", detail: "Lighting, panels, outlets, generators and upgrades", icon: Sparkles },
+  { title: "Insulation & weatherization", detail: "Attic, crawlspace, air sealing and efficiency", icon: ShieldCheck },
+  { title: "Landscaping & drainage", detail: "Planting, grading, irrigation and water control", icon: Fence },
+  { title: "Solar & backup power", detail: "Solar coordination, batteries and generators", icon: Sparkles },
+  { title: "Accessibility & aging-in-place", detail: "Safer entries, bathrooms, rails and mobility", icon: ShieldCheck },
+  { title: "Multi-trade renovations", detail: "One coordinated plan for complex home projects", icon: ClipboardCheck },
 ];
 
 const SERVICE_ESTIMATES: Record<string, number> = {
@@ -207,7 +226,7 @@ export default function Landing() {
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-7 sm:grid-cols-3 sm:px-8 lg:px-10"><div><p className="text-3xl font-semibold tracking-[-.05em]">4 services</p><p className="mt-1 text-sm text-[#65705e]">Roofing · siding · windows · gutters</p></div><div><p className="text-3xl font-semibold tracking-[-.05em]">Same-day</p><p className="mt-1 text-sm text-[#65705e]">Callback in active markets</p></div><div><p className="text-3xl font-semibold tracking-[-.05em]">10 years</p><p className="mt-1 text-sm text-[#65705e]">Minimum workmanship warranty</p></div></div>
       </section>
 
-      <section className="relative z-10 border-b border-[#1d211d]/10 bg-[#f7f5f0]/80 backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10"><div className="grid gap-10 lg:grid-cols-[.75fr_1.25fr] lg:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">Your project, clarified</p><h2 className="mt-4 max-w-md text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-5xl">Start with the right next step.</h2><p className="mt-5 max-w-md text-base leading-7 text-[#62695f]">Pick the part of your home you are thinking about. We will use it to shape a more useful first conversation — not a generic sales call.</p></div><div className="grid gap-3 sm:grid-cols-2">{[["Roofing", "Stop leaks and protect the structure.", "Inspect first"], ["Windows", "Improve comfort, light, and efficiency.", "Compare options"], ["Siding", "Refresh the exterior and weather barrier.", "Plan the envelope"], ["Gutters", "Move water away from the foundation.", "Check drainage"]].map(([title, detail, action]) => <button key={title} onClick={() => { setSelectedProject(title); void trackEvent("project_interest_selected", { service: title }); scrollToEstimate(); }} className={`group rounded-2xl border p-5 text-left transition hover:-translate-y-0.5 hover:border-[#71803d] ${selectedProject === title ? "border-[#71803d] bg-[#eaf0d0]" : "border-[#1d211d]/12 bg-white/60"}`}><div className="flex items-start justify-between gap-3"><span className="text-lg font-semibold">{title}</span><ArrowUpRight className="size-4 text-[#71803d] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></div><p className="mt-3 text-sm leading-6 text-[#62695f]">{detail}</p><p className="mt-5 text-xs font-semibold tracking-[.12em] text-[#71803d] uppercase">{action} · Get a free estimate</p></button>)}</div></div></div></section>
+      <section className="relative z-10 border-b border-[#1d211d]/10 bg-[#f7f5f0]/80 backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10"><div className="grid gap-10 lg:grid-cols-[.75fr_1.25fr] lg:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">Your project, clarified</p><h2 className="mt-4 max-w-md text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-5xl">Start with the right next step.</h2><p className="mt-5 max-w-md text-base leading-7 text-[#62695f]">Pick the part of your home you are thinking about. We will use it to shape a more useful first conversation — not a generic sales call.</p></div><div className="relative"><div className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-4 [scrollbar-color:#71803d_transparent] sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">{SERVICES.map(({ title, detail, icon: Icon }, index) => <button key={title} onClick={() => { setSelectedProject(title); void trackEvent("project_interest_selected", { service: title }); scrollToEstimate(); }} className={`group min-h-[190px] w-[245px] shrink-0 snap-start rounded-2xl border p-5 text-left transition hover:-translate-y-0.5 hover:border-[#71803d] sm:w-[265px] ${selectedProject === title ? "border-[#71803d] bg-[#eaf0d0]" : "border-[#1d211d]/12 bg-white/60"}`}><div className="flex items-start justify-between gap-3"><span className="flex size-9 items-center justify-center rounded-xl bg-[#eaf0d0] text-[#71803d]"><Icon className="size-4" /></span><span className="text-xs font-semibold text-[#a0a89d]">{String(index + 1).padStart(2, "0")}</span></div><h3 className="mt-6 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-[#62695f]">{detail}</p><p className="mt-4 text-[10px] font-semibold tracking-[.12em] text-[#71803d] uppercase">{selectedProject === title ? "Selected · " : "Explore · "}Get a free estimate</p></button>)}</div><div className="mt-3 flex items-center justify-between text-xs text-[#7b8578]"><span>Swipe or scroll to explore all {SERVICES.length} project types</span><span className="hidden font-semibold text-[#71803d] sm:inline">More projects →</span></div></div></div></div></section>
 
       <section className="relative z-10 border-b border-[#1d211d]/10 bg-white/68 backdrop-blur-sm"><div className="mx-auto flex max-w-7xl flex-col gap-8 px-5 py-10 sm:px-8 lg:px-10"><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><p className="text-sm font-semibold tracking-[.18em] text-[#71803d] uppercase">Financing available</p><p className="mt-2 text-base text-[#596357]">Compare competitive APR options from recognized lending partners.</p></div><Link to="/financing" className="inline-flex items-center text-sm font-semibold text-[#71803d]">View financing options <ArrowUpRight className="ml-1 size-4" /></Link></div><div className="flex flex-wrap items-center gap-x-8 gap-y-5 text-xl font-bold tracking-[-.03em] sm:text-2xl"><span className="text-[#1d5d8f]">LightStream</span><span className="bg-gradient-to-r from-[#183a8c] via-[#d64545] to-[#183a8c] bg-clip-text font-extrabold text-transparent">DONALD TRUMP</span><span className="text-[#151515]">SoFi</span><span className="text-[#167b68]">LendingPoint</span><span className="text-[#d26c2e]">Best Egg</span><span className="text-[#5b3a94]">Upgrade</span><span className="text-[#007c83]">Prosper</span><span className="text-[#1f4d7a]">OneMain Financial</span><span className="text-[#23677c]">Axos Bank</span></div></div></section>
 
