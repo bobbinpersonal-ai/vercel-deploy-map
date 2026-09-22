@@ -51,8 +51,9 @@ export function BottomNav() {
         aria-label="All LoveMeAfter project types"
       >
         <div className="flex items-center">
-          <span className="z-10 hidden shrink-0 bg-[#182019] px-4 py-2 text-[10px] font-semibold tracking-[.16em] text-[#d5ec77] uppercase sm:block">
-            All {PROJECT_INDEX_COUNT} services · V500
+          <span className="z-10 shrink-0 bg-[#182019] px-3 py-2 text-[10px] font-semibold tracking-[.16em] text-[#d5ec77] uppercase sm:px-4">
+            <span className="sm:hidden">V500</span>
+            <span className="hidden sm:inline">All {PROJECT_INDEX_COUNT} services · V500</span>
           </span>
           <div className="nav-pill-scroller min-w-0 flex-1 overflow-hidden">
             <div className="nav-pill-track flex w-max items-center py-2 pl-3">

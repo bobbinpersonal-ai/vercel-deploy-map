@@ -205,6 +205,7 @@ export default function Landing() {
           <a href="#top" className="flex items-center gap-3">
             <LogoMark className="size-10 text-white" />
             <span className="text-lg font-semibold tracking-[-0.03em]">LoveMeAfter</span>
+            <span className="rounded-full border border-[#d5ec77]/70 px-2 py-1 text-[10px] font-bold tracking-[.14em] text-[#d5ec77]">V500</span>
           </a>
           <div className="hidden items-center gap-8 text-sm text-white/75 md:flex">
             <Link to="/services" className="transition-colors hover:text-white">Services</Link>
