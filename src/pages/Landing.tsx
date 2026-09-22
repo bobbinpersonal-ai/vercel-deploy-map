@@ -120,8 +120,9 @@ export default function Landing() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-transparent text-[#1d211d]">
-      <header className="absolute inset-x-0 top-0 z-50 text-white">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-10">
+      <header className="fixed inset-x-0 top-0 z-50 text-white">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-10">
+
           <a href="#top" className="flex items-center gap-3">
             <span className="flex size-10 items-center justify-center rounded-full bg-black text-white"><Heart className="size-5 fill-current" strokeWidth={2.5} /></span>
             <span className="text-lg font-semibold tracking-[-0.03em]">LoveMeAfter</span>
@@ -135,6 +136,11 @@ export default function Landing() {
           </div>
           <button aria-label="Toggle menu" onClick={() => setMenuOpen(!menuOpen)} className="md:hidden"><Menu className="size-6" /></button>
         </nav>
+        <div className="overflow-hidden border-y border-white/10 bg-[#182019]/35 backdrop-blur-md" aria-label="Home improvement services">
+          <div className="nav-pill-track flex w-max items-center gap-2 px-3 py-2">
+            {[...SERVICES, ...SERVICES].map(({ title }, index) => <Link key={`${title}-${index}`} to="/services#catalog" className="whitespace-nowrap rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-medium text-white/80 transition hover:border-[#d5ec77] hover:bg-[#d5ec77] hover:text-[#1d211d]">{title}</Link>)}
+          </div>
+        </div>
         {menuOpen && (
           <div className="absolute inset-x-4 top-20 rounded-2xl bg-[#182019] p-5 shadow-2xl md:hidden">
             <button onClick={() => setMenuOpen(false)} className="absolute right-4 top-4"><X className="size-5" /></button>

@@ -112,6 +112,23 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@keyframes nav-pill-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.nav-pill-track {
+  animation: nav-pill-scroll 55s linear infinite;
+}
+
+.nav-pill-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-pill-track { animation: none; }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
