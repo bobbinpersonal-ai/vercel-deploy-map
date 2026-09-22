@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "codegen": "echo Firebase uses the client SDK; no code generation required",
+    "firebase:deploy": "bun run build && firebase deploy --only hosting,firestore",
     "lint": "eslint .",
     "format": "prettier --write .",
     "preview": "vite preview"
