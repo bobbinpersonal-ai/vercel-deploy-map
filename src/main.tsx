@@ -12,6 +12,7 @@ const CareerRole = lazy(() => import("./pages/CareerRole.tsx"));
 const Services = lazy(() => import("./pages/Services.tsx"));
 const Areas = lazy(() => import("./pages/Areas.tsx"));
 const Insights = lazy(() => import("./pages/Insights.tsx"));
+const TopicPost = lazy(() => import("./pages/TopicPost.tsx"));
 const Financing = lazy(() => import("./pages/Financing.tsx"));
 const CallLists = lazy(() => import("./pages/CallLists.tsx"));
 const AreaLanding = lazy(() => import("./pages/AreaLanding.tsx"));
@@ -116,6 +117,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/areas/:slug" element={<AreaLanding />} />
             <Route path="/areas/:slug/:city" element={<AreaLanding />} />
             <Route path="/insights" element={<Insights />} />
+            <Route path="/insights/topics/:topic" element={<TopicPost />} />
             <Route path="/financing" element={<Financing />} />
             <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
             <Route path="/login" element={<AuthPage redirectAfterAuth="/dashboard" />} />
