@@ -5,7 +5,7 @@ import { clip, usePageMeta } from "@/components/PageMeta";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { getGuide, relatedGuides } from "@/data/project-guides";
-import { CATEGORY_PHOTOS, PHOTO_CREDIT, PHOTO_CREDIT_URL, px, pxPage } from "@/data/photos";
+import { CATEGORY_PHOTOS, px } from "@/data/photos";
 import { PhaseTimeline, SeverityMeter } from "@/components/GeneratedGraphics";
 import { FinancingShowcase } from "@/components/FinancingShowcase";
 
@@ -192,17 +192,6 @@ export default function ProjectProcess() {
           <div className="h-72 rounded-3xl bg-cover bg-center" style={{ backgroundImage: `url(${project.gallery[0]})` }} />
           <div className="h-72 rounded-3xl bg-cover bg-center" style={{ backgroundImage: `url(${project.gallery[1]})` }} />
         </div>
-        <p className="mt-3 text-xs leading-5 text-[#7c8579]">
-          {PHOTO_CREDIT}{" "}
-          <a
-            href={PHOTO_CREDIT_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="font-semibold text-[#71803d] underline underline-offset-2"
-          >
-            Photo license
-          </a>
-        </p>
 
         {products.length > 0 && (
           <div className="mt-16">
@@ -224,14 +213,7 @@ export default function ProjectProcess() {
                   />
                   <figcaption className="flex items-center justify-between gap-3 p-4">
                     <span className="text-sm font-semibold">{product.label}</span>
-                    <a
-                      href={product.page}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="shrink-0 text-[10px] font-semibold tracking-[.1em] text-[#71803d] uppercase"
-                    >
-                      Source
-                    </a>
+
                   </figcaption>
                 </figure>
               ))}
@@ -259,14 +241,7 @@ export default function ProjectProcess() {
                   <figcaption className="p-3">
                     <p className="text-[10px] font-semibold tracking-[.14em] text-[#9aa095] uppercase">{kind}</p>
                     <p className="mt-1 text-xs font-semibold leading-5">{label}</p>
-                    <a
-                      href={pxPage(id)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-2 inline-block text-[10px] font-semibold text-[#71803d] underline underline-offset-2"
-                    >
-                      Pexels
-                    </a>
+
                   </figcaption>
                 </figure>
               ))}

@@ -1,5 +1,6 @@
 import { Toaster } from "@/components/ui/sonner";
 import { BottomNav } from "@/components/BottomNav";
+import { TopNav } from "@/components/TopNav";
 import { RequireAuth } from "@/components/RequireAuth";
 import React, { StrictMode, useEffect, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
@@ -140,6 +141,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
+        <TopNav />
         <BottomNav />
         </div>
       </BrowserRouter>
