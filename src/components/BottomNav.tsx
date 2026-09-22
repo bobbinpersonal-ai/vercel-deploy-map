@@ -6,6 +6,17 @@ import { Link, useLocation } from "react-router";
 const PHONE_DISPLAY = "424 426 0760";
 const PHONE_HREF = "tel:+14244260760";
 
+const LENDERS = [
+  { name: "LightStream", detail: "Home improvement lender · low APR options", tone: "text-[#4ba5dc]", surface: "bg-[#e5f5ff]" },
+  { name: "SoFi", detail: "Home improvement lender · fixed-rate loans", tone: "text-[#151515]", surface: "bg-white" },
+  { name: "LendingPoint", detail: "Home improvement lender · flexible options", tone: "text-[#168b76]", surface: "bg-[#e5f7f1]" },
+  { name: "Best Egg", detail: "Home improvement lender · project financing", tone: "text-[#d26c2e]", surface: "bg-[#fff0e8]" },
+  { name: "Upgrade", detail: "Home improvement lender · monthly payments", tone: "text-[#6844a4]", surface: "bg-[#f0eaff]" },
+  { name: "Prosper", detail: "Home improvement lender · personal loans", tone: "text-[#007c83]", surface: "bg-[#e3f8f7]" },
+  { name: "OneMain Financial", detail: "Home improvement lender · loan options", tone: "text-[#28618e]", surface: "bg-[#e8f2fb]" },
+  { name: "Axos Bank", detail: "Home improvement lender · financing options", tone: "text-[#23677c]", surface: "bg-[#e5f5f7]" },
+] as const;
+
 const LINKS = [
   { to: "/services", label: "Services", icon: Wrench },
   { to: "/conditions", label: "Conditions", icon: AlertTriangle },
@@ -74,6 +85,22 @@ export function BottomNav() {
                   </div>
                 )),
               )}
+              {[0, 1].map((pass) => (
+                <div key={`lenders-${pass}`} className="flex items-center gap-2 pr-3">
+                  <span className="mr-1 text-[10px] font-semibold tracking-[.14em] whitespace-nowrap text-[#d5ec77] uppercase">Financing partners</span>
+                  {LENDERS.map(({ name, detail, tone, surface }) => (
+                    <Link
+                      key={`${name}-${pass}`}
+                      to="/financing"
+                      aria-label={`${name}, ${detail}`}
+                      className={`mr-1.5 flex min-h-[43px] shrink-0 flex-col justify-center rounded-2xl border border-white/35 px-3 py-1.5 leading-tight transition hover:-translate-y-0.5 hover:border-[#d5ec77] ${surface}`}
+                    >
+                      <span className={`text-[11px] font-bold tracking-[-.02em] ${tone}`}>{name}</span>
+                      <span className="mt-0.5 max-w-[170px] text-[8px] font-semibold tracking-[.01em] text-[#5d665e]">{detail}</span>
+                    </Link>
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
           <span className="pointer-events-none absolute inset-y-0 right-0 w-14 bg-gradient-to-l from-[#182019] to-transparent" />
