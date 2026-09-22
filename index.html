@@ -11,6 +11,85 @@
     content="Windows, siding, roofing, garage doors, fencing, gutters and exterior paint across Colorado, Missouri, Kansas, Indiana and Wyoming. Free written estimate, a vetted crew, and we call you back the same day. No obligation."
   />
   <title>Free Home Improvement Estimate — Same-Day Callback | LoveMeAfter</title>
+
+  <!--
+    Netlify injects a "Powered by Netlify" badge iframe on free-tier deploys
+    (`#nl-badge-frame`, plus an owner variant `#nl-hud-frame`). It is appended
+    to the body after load with inline styles, so it is hidden with `!important`
+    here and removed from the DOM by the guard script below.
+  -->
+  <style>
+    #nl-badge-frame,
+    #nl-hud-frame,
+    #nl-badge,
+    #nl-mini,
+    #nl-pop,
+    #nl-card,
+    #nl-tools,
+    #nl-tip,
+    #nl-status,
+    netlify-hud,
+    iframe[title="Powered by Netlify"] {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+  </style>
+  <script>
+    (function () {
+      var SELECTOR = [
+        "#nl-badge-frame",
+        "#nl-hud-frame",
+        "#nl-badge",
+        "#nl-mini",
+        "#nl-pop",
+        "#nl-card",
+        "#nl-tools",
+        "#nl-tip",
+        "#nl-status",
+        "netlify-hud",
+        'iframe[title="Powered by Netlify"]',
+      ].join(",");
+
+      function strip() {
+        var nodes = document.querySelectorAll(SELECTOR);
+        for (var i = 0; i < nodes.length; i += 1) {
+          var node = nodes[i];
+          if (node && node.parentNode) node.parentNode.removeChild(node);
+        }
+      }
+
+      // Remove anything already present, then keep watching as it is injected.
+      strip();
+      document.addEventListener("DOMContentLoaded", strip);
+      window.addEventListener("load", strip);
+
+      var scheduled = false;
+      var observer = new MutationObserver(function () {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(function () {
+          scheduled = false;
+          strip();
+        });
+      });
+
+      function start() {
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+        setTimeout(strip, 1200);
+        setTimeout(strip, 3500);
+        // The badge is only injected once per page load, so stop watching after
+        // a short window to keep the observer off the React render path.
+        setTimeout(function () {
+          observer.disconnect();
+        }, 20000);
+      }
+
+      if (document.documentElement) start();
+      else document.addEventListener("DOMContentLoaded", start);
+    })();
+  </script>
 </head>
 
 
