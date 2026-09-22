@@ -118,7 +118,7 @@
 }
 
 .nav-pill-track {
-  animation: nav-pill-scroll 55s linear infinite;
+  animation: nav-pill-scroll 90s linear infinite;
 }
 
 .nav-pill-track:hover {
@@ -127,6 +127,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .nav-pill-track { animation: none; }
+  .nav-pill-scroller {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-pill-scroller::-webkit-scrollbar { display: none; }
 }
 
 @layer base {
