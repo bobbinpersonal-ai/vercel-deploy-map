@@ -121,12 +121,22 @@
   animation: nav-pill-scroll 90s linear infinite;
 }
 
-/* The homepage video stays fixed behind the editorial content through the first
-   ~80% of the page. Cards retain their own surfaces for readable contrast. */
+/* Text-led homepage sections keep a quiet reading surface over the fixed hero
+   treatment. This preserves the visual atmosphere without sacrificing contrast. */
 .video-through-section {
-  background-color: transparent !important;
+  background-color: rgba(247, 245, 240, .88) !important;
   background-image: none !important;
-  backdrop-filter: none !important;
+  backdrop-filter: blur(5px);
+}
+
+/* Give text-led sections a quiet reading surface without overriding sections that
+   intentionally provide their own image, dark, or accent background. */
+main > section:not([class*="bg-"]) {
+  background-color: color-mix(in srgb, var(--background) 92%, white 8%);
+}
+
+main > section:not([class*="bg-"]) > div {
+  position: relative;
 }
 
 .nav-pill-track:hover {

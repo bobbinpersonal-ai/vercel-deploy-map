@@ -54,6 +54,7 @@ export const PROJECT_INDEX: ProjectIndexEntry[] = [
   { slug: "hvac", label: "HVAC & comfort", category: "Systems & comfort" },
   { slug: "plumbing", label: "Plumbing", category: "Systems & comfort" },
   { slug: "electrical", label: "Electrical", category: "Systems & comfort" },
+  { slug: "lighting", label: "Lighting", category: "Systems & comfort" },
   { slug: "panel-upgrades", label: "Panel upgrades", category: "Systems & comfort" },
   { slug: "smart-home", label: "Smart home", category: "Systems & comfort" },
   { slug: "backup-power", label: "Backup power", category: "Systems & comfort" },
