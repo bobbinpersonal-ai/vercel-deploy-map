@@ -22,7 +22,7 @@ import {
   Wrench,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router";
 import { ExpertTopic } from "@/components/ExpertTopic";
 import { LogoMark } from "@/components/Logo";
@@ -65,7 +65,7 @@ const PRODUCT_STRIP: [string, string, number][] = [
 
 const PHONE_DISPLAY = "424 426 0760";
 const PHONE_HREF = "tel:+14244260760";
-const SITE_VERSION = "V438";
+const SITE_VERSION = "V439";
 
 /** Financing partners shown in the combined stats + financing strip. */
 const LENDERS: [string, string][] = [
@@ -124,9 +124,17 @@ export default function Landing() {
   const [address, setAddress] = useState("");
   const [cityStateZip, setCityStateZip] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   // Keep the hero video behavior stable: it is shown on mobile and not rendered visually on desktop.
 
   const [selectedProject, setSelectedProject] = useState("Roofing");
+  const playHeroVideo = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    void video.play().then(() => setVideoPlaying(true)).catch(() => setVideoPlaying(false));
+  };
 
   const scrollToEstimate = () => {
     void trackEvent("estimate_cta_clicked", { placement: "landing_page" });
@@ -198,15 +206,17 @@ export default function Landing() {
 
       <section id="top" className="relative isolate min-h-[730px] bg-transparent text-white">
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,22,16,.95)_0%,rgba(15,22,16,.73)_46%,rgba(15,22,16,.15)_100%),url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=85')] bg-cover bg-[center_65%]" />
-        <div className="fixed inset-0 z-0 overflow-hidden bg-[#182019] pointer-events-none" aria-hidden="true">
+        <div className="fixed inset-0 z-0 overflow-hidden bg-[#182019] pointer-events-none">
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-[url('https://images.pexels.com/photos/4913326/pexels-photo-4913326.jpeg?auto=compress&cs=tinysrgb&w=2200')] bg-cover bg-center"
           />
           <video
-            className="pointer-events-none size-full object-cover object-center opacity-100 md:hidden"
+            ref={videoRef}
+            className="pointer-events-auto size-full object-cover object-center opacity-100 md:hidden"
             autoPlay
             muted
+            src="/copy_5E397E73-24D9-4597-8204-60EA4CE89EDD.mp4"
             loop
             playsInline
             controls={false}
@@ -218,20 +228,26 @@ export default function Landing() {
             aria-label="LoveMeAfter home improvement project video"
             onLoadedData={(event) => {
               event.currentTarget.muted = true;
-              void event.currentTarget.play().catch(() => undefined);
+              void event.currentTarget.play().then(() => setVideoPlaying(true)).catch(() => setVideoPlaying(false));
             }}
             onCanPlay={(event) => {
               event.currentTarget.muted = true;
-              void event.currentTarget.play().catch(() => undefined);
+              void event.currentTarget.play().then(() => setVideoPlaying(true)).catch(() => setVideoPlaying(false));
             }}
-            onPause={(event) => {
-              // Never expose a play prompt: retry autoplay while the fallback image stays underneath.
-              void event.currentTarget.play().catch(() => undefined);
-            }}
-            onError={() => undefined}
-          >
-            <source src="/copy_5E397E73-24D9-4597-8204-60EA4CE89EDD.mp4" type="video/mp4" />
-          </video>
+            onPlay={() => setVideoPlaying(true)}
+            onPause={() => setVideoPlaying(false)}
+            onError={() => setVideoPlaying(false)}
+          />
+          {!videoPlaying && (
+            <button
+              type="button"
+              onClick={playHeroVideo}
+              className="pointer-events-auto absolute bottom-24 left-5 z-20 inline-flex items-center gap-2 rounded-full border border-white/40 bg-[#182019]/85 px-4 py-3 text-xs font-semibold text-white shadow-xl backdrop-blur-md md:hidden"
+            >
+              <span className="flex size-6 items-center justify-center rounded-full bg-[#d5ec77] text-[#182019]">▶</span>
+              Play project video
+            </button>
+          )}
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(15,22,16,.64)_0%,rgba(15,22,16,.34)_46%,rgba(15,22,16,.06)_100%)]" />
         </div>
         <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-5 pb-20 pt-36 sm:px-8 lg:grid-cols-[1.08fr_.92fr] lg:px-10 lg:pb-28 lg:pt-48">
@@ -312,7 +328,7 @@ export default function Landing() {
 
       <section className="video-through-section relative z-10 mx-auto grid max-w-7xl gap-12 bg-[#f7f5f0]/68 px-5 py-24 text-[#1d211d] backdrop-blur-sm sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:px-10 lg:py-32"><div><p className="text-xs font-semibold tracking-[.18em] text-[#71803d] uppercase">A better standard</p><h2 className="mt-4 text-4xl font-semibold leading-[1] tracking-[-.055em] sm:text-6xl">The details are the difference.</h2><p className="mt-6 max-w-md text-lg leading-8 text-[#596357]">We built LoveMeAfter around the parts homeowners usually have to chase: a callback, a real scope, proof of insurance, and someone accountable when the work is done.</p><Button onClick={goToEstimate} className="mt-8 rounded-full bg-[#1d211d] px-6 text-white hover:bg-[#30382f]">Start with a free estimate <ArrowUpRight className="ml-1 size-4" /></Button></div><div className="grid gap-3 sm:grid-cols-2"><div className="rounded-2xl bg-[#eaf0d0] p-7"><BadgeCheck className="size-6 text-[#71803d]" /><h3 className="mt-10 text-xl font-semibold">Crews we actually check</h3><p className="mt-2 text-sm leading-6 text-[#65705e]">Insurance, registration, references, and the local requirements that apply.</p></div><div className="rounded-2xl bg-[#ece9e0] p-7"><ClipboardCheck className="size-6 text-[#71803d]" /><h3 className="mt-10 text-xl font-semibold">A written scope</h3><p className="mt-2 text-sm leading-6 text-[#65705e]">Know what is included, what can wait, and what the work will actually cost.</p></div><div className="rounded-2xl bg-[#1d211d] p-7 text-white sm:col-span-2"><CircleDollarSign className="size-6 text-[#d5ec77]" /><h3 className="mt-10 text-xl font-semibold">No surprise fees, no pressure</h3><p className="mt-2 max-w-lg text-sm leading-6 text-white/75">The estimate is free. The decision stays yours. We earn the job by being clear enough to trust.</p></div></div></section>
 
-      <section id="home-value" className="video-through-section relative z-10 border-y border-[#1d211d]/10 bg-[#f1f4e7] backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10 lg:py-32"><div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr] lg:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#71803d] uppercase">The homeowner investment brief · V438</p><h2 className="mt-4 max-w-xl text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-6xl">Your home is where you live — and one of your biggest assets.</h2><p className="mt-6 max-w-xl text-base leading-7 text-[#596357]">The right improvement can move four dials at once: protection, everyday quality of life, buyer confidence, and long-term wealth. We help you see the trade-offs before you spend.</p></div><div className="rounded-2xl bg-[#1d211d] p-7 text-white sm:p-8"><div className="flex items-center gap-3 text-[#d5ec77]"><CircleDollarSign className="size-5" /><p className="text-xs font-semibold tracking-[.16em] uppercase">National benchmark, not a promise</p></div><p className="mt-5 text-2xl font-semibold tracking-[-.03em]">Exterior work often earns its keep first.</p><p className="mt-3 text-sm leading-6 text-white/68">Zonda’s 2025 Cost vs. Value report compares standardized projects in 119 U.S. markets. Local costs, scope, condition, and timing still decide your result.</p></div></div><div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{[["Garage door", "268%", "$4,672 typical cost", "Curb appeal + function", "Often the strongest resale benchmark in the 2025 national report."], ["Steel entry door", "216%", "$2,435 typical cost", "First impression + security", "A small, visible upgrade can influence buyer confidence."], ["Vinyl siding", "96.5%", "$17,950 typical cost", "Weather barrier + curb appeal", "Strong resale recovery when the full installation scope is included."], ["Asphalt roof", "68%", "$31,871 typical cost", "Protection + insurability", "The value is also the damage you may prevent by staying ahead of failure."]].map(([title, returnRate, cost, outcome, note]) => <article key={title} className="rounded-2xl border border-[#1d211d]/10 bg-white p-6"><p className="text-xs font-semibold tracking-[.14em] text-[#71803d] uppercase">{title}</p><p className="mt-5 text-4xl font-semibold tracking-[-.06em]">{returnRate}</p><p className="mt-1 text-xs font-medium text-[#7a8377]">cost recouped at resale</p><div className="mt-5 border-t border-[#1d211d]/10 pt-4"><p className="text-sm font-semibold">{cost}</p><p className="mt-1 text-sm text-[#596357]">{outcome}</p><p className="mt-4 text-xs leading-5 text-[#7a8377]">{note}</p></div></article>)}</div><div className="mt-10 grid gap-4 lg:grid-cols-3"><div className="rounded-2xl bg-[#dce8b0] p-6"><ShieldCheck className="size-5 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">Protect your equity</h3><p className="mt-2 text-sm leading-6 text-[#596357]">Water, roof, drainage, and envelope work can prevent a small defect from becoming a larger loss.</p></div><div className="rounded-2xl bg-[#ebe8dc] p-6"><Sparkles className="size-5 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">Upgrade daily life</h3><p className="mt-2 text-sm leading-6 text-[#596357]">Quiet rooms, steady temperatures, better light, lower maintenance, and a home that feels good to return to are real returns too.</p></div><div className="rounded-2xl bg-[#e5eee7] p-6"><BadgeCheck className="size-5 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">Make the sale easier</h3><p className="mt-2 text-sm leading-6 text-[#596357]">A documented, well-maintained exterior gives buyers fewer reasons to discount the home or ask for concessions.</p></div></div><div className="mt-10 flex flex-col gap-4 border-t border-[#1d211d]/10 pt-6 text-xs leading-5 text-[#687265] sm:flex-row sm:items-start sm:justify-between"><p className="max-w-3xl"><strong>How to read this:</strong> the percentages are national averages from Zonda/JLC’s 2025 Cost vs. Value report, based on defined project specifications. They are not an appraisal, quote, guarantee, or promise of resale profit. NAR’s 2025 Remodeling Impact research also measures homeowner satisfaction and cost recovery — proof that value is financial and personal.</p><a className="shrink-0 font-semibold text-[#71803d] underline underline-offset-4" href="https://zondahome.com/2025-cost-vs-value-report/" target="_blank" rel="noreferrer">See the source report <ArrowUpRight className="ml-1 inline size-3.5" /></a></div></div></section>\n\n      <ExpertTopic />
+      <section id="home-value" className="video-through-section relative z-10 border-y border-[#1d211d]/10 bg-[#f1f4e7] backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10 lg:py-32"><div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr] lg:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#71803d] uppercase">The homeowner investment brief · V439</p><h2 className="mt-4 max-w-xl text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-6xl">Your home is where you live — and one of your biggest assets.</h2><p className="mt-6 max-w-xl text-base leading-7 text-[#596357]">The right improvement can move four dials at once: protection, everyday quality of life, buyer confidence, and long-term wealth. We help you see the trade-offs before you spend.</p></div><div className="rounded-2xl bg-[#1d211d] p-7 text-white sm:p-8"><div className="flex items-center gap-3 text-[#d5ec77]"><CircleDollarSign className="size-5" /><p className="text-xs font-semibold tracking-[.16em] uppercase">National benchmark, not a promise</p></div><p className="mt-5 text-2xl font-semibold tracking-[-.03em]">Exterior work often earns its keep first.</p><p className="mt-3 text-sm leading-6 text-white/68">Zonda’s 2025 Cost vs. Value report compares standardized projects in 119 U.S. markets. Local costs, scope, condition, and timing still decide your result.</p></div></div><div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{[["Garage door", "268%", "$4,672 typical cost", "Curb appeal + function", "Often the strongest resale benchmark in the 2025 national report."], ["Steel entry door", "216%", "$2,435 typical cost", "First impression + security", "A small, visible upgrade can influence buyer confidence."], ["Vinyl siding", "96.5%", "$17,950 typical cost", "Weather barrier + curb appeal", "Strong resale recovery when the full installation scope is included."], ["Asphalt roof", "68%", "$31,871 typical cost", "Protection + insurability", "The value is also the damage you may prevent by staying ahead of failure."]].map(([title, returnRate, cost, outcome, note]) => <article key={title} className="rounded-2xl border border-[#1d211d]/10 bg-white p-6"><p className="text-xs font-semibold tracking-[.14em] text-[#71803d] uppercase">{title}</p><p className="mt-5 text-4xl font-semibold tracking-[-.06em]">{returnRate}</p><p className="mt-1 text-xs font-medium text-[#7a8377]">cost recouped at resale</p><div className="mt-5 border-t border-[#1d211d]/10 pt-4"><p className="text-sm font-semibold">{cost}</p><p className="mt-1 text-sm text-[#596357]">{outcome}</p><p className="mt-4 text-xs leading-5 text-[#7a8377]">{note}</p></div></article>)}</div><div className="mt-10 grid gap-4 lg:grid-cols-3"><div className="rounded-2xl bg-[#dce8b0] p-6"><ShieldCheck className="size-5 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">Protect your equity</h3><p className="mt-2 text-sm leading-6 text-[#596357]">Water, roof, drainage, and envelope work can prevent a small defect from becoming a larger loss.</p></div><div className="rounded-2xl bg-[#ebe8dc] p-6"><Sparkles className="size-5 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">Upgrade daily life</h3><p className="mt-2 text-sm leading-6 text-[#596357]">Quiet rooms, steady temperatures, better light, lower maintenance, and a home that feels good to return to are real returns too.</p></div><div className="rounded-2xl bg-[#e5eee7] p-6"><BadgeCheck className="size-5 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">Make the sale easier</h3><p className="mt-2 text-sm leading-6 text-[#596357]">A documented, well-maintained exterior gives buyers fewer reasons to discount the home or ask for concessions.</p></div></div><div className="mt-10 flex flex-col gap-4 border-t border-[#1d211d]/10 pt-6 text-xs leading-5 text-[#687265] sm:flex-row sm:items-start sm:justify-between"><p className="max-w-3xl"><strong>How to read this:</strong> the percentages are national averages from Zonda/JLC’s 2025 Cost vs. Value report, based on defined project specifications. They are not an appraisal, quote, guarantee, or promise of resale profit. NAR’s 2025 Remodeling Impact research also measures homeowner satisfaction and cost recovery — proof that value is financial and personal.</p><a className="shrink-0 font-semibold text-[#71803d] underline underline-offset-4" href="https://zondahome.com/2025-cost-vs-value-report/" target="_blank" rel="noreferrer">See the source report <ArrowUpRight className="ml-1 inline size-3.5" /></a></div></div></section>\n\n      <ExpertTopic />
 
       <section id="questions" className="relative z-10 border-y border-[#1d211d]/10 bg-[#ece9e0]/64 backdrop-blur-sm"><div className="mx-auto grid max-w-7xl gap-12 px-5 py-24 sm:px-8 lg:grid-cols-[.75fr_1.25fr] lg:px-10 lg:py-32"><div><p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">Good questions</p><h2 className="mt-4 text-4xl font-semibold leading-[1] tracking-[-.055em] sm:text-6xl">Before you invite us over.</h2></div><Accordion type="single" collapsible>{FAQS.map(([question, answer]) => <AccordionItem key={question} value={question} className="border-[#1d211d]/15"><AccordionTrigger className="py-6 text-left text-lg font-semibold hover:no-underline">{question}</AccordionTrigger><AccordionContent className="max-w-xl pb-6 text-base leading-7 text-[#62695f]">{answer}</AccordionContent></AccordionItem>)}</Accordion></div></section>
 
