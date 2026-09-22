@@ -4,7 +4,7 @@
   // Declaring `assets` here stops Wrangler from trying to auto-configure the
   // leftover Deno/Hono `main.ts` file as the deploy target.
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "vercel-deploy-map-hope",
+  "name": "vercel-deploy-map-yolo",
   "compatibility_date": "2025-09-01",
   "assets": {
     "directory": "./dist",
