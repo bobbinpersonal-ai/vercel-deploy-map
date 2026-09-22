@@ -16,6 +16,8 @@ export type ProjectGuide = {
   detail: string;
   heroImage: string;
   gallery: [string, string];
+  /** Close-up, subject-matched photographs of the products involved. */
+  products?: { label: string; image: string; id: number; page: string }[];
   items: string[];
   value: { headline: string; notes: [string, string][] };
   faqs: [string, string][];
@@ -52,7 +54,7 @@ const P = {
   pexFence: pex(20274219),
 };
 
-type Raw = Omit<ProjectGuide, "slug"> & { slug: string };
+type Raw = Omit<ProjectGuide, "slug" | "products"> & { slug: string };
 
 const LIBRARY: Raw[] = [
   {

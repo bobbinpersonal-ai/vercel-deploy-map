@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, CircleDollarSign, House, Phone, ShieldCheck } from "lucide-react";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { getProjectGuide, relatedGuides } from "@/data/projects";
+import { getGuide, relatedGuides } from "@/data/project-guides";
+import { PHOTO_CREDIT, PHOTO_CREDIT_URL } from "@/data/photos";
 
 const STEPS = [
   ["01", "Tell us what needs doing", "A homeowner request, referral, call, or appointment starts the conversation."],
@@ -15,7 +16,7 @@ const STEPS = [
 
 export default function ProjectProcess() {
   const { service } = useParams();
-  const project = getProjectGuide(service);
+  const project = getGuide(service);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,7 +39,8 @@ export default function ProjectProcess() {
     );
   }
 
-  const related = relatedGuides(project);
+  const related = relatedGuides(project, 3);
+  const products = project.products ?? [];
 
   return (
     <main className="min-h-screen bg-[#f7f5f0] text-[#1d211d]">
@@ -101,10 +103,53 @@ export default function ProjectProcess() {
           <div className="h-72 rounded-3xl bg-cover bg-center" style={{ backgroundImage: `url(${project.gallery[1]})` }} />
         </div>
         <p className="mt-3 text-xs leading-5 text-[#7c8579]">
-          Free-to-use reference photography via Unsplash and Pexels. These images illustrate the type of work, not a
-          claim that LoveMeAfter completed the pictured project.
+          {PHOTO_CREDIT}{" "}
+          <a
+            href={PHOTO_CREDIT_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="font-semibold text-[#71803d] underline underline-offset-2"
+          >
+            Photo license
+          </a>
         </p>
-        <div className="mt-12 grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
+
+        {products.length > 0 && (
+          <div className="mt-16">
+            <p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">The products involved</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-.055em] sm:text-5xl">What we actually install.</h2>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[#62695f]">
+              Close-up references for the materials, fixtures, and finishes this project involves — so you know what
+              you are choosing between before anyone quotes you.
+            </p>
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {products.map((product) => (
+                <figure
+                  key={product.label}
+                  className="group overflow-hidden rounded-2xl border border-[#1d211d]/10 bg-white"
+                >
+                  <div
+                    className="h-48 bg-cover bg-center transition duration-700 group-hover:scale-[1.03]"
+                    style={{ backgroundImage: `url(${product.image})` }}
+                  />
+                  <figcaption className="flex items-center justify-between gap-3 p-4">
+                    <span className="text-sm font-semibold">{product.label}</span>
+                    <a
+                      href={product.page}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="shrink-0 text-[10px] font-semibold tracking-[.1em] text-[#71803d] uppercase"
+                    >
+                      Source
+                    </a>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-16 grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
           <div>
             <p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">What good looks like</p>
             <h2 className="mt-4 text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-6xl">
