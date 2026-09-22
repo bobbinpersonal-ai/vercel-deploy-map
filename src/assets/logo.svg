@@ -1,16 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">LoveMeAfter construction heart logo</title>
-  <desc id="desc">A lime heart inside a home with a small construction hammer on a deep green rounded square</desc>
-  <rect width="512" height="512" rx="112" fill="#182019"/>
-  <path d="M106 238 256 112l150 126v166c0 14-11 25-25 25H131c-14 0-25-11-25-25V238Z" fill="#263227" stroke="#d5ec77" stroke-width="18" stroke-linejoin="round"/>
-  <path d="m78 249 178-151 178 151" fill="none" stroke="#d5ec77" stroke-width="25" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M219 429V317c0-21 17-38 38-38s38 17 38 38v112" fill="#182019" stroke="#d5ec77" stroke-width="14"/>
-  <path d="M256 260c-12-25-54-21-54 14 0 35 54 67 54 67s54-32 54-67c0-35-42-39-54-14Z" fill="#d5ec77" stroke="#182019" stroke-width="11" stroke-linejoin="round"/>
-  <g transform="translate(334 86) rotate(35 38 70)">
-    <path d="M36 36h18v116H36z" fill="#f7f5f0"/>
-    <path d="M0 0h90v42c0 12-10 22-22 22H22C10 64 0 54 0 42V0Z" fill="#d5ec77" stroke="#182019" stroke-width="10" stroke-linejoin="round"/>
-    <path d="M22 16h46" stroke="#182019" stroke-width="9" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="lmaTitle lmaDesc">
+  <title id="lmaTitle">LoveMeAfter logo</title>
+  <desc id="lmaDesc">A framed house under construction with a hammer across the roofline and a heart inside the home</desc>
+  <g fill="none" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5.5 30 32 8.5 58.5 30" />
+    <path d="M11.5 26.5V56.5h41V26.5" />
   </g>
-  <circle cx="114" cy="397" r="13" fill="#d5ec77"/>
-  <circle cx="398" cy="397" r="13" fill="#d5ec77"/>
+  <g stroke="#000000" stroke-width="3.2" stroke-linecap="round" opacity="0.4">
+    <path d="M22.5 56.5V45M32 56.5V45M41.5 56.5V45" />
+  </g>
+  <path d="M32 42.5c-7.2-5.4-10.8-9.1-10.8-12.7a4.8 4.8 0 0 1 10.8-1.9 4.8 4.8 0 0 1 10.8 1.9c0 3.6-3.6 7.3-10.8 12.7Z" fill="#000000" />
+  <g transform="rotate(-37 49 15)" fill="#000000">
+    <rect x="38" y="8" width="21" height="12.5" rx="3.5" />
+    <rect x="45.8" y="20" width="6.4" height="25" rx="3.2" />
+  </g>
 </svg>

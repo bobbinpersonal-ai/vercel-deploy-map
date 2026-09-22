@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowUpRight, Handshake, House, Phone } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Handshake, Phone } from "lucide-react";
+import { LogoMark } from "@/components/Logo";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { CostDonut, PhaseTimeline, RoiBarChart, TradeShareChart } from "@/components/GeneratedGraphics";
@@ -199,7 +200,7 @@ export default function Trades() {
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-10">
           <Link to="/" className="flex items-center gap-3 font-semibold">
             <span className="flex size-9 items-center justify-center rounded-full bg-[#1d211d] text-[#d5ec77]">
-              <House className="size-4" />
+              <LogoMark className="size-4" />
             </span>
             LoveMeAfter
           </Link>
@@ -449,7 +450,7 @@ export default function Trades() {
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-10 text-sm sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10">
           <Link to="/" className="flex items-center gap-3 font-semibold">
             <span className="flex size-8 items-center justify-center rounded-full bg-[#1d211d] text-[#d5ec77]">
-              <House className="size-4" />
+              <LogoMark className="size-4" />
             </span>
             LoveMeAfter
           </Link>

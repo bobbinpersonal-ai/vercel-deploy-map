@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowUpRight, Check, House, MapPin, Phone } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, MapPin, Phone } from "lucide-react";
+import { LogoMark } from "@/components/Logo";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import usaMap from "@svg-maps/usa";
@@ -17,7 +18,7 @@ export default function Areas() {
 
   return (
     <main className="min-h-screen bg-[#f7f5f0] text-[#1d211d]">
-      <header className="bg-[#182019] text-white"><nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-10"><Link to="/" className="flex items-center gap-3 font-semibold"><span className="flex size-10 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]"><House className="size-5" /></span>LoveMeAfter</Link><div className="flex items-center gap-4"><a href="tel:+14244260760" className="hidden items-center gap-2 text-sm text-white/75 sm:flex"><Phone className="size-4" /> 424 426 0760</a><Button onClick={() => navigate("/")} variant="ghost" className="text-white hover:bg-white/10 hover:text-white"><ArrowLeft className="mr-2 size-4" /> Back home</Button></div></nav></header>
+      <header className="bg-[#182019] text-white"><nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-10"><Link to="/" className="flex items-center gap-3 font-semibold"><span className="flex size-10 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]"><LogoMark className="size-5" /></span>LoveMeAfter</Link><div className="flex items-center gap-4"><a href="tel:+14244260760" className="hidden items-center gap-2 text-sm text-white/75 sm:flex"><Phone className="size-4" /> 424 426 0760</a><Button onClick={() => navigate("/")} variant="ghost" className="text-white hover:bg-white/10 hover:text-white"><ArrowLeft className="mr-2 size-4" /> Back home</Button></div></nav></header>
 
       <section className="relative overflow-hidden bg-[#182019] text-white"><div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(15,22,16,.96),rgba(15,22,16,.56)),url('https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=2200&q=90')] bg-cover bg-center" /><div className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10 lg:py-32"><p className="text-xs font-semibold tracking-[.2em] text-[#d5ec77] uppercase">Where we work</p><h1 className="mt-5 max-w-5xl text-5xl font-semibold leading-[.9] tracking-[-.07em] sm:text-7xl lg:text-[6.7rem]">A clear plan,<br /><span className="text-[#d5ec77]">market by market.</span></h1><p className="mt-8 max-w-2xl text-lg leading-8 text-white/75">Explore the states, cities, and communities where LoveMeAfter is building a coordinated home-improvement network. Select a state to see local context and nearby coverage.</p></div></section>
 

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Check, CircleDollarSign, House, Phone, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Check, CircleDollarSign, Phone, ShieldCheck } from "lucide-react";
+import { LogoMark } from "@/components/Logo";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { getGuide, relatedGuides } from "@/data/project-guides";
@@ -137,8 +138,7 @@ export default function ProjectProcess() {
       <header className="bg-[#182019] text-white">
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-10">
           <Link to="/" className="flex items-center gap-3 font-semibold">
-            <span className="flex size-10 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]">
-              <House className="size-5" />
+            <span className="flex size-10 items-center justify-center rounded-fullbg-[#d5ec77] text-[#1d211d]"><LogoMark className="size-5" />
             </span>
             LoveMeAfter
           </Link>
