@@ -11,7 +11,7 @@ const BENEFITS = [
   [CalendarDays, "A steadier calendar", "Get matched with residential opportunities that fit your trade, geography, crew size, and actual capacity."],
   [ClipboardCheck, "A cleaner handoff", "See the homeowner context, project scope, photos, access notes, and schedule expectations before you commit."],
   [ShieldCheck, "A partner that protects the standard", "We care about communication, jobsite respect, workmanship, and the final walkthrough—not just getting a job started."],
-  [Users, "A network worth belonging to", "Build relationships with a team that wants dependable local pros, not a revolving door of anonymous subcontractors."],
+  [Users, "A network worth belonging to", "Build relationships with a team that wants dependable local pros, not a revolving door of anonymous crews."],
 ] as const;
 
 const STEPS = [

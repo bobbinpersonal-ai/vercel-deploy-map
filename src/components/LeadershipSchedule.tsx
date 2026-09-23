@@ -112,7 +112,7 @@ export function LeadershipSchedule({ dark = false }: { dark?: boolean }) {
       `Name: ${String(data.get("name") ?? "")}`,
       `Email: ${String(data.get("email") ?? "")}`,
       `Phone: ${String(data.get("phone") ?? "")}`,
-      `City/state: ${String(data.get("location") ?? "")}`,
+      `Property address: ${String(data.get("streetAddress") ?? "")}, ${String(data.get("location") ?? "")}`,
       `Project or question: ${String(data.get("project") ?? "")}`,
       "",
       "Please reply with the confirmed time. Thank you.",
@@ -193,11 +193,12 @@ Choose an in-home appointment with a LoveMeAfter design consultant, select a 45-
               <input name="name" required placeholder="Your name" aria-label="Your name" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
               <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
             </div>
+            <input name="streetAddress" required placeholder="Property street address" aria-label="Property street address" className={`h-11 w-full rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
             <div className="grid gap-3 sm:grid-cols-2">
               <input name="email" required type="email" placeholder="Email address" aria-label="Email address" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
-              <input name="location" required placeholder="City & state" aria-label="City and state" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
+              <input name="location" required placeholder="City, state & ZIP" aria-label="Property city, state and ZIP" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
             </div>
-            <textarea name="project" rows={3} placeholder="What would you like the rep to understand before the visit?" aria-label="Project details" className={`w-full resize-none rounded-xl border px-3 py-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
+            <textarea name="project" rows={3} placeholder="What would you like the consultant to understand before the visit?" aria-label="Project details" className={`w-full resize-none rounded-xl border px-3 py-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
             <button type="submit" className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#d5ec77] px-5 text-sm font-semibold text-[#1d211d] transition hover:bg-[#e5f795]">Request this 45-minute appointment <ArrowUpRight className="ml-2 size-4" /></button>
           </form>
         )}

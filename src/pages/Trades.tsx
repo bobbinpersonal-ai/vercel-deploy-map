@@ -228,8 +228,8 @@ export default function Trades() {
               We coordinate every trade. You get one accountable scope.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-white/70">
-              LoveMeAfter is a general contractor by design and a subcontractor network in practice.
-              Roofing, electrical, plumbing, HVAC, tile, masonry, concrete, landscaping, and more — vetted,
+              LoveMeAfter coordinates a complete residential trade network under one accountable process.
+              Roofing, electrical, plumbing, HVAC, tile, masonry, concrete, landscaping, and more — qualified,
               insured, sequenced, and held to one written standard.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">

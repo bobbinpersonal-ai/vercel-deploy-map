@@ -389,7 +389,7 @@ export default function ProjectProcess() {
               This project is coordinated, not handed off.
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-white/70">
-              LoveMeAfter subcontracts every trade under one written scope. See the full network, or read the
+              LoveMeAfter coordinates every trade under one written scope. See the full network, or read the
               field conditions library to learn what failing work actually looks like.
             </p>
           </div>
