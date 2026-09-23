@@ -33,6 +33,7 @@ import { InteractiveHouseMap } from "@/components/InteractiveHouseMap";
 import { FinancingShowcase } from "@/components/FinancingShowcase";
 import { LeadershipSchedule } from "@/components/LeadershipSchedule";
 import { HomeImprovementProcess } from "@/components/HomeImprovementProcess";
+import { ManufacturerShowcase } from "@/components/ManufacturerShowcase";
 
 /** Real product photography shown on the homepage, grouped by the trade. */
 const PRODUCT_STRIP: [string, string, number][] = [
@@ -404,6 +405,8 @@ export default function Landing() {
 
 
       <section className="video-through-section relative z-10 border-y border-[#1d211d]/10 bg-[#182019]/88 text-white backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-24"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase">What we actually find</p><h2 className="mt-4 max-w-2xl text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-5xl">Storm damage, rot, mold, and failed work.</h2><p className="mt-5 max-w-2xl text-base leading-7 text-white/70">Half of this business is seeing what other people missed or covered up. Here is the kind of condition our crews document before anyone writes a scope.</p></div><Link to="/conditions" className="inline-flex shrink-0 items-center text-sm font-semibold text-[#d5ec77]">Open the field conditions library <ArrowUpRight className="ml-1 size-4" /></Link></div><div className="mt-10 grid auto-rows-[96px] grid-cols-2 gap-3 sm:auto-rows-[118px] sm:grid-cols-4">{DAMAGE_PHOTOS.slice(0, 10).map(([label, id], index) => <figure key={label} className={`group relative overflow-hidden rounded-2xl bg-[#101510] ${index === 0 || index === 6 ? "col-span-2 row-span-2" : index === 3 ? "col-span-2" : ""}`}><div className="absolute inset-0 bg-cover bg-center transition duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${px(id, 700)})` }} /><div className="absolute inset-0 bg-gradient-to-t from-[#0f1610]/85 via-transparent to-transparent" /><figcaption className="absolute inset-x-0 bottom-0 p-3 text-[11px] font-semibold text-white">{label}</figcaption></figure>)}</div><div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start"><p className="text-xs leading-5 text-white/55">Field condition examples help explain what an inspection may uncover. Your home gets its own photos and written scope.</p><RoiBarChart title="What deferring a repair typically costs" unit="×" data={[{ label: "Caught during inspection", value: 1 }, { label: "One wet season later", value: 3 }, { label: "Once water reaches the interior", value: 6 }, { label: "Structure stays wet", value: 11 }]} /></div></div></section>
+
+      <ManufacturerShowcase compact />
 
       <HomeImprovementProcess />
 

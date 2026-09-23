@@ -8,6 +8,7 @@ import { ExpertTopic } from "@/components/ExpertTopic";
 import { FinancingShowcase } from "@/components/FinancingShowcase";
 import { LeadershipSchedule } from "@/components/LeadershipSchedule";
 import { ProjectVideo } from "@/components/ProjectVideo";
+import { ManufacturerShowcase } from "@/components/ManufacturerShowcase";
 import { DAMAGE_PHOTOS, px } from "@/data/photos";
 
 const FEATURED_SERVICES = [
@@ -96,6 +97,8 @@ export default function Services() {
       <section className="border-b border-[#1d211d]/10 bg-[#d5ec77]"><div className="mx-auto grid max-w-7xl gap-6 px-5 py-8 sm:px-8 lg:grid-cols-3 lg:px-10"><div><p className="text-xs font-semibold tracking-[.16em] text-[#657035] uppercase">One conversation</p><p className="mt-2 text-2xl font-semibold tracking-[-.04em]">Start anywhere in the home.</p></div><div><p className="text-xs font-semibold tracking-[.16em] text-[#657035] uppercase">Many specialists</p><p className="mt-2 text-2xl font-semibold tracking-[-.04em]">The right crew for the scope.</p></div><div><p className="text-xs font-semibold tracking-[.16em] text-[#657035] uppercase">One standard</p><p className="mt-2 text-2xl font-semibold tracking-[-.04em]">Clear work, carefully finished.</p></div></div></section>
 
       <ProjectVideo category="Specialty projects" />
+
+      <ManufacturerShowcase compact />
 
       <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10 lg:py-32"><div className="grid gap-10 lg:grid-cols-[.7fr_1.3fr] lg:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">Where we make the difference</p><h2 className="mt-4 max-w-md text-4xl font-semibold leading-[.96] tracking-[-.06em] sm:text-6xl">The big projects, made less complicated.</h2></div><p className="max-w-xl text-lg leading-8 text-[#62695f]">You do not need to know which trade to call first. Tell us what is not working, what you want to change, or what you want your home to feel like. We help turn that into a practical next step.</p></div><div className="mt-14 grid gap-4 md:grid-cols-2">{FEATURED_SERVICES.map(({ title, icon: Icon, image, copy, href }) => <article key={title} className="group overflow-hidden border border-[#1d211d]/10 bg-white"><div className="h-64 bg-cover bg-center transition duration-500 group-hover:scale-[1.02]" style={{ backgroundImage: `url(${image})` }} /><div className="p-7"><div className="flex items-start justify-between gap-4"><div className="flex size-11 items-center justify-center rounded-xl bg-[#eaf0d0] text-[#71803d]"><Icon className="size-5" /></div><Link to={href} className="flex size-10 items-center justify-center rounded-full border border-[#1d211d]/10 text-[#71803d] hover:bg-[#eaf0d0]" aria-label={`Learn about ${title}`}><ArrowUpRight className="size-4" /></Link></div><h3 className="mt-8 text-2xl font-semibold tracking-[-.04em]">{title}</h3><p className="mt-3 max-w-lg text-base leading-7 text-[#62695f]">{copy}</p><div className="mt-6 flex items-center gap-2 text-xs font-semibold tracking-[.12em] text-[#71803d] uppercase">Written scope <Check className="size-4" /> Checked specialist</div></div></article>)}</div></section>
 
