@@ -88,7 +88,7 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
 
         <div className="mt-10 grid gap-5 lg:grid-cols-2">
           {family.options.map((product) => (
-            <article key={`${product.brand}-${product.line}`} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_35px_-25px_rgba(15,23,42,0.45)] sm:p-6">
+            <article key={`${product.brand}-${product.line}`} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_35px_-25px_rgba(15,23,42,0.45)] transition hover:-translate-y-0.5 hover:border-amber-300 sm:p-6">
               <div className="flex flex-col gap-4 border-b border-slate-100 pb-5 sm:flex-row sm:items-start sm:justify-between">
                 <ManufacturerLogo brand={product.brand} domain={product.domain} />
                 <a
@@ -101,7 +101,7 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
                   <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                 </a>
               </div>
-              <h3 className="mt-5 text-lg font-semibold text-slate-950">{product.line}</h3>
+              <h3 className="mt-5 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">{product.line}</h3>
               <dl className="mt-4 space-y-4 text-sm leading-6">
                 <div>
                   <dt className="font-semibold text-slate-900">A little history</dt>

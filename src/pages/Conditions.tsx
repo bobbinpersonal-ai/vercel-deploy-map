@@ -159,15 +159,15 @@ export default function Conditions() {
               them, and the sequence that fixes them for good.
             </p>
           </div>
-          <figure className="overflow-hidden rounded-3xl border border-[#1d211d]/10 bg-white">
-            <div className="h-64 bg-cover bg-center" style={{ backgroundImage: `url(${px(hero[1], 1000)})` }} />
-            <figcaption className="flex items-center justify-between gap-3 p-4">
-              <span className="text-sm font-semibold">{hero[0]}</span>
-              <span className="text-[10px] font-semibold tracking-[.1em] text-[#9aa095] uppercase">
-                Documented condition
-              </span>
-            </figcaption>
-          </figure>
+          <Link to="/services/roofing" className="group block overflow-hidden rounded-3xl border border-[#1d211d]/10 bg-white transition hover:-translate-y-1 hover:border-[#71803d]">
+            <div className="h-64 bg-cover bg-center transition duration-700 group-hover:scale-[1.03]" style={{ backgroundImage: `url(${px(hero[1], 1000)})` }} />
+            <div className="p-5">
+              <p className="text-xs font-semibold tracking-[.16em] text-[#71803d] uppercase">Start with evidence</p>
+              <p className="mt-2 text-xl font-semibold">See how we diagnose the roofline before recommending a repair.</p>
+              <p className="mt-3 text-sm leading-6 text-[#62695f]">A visible stain is a clue—not a scope. Open the roofing guide for the inspection sequence, product options, and warranty questions worth asking.</p>
+              <span className="mt-4 inline-flex items-center text-xs font-semibold text-[#71803d]">Open the roofing guide <ArrowUpRight className="ml-1 size-3.5 transition group-hover:translate-x-1" /></span>
+            </div>
+          </Link>
         </div>
       </section>
 
@@ -200,9 +200,11 @@ export default function Conditions() {
                     ? "row-span-2"
                     : "";
             return (
-              <figure
+              <Link
+                to={`#${CONDITIONS[index % CONDITIONS.length].slug}`}
                 key={label}
-                className={`group relative overflow-hidden rounded-2xl bg-[#1d211d] ${span}`}
+                className={`group relative block overflow-hidden rounded-2xl bg-[#1d211d] ${span}`}
+                aria-label={`Learn what we check for ${label}`}
               >
                 <div
                   className="absolute inset-0 bg-cover bg-center transition duration-700 group-hover:scale-105"
@@ -211,9 +213,9 @@ export default function Conditions() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f1610]/85 via-transparent to-transparent" />
                 <figcaption className="absolute inset-x-0 bottom-0 p-3">
                   <p className="text-[11px] font-semibold text-white">{label}</p>
-                  <span className="text-[9px] font-semibold tracking-[.1em] text-[#d5ec77] uppercase">Field example</span>
+                  <span className="text-[9px] font-semibold tracking-[.1em] text-[#d5ec77] uppercase">Tap to learn what we check</span>
                 </figcaption>
-              </figure>
+              </Link>
             );
           })}
         </div>

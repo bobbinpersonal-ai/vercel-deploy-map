@@ -139,8 +139,15 @@ main > section:not([class*="bg-"]) > div {
   position: relative;
 }
 
-.nav-pill-track:hover {
+.nav-pill-track:hover,
+.nav-pill-track:active,
+.nav-pill-track.is-paused {
   animation-play-state: paused;
+}
+
+.nav-pill-scroller {
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,6 +1,7 @@
 import { Logo } from "@/components/Logo";
 import { PROJECT_CATEGORY_ORDER, PROJECT_INDEX, PROJECT_INDEX_COUNT } from "@/data/project-index";
-import { AlertTriangle, ArrowUpRight, HardHat, House, MapPin, Phone, Wallet, Wrench } from "lucide-react";
+import { AlertTriangle, ArrowUpRight, HardHat, House, MapPin, Pause, Phone, Play, Wallet, Wrench } from "lucide-react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router";
 
 const PHONE_DISPLAY = "424 426 0760";
@@ -42,6 +43,7 @@ export function BottomNav() {
   const activeService = pathname.startsWith("/services/")
     ? pathname.replace("/services/", "").split("/")[0]
     : null;
+  const [railPaused, setRailPaused] = useState(false);
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-50">
@@ -55,8 +57,13 @@ export function BottomNav() {
             <span className="sm:hidden">vBITCH</span>
             <span className="hidden sm:inline">All {PROJECT_INDEX_COUNT} services · vBITCH</span>
           </span>
-          <div className="nav-pill-scroller min-w-0 flex-1 overflow-hidden">
-            <div className="nav-pill-track flex w-max items-center py-2 pl-3">
+          <div
+            className="nav-pill-scroller min-w-0 flex-1 overflow-x-auto touch-pan-x [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            onTouchStart={() => setRailPaused(true)}
+            onPointerDown={() => setRailPaused(true)}
+            aria-label="Scrollable project and financing pill rail"
+          >
+            <div className={`nav-pill-track flex w-max items-center py-2 pl-3 ${railPaused ? "[animation-play-state:paused]" : ""}`}>
               {[0, 1].map((pass) =>
                 PROJECT_GROUPS.map(({ category, projects }) => (
                   <div key={`${category}-${pass}`} className="flex items-center">
@@ -104,7 +111,16 @@ export function BottomNav() {
               ))}
             </div>
           </div>
-          <span className="pointer-events-none absolute inset-y-0 right-0 w-14 bg-gradient-to-l from-[#182019] to-transparent" />
+          <button
+            type="button"
+            onClick={() => setRailPaused((paused) => !paused)}
+            className="z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 bg-[#182019] text-[#d5ec77] shadow-lg transition hover:border-[#d5ec77]"
+            aria-label={railPaused ? "Resume automatic pill scrolling" : "Pause automatic pill scrolling and drag the pill rail"}
+            title={railPaused ? "Resume automatic scrolling" : "Pause and drag the rail"}
+          >
+            {railPaused ? <Play className="size-3.5" /> : <Pause className="size-3.5" />}
+          </button>
+          <span className="pointer-events-none absolute inset-y-0 right-9 w-14 bg-gradient-to-l from-[#182019] to-transparent" />
         </div>
       </div>
 
