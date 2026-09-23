@@ -23,7 +23,7 @@ import {
   Wrench,
   X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Link } from "react-router";
 import { ExpertTopic } from "@/components/ExpertTopic";
 import { Logo } from "@/components/Logo";
@@ -170,6 +170,8 @@ export default function Landing() {
   const [address, setAddress] = useState("");
   const [cityStateZip, setCityStateZip] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [showTopNav, setShowTopNav] = useState(true);
 
   const [selectedProject, setSelectedProject] = useState("Roofing");
@@ -243,6 +245,42 @@ export default function Landing() {
       () => setLocationStatus("We couldn't access your location. You can enter your address manually."),
       { enableHighAccuracy: false, timeout: 8000 },
     );
+  };
+
+  const handleEstimateSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setSubmissionError(null);
+    const data = new FormData(event.currentTarget);
+    const service = String(data.get("service") ?? "Not sure yet");
+
+    try {
+      await addDoc(collection(db, "leads"), {
+        name: String(data.get("name") ?? ""),
+        email: String(data.get("email") ?? ""),
+        phone: String(data.get("phone") ?? ""),
+        address: String(data.get("address") ?? ""),
+        city: String(data.get("cityStateZip") ?? ""),
+        service,
+        consultationSlot,
+        estimatedValue: SERVICE_ESTIMATES[service] ?? 15000,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        stage: consultationSlot ? "appointment_requested" : "new",
+        source: "inbound_scheduled_intake",
+      });
+      void trackEvent("estimate_request_submitted", {
+        service,
+        source: "inbound_scheduled_intake",
+        consultationRequested: Boolean(consultationSlot),
+      });
+      setSubmitted(true);
+    } catch (error) {
+      console.error("[Estimate form] Could not submit lead:", error);
+      setSubmissionError("Your request wasn’t sent. Please try again or call us.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   usePageMeta(
@@ -328,20 +366,22 @@ export default function Landing() {
                 <p className="mt-1">{consultationSlot ? `We’ll follow up to confirm your requested visit for ${consultationSlot.dateLabel} at ${consultationSlot.time}.` : "A LoveMeAfter coordinator will call you back the same day in active markets."}</p>
               </div>
             ) : (
-              <form id="estimate-form" onSubmit={async (event) => { event.preventDefault(); const data = new FormData(event.currentTarget); try { await addDoc(collection(db, "leads"), { name: String(data.get("name") ?? ""), email: String(data.get("email") ?? ""), phone: String(data.get("phone") ?? ""), address: String(data.get("address") ?? ""), city: String(data.get("cityStateZip") ?? ""), service: String(data.get("service") ?? "Not sure yet"), consultationSlot, estimatedValue: SERVICE_ESTIMATES[String(data.get("service"))] ?? 15000, createdAt: serverTimestamp(), updatedAt: serverTimestamp(), stage: consultationSlot ? "appointment_requested" : "new", source: "inbound_scheduled_intake" }); void trackEvent("estimate_request_submitted", { service: String(data.get("service") ?? "Not sure yet"), source: "inbound_scheduled_intake", consultationRequested: Boolean(consultationSlot) }); setSubmitted(true); } catch { setLocationStatus("We couldn't submit your request. Please call us at 424 426 0760."); } }} className="mt-7 space-y-3">
+              <form id="estimate-form" onSubmit={handleEstimateSubmit} aria-busy={isSubmitting} className="mt-7 scroll-mt-24 space-y-3">
+                <p id="estimate-form-note" className="text-xs leading-5 text-white/70">Name and phone are required. Address details are optional.</p>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <input name="name" required placeholder="Full name" aria-label="Full name" className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50" />
-                  <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50" />
+                  <input name="name" required autoComplete="name" placeholder="Full name" aria-label="Full name" className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50" />
+                  <input name="phone" required type="tel" autoComplete="tel" inputMode="tel" placeholder="Phone number" aria-label="Phone number" className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50" />
                   <input name="email" type="email" required={Boolean(consultationSlot)} placeholder={consultationSlot ? "Email address (required for visit confirmation)" : "Email address (optional)"} aria-label={consultationSlot ? "Email address, required for visit confirmation" : "Email address, optional"} className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50 sm:col-span-2" />
                 </div>
                 <div className="flex gap-2">
-                  <input name="address" required value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Street address" aria-label="Street address" className="h-14 min-w-0 flex-1 rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50" />
+                  <input name="address" autoComplete="street-address" value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Street address (optional)" aria-label="Street address" className="h-14 min-w-0 flex-1 rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50" />
                   <button type="button" onClick={locateMe} aria-label="Locate me" className="flex h-14 shrink-0 items-center gap-2 rounded-xl border border-white/35 bg-white/10 px-3 text-xs font-semibold text-white transition hover:border-[#d5ec77] hover:bg-white/15" title="Use my location"><MapPin className="size-4" /> <span className="hidden sm:inline">Locate me</span></button>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <input name="cityStateZip" required value={cityStateZip} onChange={(event) => setCityStateZip(event.target.value)} placeholder="City, state & ZIP" aria-label="City, state and ZIP" className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50" />
+                  <input name="cityStateZip" autoComplete="address-level2" value={cityStateZip} onChange={(event) => setCityStateZip(event.target.value)} placeholder="City, state & ZIP (optional)" aria-label="City, state and ZIP" className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50" />
                   <select name="service" aria-label="Service needed" value={selectedProject} onChange={(event) => setSelectedProject(event.target.value)} className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50">{SERVICES.map((service) => <option key={service.title}>{service.title}</option>)}<option>Not sure yet</option></select>
                 </div>
+                {submissionError && <p role="alert" className="rounded-lg border border-red-300/40 bg-red-950/40 px-3 py-2 text-sm leading-5 text-red-100">{submissionError} <a href={PHONE_HREF} className="font-semibold underline underline-offset-2">Call {PHONE_DISPLAY}</a></p>}
                 {locationStatus && <p className="flex items-start gap-2 text-xs leading-5 text-[#d5ec77]"><MapPin className="mt-0.5 size-3.5 shrink-0" />{locationStatus}</p>}
                 {consultationSlot && (
                   <div className="flex items-center justify-between gap-3 rounded-xl border border-[#d5ec77]/55 bg-[#d5ec77]/15 px-3 py-2.5 text-xs text-white">
@@ -352,7 +392,7 @@ export default function Landing() {
                     <input type="hidden" name="consultationTime" value={consultationSlot.time} />
                   </div>
                 )}
-                <div className="grid gap-2 sm:grid-cols-2"><Button type="submit" className="h-14 rounded-xl bg-[#1d211d] text-sm font-semibold text-white hover:bg-[#30382f]">{consultationSlot ? "Send estimate & visit request" : "Request my inside-sales callback"} <ChevronRight className="ml-1 size-4" /></Button><button type="button" onClick={goToSchedule} className="flex h-14 items-center justify-center gap-2 rounded-xl border border-white/40 bg-white/15 text-sm font-semibold text-white transition hover:border-[#d5ec77] hover:bg-white/20"><CalendarDays className="size-4" /> {consultationSlot ? "Change in-person visit" : "Book in-person design consultation"}</button></div>
+                <div className="grid gap-2 sm:grid-cols-2"><Button type="submit" disabled={isSubmitting} className="h-14 rounded-xl bg-[#1d211d] text-sm font-semibold text-white hover:bg-[#30382f]">{isSubmitting ? "Sending your request…" : consultationSlot ? "Send estimate & visit request" : "Request my inside-sales callback"} {!isSubmitting && <ChevronRight className="ml-1 size-4" />}</Button><button type="button" onClick={goToSchedule} className="flex h-14 items-center justify-center gap-2 rounded-xl border border-white/40 bg-white/15 text-sm font-semibold text-white transition hover:border-[#d5ec77] hover:bg-white/20"><CalendarDays className="size-4" /> {consultationSlot ? "Change in-person visit" : "Book in-person design consultation"}</button></div>
               </form>
             )}
             <p className="mt-4 text-center text-xs text-white/65">Free estimate · inbound scheduled intake call · no obligation</p>
