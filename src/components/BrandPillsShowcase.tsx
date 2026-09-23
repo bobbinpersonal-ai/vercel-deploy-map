@@ -1,138 +1,184 @@
-"use client";
+import { useState } from "react";
+import { ArrowUpRight, BadgeCheck } from "lucide-react";
 
-import { useRef, useState, useEffect } from "react";
-import { ArrowRight, Sparkles } from "lucide-react";
-import { BRAND_PILLS } from "@/data/brand-pills";
+const TIER_LOGOS = [
+  {
+    id: "value",
+    title: "Value-conscious",
+    note: "Practical starting points",
+    accent: "border-[#d9e2c0] bg-[#f2f5e8] text-[#42502e]",
+    brands: [
+      ["GAF", "Roofing", "gaf.com"],
+      ["Alside", "Siding", "alside.com"],
+      ["JELD-WEN", "Windows", "jeld-wen.com"],
+      ["Masonite", "Entry doors", "masonite.com"],
+      ["Spectra", "Gutters", "spectraguttersystems.com"],
+      ["PPG", "Paint & coatings", "ppgpaints.com"],
+      ["Fiberon", "Decking", "fiberondecking.com"],
+      ["QUIKRETE", "Concrete & masonry", "quikrete.com"],
+      ["SAKRETE", "Concrete & repair", "sakrete.com"],
+      ["Pavestone", "Pavers & retaining walls", "pavestone.com"],
+      ["NDS", "Drainage systems", "ndspro.com"],
+      ["MSI", "Pavers & surfaces", "msisurfaces.com"],
+      ["Mohawk", "Flooring", "mohawkflooring.com"],
+      ["Rheem", "Heating & cooling", "rheem.com"],
+      ["Moen", "Plumbing", "moen.com"],
+      ["Leviton", "Electrical", "leviton.com"],
+      ["Progress Lighting", "Lighting", "progresslighting.com"],
+      ["Rain Bird", "Landscape & irrigation", "rainbird.com"],
+      ["Daltile", "Tile & bath", "daltile.com"],
+    ],
+  },
+  {
+    id: "balanced",
+    title: "Popular mid-range",
+    note: "A balance of features and finish",
+    accent: "border-[#d5dfc4] bg-[#eaf0e5] text-[#354b3d]",
+    brands: [
+      ["Owens Corning", "Roofing", "owenscorning.com"],
+      ["LP SmartSide", "Siding", "lpcorp.com"],
+      ["Pella", "Windows", "pella.com"],
+      ["Therma-Tru", "Entry doors", "thermatru.com"],
+      ["Englert", "Roofing & gutters", "englertinc.com"],
+      ["Sherwin-Williams", "Paint & coatings", "sherwin-williams.com"],
+      ["Trex", "Decking & fencing", "trex.com"],
+      ["Belgard", "Pavers & retaining walls", "belgard.com"],
+      ["Shaw", "Flooring", "shawfloors.com"],
+      ["Delta", "Plumbing", "deltafaucet.com"],
+      ["Carrier", "Heating & cooling", "carrier.com"],
+      ["Eaton", "Electrical", "eaton.com"],
+      ["Kichler", "Landscape lighting", "kichler.com"],
+      ["Hunter", "Landscape & irrigation", "hunterindustries.com"],
+      ["Nicolock", "Pavers & walls", "nicolock.com"],
+      ["Enphase", "Solar & backup", "enphase.com"],
+      ["CertainTeed", "Fencing & roofing", "certainteed.com"],
+    ],
+  },
+  {
+    id: "premium",
+    title: "Premium & design-forward",
+    note: "Elevated materials and finishes",
+    accent: "border-[#e5d5b3] bg-[#f6f0e3] text-[#624a2b]",
+    brands: [
+      ["CertainTeed", "Roofing systems", "certainteed.com"],
+      ["James Hardie", "Fiber-cement siding", "jameshardie.com"],
+      ["Marvin", "Architectural windows", "marvin.com"],
+      ["ProVia", "Custom entry doors", "provia.com"],
+      ["LeafFilter", "Gutter protection", "leaffilter.com"],
+      ["Benjamin Moore", "Paint & coatings", "benjaminmoore.com"],
+      ["TimberTech", "Composite decking", "timbertech.com"],
+      ["Unilock", "Pavers & retaining walls", "unilock.com"],
+      ["Anchor Wall", "Retaining-wall systems", "anchorwall.com"],
+      ["Eldorado Stone", "Stone veneer & walls", "eldoradostone.com"],
+      ["Cambria", "Quartz countertops", "cambriausa.com"],
+      ["Caesarstone", "Quartz surfaces", "caesarstoneus.com"],
+      ["Mitsubishi Electric", "Heat pumps", "mitsubishicomfort.com"],
+      ["Lutron", "Lighting controls", "lutron.com"],
+      ["WAC Lighting", "Architectural lighting", "waclighting.com"],
+      ["FX Luminaire", "Landscape lighting", "fxl.com"],
+      ["Rain Bird", "Irrigation systems", "rainbird.com"],
+      ["Generac", "Backup power", "generac.com"],
+      ["REC", "Solar panels", "recgroup.com"],
+    ],
+  },
+] as const;
 
-const ROW_LABELS: Record<string, string> = {
-  fencing: "Fencing by manufacturer",
-  roofing: "Roofing by manufacturer",
-  hvac: "HVAC by manufacturer",
-  windows: "Windows & doors by manufacturer",
-  siding: "Siding by manufacturer",
-  doors: "Entry & patio doors by manufacturer",
-  plumbing: "Plumbing by manufacturer",
-  electrical: "Electrical by manufacturer",
-  lighting: "Lighting by manufacturer",
-  solar: "Solar & backup power by manufacturer",
-  insulation: "Insulation by manufacturer",
-  countertops: "Countertops by manufacturer",
-  decks: "Decking by manufacturer",
-  baths: "Bath, tile & waterproofing by manufacturer",
+type BrandCardProps = {
+  brand: string;
+  category: string;
+  domain: string;
+  index: number;
 };
+
+function BrandCard({ brand, category, domain, index }: BrandCardProps) {
+  const [logoFailed, setLogoFailed] = useState(false);
+
+  return (
+    <a
+      href={`https://${domain}`}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`${brand}, ${category} manufacturer; opens the manufacturer's website`}
+      className="group flex min-h-[66px] min-w-0 items-center gap-2.5 rounded-xl border border-[#1d211d]/[.08] bg-white/90 px-2.5 py-2 shadow-[0_2px_8px_rgba(29,33,29,.035)] transition hover:-translate-y-0.5 hover:border-[#71803d]/40 hover:bg-white hover:shadow-sm sm:gap-3 sm:px-3"
+    >
+      <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[#1d211d]/[.07] bg-[#fafaf7] sm:size-10">
+        {!logoFailed ? (
+          <img
+            src={`https://logo.clearbit.com/${domain}`}
+            alt=""
+            aria-hidden="true"
+            loading={index < 8 ? "eager" : "lazy"}
+            decoding="async"
+            className="size-6 object-contain sm:size-7"
+            onError={() => setLogoFailed(true)}
+          />
+        ) : (
+          <span aria-hidden="true" className="text-[10px] font-bold tracking-tight text-[#71803d]">
+            {brand.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase()}
+          </span>
+        )}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-[11px] font-bold leading-4 text-[#252a24] sm:text-xs">{brand}</span>
+        <span className="mt-0.5 block truncate text-[9px] leading-3.5 text-[#788074] sm:text-[10px]">{category}</span>
+      </span>
+      <ArrowUpRight aria-hidden="true" className="size-3.5 shrink-0 text-[#a0a89d] transition group-hover:text-[#71803d]" />
+    </a>
+  );
+}
+
+function mixedOrder<T extends readonly (readonly [string, string, string])[]>(brands: T) {
+  // Stable hash sorting gives each tier a mixed, NASCAR-style logo wall without
+  // changing positions during React renders or causing flicker on mobile.
+  return [...brands].sort(([nameA, categoryA], [nameB, categoryB]) => {
+    const score = (text: string) => Array.from(text).reduce((total, char) => (total * 31 + char.charCodeAt(0)) >>> 0, 7);
+    return score(`${nameA}-${categoryA}`) - score(`${nameB}-${categoryB}`);
+  });
+}
 
 export function BrandPillsShowcase() {
   return (
-    <section className="video-through-section relative z-10 border-y border-[#1d211d]/10 bg-[#182019]/95 backdrop-blur-sm">
-      <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-24">
-        <div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr] lg:items-end">
-          <div>
-            <p className="text-xs font-semibold tracking-[.18em] text-[#71803d] uppercase">What we specify</p>
-            <h2 className="mt-4 max-w-2xl text-4xl font-semibold leading-[.96] tracking-[-.06em] sm:text-5xl">
-              Real brands. Real project types.
-            </h2>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-[#c8d1b6]">
-              From fencing to roofing, HVAC, windows, and plumbing — see the brands we match to each project type, with the kind of product we specify.
-            </p>
-          </div>
+    <section
+      aria-labelledby="brand-showcase-title"
+      className="w-full rounded-3xl border border-[#1d211d]/10 bg-[#f8f7f1] p-4 shadow-[0_18px_50px_-42px_rgba(29,33,29,.5)] sm:p-6 lg:p-7"
+    >
+      <div className="flex flex-col gap-3 border-b border-[#1d211d]/10 pb-5 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="flex items-center gap-2 text-[10px] font-bold tracking-[.16em] text-[#71803d] uppercase">
+            <BadgeCheck aria-hidden="true" className="size-4" /> Materials we can help compare
+          </p>
+          <h3 id="brand-showcase-title" className="mt-2 text-xl font-semibold tracking-[-.04em] text-[#1d211d] sm:text-2xl">
+            From the driveway to the roofline.
+          </h3>
         </div>
-
-        {Object.entries(groupBrandRows())
-          .map(([category, brands], categoryIndex) => (
-            <div key={category} className="mt-16">
-              <div className="flex items-center gap-3">
-                <h3 className="text-sm font-semibold tracking-[.16em] uppercase text-[#d5ec77]">
-                  {ROW_LABELS[category] ?? category}
-                </h3>
-                <span className="flex size-1.5 rounded-full bg-[#d5ec77]/60" />
-              </div>
-              <div className="mt-4 overflow-hidden">
-                <ScrollRow brands={brands} category={category} />
-              </div>
-            </div>
-          ))}
+        <p className="max-w-lg text-xs leading-5 text-[#687265]">
+          A mixed showcase of familiar manufacturers across the home—not an exclusive supplier list. Explore paving, concrete, retaining walls, landscaping, roofing, siding, windows, and home systems; the right product and price tier depend on the scope and local availability.
+        </p>
       </div>
+
+      <div className="mt-5 grid items-start gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        {TIER_LOGOS.map((tier) => (
+          <section key={tier.id} aria-labelledby={`tier-${tier.id}`} className={`min-w-0 rounded-2xl border p-3 sm:p-4 ${tier.accent}`}>
+            <div className="mb-3 flex min-h-12 items-center justify-between gap-2 border-b border-current/10 pb-3">
+              <div className="min-w-0">
+                <h4 id={`tier-${tier.id}`} className="text-sm font-bold tracking-[-.02em]">{tier.title}</h4>
+                <p className="mt-0.5 text-[10px] opacity-75">{tier.note}</p>
+              </div>
+              <span aria-hidden="true" className="flex shrink-0 items-end gap-0.5">
+                {[1, 2, 3].map((bar) => <span key={bar} className={`w-1 rounded-full bg-current ${bar === 1 ? "h-2 opacity-40" : bar === 2 ? "h-3 opacity-65" : "h-4"}`} />)}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
+              {mixedOrder(tier.brands).map(([brand, category, domain], index) => (
+                <BrandCard key={`${brand}-${category}`} brand={brand} category={category} domain={domain} index={index} />
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+      <p className="mt-4 text-[10px] leading-4 text-[#7a8377]">
+        Value-conscious, popular mid-range, and premium are illustrative comparison paths—not guaranteed price bands, endorsements, or brand ratings. Product lines, quotes, warranty terms, and local availability vary by project and address.
+      </p>
     </section>
   );
-}
-
-function ScrollRow({ brands, category }: { brands: { brand: string; slug: string; imageId: number }[], category: string }) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [scrollOffset, setScrollOffset] = useState(0);
-  const maxScroll = (() => {
-    if (!trackRef.current) return 0;
-    return trackRef.current.scrollWidth - trackRef.current.clientWidth;
-  })();
-
-  useEffect(() => {
-    if (!trackRef.current) return;
-    const handleScroll = () => setScrollOffset(trackRef.current!.scrollLeft);
-    trackRef.current.addEventListener("scroll", handleScroll, { passive: true });
-    return () => trackRef.current!.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (maxScroll === 0) return;
-    const interval = setInterval(() => {
-      const next = scrollOffset >= maxScroll ? 0 : scrollOffset + 1;
-      setScrollOffset(next);
-    }, 20);
-    return () => clearInterval(interval);
-  }, [maxScroll, scrollOffset]);
-
-  return (
-    <div ref={trackRef} className="landscape-carousel pip-scroll">
-      <ul className="pip-scroll__rails pip-list">
-        {brands.map(({ brand, imageId }) => (
-          <li key={`${category}-${brand}`} className="pip-scroll__item pip-card">
-            <a
-              href={`/services/${slugToHref(imageId)}`}
-              className="pip-card__inner"
-              onClick={(event) => event.preventDefault()}
-            >
-              <span className="pip-card__label">{categoryLabel(category)} {brand}</span>
-              <span className="pip-card__photo" style={{ backgroundImage: `url(${brandImage(imageId)})` }} />
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function groupBrandRows() {
-  const grouped: Record<string, { brand: string; slug: string; imageId: number }[]> = {};
-  for (const entry of BRAND_PILLS) {
-    grouped[entry.slug] ??= [];
-    grouped[entry.slug].push({ brand: entry.brand, slug: entry.slug, imageId: entry.imageId });
-  }
-  return grouped;
-}
-
-function categoryLabel(category: string) {
-  const map: Record<string, string> = {
-    fencing: "Fencing by",
-    roofing: "Roofing by",
-    hvac: "HVAC by",
-    windows: "Windows by",
-    siding: "Siding by",
-    doors: "Doors by",
-    plumbing: "Plumbing by",
-    electrical: "Electrical by",
-    lighting: "Lighting by",
-    solar: "Solar by",
-    insulation: "Insulation by",
-    countertops: "Countertops by",
-    decks: "Decking by",
-    baths: "Bath & tile by",
-  };
-  return map[category] ?? `${category} by`;
-}
-
-function slugToHref(imageId: number) {
-  return `#${imageId}`;
-}
-
-function brandImage(id: number, w = 720) {
-  return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`;
 }
