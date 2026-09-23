@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowUpRight, Heart, HardHat, Handshake, Home, MapPin, Phone, Route, Users, Wrench } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Heart, HardHat, Handshake, Home, MapPin, Palette, Phone, Route, Users, Wrench } from "lucide-react";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { ExpertTopic } from "@/components/ExpertTopic";
@@ -7,6 +7,7 @@ import { usePageMeta } from "@/components/PageMeta";
 const ROLES = [
   { href: "/careers/roles/outside-sales", label: "Outside sales", kicker: "Field sales · territory growth", title: "Build relationships in the neighborhoods you serve.", copy: "Meet homeowners and local contacts in the field, develop a territory, and move qualified opportunities toward a clear next step.", icon: MapPin, image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=90" },
   { href: "/careers/roles/inside-sales-dispatch", label: "Inside sales", kicker: "Phone · scheduling · follow-through", title: "Turn a good conversation into a great appointment.", copy: "Listen on the phone, qualify the project, coordinate the calendar, and keep homeowners, reps, and crews connected.", icon: Phone, image: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=1200&q=90" },
+  { href: "/careers/roles/design-consultants", label: "Design consultants", kicker: "In-home design · client continuity", title: "Give a good project a point of view.", copy: "Translate the homeowner's priorities into a buildable design direction, collaborate with national designers, and stay close when the crew brings it to life.", icon: Palette, image: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=1200&q=90" },
   { href: "/careers/roles/installers", label: "Installers", kicker: "Trade professionals", title: "Do work you are proud to put your name on.", copy: "Join a quality-first installation network with organized scopes, homeowner context, and matched residential opportunities.", icon: Wrench, image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=90" },
   { href: "/careers/roles/partnerships", label: "B2B partnerships", kicker: "Business development", title: "Build relationships that keep working.", copy: "Create referral partnerships with real estate, property, insurance, and local home-service businesses that already have trust.", icon: Handshake, image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=90" },
 ];
@@ -36,7 +37,7 @@ export default function Careers() {
   const navigate = useNavigate();
   usePageMeta(
     "Careers & Partner Opportunities | LoveMeAfter",
-    "Outside sales, inside sales, installer and B2B partnership opportunities. Real earnings math, clear expectations and a defined growth path.",
+    "Outside sales, inside sales, design consultant, installer and B2B partnership opportunities. Clear expectations and a defined growth path.",
   );
 
   return <main className="min-h-screen bg-[#f7f5f0] text-[#1d211d]"><header className="bg-[#182019] text-white"><nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-10"><Link to="/" className="flex items-center gap-3 font-semibold"><span className="flex size-10 items-center justify-center rounded-full bg-black text-white"><Heart className="size-5 fill-current" /></span>LoveMeAfter</Link><div className="flex items-center gap-4"><a href="tel:+14244260760" className="hidden items-center gap-2 text-sm text-white/75 sm:flex"><Phone className="size-4" /> 424 426 0760</a><button onClick={() => navigate("/")} className="flex items-center gap-2 rounded-full px-4 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white"><ArrowLeft className="size-4" /> Back home</button></div></nav></header>
