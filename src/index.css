@@ -112,15 +112,6 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-@keyframes nav-pill-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-.nav-pill-track {
-  animation: nav-pill-scroll 90s linear infinite;
-}
-
 /* Text-led homepage sections keep a quiet reading surface over the fixed hero
    treatment. This preserves the visual atmosphere without sacrificing contrast. */
 .video-through-section {
@@ -139,24 +130,17 @@ main > section:not([class*="bg-"]) > div {
   position: relative;
 }
 
-.nav-pill-track:hover,
-.nav-pill-track:active,
-.nav-pill-track.is-paused {
-  animation-play-state: paused;
-}
-
-.nav-pill-scroller {
+.project-pill-scroller {
   overscroll-behavior-inline: contain;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
 }
 
+.project-pill-scroller::-webkit-scrollbar { display: none; }
+
 @media (prefers-reduced-motion: reduce) {
-  .nav-pill-track { animation: none; }
-  .nav-pill-scroller {
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .nav-pill-scroller::-webkit-scrollbar { display: none; }
+  .project-pill-scroller { scroll-behavior: auto; }
 }
 
 .pip-scroll__item {

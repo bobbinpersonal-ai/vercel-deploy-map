@@ -23,7 +23,7 @@ import {
   Wrench,
   X,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { ExpertTopic } from "@/components/ExpertTopic";
 import { Logo } from "@/components/Logo";
@@ -170,10 +170,7 @@ export default function Landing() {
   const [address, setAddress] = useState("");
   const [cityStateZip, setCityStateZip] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [videoPlaying, setVideoPlaying] = useState(false);
   const [showTopNav, setShowTopNav] = useState(true);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  // Keep the hero video behavior stable: it is shown on mobile and not rendered visually on desktop.
 
   const [selectedProject, setSelectedProject] = useState("Roofing");
   const [scheduleOpen, setScheduleOpen] = useState(false);
@@ -201,13 +198,6 @@ export default function Landing() {
       document.body.style.overflow = previousOverflow;
     };
   }, [scheduleOpen]);
-
-  const playHeroVideo = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = true;
-    void video.play().then(() => setVideoPlaying(true)).catch(() => setVideoPlaying(false));
-  };
 
   const scrollToEstimate = () => {
     void trackEvent("estimate_cta_clicked", { placement: "landing_page" });
@@ -313,43 +303,7 @@ export default function Landing() {
             aria-hidden="true"
             className="absolute inset-0 bg-[url('https://images.pexels.com/photos/4913326/pexels-photo-4913326.jpeg?auto=compress&cs=tinysrgb&w=2200')] bg-cover bg-center"
           />
-          <video
-            ref={videoRef}
-            className="pointer-events-auto size-full object-cover object-center opacity-100 md:hidden"
-            autoPlay
-            muted
-            src="/copy_5E397E73-24D9-4597-8204-60EA4CE89EDD.mp4"
-            loop
-            playsInline
-            controls={false}
-            controlsList="nodownload noplaybackrate noremoteplayback"
-            disablePictureInPicture
-            disableRemotePlayback
-            preload="auto"
-            poster="https://images.pexels.com/photos/4913326/pexels-photo-4913326.jpeg?auto=compress&cs=tinysrgb&w=2200"
-            aria-label="LoveMeAfter home improvement project video"
-            onLoadedData={(event) => {
-              event.currentTarget.muted = true;
-              void event.currentTarget.play().then(() => setVideoPlaying(true)).catch(() => setVideoPlaying(false));
-            }}
-            onCanPlay={(event) => {
-              event.currentTarget.muted = true;
-              void event.currentTarget.play().then(() => setVideoPlaying(true)).catch(() => setVideoPlaying(false));
-            }}
-            onPlay={() => setVideoPlaying(true)}
-            onPause={() => setVideoPlaying(false)}
-            onError={() => setVideoPlaying(false)}
-          />
-          {!videoPlaying && (
-            <button
-              type="button"
-              onClick={playHeroVideo}
-              className="pointer-events-auto absolute bottom-24 left-5 z-20 inline-flex items-center gap-2 rounded-full border border-white/40 bg-[#182019]/85 px-4 py-3 text-xs font-semibold text-white shadow-xl backdrop-blur-md md:hidden"
-            >
-              <span className="flex size-6 items-center justify-center rounded-full bg-[#d5ec77] text-[#182019]">▶</span>
-              Play project video
-            </button>
-          )}
+
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(15,22,16,.64)_0%,rgba(15,22,16,.34)_46%,rgba(15,22,16,.06)_100%)]" />
         </div>
         <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-5 pb-20 pt-36 sm:px-8 lg:grid-cols-[1.08fr_.92fr] lg:px-10 lg:pb-28 lg:pt-48">
