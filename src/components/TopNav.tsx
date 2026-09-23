@@ -1,7 +1,7 @@
 import { ArrowUpRight, Menu, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
-import { LogoMark } from "@/components/Logo";
+import { Logo } from "@/components/Logo";
 
 const PHONE_DISPLAY = "424 426 0760";
 const PHONE_HREF = "tel:+14244260760";
@@ -41,9 +41,8 @@ export function TopNav() {
     <header className={`fixed inset-x-0 top-0 z-[45] text-white transition-all duration-500 ${visible ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-3 opacity-0"}`}>
       <div className="absolute inset-0 -z-10 border-b border-white/10 bg-[#182019]/82 shadow-[0_8px_32px_rgba(0,0,0,.24)] backdrop-blur-md" />
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-10">
-        <Link to="/" className="flex items-center gap-3 font-semibold" onClick={() => setMenuOpen(false)}>
-          <LogoMark className="size-9 text-white" />
-          <span className="tracking-[-.03em]">LoveMeAfter</span>
+        <Link to="/" className="flex items-center" onClick={() => setMenuOpen(false)}>
+          <Logo tone="light" compact={false} className="gap-2" />
         </Link>
         <div className="hidden items-center gap-6 text-sm text-white/75 lg:flex">
           {links.map(([to, label]) => <Link key={to} to={to} className="transition hover:text-white">{label}</Link>)}

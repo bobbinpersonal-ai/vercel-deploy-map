@@ -25,7 +25,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { ExpertTopic } from "@/components/ExpertTopic";
-import { LogoMark } from "@/components/Logo";
+import { Logo } from "@/components/Logo";
 import { DAMAGE_PHOTOS, JOBSITE_PHOTOS, WORKER_PHOTOS, px } from "@/data/photos";
 import { PROJECT_INDEX_COUNT } from "@/data/project-index";
 import { RoiBarChart } from "@/components/GeneratedGraphics";
@@ -210,8 +210,7 @@ export default function Landing() {
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-10">
 
           <a href="#top" className="flex items-center gap-3">
-            <LogoMark className="size-10 text-white" />
-            <span className="text-lg font-semibold tracking-[-0.03em]">LoveMeAfter</span>
+            <Logo tone="light" compact={false} className="gap-2" />
             <span className="rounded-full border border-[#d5ec77]/70 px-2 py-1 text-[10px] font-bold tracking-[.14em] text-[#d5ec77]">{SITE_VERSION}</span>
           </a>
           <div className="hidden items-center gap-5 text-sm whitespace-nowrap text-white/75 xl:flex">
@@ -433,7 +432,7 @@ export default function Landing() {
 
       <section className="relative z-10 bg-[#d5ec77]/76 backdrop-blur-sm"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 px-5 py-16 sm:px-8 lg:flex-row lg:items-center lg:px-10 lg:py-20"><div><p className="text-xs font-semibold tracking-[.18em] text-[#657035] uppercase">Ready when you are</p><h2 className="mt-3 max-w-2xl text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-6xl">Find out what it actually costs.</h2></div><div className="flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#1d211d] px-7 text-base text-white hover:bg-[#30382f]">Get my free estimate <ArrowUpRight className="ml-2 size-5" /></Button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-[#1d211d]/25 px-6 text-sm font-semibold hover:bg-white/20"><Phone className="size-4" /> {PHONE_DISPLAY}</a></div></div></section>
 
-      <footer className="relative z-10 bg-[#1d211d]/88 text-white"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-10 text-sm sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10"><a href="#top" className="flex items-center gap-3 font-semibold"><LogoMark className="size-8 text-white" />LoveMeAfter</a><div className="flex flex-wrap gap-4 text-white/45"><p>Free estimates · same-day callback · clear scopes · built for clarity</p><Link to="/conditions" className="text-[#d5ec77]">Field conditions</Link><Link to="/trades" className="text-[#d5ec77]">Trade network</Link><Link to="/careers" className="text-[#d5ec77]">Careers</Link><Link to="/contractors" className="text-[#d5ec77]">Contractor partners</Link></div><a href={PHONE_HREF} className="font-medium text-[#d5ec77]">{PHONE_DISPLAY}</a></div></footer>
+      <footer className="relative z-10 bg-[#1d211d]/88 text-white"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-10 text-sm sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10"><a href="#top" className="flex items-center"><Logo tone="light" compact={false} className="gap-2" /></a><div className="flex flex-wrap gap-4 text-white/45"><p>Free estimates · same-day callback · clear scopes · built for clarity</p><Link to="/conditions" className="text-[#d5ec77]">Field conditions</Link><Link to="/trades" className="text-[#d5ec77]">Trade network</Link><Link to="/careers" className="text-[#d5ec77]">Careers</Link><Link to="/contractors" className="text-[#d5ec77]">Contractor partners</Link></div><a href={PHONE_HREF} className="font-medium text-[#d5ec77]">{PHONE_DISPLAY}</a></div></footer>
     </main>
   );
 }

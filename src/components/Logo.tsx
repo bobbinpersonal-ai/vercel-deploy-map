@@ -56,7 +56,7 @@ export function LogoMark({ className, ...props }: SVGProps<SVGSVGElement>) {
 
 /**
  * The full lockup. `tone="black"` is the brand default; use `tone="light"` on
- * dark headers. `compact` hides the tagline for tight bars.
+ * dark headers. `compact` hides the BUILDERS descriptor for tight bars.
  */
 export function Logo({
   tone = "black",
@@ -76,7 +76,7 @@ export function Logo({
         <span className="text-[15px] font-bold tracking-[-.02em]">LoveMeAfter</span>
         {!compact && (
           <span className={`mt-0.5 text-[9px] font-semibold tracking-[.16em] uppercase ${sub}`}>
-            Build it right
+            BUILDERS
           </span>
         )}
       </span>
