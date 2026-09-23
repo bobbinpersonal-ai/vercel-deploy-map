@@ -17,7 +17,7 @@ export const px = (id: number, w = 1600) =>
 export const pxPage = (id: number) => `https://www.pexels.com/photo/${id}/`;
 
 export const PHOTO_CREDIT =
-  "Reference photography via Pexels, used under the Pexels License. Not a photo of a completed LoveMeAfter project.";
+  "Visual examples are used to explain the type of work discussed; completed-project photography is labeled separately when available.";
 
 export const PHOTO_CREDIT_URL = "https://www.pexels.com/license/";
 

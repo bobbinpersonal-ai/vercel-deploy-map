@@ -65,7 +65,7 @@ export function ProjectVideo({ category }: { category: string }) {
           <p className="text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase">{copy.eyebrow}</p>
           <h2 className="mt-4 max-w-md text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-5xl">{copy.title}</h2>
           <p className="mt-5 max-w-md text-base leading-7 text-white/70">{copy.description}</p>
-          <p className="mt-5 text-xs leading-5 text-white/45">General LoveMeAfter project footage reused across related guides. It is illustrative and not presented as a completed project at this address.</p>
+          <p className="mt-5 text-xs leading-5 text-white/45">This category film is a quick visual overview. The inspection, scope, and final materials are specific to your home.</p>
         </div>
         <div className="relative overflow-hidden rounded-[1.75rem] border border-white/15 bg-[#101510] shadow-2xl">
           <video

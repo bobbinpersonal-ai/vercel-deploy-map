@@ -86,7 +86,7 @@ export function InteractiveHouseMap() {
             </button>
           ))}
           <div className="absolute inset-x-4 bottom-4 z-10 flex flex-col gap-3 sm:inset-x-6 sm:bottom-6 sm:flex-row sm:items-end sm:justify-between">
-            <p className="max-w-sm text-xs leading-5 text-white/85">Reference photography via Pexels. Images show the type of home and project, not a completed LoveMeAfter job.</p>
+            <p className="max-w-sm text-xs leading-5 text-white/85">Use the photo as a visual map. Your inspection determines the actual condition, materials, and scope.</p>
             <div className="flex shrink-0 rounded-full border border-white/20 bg-[#182019]/75 p-1 backdrop-blur-md">
               {(Object.keys(VIEWS) as (keyof typeof VIEWS)[]).map((key) => (
                 <button
