@@ -1,22 +1,12 @@
 import { Logo } from "@/components/Logo";
-import { PROJECT_CATEGORY_ORDER, PROJECT_INDEX, PROJECT_INDEX_COUNT } from "@/data/project-index";
+import { PROJECT_INDEX } from "@/data/project-index";
+import { BRAND_PILLS } from "@/data/brand-pills";
 import { AlertTriangle, ArrowUpRight, HardHat, House, MapPin, Pause, Phone, Play, Wallet, Wrench } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router";
 
 const PHONE_DISPLAY = "424 426 0760";
 const PHONE_HREF = "tel:+14244260760";
-
-const LENDERS = [
-  { name: "LightStream", detail: "Home improvement lender · low APR options", tone: "text-[#4ba5dc]", surface: "bg-[#e5f5ff]" },
-  { name: "SoFi", detail: "Home improvement lender · fixed-rate loans", tone: "text-[#151515]", surface: "bg-white" },
-  { name: "LendingPoint", detail: "Home improvement lender · flexible options", tone: "text-[#168b76]", surface: "bg-[#e5f7f1]" },
-  { name: "Best Egg", detail: "Home improvement lender · project financing", tone: "text-[#d26c2e]", surface: "bg-[#fff0e8]" },
-  { name: "Upgrade", detail: "Home improvement lender · monthly payments", tone: "text-[#6844a4]", surface: "bg-[#f0eaff]" },
-  { name: "Prosper", detail: "Home improvement lender · personal loans", tone: "text-[#007c83]", surface: "bg-[#e3f8f7]" },
-  { name: "OneMain Financial", detail: "Home improvement lender · loan options", tone: "text-[#28618e]", surface: "bg-[#e8f2fb]" },
-  { name: "Axos Bank", detail: "Home improvement lender · financing options", tone: "text-[#23677c]", surface: "bg-[#e5f5f7]" },
-] as const;
 
 const LINKS = [
   { to: "/services", label: "Services", icon: Wrench },
@@ -27,11 +17,11 @@ const LINKS = [
   { to: "/financing", label: "Financing", icon: Wallet },
 ];
 
-/** Every project type we run, grouped by category — drives the scrolling pill rail. */
-const PROJECT_GROUPS = PROJECT_CATEGORY_ORDER.map((category) => ({
-  category,
-  projects: PROJECT_INDEX.filter((project) => project.category === category),
-})).filter((group) => group.projects.length > 0);
+/** Services and their matching manufacturers for the bottom scrolling pill rail. */
+const PROJECT_RAIL = PROJECT_INDEX.map((project) => ({
+  project,
+  brands: BRAND_PILLS.filter((brand) => brand.slug === project.slug),
+}));
 
 /** Routes where the public bottom bar would get in the way. */
 const HIDDEN_PREFIXES = ["/admin", "/auth", "/login", "/dashboard"];
@@ -53,59 +43,46 @@ export function BottomNav() {
         aria-label="All LoveMeAfter project types"
       >
         <div className="flex items-center">
-          <span className="z-10 shrink-0 bg-[#182019] px-3 py-2 text-[10px] font-semibold tracking-[.16em] text-[#d5ec77] uppercase sm:px-4">
-            <span className="sm:hidden">All {PROJECT_INDEX_COUNT} services</span>
-            <span className="hidden sm:inline">All {PROJECT_INDEX_COUNT} services</span>
-          </span>
           <div
             className="nav-pill-scroller min-w-0 flex-1 overflow-x-auto touch-pan-x [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             onTouchStart={() => setRailPaused(true)}
             onPointerDown={() => setRailPaused(true)}
             aria-label="Scrollable project and financing pill rail"
           >
-            <div className={`nav-pill-track flex w-max items-center py-2 pl-3 ${railPaused ? "[animation-play-state:paused]" : ""}`}>
-              {[0, 1].map((pass) =>
-                PROJECT_GROUPS.map(({ category, projects }) => (
-                  <div key={`${category}-${pass}`} className="flex items-center">
-                    <span className="mr-3 text-[10px] font-semibold tracking-[.14em] whitespace-nowrap text-[#d5ec77] uppercase">
-                      {category}
-                    </span>
-                    {projects.map(({ slug, label }) => {
-                      const active = activeService === slug;
-                      return (
-                        <Link
-                          key={`${slug}-${pass}`}
-                          to={`/services/${slug}`}
-                          className={`mr-2 rounded-full border px-3 py-1.5 text-[11px] font-medium whitespace-nowrap transition ${
-                            active
-                              ? "border-[#d5ec77] bg-[#d5ec77] text-[#1d211d]"
-                              : "border-white/20 bg-white/10 text-white/80 hover:border-[#d5ec77] hover:bg-[#d5ec77] hover:text-[#1d211d]"
-                          }`}
-                        >
-                          {label}
-                        </Link>
-                      );
-                    })}
-                    <span
-                      aria-hidden="true"
-                      className="mr-3 h-4 w-px shrink-0 bg-white/20"
-                    />
-                  </div>
-                )),
-              )}
+            <div className={`nav-pill-track flex w-max items-center gap-2 py-2 pl-3 ${railPaused ? "[animation-play-state:paused]" : ""}`}>
               {[0, 1].map((pass) => (
-                <div key={`lenders-${pass}`} className="flex items-center gap-2 pr-3">
-                  <span className="mr-1 text-[10px] font-semibold tracking-[.14em] whitespace-nowrap text-[#d5ec77] uppercase">Financing partners</span>
-                  {LENDERS.map(({ name, detail, tone, surface }) => (
-                    <Link
-                      key={`${name}-${pass}`}
-                      to="/financing"
-                      aria-label={`${name}, ${detail}`}
-                      className={`mr-1.5 flex min-h-[43px] shrink-0 flex-col justify-center rounded-2xl border border-white/35 px-3 py-1.5 leading-tight transition hover:-translate-y-0.5 hover:border-[#d5ec77] ${surface}`}
-                    >
-                      <span className={`text-[11px] font-bold tracking-[-.02em] ${tone}`}>{name}</span>
-                      <span className="mt-0.5 max-w-[170px] text-[8px] font-semibold tracking-[.01em] text-[#5d665e]">{detail}</span>
-                    </Link>
+                <div key={`projects-${pass}`} className="flex items-center gap-2 pr-2">
+                  {PROJECT_RAIL.map(({ project, brands }) => (
+                    <div key={`${project.slug}-${pass}`} className="flex items-center gap-2">
+                      <Link
+                        to={`/services/${project.slug}`}
+                        aria-current={activeService === project.slug ? "page" : undefined}
+                        className={`rounded-full border px-3 py-1.5 text-[11px] font-medium whitespace-nowrap transition ${
+                          activeService === project.slug
+                            ? "border-[#d5ec77] bg-[#d5ec77] text-[#1d211d]"
+                            : "border-white/20 bg-white/10 text-white/80 hover:border-[#d5ec77] hover:bg-[#d5ec77] hover:text-[#1d211d]"
+                        }`}
+                      >
+                        {project.label}
+                      </Link>
+                      {brands.map((brand) => (
+                        <Link
+                          key={`${brand.domain}-${brand.brand}-${pass}`}
+                          to={`/services/${project.slug}`}
+                          aria-label={`${brand.brand}, manufacturer for ${project.label}`}
+                          className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#d5ec77]/45 bg-[#d5ec77]/10 px-2.5 py-1.5 text-[10px] font-semibold whitespace-nowrap text-[#e6f4ae] transition hover:border-[#d5ec77] hover:bg-[#d5ec77]/20"
+                        >
+                          <img
+                            src={`https://www.google.com/s2/favicons?domain=${brand.domain}&sz=64`}
+                            alt=""
+                            aria-hidden="true"
+                            className="size-4 rounded-full bg-white object-contain"
+                            loading="lazy"
+                          />
+                          {brand.brand}
+                        </Link>
+                      ))}
+                    </div>
                   ))}
                 </div>
               ))}
