@@ -11,6 +11,7 @@ import {
   ChevronRight,
   CircleDollarSign,
   ClipboardCheck,
+  CalendarDays,
   Fence,
   House,
   MapPin,
@@ -168,6 +169,7 @@ export default function Landing() {
     document.getElementById("estimate-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
   const goToEstimate = () => scrollToEstimate();
+  const goToSchedule = () => document.getElementById("schedule")?.scrollIntoView({ behavior: "smooth", block: "start" });
   const locateMe = () => {
     if (!navigator.geolocation) {
       setLocationStatus("Location is unavailable in this browser. Enter your address manually.");
@@ -284,7 +286,7 @@ export default function Landing() {
             <div className="mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase"><span className="rounded-full border border-[#d5ec77]/60 px-2.5 py-1 text-[10px] tracking-[.16em] text-[#d5ec77]">{SITE_VERSION}</span><span className="size-2 rounded-full bg-[#d5ec77]" /> Free estimates · same-day callback</div>
             <h1 className="text-5xl leading-[.96] font-semibold tracking-[-.06em] sm:text-7xl lg:text-[6.4rem]">Make home feel <span className="text-[#d5ec77]">right again.</span></h1>
             <p className="mt-8 max-w-lg text-lg leading-8 text-white/72">Roofing, windows, siding, gutters and more — clearly explained, carefully scoped, and built around the way you want your home to feel.</p>
-            <div className="mt-10 flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#d5ec77] px-7 text-base font-semibold text-[#1d211d] hover:bg-[#e1f895]">Start with a free estimate <ArrowUpRight className="ml-2 size-5" /></Button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-white/25 px-6 text-sm font-medium hover:bg-white/10"><Phone className="size-4" /> Talk to a human</a></div>
+            <div className="mt-10 flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#d5ec77] px-7 text-base font-semibold text-[#1d211d] hover:bg-[#e1f895]">Start with a free estimate <ArrowUpRight className="ml-2 size-5" /></Button><button onClick={goToSchedule} className="flex h-14 items-center gap-2 rounded-full border border-white/35 px-6 text-sm font-medium hover:bg-white/10"><CalendarDays className="size-4" /> Book an in-home visit</button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-white/25 px-6 text-sm font-medium hover:bg-white/10"><Phone className="size-4" /> Talk to a human</a></div>
             <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3 text-sm text-white/75"><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> No obligation</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> Written scope</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> 10-year workmanship warranty</span></div>
             <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl border border-white/30 bg-[#141b15]/55 px-4 py-3 backdrop-blur-md">
               <span className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[.16em] text-[#d5ec77] uppercase"><CircleDollarSign className="size-4" /> Financing available</span>
