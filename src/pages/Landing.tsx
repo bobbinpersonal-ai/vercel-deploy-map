@@ -142,6 +142,7 @@ export default function Landing() {
   // Keep the hero video behavior stable: it is shown on mobile and not rendered visually on desktop.
 
   const [selectedProject, setSelectedProject] = useState("Roofing");
+  const [scheduleOpen, setScheduleOpen] = useState(false);
 
   useEffect(() => {
     const updateTopNav = () => {
@@ -157,6 +158,15 @@ export default function Landing() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!scheduleOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [scheduleOpen]);
+
   const playHeroVideo = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -169,7 +179,10 @@ export default function Landing() {
     document.getElementById("estimate-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
   const goToEstimate = () => scrollToEstimate();
-  const goToSchedule = () => document.getElementById("schedule")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const goToSchedule = () => {
+    void trackEvent("design_consultation_calendar_opened", { placement: "landing_page" });
+    setScheduleOpen(true);
+  };
   const locateMe = () => {
     if (!navigator.geolocation) {
       setLocationStatus("Location is unavailable in this browser. Enter your address manually.");
@@ -235,6 +248,31 @@ export default function Landing() {
         )}
       </header>
 
+      {scheduleOpen && (
+        <div
+          className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-[#0f1610]/75 px-4 py-6 backdrop-blur-sm sm:items-center sm:px-6 sm:py-10"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="design-consultation-modal-title"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setScheduleOpen(false);
+          }}
+        >
+          <div className="relative w-full max-w-5xl">
+            <button
+              type="button"
+              onClick={() => setScheduleOpen(false)}
+              className="absolute right-3 top-3 z-10 flex size-10 items-center justify-center rounded-full border border-[#1d211d]/10 bg-white text-[#1d211d] shadow-lg transition hover:bg-[#eaf0d0]"
+              aria-label="Close in-person design consultation calendar"
+            >
+              <X className="size-5" />
+            </button>
+            <div id="design-consultation-modal-title" className="sr-only">Book an in-person design consultation</div>
+            <LeadershipSchedule />
+          </div>
+        </div>
+      )}
+
       <section id="top" className="relative isolate min-h-[730px] bg-transparent text-white">
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,22,16,.95)_0%,rgba(15,22,16,.73)_46%,rgba(15,22,16,.15)_100%),url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=85')] bg-cover bg-[center_65%]" />
         <div className="fixed inset-0 z-0 overflow-hidden bg-[#182019] pointer-events-none">
@@ -286,7 +324,7 @@ export default function Landing() {
             <div className="mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase"><span className="rounded-full border border-[#d5ec77]/60 px-2.5 py-1 text-[10px] tracking-[.16em] text-[#d5ec77]">{SITE_VERSION}</span><span className="size-2 rounded-full bg-[#d5ec77]" /> Free estimates · same-day callback</div>
             <h1 className="text-5xl leading-[.96] font-semibold tracking-[-.06em] sm:text-7xl lg:text-[6.4rem]">Make home feel <span className="text-[#d5ec77]">right again.</span></h1>
             <p className="mt-8 max-w-lg text-lg leading-8 text-white/72">Roofing, windows, siding, gutters and more — clearly explained, carefully scoped, and built around the way you want your home to feel.</p>
-            <div className="mt-10 flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#d5ec77] px-7 text-base font-semibold text-[#1d211d] hover:bg-[#e1f895]">Start with a free estimate <ArrowUpRight className="ml-2 size-5" /></Button><button onClick={goToSchedule} className="flex h-14 items-center gap-2 rounded-full border border-white/35 px-6 text-sm font-medium hover:bg-white/10"><CalendarDays className="size-4" /> Book a design consultation</button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-white/25 px-6 text-sm font-medium hover:bg-white/10"><Phone className="size-4" /> Talk to a human</a></div>
+            <div className="mt-10 flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#d5ec77] px-7 text-base font-semibold text-[#1d211d] hover:bg-[#e1f895]">Start with a free estimate <ArrowUpRight className="ml-2 size-5" /></Button><button onClick={goToSchedule} className="flex h-14 items-center gap-2 rounded-full border border-white/35 px-6 text-sm font-medium hover:bg-white/10"><CalendarDays className="size-4" /> Book an in-person design consultation</button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-white/25 px-6 text-sm font-medium hover:bg-white/10"><Phone className="size-4" /> Talk to a human</a></div>
             <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3 text-sm text-white/75"><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> No obligation</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> Written scope</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> 10-year workmanship warranty</span></div>
             <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl border border-white/30 bg-[#141b15]/55 px-4 py-3 backdrop-blur-md">
               <span className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[.16em] text-[#d5ec77] uppercase"><CircleDollarSign className="size-4" /> Financing available</span>
@@ -317,7 +355,7 @@ export default function Landing() {
                   <select name="service" aria-label="Service needed" value={selectedProject} onChange={(event) => setSelectedProject(event.target.value)} className="h-14 w-full rounded-xl border border-white/55 bg-white/28 px-4 text-sm font-medium text-white outline-none backdrop-blur-[2px] transition focus:border-[#d5ec77] focus:bg-white/38 focus:ring-2 focus:ring-[#d5ec77]/35">{SERVICES.map((service) => <option key={service.title}>{service.title}</option>)}<option>Not sure yet</option></select>
                 </div>
                 {locationStatus && <p className="flex items-start gap-2 text-xs leading-5 text-[#d5ec77]"><MapPin className="mt-0.5 size-3.5 shrink-0" />{locationStatus}</p>}
-                <div className="grid gap-2 sm:grid-cols-2"><Button type="submit" className="h-14 rounded-xl bg-[#1d211d] text-sm font-semibold text-white hover:bg-[#30382f]">Request my inside-sales callback <ChevronRight className="ml-1 size-4" /></Button><button type="button" onClick={goToSchedule} className="flex h-14 items-center justify-center gap-2 rounded-xl border border-white/40 bg-white/10 text-sm font-semibold text-white transition hover:border-[#d5ec77] hover:bg-white/20"><CalendarDays className="size-4" /> Book design consultation</button></div>
+                <div className="grid gap-2 sm:grid-cols-2"><Button type="submit" className="h-14 rounded-xl bg-[#1d211d] text-sm font-semibold text-white hover:bg-[#30382f]">Request my inside-sales callback <ChevronRight className="ml-1 size-4" /></Button><button type="button" onClick={goToSchedule} className="flex h-14 items-center justify-center gap-2 rounded-xl border border-white/40 bg-white/10 text-sm font-semibold text-white transition hover:border-[#d5ec77] hover:bg-white/20"><CalendarDays className="size-4" /> Book in-person design consultation</button></div>
               </form>
             )}
             <p className="mt-4 text-center text-xs text-white/65">Free estimate · inbound scheduled intake call · no obligation</p>
