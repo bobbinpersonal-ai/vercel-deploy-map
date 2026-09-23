@@ -54,8 +54,8 @@ export function BottomNav() {
       >
         <div className="flex items-center">
           <span className="z-10 shrink-0 bg-[#182019] px-3 py-2 text-[10px] font-semibold tracking-[.16em] text-[#d5ec77] uppercase sm:px-4">
-            <span className="sm:hidden">vBITCH</span>
-            <span className="hidden sm:inline">All {PROJECT_INDEX_COUNT} services · vBITCH</span>
+            <span className="sm:hidden">All {PROJECT_INDEX_COUNT} services</span>
+            <span className="hidden sm:inline">All {PROJECT_INDEX_COUNT} services</span>
           </span>
           <div
             className="nav-pill-scroller min-w-0 flex-1 overflow-x-auto touch-pan-x [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
