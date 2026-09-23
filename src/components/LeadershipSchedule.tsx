@@ -60,7 +60,6 @@ export function LeadershipSchedule({ onConfirm, onCancel }: LeadershipSchedulePr
   const days = useMemo(() => nextWeekdays(10), []);
   const [date, setDate] = useState(days[0]?.value ?? "");
   const [time, setTime] = useState("");
-  const [confirmedSlot, setConfirmedSlot] = useState<ConsultationSlot | null>(null);
   const unavailable = unavailableSlotsFor(date);
   const selectedDay = days.find((day) => day.value === date);
 
@@ -104,12 +103,11 @@ export function LeadershipSchedule({ onConfirm, onCancel }: LeadershipSchedulePr
         <button type="button" disabled={!time || !selectedDay} onClick={() => {
           if (!selectedDay) return;
           const slot = { date, dateLabel: selectedDay.label, time };
-          if (onConfirm) onConfirm(slot);
-          else setConfirmedSlot(slot);
+          onConfirm?.(slot);
         }} className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#d5ec77] px-5 text-sm font-semibold text-[#1d211d] transition hover:bg-[#e5f795] disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/40">
           <Check className="size-4" /> {onConfirm ? "Use this appointment time" : "Confirm this requested time"}
         </button>
-        {confirmedSlot && <p role="status" className="mt-3 text-center text-xs text-[#d5ec77]">Requested: {confirmedSlot.dateLabel} · {confirmedSlot.time}. The team will confirm availability.</p>}
+
       </div>
     </section>
   );
