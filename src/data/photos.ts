@@ -200,9 +200,9 @@ export const PROJECT_PHOTO_SETS: Record<string, PhotoSet> = {
     products: [
       ["Bathroom vanity", 27629440],
       ["Bathroom sink and faucet", 10568026],
-      ["Shower", 30629679],
+      ["Shower", 19980232],
       ["Bathroom wall tile", 10486084],
-      ["Faucet detail", 37808313],
+      ["Faucet detail", 10568026],
       ["Bathroom mirror", 4758745],
     ],
   },
@@ -211,7 +211,7 @@ export const PROJECT_PHOTO_SETS: Record<string, PhotoSet> = {
     gallery: [4092026, 35493889],
     products: [
       ["Finished interior wall", 32716845],
-      ["Basement flooring", 326862],
+      ["Basement flooring", 11126101],
       ["Ceiling light fixture", 298542],
       ["Framed wall insulation", 4482829],
     ],
@@ -220,7 +220,7 @@ export const PROJECT_PHOTO_SETS: Record<string, PhotoSet> = {
     hero: 11126101,
     gallery: [204263, 9423038],
     products: [
-      ["Hardwood flooring", 326862],
+      ["Hardwood flooring", 11126101],
       ["Tile floor", 15699201],
       ["Floor and baseboard transition", 12039044],
       ["Room with new flooring", 204263],
@@ -260,9 +260,9 @@ export const PROJECT_PHOTO_SETS: Record<string, PhotoSet> = {
     hero: 5583126,
     gallery: [5583052, 10533141],
     products: [
-      ["Rolling a wall", 5583052],
+      ["Rolling a wall", 10533141],
       ["Cutting in edges", 10533141],
-      ["Painted interior wall", 7746626],
+      ["Painted interior wall", 5583126],
       ["Painted trim", 8583905],
     ],
   },
@@ -290,7 +290,7 @@ export const PROJECT_PHOTO_SETS: Record<string, PhotoSet> = {
     hero: 36307503,
     gallery: [36730419, 7587738],
     products: [
-      ["Closet shelving and rods", 36730419],
+      ["Closet shelving and rods", 7587738],
       ["Walk-in closet layout", 36307503],
       ["Drawers and storage", 7587738],
       ["Closet lighting", 11021594],
