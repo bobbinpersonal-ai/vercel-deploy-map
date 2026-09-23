@@ -8,6 +8,13 @@ import { Link, useLocation } from "react-router";
 const PHONE_DISPLAY = "424 426 0760";
 const PHONE_HREF = "tel:+14244260760";
 
+const RAIL_LENDERS = [
+  { name: "LightStream", domain: "lightstream.com", detail: "Review fixed-rate offers" },
+  { name: "SoFi", domain: "sofi.com", detail: "Compare payment options" },
+  { name: "Upgrade", domain: "upgrade.com", detail: "Explore project financing" },
+  { name: "Best Egg", domain: "bestegg.com", detail: "See current loan options" },
+] as const;
+
 const LINKS = [
   { to: "/services", label: "Services", icon: Wrench },
   { to: "/conditions", label: "Conditions", icon: AlertTriangle },
@@ -20,7 +27,10 @@ const LINKS = [
 /** Services and their matching manufacturers for the bottom scrolling pill rail. */
 const PROJECT_RAIL = PROJECT_INDEX.map((project) => ({
   project,
-  brands: BRAND_PILLS.filter((brand) => brand.slug === project.slug),
+  brands: BRAND_PILLS.filter((brand, index, brands) =>
+    brand.slug === project.slug &&
+    brands.findIndex((item) => item.slug === brand.slug && item.domain === brand.domain && item.brand === brand.brand) === index,
+  ),
 }));
 
 /** Routes where the public bottom bar would get in the way. */
@@ -28,12 +38,12 @@ const HIDDEN_PREFIXES = ["/admin", "/auth", "/login", "/dashboard"];
 
 export function BottomNav() {
   const { pathname } = useLocation();
+  const [railPaused, setRailPaused] = useState(false);
   if (HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix))) return null;
 
   const activeService = pathname.startsWith("/services/")
     ? pathname.replace("/services/", "").split("/")[0]
     : null;
-  const [railPaused, setRailPaused] = useState(false);
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-50">
@@ -47,12 +57,12 @@ export function BottomNav() {
             className="nav-pill-scroller min-w-0 flex-1 overflow-x-auto touch-pan-x [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             onTouchStart={() => setRailPaused(true)}
             onPointerDown={() => setRailPaused(true)}
-            aria-label="Scrollable project and financing pill rail"
+            aria-label="Scrolling home projects, products, holiday lighting, and lender options"
           >
             <div className={`nav-pill-track flex w-max items-center gap-2 py-2 pl-3 ${railPaused ? "[animation-play-state:paused]" : ""}`}>
               {[0, 1].map((pass) => (
                 <div key={`projects-${pass}`} className="flex items-center gap-2 pr-2">
-                  {PROJECT_RAIL.map(({ project, brands }) => (
+                  {PROJECT_RAIL.map(({ project, brands }, projectIndex) => (
                     <div key={`${project.slug}-${pass}`} className="flex items-center gap-2">
                       <Link
                         to={`/services/${project.slug}`}
@@ -82,6 +92,49 @@ export function BottomNav() {
                           {brand.brand}
                         </Link>
                       ))}
+                      {project.slug === "lighting" && (
+                        <Link
+                          to="/services/lighting"
+                          className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#e9b66a]/45 bg-[#e9b66a]/10 px-3 py-1.5 text-[10px] font-semibold whitespace-nowrap text-[#ffdfb0] transition hover:border-[#e9b66a] hover:bg-[#e9b66a]/20"
+                        >
+                          <span aria-hidden="true">✦</span> Holiday lighting
+                        </Link>
+                      )}
+                      {(projectIndex + 1) % 10 === 0 && (
+                        <>
+                          {RAIL_LENDERS[(projectIndex + 1) / 10 - 1] && (() => {
+                            const lender = RAIL_LENDERS[(projectIndex + 1) / 10 - 1];
+                            return (
+                              <Link
+                                to="/financing"
+                                title="Rates, deferred-payment availability, terms, and approval are set by the lender and vary by offer."
+                                aria-label={`${lender.name}: ${lender.detail}. See lender terms and eligibility.`}
+                                className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#9dc8dc]/35 bg-[#9dc8dc]/10 px-2.5 py-1.5 text-[10px] font-semibold whitespace-nowrap text-[#c7e6f2] transition hover:border-[#9dc8dc] hover:bg-[#9dc8dc]/20"
+                              >
+                                <img
+                                  src={`https://www.google.com/s2/favicons?domain=${lender.domain}&sz=64`}
+                                  alt=""
+                                  aria-hidden="true"
+                                  className="size-4 rounded-full bg-white object-contain"
+                                  loading="lazy"
+                                />
+                                {lender.name}
+                                <span className="font-normal text-white/65">· {lender.detail}</span>
+                              </Link>
+                            );
+                          })()}
+                          {RAIL_LENDERS[(projectIndex + 1) / 10 - 1] && (
+                            <Link
+                              to="/financing"
+                              title="Deferred-payment and promotional offers depend on lender, applicant eligibility, and current terms."
+                              aria-label="Some lenders may offer deferred-payment promotions; availability, eligibility, and terms vary."
+                              className="flex shrink-0 items-center rounded-full border border-white/15 bg-white/[.06] px-2.5 py-1.5 text-[9px] font-medium whitespace-nowrap text-white/65 transition hover:border-white/35 hover:text-white/85"
+                            >
+                              Promo or deferred options vary
+                            </Link>
+                          )}
+                        </>
+                      )}
                     </div>
                   ))}
                 </div>

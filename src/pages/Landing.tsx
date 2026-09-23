@@ -79,14 +79,49 @@ const photoId = (library: [string, number][], label: string) =>
 
 /** Financing partners: [lender, brand tone, one-line detail]. */
 const LENDERS: [string, string, string][] = [
-  ["LightStream", "text-[#1d5d8f]", "Fixed-rate home improvement loans"],
-  ["SoFi", "text-[#151515]", "Financing for larger projects"],
-  ["LendingPoint", "text-[#167b68]", "Flexible credit options"],
+  ["LightStream", "text-[#1d5d8f]", "Fixed-rate options; lender approval applies"],
+  ["SoFi", "text-[#151515]", "Compare current loan offers"],
+  ["LendingPoint", "text-[#167b68]", "Review available payment options"],
   ["Best Egg", "text-[#d26c2e]", "Home improvement financing"],
-  ["Upgrade", "text-[#5b3a94]", "One fixed monthly payment"],
-  ["Prosper", "text-[#007c83]", "Personal loans for projects"],
-  ["OneMain Financial", "text-[#1f4d7a]", "Branch-supported loan options"],
-  ["Axos Bank", "text-[#23677c]", "Home improvement loans"],
+  ["Upgrade", "text-[#5b3a94]", "Compare terms and monthly payments"],
+  ["Prosper", "text-[#007c83]", "Personal loan options"],
+  ["OneMain Financial", "text-[#1f4d7a]", "Review lender-set terms"],
+  ["Axos Bank", "text-[#23677c]", "Home improvement loan options"],
+];
+
+const TEXAS_PROJECT_SPOTLIGHTS: { title: string; detail: string; service: string; products: { name: string; line: string; domain: string }[]; tone: string; tag: string }[] = [
+  {
+    title: "Roofing for Texas weather",
+    detail: "Compare shingles, underlayment, ventilation, and the product warranty for your home.",
+    service: "roofing",
+    products: [{ name: "Owens Corning", line: "Duration shingles", domain: "owenscorning.com" }, { name: "GAF", line: "Timberline HDZ", domain: "gaf.com" }],
+    tone: "border-[#c77b57]/25 bg-[#f4e4d9]",
+    tag: "Popular exterior project",
+  },
+  {
+    title: "Windows & entry doors",
+    detail: "Improve comfort, curb appeal, and the first impression—product and resale outcomes vary by home.",
+    service: "windows",
+    products: [{ name: "Andersen", line: "400 Series windows", domain: "andersenwindows.com" }, { name: "Pella", line: "250 Series windows", domain: "pella.com" }, { name: "Therma-Tru", line: "Classic-Craft entry doors", domain: "thermatru.com" }],
+    tone: "border-[#71803d]/25 bg-[#eaf0d0]",
+    tag: "High-visibility exterior refresh",
+  },
+  {
+    title: "Attic insulation & cooling",
+    detail: "Start with the attic, air sealing, and system needs to plan a more comfortable Texas summer.",
+    service: "hvac",
+    products: [{ name: "Owens Corning", line: "Attic insulation", domain: "owenscorning.com" }, { name: "Daikin", line: "Heat pumps", domain: "daikin.com" }],
+    tone: "border-[#6f9ab0]/25 bg-[#e2edf1]",
+    tag: "Summer comfort",
+  },
+  {
+    title: "Seasonal & holiday lighting",
+    detail: "Plan a warm roofline, entry, or landscape display for the holidays and beyond.",
+    service: "lighting",
+    products: [{ name: "Kichler", line: "Outdoor fixtures", domain: "kichler.com" }, { name: "WAC Lighting", line: "Outdoor LED", domain: "waclighting.com" }],
+    tone: "border-[#d9a74f]/30 bg-[#f6eedc]",
+    tag: "Seasonal favorite",
+  },
 ];
 
 const SERVICES = [
@@ -371,11 +406,39 @@ export default function Landing() {
             <div><p className="text-3xl font-semibold tracking-[-.05em]">Same-day</p><p className="mt-1 text-sm text-[#65705e]">Callback in active markets</p></div>
             <div><p className="text-3xl font-semibold tracking-[-.05em]">10 years</p><p className="mt-1 text-sm text-[#65705e]">Minimum workmanship warranty</p></div>
           </div>
+          <div className="mt-8 border-t border-[#1d211d]/10 pt-7">
+            <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <div>
+                <p className="text-[10px] font-semibold tracking-[.18em] text-[#71803d] uppercase">A Texas-focused starting point</p>
+                <h2 className="mt-2 text-2xl font-semibold tracking-[-.04em] sm:text-3xl">Popular projects, familiar products.</h2>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-[#596357]">Start with a project homeowners often ask about. We’ll help compare scope and product options for your home and location.</p>
+              </div>
+              <Link to="/services" className="inline-flex shrink-0 items-center text-sm font-semibold text-[#71803d]">Browse all {PROJECT_INDEX_COUNT} projects <ArrowUpRight className="ml-1 size-4" /></Link>
+            </div>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              {TEXAS_PROJECT_SPOTLIGHTS.map((project) => (
+                <Link key={project.title} to={`/services/${project.service}`} className={`group rounded-2xl border p-4 transition hover:-translate-y-0.5 hover:shadow-md ${project.tone}`}>
+                  <span className="text-[9px] font-bold tracking-[.14em] text-[#687265] uppercase">{project.tag}</span>
+                  <h3 className="mt-2 text-base font-semibold tracking-[-.02em]">{project.title}</h3>
+                  <p className="mt-2 min-h-12 text-xs leading-5 text-[#596357]">{project.detail}</p>
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {project.products.map((product) => (
+                      <span key={product.name} className="inline-flex items-center gap-1 rounded-full border border-[#1d211d]/10 bg-white/75 px-2 py-1 text-[9px] font-semibold text-[#41483f]">
+                        <img src={`https://www.google.com/s2/favicons?domain=${product.domain}&sz=64`} alt="" aria-hidden="true" loading="lazy" className="size-3.5 rounded-sm object-contain" />
+                        {product.name} <span className="font-normal text-[#687265]">· {product.line}</span>
+                      </span>
+                    ))}
+                  </div>
+                  <span className="mt-3 inline-flex items-center text-[10px] font-bold tracking-[.08em] text-[#71803d] uppercase">Explore project <ArrowUpRight className="ml-1 size-3 transition-transform group-hover:translate-x-0.5" /></span>
+                </Link>
+              ))}
+            </div>
+          </div>
           <div className="mt-7 border-t border-[#1d211d]/12 pt-6">
             <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
               <div>
                 <p className="text-sm font-semibold tracking-[.18em] text-[#71803d] uppercase">Financing available · start now, pay over time</p>
-                <p className="mt-1 max-w-2xl text-sm text-[#596357]">A project does not have to drain your savings in a single month. Compare APR, term, and monthly payment options from recognized home improvement lenders — start the work now and pay it down over time.</p>
+                <p className="mt-1 max-w-2xl text-sm text-[#596357]">Compare APR, term, and monthly payments from home improvement lenders. Lower-rate or deferred-payment promotions may be available on some offers; approval, fees, eligibility, and all terms are set by the lender.</p>
               </div>
               <Link to="/financing" className="inline-flex shrink-0 items-center text-sm font-semibold text-[#71803d]">View financing options <ArrowUpRight className="ml-1 size-4" /></Link>
             </div>
