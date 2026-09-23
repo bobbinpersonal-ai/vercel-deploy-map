@@ -1,8 +1,7 @@
 import { useMemo, useState, type FormEvent } from "react";
-import { ArrowUpRight, CalendarDays, Check, Clock3, Home, Palette } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Check, Clock3, Palette } from "lucide-react";
 
 const OPTIONS = [
-  ["Inside sales team · in-home consultation", "A field-ready conversation about the home's condition, your priorities, project options, budget, and the next practical step."],
   ["Design consultant · in-home consultation", "Bring your ideas, measurements, and inspiration. A design consultant can help shape layout, materials, finishes, and a brief for our national design team."],
 ] as const;
 
@@ -87,7 +86,7 @@ const formatDate = (value: string) => {
 
 export function LeadershipSchedule({ dark = false }: { dark?: boolean }) {
   const days = useMemo(() => nextWeekdays(4), []);
-  const [appointmentType, setAppointmentType] = useState<string>(OPTIONS[0][0]);
+  const appointmentType = OPTIONS[0][0];
   const [projectType, setProjectType] = useState<string>(PROJECT_TYPES[0]);
   const [date, setDate] = useState(days[0]?.value ?? "");
   const [time, setTime] = useState(() => {
@@ -131,11 +130,11 @@ export function LeadershipSchedule({ dark = false }: { dark?: boolean }) {
       <div className="grid gap-8 lg:grid-cols-[.82fr_1.18fr] lg:items-start">
         <div>
           <div className={`flex items-center gap-2 text-xs font-semibold tracking-[.16em] uppercase ${dark ? "text-[#d5ec77]" : "text-[#71803d]"}`}>
-            <CalendarDays className="size-4" /> Talk with senior management
+            <CalendarDays className="size-4" /> Book your design consultation
           </div>
           <h2 className="mt-4 text-3xl font-semibold leading-[.98] tracking-[-.045em] sm:text-4xl">Book a useful conversation, not a vague callback.</h2>
           <p className={`mt-4 text-sm leading-6 ${muted}`}>
-            Choose an in-home appointment with our inside sales team or a design consultant, select a 45-minute window between 7:00 AM and 8:00 PM, and send the request directly to <strong className={dark ? "text-white" : "text-[#1d211d]"}>hello@lovemeafter.com</strong>. The team will reply with the confirmed appointment.
+Choose an in-home appointment with a LoveMeAfter design consultant, select a 45-minute window between 7:00 AM and 8:00 PM, and send the request directly to <strong className={dark ? "text-white" : "text-[#1d211d]"}>hello@lovemeafter.com</strong>. The design team will reply with the confirmed appointment.
           </p>
           <div className={`mt-6 border-t pt-5 ${dark ? "border-white/15" : "border-[#1d211d]/10"}`}>
             <p className="flex items-center gap-2 text-xs font-semibold tracking-[.12em] uppercase"><Clock3 className={`size-4 ${dark ? "text-[#d5ec77]" : "text-[#71803d]"}`} /> What to expect</p>
@@ -157,14 +156,10 @@ export function LeadershipSchedule({ dark = false }: { dark?: boolean }) {
         ) : (
           <form onSubmit={scheduleRequest} className="space-y-4">
             <div>
-              <p className="mb-2 text-xs font-semibold tracking-[.12em] uppercase">What would be most useful?</p>
-              <div className="grid gap-2">
-                {OPTIONS.map(([title, detail]) => (
-                  <button key={title} type="button" onClick={() => setAppointmentType(title)} className={`flex items-start gap-3 rounded-xl border p-3 text-left transition ${appointmentType === title ? (dark ? "border-[#d5ec77] bg-[#d5ec77]/10" : "border-[#71803d] bg-[#eaf0d0]") : (dark ? "border-white/12 bg-white/[.03] hover:border-white/35" : "border-[#1d211d]/10 bg-[#f7f5f0] hover:border-[#71803d]/60")}`}>
-                    <span className={`mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full ${appointmentType === title ? "bg-[#d5ec77] text-[#1d211d]" : dark ? "bg-white/10 text-white/65" : "bg-white text-[#71803d]"}`}>{title.startsWith("Inside") ? <Home className="size-3.5" /> : <Palette className="size-3.5" />}</span>
-                    <span><span className="block text-sm font-semibold">{title}</span><span className={`mt-1 block text-xs leading-5 ${muted}`}>{detail}</span></span>
-                  </button>
-                ))}
+              <p className="mb-2 text-xs font-semibold tracking-[.12em] uppercase">Appointment type</p>
+              <div className={`flex items-start gap-3 rounded-xl border p-3 ${dark ? "border-[#d5ec77] bg-[#d5ec77]/10" : "border-[#71803d] bg-[#eaf0d0]"}`}>
+                <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]"><Palette className="size-3.5" /></span>
+                <span><span className="block text-sm font-semibold">{OPTIONS[0][0]}</span><span className={`mt-1 block text-xs leading-5 ${muted}`}>{OPTIONS[0][1]}</span></span>
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
