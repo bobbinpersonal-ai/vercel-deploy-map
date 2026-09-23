@@ -71,7 +71,7 @@ const PRODUCT_STRIP: [string, string, number][] = [
 
 const PHONE_DISPLAY = "424 426 0760";
 const PHONE_HREF = "tel:+14244260760";
-const SITE_VERSION = "V600";
+const SITE_VERSION = "vELON";
 
 /** Look up a verified photo id from the curated library by its label. */
 const photoId = (library: [string, number][], label: string) =>
