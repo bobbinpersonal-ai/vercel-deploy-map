@@ -6,6 +6,35 @@ const OPTIONS = [
   ["Design consultant · in-home consultation", "Bring your ideas, measurements, and inspiration. A design consultant can help shape layout, materials, finishes, and a brief for our national design team."],
 ] as const;
 
+const PROJECT_TYPES = [
+  "Roofing",
+  "Siding & exterior",
+  "Windows & doors",
+  "Kitchen",
+  "Bathroom",
+  "Flooring & tile",
+  "Deck, patio & fencing",
+  "HVAC, plumbing & electrical",
+  "Lighting",
+  "Solar & backup power",
+  "Multiple projects",
+  "Not sure yet",
+] as const;
+
+const PRODUCT_PREFERENCES = [
+  "GAF or Owens Corning roofing",
+  "Tyvek weather protection",
+  "Alside or James Hardie siding",
+  "Andersen, Pella, Marvin or Milgard windows",
+  "Trex, TimberTech or Fiberon decking",
+  "CertainTeed or Trex fencing",
+  "Kohler, Moen or Delta fixtures",
+  "Cambria, Caesarstone or Silestone countertops",
+  "Carrier, Trane, Lennox or Mitsubishi HVAC",
+  "Lutron, Kichler or WAC lighting",
+  "Enphase, SolarEdge or Qcells solar",
+] as const;
+
 const CONSULTATION_MINUTES = 45;
 const START_OF_DAY = 7 * 60;
 const END_OF_DAY = 20 * 60;
@@ -59,6 +88,7 @@ const formatDate = (value: string) => {
 export function LeadershipSchedule({ dark = false }: { dark?: boolean }) {
   const days = useMemo(() => nextWeekdays(4), []);
   const [appointmentType, setAppointmentType] = useState<string>(OPTIONS[0][0]);
+  const [projectType, setProjectType] = useState<string>(PROJECT_TYPES[0]);
   const [date, setDate] = useState(days[0]?.value ?? "");
   const [time, setTime] = useState(() => {
     const firstDay = days[0]?.value ?? "";
@@ -77,6 +107,8 @@ export function LeadershipSchedule({ dark = false }: { dark?: boolean }) {
       `I would like to request: ${appointmentType}`,
       `Preferred day: ${formatDate(date)}`,
       `Preferred time: ${time} (${CONSULTATION_MINUTES}-minute consultation)`,
+      `Project type: ${projectType}`,
+      `Product preferences: ${data.getAll("productPreferences").map(String).join(", ") || "No preference selected / homeowner would like guidance"}`,
       "",
       `Name: ${String(data.get("name") ?? "")}`,
       `Email: ${String(data.get("email") ?? "")}`,
@@ -136,8 +168,9 @@ export function LeadershipSchedule({ dark = false }: { dark?: boolean }) {
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
+              <label className="text-xs font-semibold">Project type<select name="projectType" value={projectType} onChange={(event) => setProjectType(event.target.value)} className={`mt-1.5 h-11 w-full rounded-xl border px-3 text-sm font-medium outline-none focus:border-[#71803d] ${field}`}>{PROJECT_TYPES.map((type) => <option key={type}>{type}</option>)}</select></label>
               <label className="text-xs font-semibold">Preferred day<select value={date} onChange={(event) => { const nextDate = event.target.value; const unavailable = unavailableSlotsFor(nextDate); const firstAvailable = TIME_SLOTS.find((slot) => !unavailable.has(slot.index)) ?? TIME_SLOTS[0]; setDate(nextDate); setTime(formatSlot(firstAvailable.start, firstAvailable.end)); }} className={`mt-1.5 h-11 w-full rounded-xl border px-3 text-sm font-medium outline-none focus:border-[#71803d] ${field}`}>{days.map((day) => <option key={day.value} value={day.value}>{day.label}</option>)}</select></label>
-              <div>
+              <div className="sm:col-span-2">
                 <p className="text-xs font-semibold">Preferred time <span className={`font-normal ${muted}`}>(45 minutes · 7 AM–8 PM)</span></p>
                 <div className="mt-1.5 grid max-h-44 grid-cols-2 gap-1.5 overflow-y-auto pr-1 sm:grid-cols-3">
                   {TIME_SLOTS.map((slot) => {
@@ -149,6 +182,18 @@ export function LeadershipSchedule({ dark = false }: { dark?: boolean }) {
                 <p className={`mt-1.5 text-[10px] ${muted}`}>Times shown are requested windows; the team confirms the final appointment by email.</p>
               </div>
             </div>
+            <fieldset className={`rounded-xl border p-3 ${dark ? "border-white/12 bg-white/[.03]" : "border-[#1d211d]/10 bg-[#f7f5f0]"}`}>
+              <legend className="px-1 text-xs font-semibold">Product preferences <span className={`font-normal ${muted}`}>(optional — check any you already have in mind)</span></legend>
+              <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                {PRODUCT_PREFERENCES.map((preference) => (
+                  <label key={preference} className={`flex cursor-pointer items-start gap-2 rounded-lg border px-2.5 py-2 text-xs leading-4 transition ${dark ? "border-white/10 hover:border-white/30" : "border-[#1d211d]/8 hover:border-[#71803d]/50"}`}>
+                    <input type="checkbox" name="productPreferences" value={preference} className="mt-0.5 accent-[#71803d]" />
+                    <span>{preference}</span>
+                  </label>
+                ))}
+              </div>
+              <p className={`mt-2 text-[10px] ${muted}`}>No product knowledge is required. Your consultant can explain comparable options, availability, pricing, and manufacturer warranties.</p>
+            </fieldset>
             <div className="grid gap-3 sm:grid-cols-2">
               <input name="name" required placeholder="Your name" aria-label="Your name" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
               <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
