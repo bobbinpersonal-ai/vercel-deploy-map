@@ -84,10 +84,26 @@ const formatDate = (value: string) => {
   return new Date(`${value}T12:00:00`).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
 };
 
-export function LeadershipSchedule({ dark = false }: { dark?: boolean }) {
+export type LeadershipSchedulePrefill = {
+  name?: string;
+  phone?: string;
+  email?: string;
+  streetAddress?: string;
+  location?: string;
+  project?: string;
+  projectType?: string;
+  productPreferences?: string[];
+};
+
+type LeadershipScheduleProps = {
+  dark?: boolean;
+  prefill?: LeadershipSchedulePrefill;
+};
+
+export function LeadershipSchedule({ dark = false, prefill }: LeadershipScheduleProps) {
   const days = useMemo(() => nextWeekdays(4), []);
   const appointmentType = OPTIONS[0][0];
-  const [projectType, setProjectType] = useState<string>(PROJECT_TYPES[0]);
+  const [projectType, setProjectType] = useState<string>(prefill?.projectType || PROJECT_TYPES[0]);
   const [date, setDate] = useState(days[0]?.value ?? "");
   const [time, setTime] = useState(() => {
     const firstDay = days[0]?.value ?? "";
@@ -163,7 +179,7 @@ Choose an in-home appointment with a LoveMeAfter design consultant, select a 45-
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
-              <label className="text-xs font-semibold">Project type<select name="projectType" value={projectType} onChange={(event) => setProjectType(event.target.value)} className={`mt-1.5 h-11 w-full rounded-xl border px-3 text-sm font-medium outline-none focus:border-[#71803d] ${field}`}>{PROJECT_TYPES.map((type) => <option key={type}>{type}</option>)}</select></label>
+              <label className="text-xs font-semibold">Project type<select name="projectType" value={projectType} onChange={(event) => setProjectType(event.target.value)} className={`mt-1.5 h-11 w-full rounded-xl border px-3 text-sm font-medium outline-none focus:border-[#71803d] ${field}`}>{!PROJECT_TYPES.includes(projectType as (typeof PROJECT_TYPES)[number]) && <option>{projectType}</option>}{PROJECT_TYPES.map((type) => <option key={type}>{type}</option>)}</select></label>
               <label className="text-xs font-semibold">Preferred day<select value={date} onChange={(event) => { const nextDate = event.target.value; const unavailable = unavailableSlotsFor(nextDate); const firstAvailable = TIME_SLOTS.find((slot) => !unavailable.has(slot.index)) ?? TIME_SLOTS[0]; setDate(nextDate); setTime(formatSlot(firstAvailable.start, firstAvailable.end)); }} className={`mt-1.5 h-11 w-full rounded-xl border px-3 text-sm font-medium outline-none focus:border-[#71803d] ${field}`}>{days.map((day) => <option key={day.value} value={day.value}>{day.label}</option>)}</select></label>
               <div className="sm:col-span-2">
                 <p className="text-xs font-semibold">Preferred time <span className={`font-normal ${muted}`}>(45 minutes · 7 AM–8 PM)</span></p>
@@ -190,15 +206,15 @@ Choose an in-home appointment with a LoveMeAfter design consultant, select a 45-
               <p className={`mt-2 text-[10px] ${muted}`}>No product knowledge is required. Your consultant can explain comparable options, availability, pricing, and manufacturer warranties.</p>
             </fieldset>
             <div className="grid gap-3 sm:grid-cols-2">
-              <input name="name" required placeholder="Your name" aria-label="Your name" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
-              <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
+              <input name="name" required defaultValue={prefill?.name ?? ""} placeholder="Your name" aria-label="Your name" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
+              <input name="phone" required type="tel" defaultValue={prefill?.phone ?? ""} placeholder="Phone number" aria-label="Phone number" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
             </div>
-            <input name="streetAddress" required placeholder="Property street address" aria-label="Property street address" className={`h-11 w-full rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
+            <input name="streetAddress" required defaultValue={prefill?.streetAddress ?? ""} placeholder="Property street address" aria-label="Property street address" className={`h-11 w-full rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
             <div className="grid gap-3 sm:grid-cols-2">
-              <input name="email" required type="email" placeholder="Email address" aria-label="Email address" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
-              <input name="location" required placeholder="City, state & ZIP" aria-label="Property city, state and ZIP" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
+              <input name="email" required defaultValue={prefill?.email ?? ""} type="email" placeholder="Email address" aria-label="Email address" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
+              <input name="location" required defaultValue={prefill?.location ?? ""} placeholder="City, state & ZIP" aria-label="Property city, state and ZIP" className={`h-11 rounded-xl border px-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
             </div>
-            <textarea name="project" rows={3} placeholder="What would you like the consultant to understand before the visit?" aria-label="Project details" className={`w-full resize-none rounded-xl border px-3 py-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
+            <textarea name="project" rows={3} defaultValue={prefill?.project ?? ""} placeholder="What would you like the consultant to understand before the visit?" aria-label="Project details" className={`w-full resize-none rounded-xl border px-3 py-3 text-sm outline-none focus:border-[#71803d] ${field}`} />
             <button type="submit" className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#d5ec77] px-5 text-sm font-semibold text-[#1d211d] transition hover:bg-[#e5f795]">Request this 45-minute appointment <ArrowUpRight className="ml-2 size-4" /></button>
           </form>
         )}

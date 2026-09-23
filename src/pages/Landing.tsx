@@ -32,7 +32,7 @@ import { PROJECT_INDEX_COUNT } from "@/data/project-index";
 import { RoiBarChart } from "@/components/GeneratedGraphics";
 import { InteractiveHouseMap } from "@/components/InteractiveHouseMap";
 import { FinancingShowcase } from "@/components/FinancingShowcase";
-import { LeadershipSchedule } from "@/components/LeadershipSchedule";
+import { LeadershipSchedule, type LeadershipSchedulePrefill } from "@/components/LeadershipSchedule";
 import { HomeImprovementProcess } from "@/components/HomeImprovementProcess";
 import { ManufacturerShowcase } from "@/components/ManufacturerShowcase";
 import { BrandPillsShowcase } from "@/components/BrandPillsShowcase";
@@ -177,6 +177,7 @@ export default function Landing() {
 
   const [selectedProject, setSelectedProject] = useState("Roofing");
   const [scheduleOpen, setScheduleOpen] = useState(false);
+  const [schedulePrefill, setSchedulePrefill] = useState<LeadershipSchedulePrefill>({});
 
   useEffect(() => {
     const updateTopNav = () => {
@@ -214,6 +215,16 @@ export default function Landing() {
   };
   const goToEstimate = () => scrollToEstimate();
   const goToSchedule = () => {
+    const estimateForm = document.getElementById("estimate-form") as HTMLFormElement | null;
+    const data = estimateForm ? new FormData(estimateForm) : null;
+    setSchedulePrefill({
+      name: String(data?.get("name") ?? ""),
+      email: String(data?.get("email") ?? ""),
+      phone: String(data?.get("phone") ?? ""),
+      streetAddress: String(data?.get("address") ?? address),
+      location: String(data?.get("cityStateZip") ?? cityStateZip),
+      projectType: String(data?.get("service") ?? selectedProject),
+    });
     void trackEvent("design_consultation_calendar_opened", { placement: "landing_page" });
     setScheduleOpen(true);
   };
@@ -301,7 +312,7 @@ export default function Landing() {
               <X className="size-5" />
             </button>
             <div id="design-consultation-modal-title" className="sr-only">Book an in-person design consultation</div>
-            <LeadershipSchedule />
+            <LeadershipSchedule prefill={schedulePrefill} />
           </div>
         </div>
       )}
@@ -374,10 +385,11 @@ export default function Landing() {
                 <p className="mt-1">A LoveMeAfter coordinator will call you back the same day in active markets.</p>
               </div>
             ) : (
-              <form id="estimate-form" onSubmit={async (event) => { event.preventDefault(); const data = new FormData(event.currentTarget); try { await addDoc(collection(db, "leads"), { name: String(data.get("name") ?? ""), phone: String(data.get("phone") ?? ""), address: String(data.get("address") ?? ""), city: String(data.get("cityStateZip") ?? ""), service: String(data.get("service") ?? "Not sure yet"), estimatedValue: SERVICE_ESTIMATES[String(data.get("service"))] ?? 15000, createdAt: serverTimestamp(), updatedAt: serverTimestamp(), stage: "new", source: "inbound_scheduled_intake" }); void trackEvent("estimate_request_submitted", { service: String(data.get("service") ?? "Not sure yet"), source: "inbound_scheduled_intake" }); setSubmitted(true); } catch { setLocationStatus("We couldn't submit your request. Please call us at 424 426 0760."); } }} className="mt-7 space-y-3">
+              <form id="estimate-form" onSubmit={async (event) => { event.preventDefault(); const data = new FormData(event.currentTarget); try { await addDoc(collection(db, "leads"), { name: String(data.get("name") ?? ""), email: String(data.get("email") ?? ""), phone: String(data.get("phone") ?? ""), address: String(data.get("address") ?? ""), city: String(data.get("cityStateZip") ?? ""), service: String(data.get("service") ?? "Not sure yet"), estimatedValue: SERVICE_ESTIMATES[String(data.get("service"))] ?? 15000, createdAt: serverTimestamp(), updatedAt: serverTimestamp(), stage: "new", source: "inbound_scheduled_intake" }); void trackEvent("estimate_request_submitted", { service: String(data.get("service") ?? "Not sure yet"), source: "inbound_scheduled_intake" }); setSubmitted(true); } catch { setLocationStatus("We couldn't submit your request. Please call us at 424 426 0760."); } }} className="mt-7 space-y-3">
                 <div className="grid gap-3 sm:grid-cols-2">
                   <input name="name" required placeholder="Full name" aria-label="Full name" className="h-14 w-full rounded-xl border border-white/55 bg-white/28 px-4 text-sm font-medium text-white outline-none backdrop-blur-[2px] transition placeholder:text-white/80 focus:border-[#d5ec77] focus:bg-white/38 focus:ring-2 focus:ring-[#d5ec77]/35" />
                   <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className="h-14 w-full rounded-xl border border-white/55 bg-white/28 px-4 text-sm font-medium text-white outline-none backdrop-blur-[2px] transition placeholder:text-white/80 focus:border-[#d5ec77] focus:bg-white/38 focus:ring-2 focus:ring-[#d5ec77]/35" />
+                  <input name="email" type="email" placeholder="Email address (optional)" aria-label="Email address, optional" className="h-14 w-full rounded-xl border border-white/55 bg-white/28 px-4 text-sm font-medium text-white outline-none backdrop-blur-[2px] transition placeholder:text-white/80 focus:border-[#d5ec77] focus:bg-white/38 focus:ring-2 focus:ring-[#d5ec77]/35 sm:col-span-2" />
                 </div>
                 <div className="flex gap-2">
                   <input name="address" required value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Street address" aria-label="Street address" className="h-14 min-w-0 flex-1 rounded-xl border border-white/55 bg-white/28 px-4 text-sm font-medium text-white outline-none backdrop-blur-[2px] transition placeholder:text-white/80 focus:border-[#d5ec77] focus:bg-white/38 focus:ring-2 focus:ring-[#d5ec77]/35" />
