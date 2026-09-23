@@ -32,7 +32,7 @@ import { PROJECT_INDEX_COUNT } from "@/data/project-index";
 import { RoiBarChart } from "@/components/GeneratedGraphics";
 import { InteractiveHouseMap } from "@/components/InteractiveHouseMap";
 import { FinancingShowcase } from "@/components/FinancingShowcase";
-import { LeadershipSchedule, type LeadershipSchedulePrefill } from "@/components/LeadershipSchedule";
+import { LeadershipSchedule, type ConsultationSlot } from "@/components/LeadershipSchedule";
 import { HomeImprovementProcess } from "@/components/HomeImprovementProcess";
 import { ManufacturerShowcase } from "@/components/ManufacturerShowcase";
 import { BrandPillsShowcase } from "@/components/BrandPillsShowcase";
@@ -177,7 +177,7 @@ export default function Landing() {
 
   const [selectedProject, setSelectedProject] = useState("Roofing");
   const [scheduleOpen, setScheduleOpen] = useState(false);
-  const [schedulePrefill, setSchedulePrefill] = useState<LeadershipSchedulePrefill>({});
+  const [consultationSlot, setConsultationSlot] = useState<ConsultationSlot | null>(null);
 
   useEffect(() => {
     const updateTopNav = () => {
@@ -215,18 +215,15 @@ export default function Landing() {
   };
   const goToEstimate = () => scrollToEstimate();
   const goToSchedule = () => {
-    const estimateForm = document.getElementById("estimate-form") as HTMLFormElement | null;
-    const data = estimateForm ? new FormData(estimateForm) : null;
-    setSchedulePrefill({
-      name: String(data?.get("name") ?? ""),
-      email: String(data?.get("email") ?? ""),
-      phone: String(data?.get("phone") ?? ""),
-      streetAddress: String(data?.get("address") ?? address),
-      location: String(data?.get("cityStateZip") ?? cityStateZip),
-      projectType: String(data?.get("service") ?? selectedProject),
-    });
     void trackEvent("design_consultation_calendar_opened", { placement: "landing_page" });
     setScheduleOpen(true);
+  };
+  const confirmConsultationSlot = (slot: ConsultationSlot) => {
+    setConsultationSlot(slot);
+    setScheduleOpen(false);
+    window.setTimeout(() => {
+      document.getElementById("estimate-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 100);
   };
   const locateMe = () => {
     if (!navigator.geolocation) {
@@ -294,26 +291,18 @@ export default function Landing() {
 
       {scheduleOpen && (
         <div
-          className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-[#0f1610]/75 px-4 py-6 backdrop-blur-sm sm:items-center sm:px-6 sm:py-10"
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-[#07100a]/65 px-4 py-6 backdrop-blur-md"
           role="dialog"
           aria-modal="true"
-          aria-labelledby="design-consultation-modal-title"
+          aria-label="Choose an in-home consultation date and time"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) setScheduleOpen(false);
           }}
         >
-          <div className="relative w-full max-w-5xl">
-            <button
-              type="button"
-              onClick={() => setScheduleOpen(false)}
-              className="absolute right-3 top-3 z-10 flex size-10 items-center justify-center rounded-full border border-[#1d211d]/10 bg-white text-[#1d211d] shadow-lg transition hover:bg-[#eaf0d0]"
-              aria-label="Close in-person design consultation calendar"
-            >
-              <X className="size-5" />
-            </button>
-            <div id="design-consultation-modal-title" className="sr-only">Book an in-person design consultation</div>
-            <LeadershipSchedule prefill={schedulePrefill} />
-          </div>
+          <LeadershipSchedule
+            onConfirm={confirmConsultationSlot}
+            onCancel={() => setScheduleOpen(false)}
+          />
         </div>
       )}
 
@@ -385,7 +374,7 @@ export default function Landing() {
                 <p className="mt-1">A LoveMeAfter coordinator will call you back the same day in active markets.</p>
               </div>
             ) : (
-              <form id="estimate-form" onSubmit={async (event) => { event.preventDefault(); const data = new FormData(event.currentTarget); try { await addDoc(collection(db, "leads"), { name: String(data.get("name") ?? ""), email: String(data.get("email") ?? ""), phone: String(data.get("phone") ?? ""), address: String(data.get("address") ?? ""), city: String(data.get("cityStateZip") ?? ""), service: String(data.get("service") ?? "Not sure yet"), estimatedValue: SERVICE_ESTIMATES[String(data.get("service"))] ?? 15000, createdAt: serverTimestamp(), updatedAt: serverTimestamp(), stage: "new", source: "inbound_scheduled_intake" }); void trackEvent("estimate_request_submitted", { service: String(data.get("service") ?? "Not sure yet"), source: "inbound_scheduled_intake" }); setSubmitted(true); } catch { setLocationStatus("We couldn't submit your request. Please call us at 424 426 0760."); } }} className="mt-7 space-y-3">
+              <form id="estimate-form" onSubmit={async (event) => { event.preventDefault(); const data = new FormData(event.currentTarget); try { await addDoc(collection(db, "leads"), { name: String(data.get("name") ?? ""), email: String(data.get("email") ?? ""), phone: String(data.get("phone") ?? ""), address: String(data.get("address") ?? ""), city: String(data.get("cityStateZip") ?? ""), service: String(data.get("service") ?? "Not sure yet"), consultationSlot, estimatedValue: SERVICE_ESTIMATES[String(data.get("service"))] ?? 15000, createdAt: serverTimestamp(), updatedAt: serverTimestamp(), stage: consultationSlot ? "appointment_requested" : "new", source: "inbound_scheduled_intake" }); void trackEvent("estimate_request_submitted", { service: String(data.get("service") ?? "Not sure yet"), source: "inbound_scheduled_intake", consultationRequested: Boolean(consultationSlot) }); setSubmitted(true); } catch { setLocationStatus("We couldn't submit your request. Please call us at 424 426 0760."); } }} className="mt-7 space-y-3">
                 <div className="grid gap-3 sm:grid-cols-2">
                   <input name="name" required placeholder="Full name" aria-label="Full name" className="h-14 w-full rounded-xl border border-white/55 bg-white/28 px-4 text-sm font-medium text-white outline-none backdrop-blur-[2px] transition placeholder:text-white/80 focus:border-[#d5ec77] focus:bg-white/38 focus:ring-2 focus:ring-[#d5ec77]/35" />
                   <input name="phone" required type="tel" placeholder="Phone number" aria-label="Phone number" className="h-14 w-full rounded-xl border border-white/55 bg-white/28 px-4 text-sm font-medium text-white outline-none backdrop-blur-[2px] transition placeholder:text-white/80 focus:border-[#d5ec77] focus:bg-white/38 focus:ring-2 focus:ring-[#d5ec77]/35" />
@@ -400,7 +389,16 @@ export default function Landing() {
                   <select name="service" aria-label="Service needed" value={selectedProject} onChange={(event) => setSelectedProject(event.target.value)} className="h-14 w-full rounded-xl border border-white/55 bg-white/28 px-4 text-sm font-medium text-white outline-none backdrop-blur-[2px] transition focus:border-[#d5ec77] focus:bg-white/38 focus:ring-2 focus:ring-[#d5ec77]/35">{SERVICES.map((service) => <option key={service.title}>{service.title}</option>)}<option>Not sure yet</option></select>
                 </div>
                 {locationStatus && <p className="flex items-start gap-2 text-xs leading-5 text-[#d5ec77]"><MapPin className="mt-0.5 size-3.5 shrink-0" />{locationStatus}</p>}
-                <div className="grid gap-2 sm:grid-cols-2"><Button type="submit" className="h-14 rounded-xl bg-[#1d211d] text-sm font-semibold text-white hover:bg-[#30382f]">Request my inside-sales callback <ChevronRight className="ml-1 size-4" /></Button><button type="button" onClick={goToSchedule} className="flex h-14 items-center justify-center gap-2 rounded-xl border border-white/40 bg-white/10 text-sm font-semibold text-white transition hover:border-[#d5ec77] hover:bg-white/20"><CalendarDays className="size-4" /> Book in-person design consultation</button></div>
+                {consultationSlot && (
+                  <div className="flex items-center justify-between gap-3 rounded-xl border border-[#d5ec77]/50 bg-[#d5ec77]/10 px-3 py-2.5 text-xs text-white">
+                    <span className="min-w-0"><span className="block font-semibold text-[#e4f5a4]">In-home visit selected</span><span className="mt-0.5 block truncate text-white/80">{consultationSlot.dateLabel} · {consultationSlot.time} · 45 minutes</span></span>
+                    <button type="button" onClick={goToSchedule} className="shrink-0 font-semibold text-[#d5ec77] underline underline-offset-4">Change</button>
+                    <input type="hidden" name="consultationDate" value={consultationSlot.date} />
+                    <input type="hidden" name="consultationDateLabel" value={consultationSlot.dateLabel} />
+                    <input type="hidden" name="consultationTime" value={consultationSlot.time} />
+                  </div>
+                )}
+                <div className="grid gap-2 sm:grid-cols-2"><Button type="submit" className="h-14 rounded-xl bg-[#1d211d] text-sm font-semibold text-white hover:bg-[#30382f]">Request my inside-sales callback <ChevronRight className="ml-1 size-4" /></Button><button type="button" onClick={goToSchedule} className="flex h-14 items-center justify-center gap-2 rounded-xl border border-white/40 bg-white/10 text-sm font-semibold text-white transition hover:border-[#d5ec77] hover:bg-white/20"><CalendarDays className="size-4" /> {consultationSlot ? "Change in-person visit" : "Book in-person design consultation"}</button></div>
               </form>
             )}
             <p className="mt-4 text-center text-xs text-white/65">Free estimate · inbound scheduled intake call · no obligation</p>

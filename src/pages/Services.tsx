@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowUpRight, Check, ChevronRight, Fence, House, Phone, ShieldCheck, Sparkles } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 import { usePageMeta } from "@/components/PageMeta";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ExpertTopic } from "@/components/ExpertTopic";
 import { FinancingShowcase } from "@/components/FinancingShowcase";
-import { LeadershipSchedule } from "@/components/LeadershipSchedule";
+import { LeadershipSchedule, type ConsultationSlot } from "@/components/LeadershipSchedule";
 import { ProjectVideo } from "@/components/ProjectVideo";
 import { ManufacturerShowcase } from "@/components/ManufacturerShowcase";
 import { DAMAGE_PHOTOS, px } from "@/data/photos";
@@ -83,6 +83,7 @@ const REFERENCE_PROJECTS = [
 
 export default function Services() {
   const navigate = useNavigate();
+  const [consultationSlot, setConsultationSlot] = useState<ConsultationSlot | null>(null);
   usePageMeta(
     "All Home Improvement Services | LoveMeAfter",
     "Every project we coordinate — roofing, siding, windows, doors, gutters, paving, fencing, concrete, kitchens, baths, HVAC, plumbing, electrical and solar.",
@@ -114,7 +115,7 @@ export default function Services() {
 
       <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10 lg:py-32"><div className="grid gap-4 md:grid-cols-3">{PROJECT_IMAGES.map(([title, image], index) => <div key={title} className={`group relative overflow-hidden ${index === 1 ? "md:mt-12" : ""}`}><div className="h-[420px] bg-cover bg-center transition duration-700 group-hover:scale-105" style={{ backgroundImage: `linear-gradient(0deg,rgba(15,22,16,.7),transparent 55%),url(${image})` }} /><div className="absolute inset-x-0 bottom-0 p-6 text-white"><p className="text-xs font-semibold tracking-[.16em] text-[#d5ec77] uppercase">0{index + 1} · LoveMeAfter</p><h3 className="mt-2 text-2xl font-semibold">{title}</h3></div></div>)}</div><div className="mt-16 grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">How we keep it simple</p><h2 className="mt-4 text-4xl font-semibold leading-[.96] tracking-[-.06em] sm:text-6xl">You bring the question.<br />We bring the next step.</h2></div><div className="grid gap-4 sm:grid-cols-3">{[["01", "Describe", "Tell us what you see, feel, or want to change."], ["02", "Scope", "We coordinate the right inspection and specialist."], ["03", "Decide", "You get a written path forward, with no obligation."]].map(([number, title, copy]) => <div key={number} className="border-t-2 border-[#1d211d]/15 pt-5"><span className="text-sm font-semibold text-[#71803d]">{number}</span><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-[#62695f]">{copy}</p></div>)}</div></div></section>
 
-      <section className="bg-[#f7f5f0] px-5 py-8 sm:px-8 lg:px-10"><div className="mx-auto max-w-7xl"><LeadershipSchedule /></div></section>
+      <section className="bg-[#f7f5f0] px-5 py-8 sm:px-8 lg:px-10"><div className="mx-auto max-w-7xl"><LeadershipSchedule onConfirm={setConsultationSlot} />{consultationSlot && <p role="status" className="mx-auto mt-3 max-w-7xl text-sm text-[#596357]">Requested in-home visit: {consultationSlot.dateLabel} · {consultationSlot.time}. Please include this time when requesting your estimate so our team can confirm it.</p>}</div></section>
 
       <section className="bg-[#1d211d] text-white"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 px-5 py-20 sm:px-8 lg:flex-row lg:items-center lg:px-10 lg:py-24"><div><p className="text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase">Not sure where to start?</p><h2 className="mt-3 max-w-2xl text-4xl font-semibold leading-[.96] tracking-[-.06em] sm:text-6xl">You do not need to choose the trade.</h2><p className="mt-5 max-w-xl text-lg leading-8 text-white/70">Give us the address, the concern, and the outcome you want. We will help organize the rest.</p></div><div className="flex flex-wrap gap-3"><Button onClick={() => navigate("/")} className="h-14 rounded-full bg-[#d5ec77] px-7 font-semibold text-[#1d211d] hover:bg-[#e1f895]">Get a free estimate <ArrowUpRight className="ml-2 size-5" /></Button><a href="tel:+14244260760" className="flex h-14 items-center rounded-full border border-white/25 px-6 text-sm font-semibold hover:bg-white/10"><Phone className="mr-2 size-4" /> 424 426 0760</a></div></div></section>
 
