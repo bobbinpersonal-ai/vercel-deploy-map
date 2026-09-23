@@ -5,7 +5,7 @@ import { usePageMeta } from "@/components/PageMeta";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { CostDonut, PhaseTimeline, RoiBarChart, TradeShareChart } from "@/components/GeneratedGraphics";
-import { JOBSITE_PHOTOS, PHOTO_CREDIT, PHOTO_CREDIT_URL, WORKER_PHOTOS, px, pxPage } from "@/data/photos";
+import { JOBSITE_PHOTOS, PHOTO_CREDIT, WORKER_PHOTOS, px } from "@/data/photos";
 
 const PHONE_HREF = "tel:+14244260760";
 
@@ -327,12 +327,7 @@ export default function Trades() {
             </article>
           ))}
         </div>
-        <p className="mt-4 text-xs leading-5 text-[#7c8579]">
-          {PHOTO_CREDIT}{" "}
-          <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className="font-semibold text-[#71803d] underline underline-offset-2">
-            Photo license
-          </a>
-        </p>
+        <p className="mt-4 text-xs leading-5 text-[#7c8579]">{PHOTO_CREDIT} Your project is matched to the trade and crew your written scope requires.</p>
       </section>
 
       {/* Sequencing education with a generated timeline. */}

@@ -5,7 +5,7 @@ import { usePageMeta } from "@/components/PageMeta";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { CostDonut, DecisionFlow, PhaseTimeline, RoiBarChart, SeverityMeter, TradeShareChart } from "@/components/GeneratedGraphics";
-import { DAMAGE_PHOTOS, JOBSITE_PHOTOS, PHOTO_CREDIT, PHOTO_CREDIT_URL, WORKER_PHOTOS, px, pxPage } from "@/data/photos";
+import { DAMAGE_PHOTOS, JOBSITE_PHOTOS, PHOTO_CREDIT, WORKER_PHOTOS, px } from "@/data/photos";
 
 const PHONE_HREF = "tel:+14244260760";
 
@@ -211,25 +211,13 @@ export default function Conditions() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f1610]/85 via-transparent to-transparent" />
                 <figcaption className="absolute inset-x-0 bottom-0 p-3">
                   <p className="text-[11px] font-semibold text-white">{label}</p>
-                  <a
-                    href={pxPage(id)}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-[9px] font-semibold tracking-[.1em] text-[#d5ec77] uppercase"
-                  >
-                    Pexels
-                  </a>
+                  <span className="text-[9px] font-semibold tracking-[.1em] text-[#d5ec77] uppercase">Field example</span>
                 </figcaption>
               </figure>
             );
           })}
         </div>
-        <p className="mt-4 text-xs leading-5 text-[#7c8579]">
-          {PHOTO_CREDIT}{" "}
-          <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className="font-semibold text-[#71803d] underline underline-offset-2">
-            Photo license
-          </a>
-        </p>
+        <p className="mt-4 text-xs leading-5 text-[#7c8579]">{PHOTO_CREDIT} Your inspection photos and written scope are specific to your home.</p>
       </section>
 
       {/* Condition deep-dives, laid out as a two-column reference with a sticky rail. */}

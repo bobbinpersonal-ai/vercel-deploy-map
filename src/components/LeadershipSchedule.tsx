@@ -31,7 +31,7 @@ const formatDate = (value: string) => {
 
 export function LeadershipSchedule({ dark = false }: { dark?: boolean }) {
   const days = useMemo(() => nextWeekdays(4), []);
-  const [appointmentType, setAppointmentType] = useState(OPTIONS[0][0]);
+  const [appointmentType, setAppointmentType] = useState<string>(OPTIONS[0][0]);
   const [date, setDate] = useState(days[0]?.value ?? "");
   const [time, setTime] = useState(TIMES[0]);
   const [submitted, setSubmitted] = useState(false);
@@ -63,7 +63,7 @@ export function LeadershipSchedule({ dark = false }: { dark?: boolean }) {
   const field = dark ? "border-white/15 bg-white/[.06] text-white placeholder:text-white/45" : "border-[#1d211d]/12 bg-[#f7f5f0] text-[#1d211d] placeholder:text-[#8b9288]";
 
   return (
-    <section className={`rounded-[1.75rem] border p-6 sm:p-8 ${surface}`}>
+    <section id="schedule" className={`rounded-[1.75rem] border p-6 sm:p-8 ${surface}`}>
       <div className="grid gap-8 lg:grid-cols-[.82fr_1.18fr] lg:items-start">
         <div>
           <div className={`flex items-center gap-2 text-xs font-semibold tracking-[.16em] uppercase ${dark ? "text-[#d5ec77]" : "text-[#71803d]"}`}>
