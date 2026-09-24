@@ -276,8 +276,16 @@ export default function Landing() {
       });
       setSubmitted(true);
     } catch (error) {
+      const firebaseCode = typeof error === "object" && error !== null && "code" in error
+        ? String(error.code)
+        : "unknown-error";
       console.error("[Estimate form] Could not submit lead:", error);
-      setSubmissionError("Your request wasn’t sent. Please try again or call us.");
+      const reason = firebaseCode.includes("permission-denied")
+        ? "Our system blocked the request. Please call us while we fix it."
+        : firebaseCode.includes("unavailable") || firebaseCode.includes("network")
+          ? "We couldn’t reach the estimate system. Check your connection and try again."
+          : "Your request wasn’t sent. Please try again or call us.";
+      setSubmissionError(`${reason} (Reference: ${firebaseCode})`);
     } finally {
       setIsSubmitting(false);
     }
