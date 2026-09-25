@@ -16,59 +16,59 @@ type ProcessItem = {
 
 const PROCESS_ITEMS: ProcessItem[] = [
   {
-    badge: "01 · Start with a time",
-    title: "You schedule. We make the appointment useful.",
-    description: "Choose the kind of conversation you need and tell us when you are available. A coordinator checks the address, project type, service area, and what you want the visit to accomplish before putting anything on a representative’s calendar.",
+    badge: "01 · Request",
+    title: "Tell us what needs attention.",
+    description: "Share your project, address, and timing. We check service-area fit and confirm what you want to accomplish before scheduling the visit.",
     icon: CalendarCheck,
   },
   {
-    badge: "02 · Before we arrive",
-    title: "We confirm the person, the time, and the point of the visit.",
-    description: "You receive a confirmation before anyone comes out—not a mystery knock. We share who is coming, what they can evaluate, how long to expect, and anything useful to have ready: prior quotes, photos, plans, or questions.",
-    icon: PhoneCall,
-  },
-  {
-    badge: "03 · The right conversation",
-    title: "You are matched with a field representative who can see the whole project.",
-    description: "Your representative listens first, walks the property, documents conditions, and separates the urgent from the optional. You do not need to diagnose the trade yourself; you only need to explain what is not working and what you want life at home to feel like.",
+    badge: "02 · Inspect",
+    title: "We look at the home and document the work.",
+    description: "A project specialist reviews the affected area, takes photos and measurements, checks related conditions, and asks what matters to you. We separate required repairs from optional upgrades.",
     image: px(8293635, 1000),
-    imageAlt: "A project inspection checklist and field notes",
-    icon: Users,
+    imageAlt: "Project inspection checklist and field notes",
+    icon: ClipboardCheck,
   },
   {
-    badge: "04 · Options in the market",
-    title: "We bring a real comparison—not a take-it-or-leave-it pitch.",
-    description: "Because we coordinate a national network, we can recognize the available product, installation, and pricing paths in the marketplace. We build competitive options around the actual scope, explain what changes between them, and give you room to make the final decision.",
+    badge: "03 · Scope & price",
+    title: "You get the work in writing before you decide.",
+    description: "Your scope describes preparation, materials, installation, exclusions, cleanup, schedule assumptions, and price. We explain repair and replacement options where they apply; there is no pressure to proceed.",
     icon: Compass,
   },
   {
-    badge: "05 · Design begins",
-    title: "Your project becomes a design conversation, not just an order.",
-    description: "Once you choose a direction, the process can combine an in-person design consultant with our national design team. Use local eyes for how the home lives and national architectural and styling perspective for materials, proportion, flow, and the details that make the finished work feel intentional.",
+    badge: "04 · Select",
+    title: "Choose the materials and finish that fit your home.",
+    description: "We review product lines, colors, performance, availability, and warranty documents. Final choices and any changes are recorded in the approved scope before ordering.",
     image: px(9242911, 1000),
-    imageAlt: "Plans and project documents laid out for review",
+    imageAlt: "Project plans and product selections",
     icon: Palette,
   },
   {
-    badge: "06 · One point of contact",
-    title: "Your consultant stays with you when the crew starts.",
-    description: "The handoff does not end at the signature. Your consultant helps manage crew expectations, access, schedule questions, material decisions, and the difference between the written scope and a hidden condition discovered in the field.",
+    badge: "05 · Prepare",
+    title: "We coordinate the crew, materials, and arrival details.",
+    description: "Before work starts, the crew receives the approved scope, access notes, site-protection needs, schedule, and homeowner expectations. We confirm the work window and prepare the property.",
+    icon: Users,
+  },
+  {
+    badge: "06 · Complete & clean",
+    title: "The crew completes the scope and leaves the site tidy.",
+    description: "We protect the home and surrounding areas, complete the agreed work, remove project debris, and clean the work zone. If a hidden condition changes the scope, we document it and agree on next steps before proceeding.",
     image: px(4442490, 1000),
-    imageAlt: "A construction worker building a home project on site",
+    imageAlt: "Residential crew completing home-improvement work",
     icon: Hammer,
   },
   {
-    badge: "07 · Finish with care",
-    title: "The job closes with a walkthrough, not a wave from the driveway.",
-    description: "The crew protects the property, cleans up the work area, completes the agreed scope, and walks the result with you. We document the finish, surface any punch-list items, and make sure you understand what was done and how to care for it.",
+    badge: "07 · Walkthrough",
+    title: "Review the finished work together.",
+    description: "We walk the completed project with you, test or review the finished details, photograph the result, and record any punch-list item so it has a clear owner.",
     image: px(8811446, 1000),
-    imageAlt: "A clean jobsite after project work is complete",
+    imageAlt: "Clean residential project site after work is complete",
     icon: Check,
   },
   {
-    badge: "08 · After the install",
-    title: "We keep showing up after the exciting part is over.",
-    description: "Post-install follow-up gives you a clear place to ask questions, report a punch-list item, understand warranty support, or plan the next phase. A roof, window, kitchen, lighting, or outdoor project should leave you with more confidence—not another phone tree to navigate.",
+    badge: "08 · Follow up",
+    title: "Know what was done and who to call next.",
+    description: "You receive closeout details and the relevant product and workmanship warranty information. We follow up on open items and remain available for project questions after the crew leaves.",
     icon: Sparkles,
   },
 ];
@@ -126,9 +126,9 @@ export function HomeImprovementProcess() {
     <section id="process" className="video-through-section relative z-10 border-y border-[#1d211d]/10 bg-[#eaf0d0]/72 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
         <div className="mx-auto max-w-3xl">
-          <p className="text-xs font-semibold tracking-[.18em] text-[#71803d] uppercase">From first click to final follow-up</p>
-          <h2 className="mt-4 text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-6xl">You are not handed off halfway through.</h2>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#596357]">A home project has a lot of moments where the homeowner can feel forgotten: after the form, after the sale, when the crew arrives, or when the dust settles. Our process is designed to keep one accountable thread running through all of them.</p>
+          <p className="text-xs font-semibold tracking-[.18em] text-[#71803d] uppercase">Our process · start to finish</p>
+          <h2 className="mt-4 text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-6xl">A clear scope. Careful work. A clean handoff.</h2>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#596357]">From your first request through inspection, written pricing, material selection, crew coordination, cleanup, walkthrough, and follow-up, every step has a clear next action and an owner.</p>
         </div>
 
         <TracingBeam className="mt-14">
@@ -144,7 +144,7 @@ export function HomeImprovementProcess() {
                   <p className="text-base leading-7 text-[#596357]">{description}</p>
                   {image && <img src={image} alt={imageAlt ?? "LoveMeAfter project process"} loading="lazy" className="h-36 w-full rounded-2xl border border-[#1d211d]/10 object-cover shadow-sm md:h-32" />}
                 </div>
-                {index === 3 && <div className="mt-5 flex items-start gap-3 rounded-2xl border border-[#71803d]/25 bg-white/75 p-4 text-sm leading-6 text-[#4f5a4d]"><Home className="mt-0.5 size-5 shrink-0 text-[#71803d]" /><span><strong className="text-[#1d211d]">Your choice remains yours.</strong> We can explain the options, compare the scope, and make a recommendation. You decide what to do, when to do it, and whether to do it at all.</span></div>}
+                {index === 2 && <div className="mt-5 flex items-start gap-3 rounded-2xl border border-[#71803d]/25 bg-white/75 p-4 text-sm leading-6 text-[#4f5a4d]"><Home className="mt-0.5 size-5 shrink-0 text-[#71803d]" /><span><strong className="text-[#1d211d]">You approve the scope before work begins.</strong> If you choose to move ahead, product selections, price, and agreed work are documented first.</span></div>}
               </article>
             ))}
           </div>
