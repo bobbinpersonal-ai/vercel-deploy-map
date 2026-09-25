@@ -2,7 +2,7 @@ import { Logo } from "@/components/Logo";
 import { PROJECT_INDEX } from "@/data/project-index";
 import { BRAND_PILLS } from "@/data/brand-pills";
 import { AlertTriangle, ArrowLeft, ArrowRight, ArrowUpRight, HardHat, House, MapPin, Phone, Wallet, Wrench } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 
 const PHONE_DISPLAY = "424 426 0760";
@@ -38,10 +38,99 @@ const HIDDEN_PREFIXES = ["/admin", "/auth", "/login", "/dashboard"];
 export function BottomNav() {
   const { pathname } = useLocation();
   const railRef = useRef<HTMLDivElement>(null);
+  const quickNavRef = useRef<HTMLDivElement>(null);
   const pointerDrag = useRef<{ startX: number; startScrollLeft: number; moved: boolean } | null>(null);
   const suppressClick = useRef(false);
   const [dragging, setDragging] = useState(false);
-  if (HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix))) return null;
+  const isHidden = HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+
+  useEffect(() => {
+    const scroller = quickNavRef.current;
+    if (!scroller || isHidden) return;
+
+    const mobile = window.matchMedia("(max-width: 639px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let resumeTimer: number | undefined;
+    let pausedByInteraction = false;
+    let lastFrameTime = 0;
+    let direction = 1;
+    let edgePauseUntil = 0;
+
+    const stop = () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = 0;
+      lastFrameTime = 0;
+    };
+    const animate = (time: number) => {
+      if (!mobile.matches || reducedMotion.matches || document.visibilityState !== "visible") {
+        stop();
+        return;
+      }
+
+      if (!pausedByInteraction && !scroller.contains(document.activeElement)) {
+        const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+        if (maxScroll > 4 && time >= edgePauseUntil) {
+          const elapsed = lastFrameTime ? Math.min(time - lastFrameTime, 40) : 0;
+          scroller.scrollLeft = Math.max(0, Math.min(maxScroll, scroller.scrollLeft + direction * elapsed * 0.026));
+          if (scroller.scrollLeft >= maxScroll - 1) {
+            direction = -1;
+            edgePauseUntil = time + 900;
+          } else if (scroller.scrollLeft <= 1) {
+            direction = 1;
+            edgePauseUntil = time + 900;
+          }
+        }
+      }
+      lastFrameTime = time;
+      frame = window.requestAnimationFrame(animate);
+    };
+    const start = () => {
+      if (!frame && mobile.matches && !reducedMotion.matches) frame = window.requestAnimationFrame(animate);
+    };
+    const pauseTemporarily = () => {
+      pausedByInteraction = true;
+      window.clearTimeout(resumeTimer);
+      resumeTimer = window.setTimeout(() => {
+        pausedByInteraction = false;
+        lastFrameTime = 0;
+      }, 2200);
+    };
+    const onFocusIn = () => {
+      pausedByInteraction = true;
+      window.clearTimeout(resumeTimer);
+    };
+    const onFocusOut = () => pauseTemporarily();
+    const onMediaChange = () => {
+      if (mobile.matches && !reducedMotion.matches) start();
+      else stop();
+    };
+
+    scroller.addEventListener("pointerdown", pauseTemporarily);
+    scroller.addEventListener("touchstart", pauseTemporarily, { passive: true });
+    scroller.addEventListener("wheel", pauseTemporarily, { passive: true });
+    scroller.addEventListener("focusin", onFocusIn);
+    scroller.addEventListener("focusout", onFocusOut);
+    mobile.addEventListener("change", onMediaChange);
+    reducedMotion.addEventListener("change", onMediaChange);
+    document.addEventListener("visibilitychange", onMediaChange);
+    start();
+
+    return () => {
+      stop();
+      window.clearTimeout(resumeTimer);
+      scroller.removeEventListener("pointerdown", pauseTemporarily);
+      scroller.removeEventListener("touchstart", pauseTemporarily);
+      scroller.removeEventListener("wheel", pauseTemporarily);
+      scroller.removeEventListener("focusin", onFocusIn);
+      scroller.removeEventListener("focusout", onFocusOut);
+      mobile.removeEventListener("change", onMediaChange);
+      reducedMotion.removeEventListener("change", onMediaChange);
+      document.removeEventListener("visibilitychange", onMediaChange);
+    };
+  }, [isHidden, pathname]);
+
+  if (isHidden) return null;
 
   const activeService = pathname.startsWith("/services/")
     ? pathname.replace("/services/", "").split("/")[0]
@@ -154,7 +243,7 @@ export function BottomNav() {
       <div className="border-t border-black/10 bg-white/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center gap-3 px-3 py-2.5 sm:px-5 lg:px-8">
           <Link to="/" aria-label="LoveMeAfter home" className="shrink-0 pl-1 pr-2"><Logo tone="black" /></Link>
-          <div className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div ref={quickNavRef} className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <nav aria-label="Quick navigation" className="flex w-max items-center gap-1.5">
               {LINKS.map(({ to, label, icon: Icon }) => {
                 const active = pathname === to || pathname.startsWith(`${to}/`);
