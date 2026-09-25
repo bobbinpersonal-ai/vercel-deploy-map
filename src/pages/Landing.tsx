@@ -33,6 +33,7 @@ import { RoiBarChart } from "@/components/GeneratedGraphics";
 import { InteractiveHouseMap } from "@/components/InteractiveHouseMap";
 import { FinancingShowcase } from "@/components/FinancingShowcase";
 import { LeadershipSchedule, type ConsultationSlot } from "@/components/LeadershipSchedule";
+import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 import { HomeImprovementProcess } from "@/components/HomeImprovementProcess";
 import { ManufacturerShowcase } from "@/components/ManufacturerShowcase";
 import { BrandPillsShowcase } from "@/components/BrandPillsShowcase";
@@ -435,7 +436,7 @@ export default function Landing() {
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     {project.products.map((product) => (
                       <span key={product.name} className="inline-flex items-center gap-1 rounded-full border border-[#1d211d]/10 bg-white/75 px-2 py-1 text-[9px] font-semibold text-[#41483f]">
-                        <img src={`https://www.google.com/s2/favicons?domain=${product.domain}&sz=64`} alt="" aria-hidden="true" loading="lazy" className="size-3.5 rounded-sm object-contain" />
+                        <OfficialBrandLogo brand={product.name} domain={product.domain} className="size-3.5 rounded-sm" />
                         {product.name} <span className="font-normal text-[#687265]">· {product.line}</span>
                       </span>
                     ))}

@@ -1,5 +1,6 @@
 import { Logo } from "@/components/Logo";
 import { PROJECT_INDEX } from "@/data/project-index";
+import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 import { BRAND_PILLS } from "@/data/brand-pills";
 import { AlertTriangle, ArrowLeft, ArrowRight, ArrowUpRight, HardHat, House, MapPin, Phone, Wallet, Wrench } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -208,7 +209,7 @@ export function BottomNav() {
                       aria-label={`${brand.brand}, manufacturer for ${project.label}`}
                       className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#d5ec77]/40 bg-[#d5ec77]/10 px-2.5 py-1.5 text-[10px] font-semibold whitespace-nowrap text-[#e6f4ae] transition hover:border-[#d5ec77] hover:bg-[#d5ec77]/20"
                     >
-                      <img src={`https://www.google.com/s2/favicons?domain=${brand.domain}&sz=64`} alt="" aria-hidden="true" className="size-4 rounded-full bg-white object-contain" loading="lazy" />
+                      <OfficialBrandLogo brand={brand.brand} domain={brand.domain} className="size-4 rounded-full bg-white" />
                       {brand.brand}
                     </Link>
                   ))}
@@ -221,7 +222,7 @@ export function BottomNav() {
                     const lender = RAIL_LENDERS[(projectIndex + 1) / 10 - 1];
                     return (
                       <span key={`lender-${projectIndex}`} className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#9dc8dc]/30 bg-[#9dc8dc]/10 px-2.5 py-1.5 text-[10px] font-semibold whitespace-nowrap text-[#c7e6f2]" title="Lender approval, rates, promotions, and terms vary by offer.">
-                        <img src={`https://www.google.com/s2/favicons?domain=${lender.domain}&sz=64`} alt="" aria-hidden="true" className="size-4 rounded-full bg-white object-contain" loading="lazy" />
+                        <OfficialBrandLogo brand={lender.name} domain={lender.domain} className="size-4 rounded-full bg-white" />
                         <Link to="/financing" aria-label={`${lender.name}: ${lender.detail}`}>{lender.name}</Link>
                         <span className="font-normal text-white/60">· {lender.detail}</span>
                       </span>

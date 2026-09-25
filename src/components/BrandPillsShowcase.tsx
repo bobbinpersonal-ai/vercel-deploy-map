@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowUpRight, BadgeCheck, Check, ShieldCheck } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PRODUCT_FAMILIES, type ProductOption } from "@/data/product-options";
+import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 
 const TIER_LOGOS = [
   {
@@ -89,13 +90,10 @@ type BrandCardProps = {
   brand: string;
   category: string;
   domain: string;
-  index: number;
   onSelect: (brand: { brand: string; category: string; domain: string }) => void;
 };
 
-function BrandCard({ brand, category, domain, index, onSelect }: BrandCardProps) {
-  const [logoFailed, setLogoFailed] = useState(false);
-
+function BrandCard({ brand, category, domain, onSelect }: BrandCardProps) {
   return (
     <button
       type="button"
@@ -104,21 +102,7 @@ function BrandCard({ brand, category, domain, index, onSelect }: BrandCardProps)
       className="group flex min-h-[66px] w-full min-w-0 items-center gap-2.5 rounded-xl border border-[#1d211d]/[.08] bg-white/90 px-2.5 py-2 text-left shadow-[0_2px_8px_rgba(29,33,29,.035)] transition hover:-translate-y-0.5 hover:border-[#71803d]/40 hover:bg-white hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#71803d] sm:gap-3 sm:px-3"
     >
       <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[#1d211d]/[.07] bg-[#fafaf7] sm:size-10">
-        {!logoFailed ? (
-          <img
-            src={`https://logo.clearbit.com/${domain}`}
-            alt=""
-            aria-hidden="true"
-            loading={index < 8 ? "eager" : "lazy"}
-            decoding="async"
-            className="size-6 object-contain sm:size-7"
-            onError={() => setLogoFailed(true)}
-          />
-        ) : (
-          <span aria-hidden="true" className="text-[10px] font-bold tracking-tight text-[#71803d]">
-            {brand.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase()}
-          </span>
-        )}
+        <OfficialBrandLogo brand={brand} domain={domain} className="size-7" />
       </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-[11px] font-bold leading-4 text-[#252a24] sm:text-xs">{brand}</span>
@@ -280,8 +264,8 @@ export function BrandPillsShowcase() {
               </span>
             </div>
             <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
-              {mixedOrder(tier.brands).map(([brand, category, domain], index) => (
-                <BrandCard key={`${brand}-${category}`} brand={brand} category={category} domain={domain} index={index} onSelect={setSelectedBrand} />
+              {mixedOrder(tier.brands).map(([brand, category, domain]) => (
+                  <BrandCard key={`${brand}-${category}`} brand={brand} category={category} domain={domain} onSelect={setSelectedBrand} />
               ))}
             </div>
           </section>
@@ -298,7 +282,7 @@ export function BrandPillsShowcase() {
             <div className="border-b border-white/10 bg-white/[.035] px-6 py-6 pr-14 sm:px-7">
               <div className="flex items-center gap-4">
                 <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white p-2">
-                  <img src={`https://logo.clearbit.com/${selectedBrand.domain}`} alt={`${selectedBrand.brand} logo`} className="max-h-full max-w-full object-contain" />
+                  <OfficialBrandLogo brand={selectedBrand.brand} domain={selectedBrand.domain} alt={`${selectedBrand.brand} logo`} className="size-10" />
                 </span>
                 <div className="min-w-0">
                   <p className="text-[10px] font-bold tracking-[.16em] text-[#d5ec77] uppercase">{selectedBrand.category}</p>

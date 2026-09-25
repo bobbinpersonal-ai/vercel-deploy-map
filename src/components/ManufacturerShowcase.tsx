@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getProductFamily, PRODUCT_FAMILIES, type ProductOption } from "../data/product-options";
+import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 
 type ManufacturerLogoProps = {
   brand: string;
@@ -15,20 +16,9 @@ type ManufacturerLogoProps = {
 };
 
 function ManufacturerLogo({ brand, domain }: ManufacturerLogoProps) {
-  const [failed, setFailed] = useState(false);
-
   return (
     <span className="flex min-h-10 items-center gap-3">
-      {!failed && (
-        <img
-          src={`https://logo.clearbit.com/${domain}`}
-          alt=""
-          aria-hidden="true"
-          className="max-h-8 w-auto max-w-[8.5rem] object-contain"
-          loading="lazy"
-          onError={() => setFailed(true)}
-        />
-      )}
+      <OfficialBrandLogo brand={brand} domain={domain} className="size-7" />
       <span className="text-sm font-semibold tracking-tight text-slate-900">{brand}</span>
     </span>
   );

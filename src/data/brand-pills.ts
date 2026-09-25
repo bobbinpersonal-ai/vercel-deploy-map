@@ -6,10 +6,6 @@ type BrandEntry = {
   note: string;
 };
 
-function brandImage(id: number, w = 720) {
-  return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`;
-}
-
 export const BRAND_PILLS: BrandEntry[] = [
   { slug: "fencing", brand: "CertainTeed", domain: "certainteed.com", imageId: 32968373, note: "Vinyl and coordinated fence lines" },
   { slug: "fencing", brand: "Trex", domain: "trex.com", imageId: 33017851, note: "Low-maintenance composite fencing" },
