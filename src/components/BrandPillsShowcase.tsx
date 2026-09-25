@@ -161,6 +161,62 @@ function findProductDetails(domain: string, category: string): ProductOption | u
   return orderedFamilies.flatMap(([, family]) => family.options).find((option) => option.domain === domain);
 }
 
+const BRAND_ADVANTAGES: Record<string, string> = {
+  "gaf.com": "A broad residential shingle lineup with coordinated roofing components; compare the exact shingle, starter, underlayment, and warranty package.",
+  "alside.com": "Offers both familiar vinyl profiles and newer composite-style siding, giving homeowners different looks and maintenance paths to compare.",
+  "jeld-wen.com": "A wide replacement-window catalog with practical material and size options for common renovation openings.",
+  "masonite.com": "A broad door catalog across entry, patio, and interior styles, useful when coordinating several door types on one home.",
+  "spectraguttersystems.com": "Focuses on residential gutter profiles and accessories, making it a practical comparison for standard rainwater-management scopes.",
+  "ppgpaints.com": "Offers architectural coatings for varied substrates and exposure conditions; match the paint system to preparation and surface, not just color.",
+  "fiberondecking.com": "Provides composite and PVC decking choices across different price and maintenance priorities.",
+  "quikrete.com": "A wide range of packaged concrete, mortar, and repair products for both small fixes and common masonry scopes.",
+  "sakrete.com": "A practical source for bagged concrete mixes and repair materials when a project needs a targeted pour or patch.",
+  "pavestone.com": "Broadly distributed concrete pavers and retaining-wall components can make it easier to compare coordinated hardscape styles.",
+  "ndspro.com": "Specializes in drainage components such as channel drains, catch basins, and pipe fittings for directing surface water.",
+  "msisurfaces.com": "A large surfaces catalog spans tile, counters, and hardscape, which can help coordinate finishes across multiple rooms or outdoor areas.",
+  "mohawkflooring.com": "Offers several hard-surface flooring technologies alongside carpet, giving homeowners distinct options for moisture and wear needs.",
+  "rheem.com": "Makes both HVAC equipment and water heaters, useful when comparing a coordinated path for home comfort systems.",
+  "moen.com": "A broad faucet and shower assortment with widely available replacement parts for long-term serviceability.",
+  "leviton.com": "Combines everyday wiring devices with smart switches and controls, making it useful for projects that blend safety and home automation.",
+  "progresslighting.com": "A wide residential fixture range makes it easy to coordinate decorative lighting across entries, kitchens, baths, and porches.",
+  "rainbird.com": "Specializes in irrigation equipment and controls for matching watering schedules and coverage to the landscape.",
+  "daltile.com": "A broad ceramic and porcelain tile selection supports practical coordination across floors, walls, showers, and backsplashes.",
+  "owenscorning.com": "Its Duration shingle line uses the SureNail reinforcement feature; compare the complete roof assembly and applicable system coverage.",
+  "lpcorp.com": "SmartSide engineered-wood siding offers a wood appearance with treated engineered panels and matching trim choices.",
+  "pella.com": "Its product range spans different frame materials and price levels, helping homeowners compare performance and sightlines within one catalog.",
+  "thermatru.com": "A deep fiberglass entry-door range combines varied panel designs with decorative glass and coordinated entry-system parts.",
+  "englertinc.com": "Offers metal-roofing and rainware systems, useful when comparing compatible roof-edge and gutter materials together.",
+  "sherwin-williams.com": "A large architectural-paint system supports color matching and product selection across interior, exterior, and multiple substrates.",
+  "trex.com": "Composite decking and coordinated railing options help create a unified outdoor-living package with less routine upkeep than wood.",
+  "belgard.com": "Coordinates pavers, slabs, borders, and retaining-wall products for a cohesive patio, walkway, or driveway design.",
+  "shawfloors.com": "Its portfolio spans carpet, hardwood, tile, and resilient flooring, making room-to-room product comparisons straightforward.",
+  "deltafaucet.com": "Offers broad faucet and shower collections with practical replacement and service options for kitchens and baths.",
+  "carrier.com": "A broad heating-and-cooling lineup includes conventional systems and heat pumps, giving homeowners multiple equipment paths to compare.",
+  "eaton.com": "A wide electrical-protection portfolio includes residential load centers and breakers for panel and circuit upgrades.",
+  "kichler.com": "Indoor, outdoor, and landscape fixture collections make it easier to coordinate lighting across the home and yard.",
+  "hunterindustries.com": "Irrigation controllers and landscape products support scheduled watering tailored to different zones and planting needs.",
+  "nicolock.com": "Paver colors, patterns, and wall products support coordinated hardscape designs with a distinct regional style range.",
+  "enphase.com": "Microinverters provide module-level monitoring and design flexibility for roofs with multiple orientations or partial shading.",
+  "certainteed.com": "A broad exterior-products portfolio spans roofing, siding, and fencing, useful for comparing coordinated envelope materials.",
+  "jameshardie.com": "Fiber-cement siding offers crisp architectural profiles and finish options; installation details and climate guidance matter.",
+  "marvin.com": "Design-oriented window and door collections offer material and finish choices for larger openings and architectural detailing.",
+  "provia.com": "Customizable entry systems let homeowners compare door style, glass, hardware, and finish as one coordinated package.",
+  "leaffilter.com": "A dedicated gutter-protection system is worth comparing where tree debris is a recurring issue; roof and gutter condition still matter.",
+  "benjaminmoore.com": "Known for an extensive architectural color system, which can help when precise color selection and finish coordination are priorities.",
+  "timbertech.com": "Composite and PVC decking lines offer several aesthetics and maintenance profiles, with coordinated railing and trim choices.",
+  "unilock.com": "Paver collections include varied shapes, textures, and borders for tailored patios and walks.",
+  "anchorwall.com": "Retaining-wall systems are designed around interlocking components, useful when wall geometry and grade changes drive the scope.",
+  "eldoradostone.com": "Manufactured stone veneer offers varied stone looks without the weight and construction approach of full-bed natural stone.",
+  "cambriausa.com": "U.S.-made quartz surfaces offer a broad design collection with low routine maintenance for kitchens and baths.",
+  "caesarstoneus.com": "Engineered surfaces come in a wide range of colors and textures for coordinating counters with cabinetry and tile.",
+  "mitsubishicomfort.com": "Ductless and multi-zone heat-pump systems can serve additions or rooms where extending existing ductwork is difficult.",
+  "lutron.com": "Lighting controls support dimming, scenes, and automation for homeowners who want more than a simple fixture replacement.",
+  "waclighting.com": "Architectural LED fixtures and control options suit projects focused on clean lines and layered, directed lighting.",
+  "fxl.com": "Professional landscape fixtures and controls are designed for lighting paths, planting, and outdoor architectural features.",
+  "generac.com": "A dedicated standby-generator range can be compared for automatic backup power, fuel type, and essential-load needs.",
+  "recgroup.com": "High-efficiency solar modules are a useful comparison when roof area is limited and panel output per area matters.",
+};
+
 function generalBenefit(category: string) {
   const normalized = category.toLowerCase();
   if (normalized.includes("paver") || normalized.includes("concrete") || normalized.includes("wall") || normalized.includes("masonry")) return "Compare colors, patterns, surface texture, and compatible edging or wall components. The base, drainage, and installation details matter as much as the surface product.";
@@ -187,7 +243,9 @@ function mixedOrder<T extends readonly (readonly [string, string, string])[]>(br
 export function BrandPillsShowcase() {
   const [selectedBrand, setSelectedBrand] = useState<{ brand: string; category: string; domain: string } | null>(null);
   const productDetails = selectedBrand ? findProductDetails(selectedBrand.domain, selectedBrand.category) : undefined;
-  const benefit = productDetails?.why ?? (selectedBrand ? generalBenefit(selectedBrand.category) : "");
+  const benefit = selectedBrand
+    ? BRAND_ADVANTAGES[selectedBrand.domain] ?? productDetails?.why ?? generalBenefit(selectedBrand.category)
+    : "";
 
   return (
     <>
