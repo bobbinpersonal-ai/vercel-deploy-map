@@ -53,8 +53,8 @@ const PROCESS_ITEMS: ProcessItem[] = [
     badge: "06 · One point of contact",
     title: "Your consultant stays with you when the crew starts.",
     description: "The handoff does not end at the signature. Your consultant helps manage crew expectations, access, schedule questions, material decisions, and the difference between the written scope and a hidden condition discovered in the field.",
-    image: px(32115957, 1000),
-    imageAlt: "A project supervisor coordinating work on site",
+    image: px(4442490, 1000),
+    imageAlt: "A construction worker building a home project on site",
     icon: Hammer,
   },
   {

@@ -75,9 +75,9 @@ const LIBRARY: Raw[] = [
       "Final cleanup, completion photos, and workmanship follow-up",
     ],
     value: {
-      headline: "Protection first — asphalts recover roughly two-thirds of cost at resale.",
+      headline: "Protection first — resale value depends on the roof, the home, and the market.",
       notes: [
-        ["Resale benchmark", "Zonda's 2025 Cost vs. Value report puts a standard asphalt shingle replacement near 68% cost recovery nationally."],
+        ["Resale value", "A sound, documented roof can strengthen buyer confidence and address a major condition concern at sale; local value depends on the home and market."],
         ["Insurance & safety", "A documented roof age and condition history keeps you insurable and avoids emergency tarp costs."],
         ["The hidden value", "The biggest return is the damage you never have to repair because you replaced on your timeline."],
       ],
@@ -107,9 +107,9 @@ const LIBRARY: Raw[] = [
       "Daily site protection, punch list, and finish inspection",
     ],
     value: {
-      headline: "Curb appeal plus a real weather barrier — vinyl recovers about 96% nationally.",
+      headline: "Curb appeal plus a real weather barrier — a defined fiber-cement project leads the resale benchmarks.",
       notes: [
-        ["Resale benchmark", "Zonda's 2025 report places a full vinyl siding replacement near 96.5% cost recovery in its standardized project."],
+        ["Resale benchmark", "Zonda's 2025 Cost vs. Value report estimates 113.7% cost recouped for its standardized fiber-cement siding replacement; other materials and homes differ."],
         ["Lower upkeep", "Modern siding cuts painting cycles and rot repair compared with neglected wood or failing composite."],
         ["Buyer confidence", "An intact envelope is one of the first things an inspector and a buyer will question."],
       ],
@@ -139,9 +139,9 @@ const LIBRARY: Raw[] = [
       "Operation check, interior cleanup, and final walkthrough",
     ],
     value: {
-      headline: "Comfort and quiet you feel every day — plus resale recovery that beats most interiors.",
+      headline: "Comfort and quiet today, with a well-planned upgrade that supports buyer confidence at sale.",
       notes: [
-        ["Resale benchmark", "Window replacement recovers a large share of cost nationally in Zonda's 2025 report, varying by material and market."],
+        ["Resale value", "Well-installed, attractive windows can support buyer confidence and make the home easier to show; the value depends on the scope and local market."],
         ["Energy & comfort", "Tighter, correctly installed units reduce drafts, street noise, and uneven room temperatures."],
         ["Maintenance", "Modern units stop the painting, sticking, and seal failures of aging wood windows."],
       ],
@@ -237,7 +237,7 @@ const LIBRARY: Raw[] = [
     value: {
       headline: "Entry doors are among the highest-return exterior upgrades in national data.",
       notes: [
-        ["Resale benchmark", "Zonda's 2025 Cost vs. Value report places a steel entry door replacement near 216% cost recovery in its standardized project."],
+        ["Resale benchmark", "Zonda's 2025 Cost vs. Value report estimates 216.4% cost recouped for its standardized steel entry-door replacement."],
         ["Security & energy", "A modern, well-sealed door closes the biggest air leak on most facades."],
         ["Feel", "Solid, quiet, smooth-operating doors change how the house feels to enter every day."],
       ],
@@ -269,7 +269,7 @@ const LIBRARY: Raw[] = [
     value: {
       headline: "The single strongest resale benchmark in the 2025 national report.",
       notes: [
-        ["Resale benchmark", "Zonda's 2025 report places a garage door replacement near 268% cost recovery nationally."],
+        ["Resale benchmark", "Zonda's 2025 report estimates 267.7% cost recouped for its standardized garage-door replacement."],
         ["Safety", "Old springs and cables are a genuine hazard. New hardware removes one of the most common home-injury risks."],
         ["Quiet & efficient", "Insulated doors cut street noise and help keep attached rooms warmer in winter."],
       ],
@@ -299,10 +299,10 @@ const LIBRARY: Raw[] = [
       "Fastener check, finish, and final walkthrough",
     ],
     value: {
-      headline: "Outdoor living raises usable space and recovers a strong share of cost at resale.",
+      headline: "Outdoor living adds usable space and makes the property more appealing to enjoy and show.",
       notes: [
         ["Usable square footage", "A well-built deck effectively adds living area without the cost per square foot of an addition."],
-        ["Resale", "Wood and composite decks typically recover a majority of cost nationally, per Zonda's outdoor project data."],
+        ["Resale value", "A well-designed, maintained deck adds an inviting outdoor-living feature that can support buyer appeal; local value depends on the home and market."],
         ["Lifestyle", "The best-returning projects are the ones the family actually uses every week."],
       ],
     },
@@ -462,7 +462,7 @@ const LIBRARY: Raw[] = [
       headline: "Adds usable living space and one of the highest lifestyle returns per dollar.",
       notes: [
         ["Usable space", "A patio turns unused yard into the room the family actually gathers in."],
-        ["Resale", "Hardscape is durable, visible, and generally recovers a solid share of cost."],
+        ["Resale value", "A finished patio makes outdoor space more useful and can strengthen the home's presentation to buyers; local value depends on the property and market."],
         ["Low maintenance", "Unlike a deck, quality hardscape needs little beyond occasional cleaning."],
       ],
     },

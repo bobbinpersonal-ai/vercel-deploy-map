@@ -398,7 +398,7 @@ export const PROJECT_PHOTO_SETS: Record<string, PhotoSet> = {
   },
   "insurance-claims": {
     hero: 38510717,
-    gallery: [237907, 32115957],
+    gallery: [237907, 32050399],
     products: [
       ["Damaged roof surface", 4334097],
       ["Gutter and fascia damage", 13534968],
@@ -462,7 +462,7 @@ export const PROJECT_PHOTO_SETS: Record<string, PhotoSet> = {
     products: [
       ["Framing in progress", 33043393],
       ["Project plans", 9242911],
-      ["Trade crew on site", 32115957],
+      ["Construction worker on site", 4442490],
       ["Tools and materials", 3926800],
     ],
   },
@@ -595,7 +595,7 @@ export const WORKER_PHOTOS: [string, number][] = [
   ["Masonry work", 8586035],
   ["Brick laying", 10383588],
   ["Stone work", 15806957],
-  ["Foreman on site", 32115957],
+  ["Construction worker at work", 4442490],
   ["Site supervisor", 4442490],
   ["Jobsite leadership", 9405517],
   ["Crew coordination", 3932291],
@@ -713,7 +713,7 @@ export function projectHero(slug: string) {
 
 export function projectGallery(slug: string): [string, string] {
   const set = PROJECT_PHOTO_SETS[slug];
-  return set ? [px(set.gallery[0]), px(set.gallery[1])] : [px(12314551), px(32115957)];
+  return set ? [px(set.gallery[0]), px(set.gallery[1])] : [px(12314551), px(4442490)];
 }
 
 export type ProductPhoto = { label: string; image: string; id: number; page: string };
