@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight, CalendarCheck, Check, ClipboardCheck, Compass, Hammer, Home, Palette, PhoneCall, Sparkles, Users } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { px } from "@/data/photos";
 
@@ -119,6 +119,9 @@ export function TracingBeam({ children, className }: { children: ReactNode; clas
 }
 
 export function HomeImprovementProcess() {
+  const { pathname } = useLocation();
+  const scheduleHref = pathname === "/" ? "#schedule" : "/#schedule";
+
   return (
     <section id="process" className="video-through-section relative z-10 border-y border-[#1d211d]/10 bg-[#eaf0d0]/72 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
@@ -149,7 +152,7 @@ export function HomeImprovementProcess() {
 
         <div className="mx-auto mt-14 flex max-w-3xl flex-col gap-4 rounded-2xl border border-[#71803d]/25 bg-[#1d211d] p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-7">
           <div><p className="text-xs font-semibold tracking-[.16em] text-[#d5ec77] uppercase">Ready for the first step?</p><p className="mt-2 text-lg font-semibold">Schedule the conversation around your home—not around a script.</p></div>
-          <Link to="/#schedule" className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#d5ec77] px-5 py-3 text-sm font-semibold text-[#1d211d] transition hover:bg-[#e5f795]">Schedule an appointment <ArrowUpRight className="ml-2 size-4" /></Link>
+          <Link to={scheduleHref} className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#d5ec77] px-5 py-3 text-sm font-semibold text-[#1d211d] transition hover:bg-[#e5f795]">Schedule an appointment <ArrowUpRight className="ml-2 size-4" /></Link>
         </div>
       </div>
     </section>

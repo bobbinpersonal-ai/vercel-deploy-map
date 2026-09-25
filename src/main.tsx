@@ -7,30 +7,68 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import "./index.css";
 
+// A deployment can briefly serve an old page shell with new hashed chunks (or vice versa).
+// Retry those failures once per route; a second failure is shown by the root boundary.
+const chunkRetryKey = () => `lovemeafter:chunk-retry:${window.location.pathname}`;
+const isChunkLoadError = (error: unknown) =>
+  /dynamically imported module|failed to fetch dynamically|importing a module script failed|chunkloaderror/i.test(
+    error instanceof Error ? error.message : String(error),
+  );
+
+function lazyRoute<T extends React.ComponentType<any>>(
+  load: () => Promise<{ default: T }>,
+) {
+  return lazy(() =>
+    load()
+      .then((module) => {
+        try {
+          window.sessionStorage.removeItem(chunkRetryKey());
+        } catch {
+          // Storage can be disabled; route loading should still work.
+        }
+        return module;
+      })
+      .catch((error: unknown) => {
+        if (isChunkLoadError(error)) {
+          try {
+            const key = chunkRetryKey();
+            if (!window.sessionStorage.getItem(key)) {
+              window.sessionStorage.setItem(key, "1");
+              window.location.reload();
+            }
+          } catch {
+            // The error boundary below still provides a manual reload action.
+          }
+        }
+        throw error;
+      }),
+  );
+}
+
 // Lazy load route components for better code splitting
-const Landing = lazy(() => import("./pages/Landing.tsx"));
-const Careers = lazy(() => import("./pages/Careers.tsx"));
-const CareerRole = lazy(() => import("./pages/CareerRole.tsx"));
-const Services = lazy(() => import("./pages/Services.tsx"));
-const Areas = lazy(() => import("./pages/Areas.tsx"));
-const Insights = lazy(() => import("./pages/Insights.tsx"));
-const TopicPost = lazy(() => import("./pages/TopicPost.tsx"));
-const Financing = lazy(() => import("./pages/Financing.tsx"));
-const CallLists = lazy(() => import("./pages/CallLists.tsx"));
-const AreaLanding = lazy(() => import("./pages/AreaLanding.tsx"));
-const MarketCareers = lazy(() => import("./pages/MarketCareers.tsx"));
-const ProjectProcess = lazy(() => import("./pages/ProjectProcess.tsx"));
-const Conditions = lazy(() => import("./pages/Conditions.tsx"));
-const Trades = lazy(() => import("./pages/Trades.tsx"));
-const ContractorPartners = lazy(() => import("./pages/ContractorPartners.tsx"));
-const ContractorApplications = lazy(() => import("./pages/ContractorApplications.tsx"));
-const MarketContractors = lazy(() => import("./pages/MarketContractors.tsx"));
-const AuthPage = lazy(() => import("./pages/Auth.tsx"));
-const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
-const Workspace = lazy(() => import("./pages/Workspace.tsx"));
-const InternalPreview = lazy(() => import("./pages/InternalPreview.tsx"));
-const GrowthEngine = lazy(() => import("./pages/GrowthEngine.tsx"));
-const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const Landing = lazyRoute(() => import("./pages/Landing.tsx"));
+const Careers = lazyRoute(() => import("./pages/Careers.tsx"));
+const CareerRole = lazyRoute(() => import("./pages/CareerRole.tsx"));
+const Services = lazyRoute(() => import("./pages/Services.tsx"));
+const Areas = lazyRoute(() => import("./pages/Areas.tsx"));
+const Insights = lazyRoute(() => import("./pages/Insights.tsx"));
+const TopicPost = lazyRoute(() => import("./pages/TopicPost.tsx"));
+const Financing = lazyRoute(() => import("./pages/Financing.tsx"));
+const CallLists = lazyRoute(() => import("./pages/CallLists.tsx"));
+const AreaLanding = lazyRoute(() => import("./pages/AreaLanding.tsx"));
+const MarketCareers = lazyRoute(() => import("./pages/MarketCareers.tsx"));
+const ProjectProcess = lazyRoute(() => import("./pages/ProjectProcess.tsx"));
+const Conditions = lazyRoute(() => import("./pages/Conditions.tsx"));
+const Trades = lazyRoute(() => import("./pages/Trades.tsx"));
+const ContractorPartners = lazyRoute(() => import("./pages/ContractorPartners.tsx"));
+const ContractorApplications = lazyRoute(() => import("./pages/ContractorApplications.tsx"));
+const MarketContractors = lazyRoute(() => import("./pages/MarketContractors.tsx"));
+const AuthPage = lazyRoute(() => import("./pages/Auth.tsx"));
+const Dashboard = lazyRoute(() => import("./pages/Dashboard.tsx"));
+const Workspace = lazyRoute(() => import("./pages/Workspace.tsx"));
+const InternalPreview = lazyRoute(() => import("./pages/InternalPreview.tsx"));
+const GrowthEngine = lazyRoute(() => import("./pages/GrowthEngine.tsx"));
+const NotFound = lazyRoute(() => import("./pages/NotFound.tsx"));
 
 // Simple loading fallback for route transitions
 function RouteLoading() {
@@ -62,10 +100,34 @@ class RootErrorBoundary extends React.Component<
       return (
         <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-6">
           <div className="max-w-lg text-center">
-            <p className="text-sm font-semibold">Preview runtime error</p>
-            <p className="mt-2 text-xs text-muted-foreground break-words">
-              {this.state.message}
+            <p className="text-sm font-semibold">
+              {isChunkLoadError(new Error(this.state.message))
+                ? "This page couldn’t load"
+                : "Preview runtime error"}
             </p>
+            <p className="mt-2 text-xs text-muted-foreground break-words">
+              {isChunkLoadError(new Error(this.state.message))
+                ? "The page bundle may be out of date. Reload to fetch the latest version, or return to service areas."
+                : this.state.message}
+            </p>
+            <div className="mt-5 flex flex-wrap justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background"
+              >
+                Reload page
+              </button>
+              <a
+                href="/areas"
+                className="rounded-full border border-border px-4 py-2 text-sm font-semibold"
+              >
+                Service areas
+              </a>
+              <a href="/" className="rounded-full border border-border px-4 py-2 text-sm font-semibold">
+                Home
+              </a>
+            </div>
             {this.state.stack && (
               <pre className="mt-3 text-left text-[10px] leading-4 text-muted-foreground/80 max-h-40 overflow-auto rounded border border-border/60 p-2">
                 {this.state.stack}
@@ -82,12 +144,38 @@ class RootErrorBoundary extends React.Component<
 function RouteSyncer() {
   const location = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
+    let observer: MutationObserver | undefined;
+    let frame = 0;
+    const scrollToDestination = () => {
+      if (location.hash) {
+        const target = document.getElementById(location.hash.slice(1));
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+          observer?.disconnect();
+          return;
+        }
+        observer = new MutationObserver(() => {
+          const delayedTarget = document.getElementById(location.hash.slice(1));
+          if (delayedTarget) {
+            delayedTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+            observer?.disconnect();
+          }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+        return;
+      }
+      window.scrollTo(0, 0);
+    };
+    frame = window.requestAnimationFrame(scrollToDestination);
     window.parent.postMessage(
       { type: "iframe-route-change", path: location.pathname },
       "*",
     );
-  }, [location.pathname]);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer?.disconnect();
+    };
+  }, [location.pathname, location.hash]);
 
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
@@ -134,8 +222,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/admin" element={<RequireAuth title="Sign in to manage LoveMeAfter" description="Leads, call lists, appointments, crews, and jobs live in the internal admin console."><Dashboard /></RequireAuth>} />
             <Route path="/admin/workspace" element={<RequireAuth title="Sign in to use the workspace" description="SOPs, projects, tasks, job posts, and internal work live here."><Workspace /></RequireAuth>} />
             <Route path="/admin/internal-preview" element={<RequireAuth title="Sign in to review the internal playbook" description="Sales, appointments, installer economics, and operating standards live here."><InternalPreview /></RequireAuth>} />
-            {/* Temporary review mode: the operating map is intentionally open while the team evaluates it. */}
-            <Route path="/admin/growth-engine" element={<GrowthEngine />} />
+            <Route path="/admin/growth-engine" element={<RequireAuth title="Sign in to review the growth engine" description="The operating playbook is for authorized LoveMeAfter team members."><GrowthEngine /></RequireAuth>} />
             <Route path="/admin/call-lists" element={<RequireAuth title="Sign in to manage call lists" description="The telemarketing queue is for internal callers and appointment setters."><CallLists /></RequireAuth>} />
             <Route path="/admin/contractors" element={<RequireAuth title="Sign in to review contractors" description="Review partner applications and build the installation network."><ContractorApplications /></RequireAuth>} />
             <Route path="*" element={<NotFound />} />

@@ -526,7 +526,7 @@ export default function Landing() {
 
       <section id="questions" className="relative z-10 border-y border-[#1d211d]/10 bg-[#ece9e0]/64 backdrop-blur-sm"><div className="mx-auto grid max-w-7xl gap-12 px-5 py-24 sm:px-8 lg:grid-cols-[.75fr_1.25fr] lg:px-10 lg:py-32"><div><p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">Good questions</p><h2 className="mt-4 text-4xl font-semibold leading-[1] tracking-[-.055em] sm:text-6xl">Before you invite us over.</h2></div><Accordion type="single" collapsible>{FAQS.map(([question, answer]) => <AccordionItem key={question} value={question} className="border-[#1d211d]/15"><AccordionTrigger className="py-6 text-left text-lg font-semibold hover:no-underline">{question}</AccordionTrigger><AccordionContent className="max-w-xl pb-6 text-base leading-7 text-[#62695f]">{answer}</AccordionContent></AccordionItem>)}</Accordion></div></section>
 
-      <section className="relative z-10 bg-[#f7f5f0] px-5 py-8 sm:px-8 lg:px-10"><div className="mx-auto max-w-7xl"><LeadershipSchedule /></div></section>
+      <section id="schedule" className="relative z-10 bg-[#f7f5f0] px-5 py-8 sm:px-8 lg:px-10"><div className="mx-auto max-w-7xl"><LeadershipSchedule /></div></section>
 
       <section className="video-through-section relative z-10 border-y border-[#1d211d]/10 bg-[#eaf0d0]/72 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-24">
