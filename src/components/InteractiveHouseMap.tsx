@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
 import { px } from "@/data/photos";
@@ -32,6 +32,16 @@ const VIEWS = {
 export function InteractiveHouseMap() {
   const [view, setView] = useState<"front" | "back">("front");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const detailRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!selectedId || !detailRef.current) return;
+    const frame = window.requestAnimationFrame(() => {
+      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [selectedId]);
+
   const chooseZone = (zone: Zone) => {
     setView(zone.view);
     setSelectedId(zone.id);
@@ -86,7 +96,7 @@ export function InteractiveHouseMap() {
                 <ArrowUpRight className="size-4 text-[#71803d] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </button>
               {selectedId === zone.id && (
-                <article className="mt-2 overflow-hidden rounded-2xl border border-[#71803d]/30 bg-[#1d211d] text-white shadow-xl">
+                <article ref={detailRef} className="mt-2 scroll-mt-32 scroll-mb-40 overflow-hidden rounded-2xl border border-[#71803d]/30 bg-[#1d211d] text-white shadow-xl">
                   <div className="h-36 bg-cover bg-center" style={{ backgroundImage: `url(${px(zone.image, 900)})` }} />
                   <div className="p-5">
                     <p className="text-xs font-semibold tracking-[.16em] text-[#d5ec77] uppercase">{zone.kicker}</p>
