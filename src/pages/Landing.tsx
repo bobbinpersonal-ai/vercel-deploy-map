@@ -343,14 +343,14 @@ export default function Landing() {
       )}
 
       <section id="top" className="relative isolate min-h-[730px] bg-transparent text-white">
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,22,16,.95)_0%,rgba(15,22,16,.73)_46%,rgba(15,22,16,.15)_100%),url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=85')] bg-cover bg-[center_65%]" />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(20,12,22,.92)_0%,rgba(20,12,22,.67)_44%,rgba(20,12,22,.22)_100%),linear-gradient(0deg,rgba(20,12,22,.24),transparent_45%),url('https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=2400&q=90')] bg-cover bg-[center_58%]" />
         <div className="fixed inset-0 z-0 overflow-hidden bg-[#182019] pointer-events-none">
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-[url('https://images.pexels.com/photos/4913326/pexels-photo-4913326.jpeg?auto=compress&cs=tinysrgb&w=2200')] bg-cover bg-center"
+            className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=2400&q=90')] bg-cover bg-center"
           />
 
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(15,22,16,.64)_0%,rgba(15,22,16,.34)_46%,rgba(15,22,16,.06)_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,12,22,.70)_0%,rgba(20,12,22,.42)_46%,rgba(20,12,22,.10)_100%)]" />
         </div>
         <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-5 pb-20 pt-36 sm:px-8 lg:grid-cols-[1.08fr_.92fr] lg:px-10 lg:pb-28 lg:pt-48">
           <div className="max-w-2xl">
