@@ -72,7 +72,7 @@ export function BottomNav() {
         const maxScroll = scroller.scrollWidth - scroller.clientWidth;
         if (maxScroll > 4 && time >= edgePauseUntil) {
           const elapsed = lastFrameTime ? Math.min(time - lastFrameTime, 40) : 0;
-          scroller.scrollLeft = Math.max(0, Math.min(maxScroll, scroller.scrollLeft + direction * elapsed * 0.03));
+          scroller.scrollLeft = Math.max(0, Math.min(maxScroll, scroller.scrollLeft + direction * elapsed * 0.012));
           if (scroller.scrollLeft >= maxScroll - 1) {
             direction = -1;
             edgePauseUntil = time + 900;
@@ -125,6 +125,92 @@ export function BottomNav() {
       scroller.removeEventListener("focusout", onFocusOut);
       reducedMotion.removeEventListener("change", onMotionChange);
       document.removeEventListener("visibilitychange", onMotionChange);
+    };
+  }, [isHidden, pathname]);
+
+  useEffect(() => {
+    const scroller = quickNavRef.current;
+    if (!scroller || isHidden) return;
+
+    const mobile = window.matchMedia("(max-width: 639px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let resumeTimer: number | undefined;
+    let pausedByInteraction = false;
+    let lastFrameTime = 0;
+    let direction = 1;
+    let edgePauseUntil = performance.now() + 1700;
+
+    const stop = () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = 0;
+      lastFrameTime = 0;
+    };
+    const animate = (time: number) => {
+      if (!mobile.matches || reducedMotion.matches || document.visibilityState !== "visible") {
+        stop();
+        return;
+      }
+
+      if (!pausedByInteraction && !scroller.contains(document.activeElement)) {
+        const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+        if (maxScroll > 4 && time >= edgePauseUntil) {
+          const elapsed = lastFrameTime ? Math.min(time - lastFrameTime, 40) : 0;
+          scroller.scrollLeft = Math.max(0, Math.min(maxScroll, scroller.scrollLeft + direction * elapsed * 0.0055));
+          if (scroller.scrollLeft >= maxScroll - 1) {
+            direction = -1;
+            edgePauseUntil = time + 1500;
+          } else if (scroller.scrollLeft <= 1) {
+            direction = 1;
+            edgePauseUntil = time + 1500;
+          }
+        }
+      }
+      lastFrameTime = time;
+      frame = window.requestAnimationFrame(animate);
+    };
+    const start = () => {
+      if (!frame && mobile.matches && !reducedMotion.matches) frame = window.requestAnimationFrame(animate);
+    };
+    const pauseTemporarily = () => {
+      pausedByInteraction = true;
+      window.clearTimeout(resumeTimer);
+      resumeTimer = window.setTimeout(() => {
+        pausedByInteraction = false;
+        lastFrameTime = 0;
+      }, 2400);
+    };
+    const onFocusIn = () => {
+      pausedByInteraction = true;
+      window.clearTimeout(resumeTimer);
+    };
+    const onFocusOut = () => pauseTemporarily();
+    const onMediaChange = () => {
+      if (mobile.matches && !reducedMotion.matches) start();
+      else stop();
+    };
+
+    scroller.addEventListener("pointerdown", pauseTemporarily);
+    scroller.addEventListener("touchstart", pauseTemporarily, { passive: true });
+    scroller.addEventListener("wheel", pauseTemporarily, { passive: true });
+    scroller.addEventListener("focusin", onFocusIn);
+    scroller.addEventListener("focusout", onFocusOut);
+    mobile.addEventListener("change", onMediaChange);
+    reducedMotion.addEventListener("change", onMediaChange);
+    document.addEventListener("visibilitychange", onMediaChange);
+    start();
+
+    return () => {
+      stop();
+      window.clearTimeout(resumeTimer);
+      scroller.removeEventListener("pointerdown", pauseTemporarily);
+      scroller.removeEventListener("touchstart", pauseTemporarily);
+      scroller.removeEventListener("wheel", pauseTemporarily);
+      scroller.removeEventListener("focusin", onFocusIn);
+      scroller.removeEventListener("focusout", onFocusOut);
+      mobile.removeEventListener("change", onMediaChange);
+      reducedMotion.removeEventListener("change", onMediaChange);
+      document.removeEventListener("visibilitychange", onMediaChange);
     };
   }, [isHidden, pathname]);
 
