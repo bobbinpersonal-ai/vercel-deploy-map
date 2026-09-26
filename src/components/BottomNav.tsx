@@ -296,7 +296,7 @@ export function BottomNav() {
                       type="button"
                       aria-label={`View ${brand.brand} details for ${project.label}`}
                       onClick={() => setSelectedBrand({ brand, projectLabel: project.label })}
-                      className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#d5ec77]/40 bg-[#d5ec77]/10 px-2.5 py-1.5 text-[10px] font-semibold whitespace-nowrap text-[#e6f4ae] transition hover:border-[#d5ec77] hover:bg-[#d5ec77]/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d5ec77]"
+                      className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#ef8eb4]/45 bg-[#ef8eb4]/10 px-2.5 py-1.5 text-[11px] font-semibold whitespace-nowrap text-[#ffd8e7] transition hover:border-[#ef8eb4] hover:bg-[#ef8eb4]/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef8eb4]"
                     >
                       <OfficialBrandLogo brand={brand.brand} domain={brand.domain} className="size-4 rounded-full bg-white" />
                       {brand.brand}
@@ -310,16 +310,16 @@ export function BottomNav() {
                   {(projectIndex + 1) % 10 === 0 && RAIL_LENDERS[(projectIndex + 1) / 10 - 1] && (() => {
                     const lender = RAIL_LENDERS[(projectIndex + 1) / 10 - 1];
                     return (
-                      <span key={`lender-${projectIndex}`} className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#9dc8dc]/30 bg-[#9dc8dc]/10 px-2.5 py-1.5 text-[10px] font-semibold whitespace-nowrap text-[#c7e6f2]" title="Lender approval, rates, promotions, and terms vary by offer.">
+                      <span key={`lender-${projectIndex}`} className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/20 bg-white/[.06] px-2.5 py-1.5 text-[10px] font-semibold whitespace-nowrap text-white/85" title="Lender approval, rates, promotions, and terms vary by offer.">
                         <OfficialBrandLogo brand={lender.name} domain={lender.domain} className="size-4 rounded-full bg-white" />
                         <Link to="/financing" aria-label={`${lender.name}: ${lender.detail}`}>{lender.name}</Link>
-                        <span className="font-normal text-white/60">· {lender.detail}</span>
+                        <span className="font-normal text-white/80">· {lender.detail}</span>
                       </span>
                     );
                   })()}
                 </div>
               ))}
-              <Link to="/financing" title="Promotions and deferred-payment offers vary by lender, applicant eligibility, and current terms." className="flex shrink-0 items-center rounded-full border border-white/15 bg-white/[.06] px-3 py-1.5 text-[10px] font-medium whitespace-nowrap text-white/65 transition hover:border-white/35 hover:text-white/85">
+              <Link to="/financing" title="Promotions and deferred-payment offers vary by lender, applicant eligibility, and current terms." className="flex shrink-0 items-center rounded-full border border-white/20 bg-white/[.08] px-3 py-1.5 text-[11px] font-medium whitespace-nowrap text-white/85 transition hover:border-white/35 hover:text-white">
                 Promo or deferred options vary
               </Link>
             </div>

@@ -137,29 +137,40 @@ main > section:not([class*="bg-"]) > div {
 }
 
 
-.site-theme [class*="bg-[#d5ec77]"],
-.site-theme [class*="bg-[#e1f895]"],
-.site-theme [class*="bg-[#e5f795]"],
-.site-theme [class*="bg-[#71803d]"],
-.site-theme [class*="bg-[#92b477]"],
-.site-theme [class*="bg-[#dce8b0]"],
-.site-theme [class*="bg-[#c9d68f]"] {
+.site-theme [class~="bg-[#d5ec77]"],
+.site-theme [class~="bg-[#e1f895]"],
+.site-theme [class~="bg-[#e5f795]"],
+.site-theme [class~="bg-[#71803d]"],
+.site-theme [class~="bg-[#92b477]"],
+.site-theme [class~="bg-[#dce8b0]"],
+.site-theme [class~="bg-[#c9d68f]"] {
   background-color: #ef8eb4 !important;
   color: #24131d !important;
 }
 
-.site-theme [class*="bg-[#d5ec77]"] *,
-.site-theme [class*="bg-[#e1f895]"] *,
-.site-theme [class*="bg-[#e5f795]"] *,
-.site-theme [class*="bg-[#71803d]"] *,
-.site-theme [class*="bg-[#92b477]"] *,
-.site-theme [class*="bg-[#dce8b0]"] *,
-.site-theme [class*="bg-[#c9d68f]"] * {
+.site-theme [class~="bg-[#d5ec77]"] *,
+.site-theme [class~="bg-[#e1f895]"] *,
+.site-theme [class~="bg-[#e5f795]"] *,
+.site-theme [class~="bg-[#71803d]"] *,
+.site-theme [class~="bg-[#92b477]"] *,
+.site-theme [class~="bg-[#dce8b0]"] *,
+.site-theme [class~="bg-[#c9d68f]"] * {
   color: #24131d !important;
 }
 
-.site-theme [class*="bg-[#ef8eb4]"],
-.site-theme [class*="bg-[#f6b0ca]"] {
+.site-theme [class*="bg-[#d5ec77]/"],
+.site-theme [class*="bg-[#e1f895]/"],
+.site-theme [class*="bg-[#e5f795]/"] {
+  background-color: rgb(239 142 180 / 18%) !important;
+}
+
+.site-theme [class*="bg-[#e9b66a]/"],
+.site-theme [class*="bg-[#9dc8dc]/"] {
+  background-color: rgb(255 255 255 / 8%) !important;
+}
+
+.site-theme [class~="bg-[#ef8eb4]"],
+.site-theme [class~="bg-[#f6b0ca]"] {
   background-color: #ef8eb4 !important;
   color: #24131d !important;
 }
@@ -175,23 +186,52 @@ main > section:not([class*="bg-"]) > div {
   background-color: #211824 !important;
 }
 
-.site-theme [class*="text-[#1d211d]"],
-.site-theme [class*="text-[#252"],
+.site-theme [class*="text-[#1"],
+.site-theme [class*="text-[#2"],
 .site-theme [class*="text-[#3"],
 .site-theme [class*="text-[#4"],
 .site-theme [class*="text-[#5"],
 .site-theme [class*="text-[#6"],
 .site-theme [class*="text-[#7"],
 .site-theme [class*="text-[#8"],
-.site-theme [class*="text-[#9"] {
-  color: #e8dfe7 !important;
+.site-theme [class*="text-[#9"],
+.site-theme [class*="text-[#a"],
+.site-theme [class*="text-[#b"] {
+  color: #f0e8ef !important;
+}
+
+/* Legacy palette labels and microcopy become unreadable after light cards are
+   adapted to the plum surface; raise their contrast across every route. */
+.site-theme [class~="text-white/25"],
+.site-theme [class~="text-white/35"],
+.site-theme [class~="text-white/40"],
+.site-theme [class~="text-white/42"],
+.site-theme [class~="text-white/45"],
+.site-theme [class~="text-white/50"],
+.site-theme [class~="text-white/52"],
+.site-theme [class~="text-white/55"],
+.site-theme [class~="text-white/58"],
+.site-theme [class~="text-white/60"],
+.site-theme [class~="text-white/62"],
+.site-theme [class~="text-white/65"],
+.site-theme [class*="text-[#9"],
+.site-theme [class*="text-[#a"],
+.site-theme [class*="text-[#b"] {
+  color: #c9bdc8 !important;
+}
+
+.site-theme [class*="text-[#a"],
+.site-theme [class*="text-[#b4543a]"] {
+  color: #f3a4c2 !important;
 }
 
 .site-theme [class*="text-[#71803d]"],
 .site-theme [class*="text-[#87964b]"],
 .site-theme [class*="text-[#657035]"],
 .site-theme [class*="text-[#526047]"],
-.site-theme [class*="text-[#4f5a2f]"] {
+.site-theme [class*="text-[#4f5a2f]"],
+.site-theme [class*="text-[#9b6b50]"],
+.site-theme [class*="text-[#b4543a]"] {
   color: #f3a4c2 !important;
 }
 
@@ -220,11 +260,56 @@ main > section:not([class*="bg-"]) > div {
   background-color: #ef8eb4 !important;
 }
 
-.site-theme [class*="bg-[#d5ec77]"][class*="text-[#1d211d]"],
-.site-theme [class*="bg-[#e1f895]"][class*="text-[#1d211d]"],
-.site-theme [class*="bg-[#e5f795]"][class*="text-[#1d211d]"],
-.site-theme [class*="bg-[#ef8eb4]"][class*="text-[#1d211d]"] {
+.site-theme [class~="bg-[#d5ec77]"][class*="text-[#1"],
+.site-theme [class~="bg-[#d5ec77]"][class*="text-[#2"],
+.site-theme [class~="bg-[#e1f895]"][class*="text-[#1"],
+.site-theme [class~="bg-[#e1f895]"][class*="text-[#2"],
+.site-theme [class~="bg-[#e5f795]"][class*="text-[#1"],
+.site-theme [class~="bg-[#e5f795]"][class*="text-[#2"],
+.site-theme [class~="bg-[#ef8eb4]"][class*="text-[#1"],
+.site-theme [class~="bg-[#ef8eb4]"][class*="text-[#2"],
+.site-theme [class~="bg-[#d5ec77]"] [class*="text-[#1"],
+.site-theme [class~="bg-[#d5ec77]"] [class*="text-[#2"],
+.site-theme [class~="bg-[#ef8eb4]"] [class*="text-[#1"],
+.site-theme [class~="bg-[#ef8eb4]"] [class*="text-[#2"] {
   color: #24131d !important;
+}
+
+.site-theme [class*="bg-[#d5ec77]/"] [class*="text-[#e6f4ae]"],
+.site-theme [class*="bg-[#d5ec77]/"] [class*="text-[#e7f5aa]"],
+.site-theme [class*="bg-[#e1f895]/"] [class*="text-[#e6f4ae]"] {
+  color: #ffd8e7 !important;
+}
+  color: #24131d !important;
+}
+
+.site-theme [class*="text-red-700"] {
+  color: #ffb3b3 !important;
+}
+
+.site-theme input:not([type="checkbox"]):not([type="radio"]),
+.site-theme textarea,
+.site-theme select {
+  border-color: rgb(255 235 245 / 26%) !important;
+  background-color: #211924 !important;
+  color: #f0e8ef !important;
+}
+
+.site-theme input::placeholder,
+.site-theme textarea::placeholder {
+  color: #c9bdc8 !important;
+  opacity: 1;
+}
+
+.site-theme option {
+  background-color: #211924;
+  color: #f0e8ef;
+}
+
+.site-theme [class*="text-[9px]"],
+.site-theme [class*="text-[10px]"] {
+  font-size: 0.6875rem !important;
+  line-height: 1.4 !important;
 }
 
 .site-theme a,

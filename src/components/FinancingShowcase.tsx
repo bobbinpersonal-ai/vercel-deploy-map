@@ -55,21 +55,21 @@ export function FinancingShowcase({ project = "your home project", dark = false,
             <p className={`text-xs ${dark ? "text-white/62" : "text-[#697568]"}`}>Recognized lending partners · subject to lender approval</p>
           </div>
           <div className="flex flex-wrap gap-2" aria-label="Lending partners">
-            {FINANCING_LENDERS.map((lender) => <span key={lender.name} className={`rounded-full border px-2.5 py-1 text-[11px] font-bold tracking-[-.02em] ${dark ? "border-white/15 bg-white/[.06]" : "border-[#1d211d]/10 bg-white/70"}`} style={{ color: lender.accent }}>{lender.name}</span>)}
+            {FINANCING_LENDERS.map((lender) => <span key={lender.name} className="rounded-full border border-white/15 bg-white/[.06] px-2.5 py-1 text-[11px] font-bold tracking-[-.02em] text-[#ffc6dc]">{lender.name}</span>)}
           </div>
         </div>
         <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {FINANCING_LENDERS.slice(0, compact ? 4 : FINANCING_LENDERS.length).map((lender) => (
             <article key={lender.name} className={`rounded-xl border p-4 ${dark ? "border-white/10 bg-white/[.04]" : "border-[#1d211d]/10 bg-white/65"}`}>
-              <h3 className="text-base font-bold" style={{ color: lender.accent }}>{lender.name}</h3>
+              <h3 className="text-base font-bold text-[#ffc6dc]">{lender.name}</h3>
               <p className={`mt-1 text-[11px] font-semibold ${dark ? "text-white/70" : "text-[#596357]"}`}>{lender.note}</p>
               <p className={`mt-3 text-xs leading-5 ${dark ? "text-white/62" : "text-[#697568]"}`}>{lender.fit}</p>
-              <p className={`mt-3 border-t pt-3 text-xs leading-5 ${dark ? "border-white/10 text-white/55" : "border-[#1d211d]/10 text-[#7a8377]"}`}><strong className={dark ? "text-white/80" : "text-[#4f5a4d]"}>Compare:</strong> {lender.compare}</p>
-              <p className={`mt-2 text-[10px] leading-4 ${dark ? "text-white/42" : "text-[#899187]"}`}>{lender.reminder}</p>
+              <p className="mt-3 border-t border-white/10 pt-3 text-xs leading-5 text-white/70"><strong className="font-semibold text-white">Compare:</strong> {lender.compare}</p>
+              <p className="mt-2 text-[11px] leading-5 text-white/70">{lender.reminder}</p>
             </article>
           ))}
         </div>
-        <p className={`mt-4 text-[10px] leading-5 ${dark ? "text-white/42" : "text-[#7a8377]"}`}>
+        <p className="mt-4 text-[11px] leading-5 text-white/70">
           Financing is optional. APR, term, payment, fees, funding, availability, and approval vary by lender and applicant. Examples and prequalification are not a promise of approval, terms, savings, or project value.
         </p>
       </div>

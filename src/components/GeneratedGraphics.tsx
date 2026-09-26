@@ -75,7 +75,7 @@ export function CostDonut({
   centerLabel?: string;
   ariaLabel?: string;
 }) {
-  const palette = ["#71803d", "#d5ec77", "#4f5a4d", "#9aa095", "#c9d68f", "#6f7a68"];
+  const palette = ["#ef8eb4", "#ffc6dc", "#c884a7", "#f3a4c2", "#9c6783", "#e1b3ca"];
   const total = data.reduce((sum, d) => sum + d.value, 0) || 1;
   const radius = 54;
   const circumference = 2 * Math.PI * radius;
@@ -166,7 +166,7 @@ export function PhaseTimeline({
           <div className="w-28 shrink-0 space-y-2 sm:w-36">
             {phases.map((phase) => (
               <div key={phase.label} className="flex h-7 items-center">
-                <span className="truncate text-[11px] font-medium text-[#4f5a4d]">{phase.label}</span>
+                <span className="truncate text-[11px] font-medium text-white/75">{phase.label}</span>
               </div>
             ))}
           </div>
@@ -185,7 +185,7 @@ export function PhaseTimeline({
                 />
               </div>
             ))}
-            <div className="mt-1 flex justify-between text-[10px] text-[#9aa095]">
+            <div className="mt-1 flex justify-between text-[11px] text-white/70">
               {Array.from({ length: ticks + 1 }, (_, index) => (
                 <span key={index}>{Math.round((totalDays / ticks) * index)}d</span>
               ))}
@@ -222,7 +222,7 @@ export function SeverityMeter({
         <path
           d={path}
           fill="none"
-          stroke={clamped >= 66 ? "#b4543a" : clamped >= 33 ? "#c9a227" : ACCENT}
+          stroke={clamped >= 66 ? "#ff8f98" : clamped >= 33 ? "#ffc6dc" : ACCENT}
           strokeWidth="14"
           strokeLinecap="round"
           strokeDasharray={`${filled} ${circumference}`}
@@ -236,7 +236,7 @@ export function SeverityMeter({
       </svg>
       <figcaption className="mt-2">
         <p className="text-sm font-semibold">{label}</p>
-        {caption && <p className="mt-1 text-xs leading-5 text-[#62695f]">{caption}</p>}
+        {caption && <p className="mt-1 text-xs leading-5 text-white/70">{caption}</p>}
       </figcaption>
     </figure>
   );
@@ -252,7 +252,7 @@ export function TradeShareChart({
   title?: string;
   ariaLabel?: string;
 }) {
-  const palette = ["#71803d", "#d5ec77", "#4f5a4d", "#9aa095", "#c9d68f"];
+  const palette = ["#ef8eb4", "#ffc6dc", "#c884a7", "#f3a4c2", "#9c6783"];
   const total = data.reduce((sum, d) => sum + d.value, 0) || 1;
 
   return (
@@ -306,19 +306,19 @@ export function DecisionFlow({
         <ol className="space-y-4">
           {steps.map((step, index) => (
             <li key={step.question} className="grid gap-3 sm:grid-cols-[1.2fr_1fr_1fr] sm:items-stretch">
-              <div className="rounded-xl border border-[#1d211d]/10 bg-[#f7f5f0] p-3">
+              <div className="rounded-xl border border-white/10 bg-[#2b202d] p-3">
                 <p className="text-[10px] font-semibold tracking-[.14em] text-white/50 uppercase">
                   Step {index + 1}
                 </p>
                 <p className="mt-1 text-xs font-semibold leading-5">{step.question}</p>
               </div>
-              <div className="rounded-xl bg-[#eaf0d0] p-3">
-                <p className="text-[10px] font-semibold tracking-[.14em] text-[#71803d] uppercase">If yes</p>
-                <p className="mt-1 text-xs leading-5 text-[#4f5a4d]">{step.yes}</p>
+              <div className="rounded-xl border border-[#ef8eb4]/20 bg-[#ef8eb4]/10 p-3">
+                <p className="text-[11px] font-semibold tracking-[.14em] text-[#ffc6dc] uppercase">If yes</p>
+                <p className="mt-1 text-xs leading-5 text-white/75">{step.yes}</p>
               </div>
-              <div className="rounded-xl bg-[#ece9e0] p-3">
-                <p className="text-[10px] font-semibold tracking-[.14em] text-[#7a8377] uppercase">If no</p>
-                <p className="mt-1 text-xs leading-5 text-[#4f5a4d]">{step.no}</p>
+              <div className="rounded-xl border border-white/10 bg-[#2b202d] p-3">
+                <p className="text-[11px] font-semibold tracking-[.14em] text-white/75 uppercase">If no</p>
+                <p className="mt-1 text-xs leading-5 text-white/75">{step.no}</p>
               </div>
             </li>
           ))}

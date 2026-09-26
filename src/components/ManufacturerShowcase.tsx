@@ -19,7 +19,7 @@ function ManufacturerLogo({ brand, domain }: ManufacturerLogoProps) {
   return (
     <span className="flex min-h-10 items-center gap-3">
       <OfficialBrandLogo brand={brand} domain={domain} className="size-7" />
-      <span className="text-sm font-semibold tracking-tight text-slate-900">{brand}</span>
+      <span className="text-sm font-semibold tracking-tight text-[#f0e8ef]">{brand}</span>
     </span>
   );
 }
@@ -96,16 +96,16 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
   if (compact) {
     return (
       <>
-        <section className="border-y border-slate-200/80 bg-white/75 py-8" aria-labelledby="manufacturer-choices-heading">
+        <section className="border-y border-white/10 bg-white/75 py-8" aria-labelledby="manufacturer-choices-heading">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-700">Manufacturer choices</p>
-                <h2 id="manufacturer-choices-heading" className="mt-2 max-w-2xl font-display text-2xl font-semibold text-slate-950 sm:text-3xl">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#f3a4c2]">Manufacturer choices</p>
+                <h2 id="manufacturer-choices-heading" className="mt-2 max-w-2xl font-display text-2xl font-semibold text-[#f0e8ef] sm:text-3xl">
                   We show you the product behind the promise.
                 </h2>
               </div>
-              <p className="max-w-md text-sm leading-6 text-slate-600">
+              <p className="max-w-md text-sm leading-6 text-white/70">
                 Tap a manufacturer to review product fit, warranty caveats, and the installation details to confirm in the written scope.
               </p>
             </div>
@@ -116,7 +116,7 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
                   type="button"
                   onClick={() => setSelectedProduct(product)}
                   aria-label={`View ${product.brand} ${product.line} product details`}
-                  className="rounded-full border border-slate-200 bg-white px-4 py-2.5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-amber-400 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
+                  className="rounded-full border border-white/10 bg-[#211924] px-4 py-2.5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-[#ef8eb4] hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef8eb4]"
                 >
                   <ManufacturerLogo brand={product.brand} domain={product.domain} />
                 </button>
@@ -131,17 +131,17 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
 
   return (
     <>
-      <section id="products" className="scroll-mt-28 border-t border-slate-200/80 bg-[#f7f5ef] py-16 sm:py-20" aria-labelledby="product-options-heading">
+      <section id="products" className="scroll-mt-28 border-t border-white/10 bg-[#f7f5ef] py-16 sm:py-20" aria-labelledby="product-options-heading">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-amber-800">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#ef8eb4]/30 bg-[#211824] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#f3a4c2]">
               <Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Product transparency
             </div>
-            <h2 id="product-options-heading" className="mt-5 font-display text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+            <h2 id="product-options-heading" className="mt-5 font-display text-3xl font-semibold tracking-tight text-[#f0e8ef] sm:text-4xl">
               You choose what goes on your home.
             </h2>
-            <p className="mt-4 text-base leading-7 text-slate-700">{family.intro}</p>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
+            <p className="mt-4 text-base leading-7 text-white/75">{family.intro}</p>
+            <p className="mt-3 text-sm leading-6 text-white/70">
               Tap any product option for fit, warranty, and installation details. Availability, color, code approval, lead time, installer requirements, and current pricing are confirmed for your address before anything is ordered.
             </p>
           </div>
@@ -153,19 +153,19 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
                 type="button"
                 onClick={() => setSelectedProduct(product)}
                 aria-label={`View ${product.brand} ${product.line} product details`}
-                className="rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-[0_12px_35px_-25px_rgba(15,23,42,0.45)] transition hover:-translate-y-0.5 hover:border-amber-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 sm:p-6"
+                className="rounded-2xl border border-white/10 bg-[#211924] p-5 text-left shadow-[0_12px_35px_-25px_rgba(15,23,42,0.45)] transition hover:-translate-y-0.5 hover:border-[#ef8eb4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef8eb4] sm:p-6"
               >
                 <ManufacturerLogo brand={product.brand} domain={product.domain} />
-                <p className="mt-5 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">{product.line}</p>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{product.why}</p>
-                <span className="mt-5 inline-flex items-center text-xs font-semibold text-amber-800">View product, warranty &amp; installation details <Check className="ml-2 size-4" /></span>
+                <p className="mt-5 text-2xl font-semibold tracking-tight text-[#f0e8ef] sm:text-3xl">{product.line}</p>
+                <p className="mt-3 text-sm leading-6 text-white/70">{product.why}</p>
+                <span className="mt-5 inline-flex items-center text-xs font-semibold text-[#f3a4c2]">View product, warranty &amp; installation details <Check className="ml-2 size-4" /></span>
               </button>
             ))}
           </div>
 
-          <div className="mt-8 rounded-2xl border border-slate-300 bg-slate-900 p-5 text-sm leading-6 text-slate-200 sm:p-6">
+          <div className="mt-8 rounded-2xl border border-white/10 bg-[#211824] p-5 text-sm leading-6 text-white/75 sm:p-6">
             <p className="font-semibold text-white">Warranty clarity matters.</p>
-            <p className="mt-1 text-slate-300">
+            <p className="mt-1 text-white/70">
               A manufacturer's limited warranty is not automatically a promise that every installation, labor item, finish, or failure is covered. We review the current product document with you and identify manufacturer coverage, our installation/workmanship coverage, registration steps, maintenance, exclusions, and who to call after completion.
             </p>
           </div>

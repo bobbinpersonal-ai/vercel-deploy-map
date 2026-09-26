@@ -133,7 +133,7 @@ export default function Conditions() {
             LoveMeAfter
           </Link>
           <div className="flex items-center gap-4">
-            <a href={PHONE_HREF} className="hidden items-center gap-2 text-sm text-[#4f5a4d] sm:flex">
+            <a href={PHONE_HREF} className="hidden items-center gap-2 text-sm text-[#453b45] sm:flex">
               <Phone className="size-4" /> 424 426 0760
             </a>
             <Button onClick={() => navigate("/")} variant="ghost" className="text-[#1d211d] hover:bg-[#1d211d]/5">
@@ -153,7 +153,7 @@ export default function Conditions() {
             <h1 className="mt-5 text-4xl font-semibold leading-[.95] tracking-[-.06em] sm:text-6xl lg:text-7xl">
               What damage actually looks like — and what waiting costs.
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#596357]">
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#524752]">
               Most homeowners find out something is wrong three ways: a stain, a smell, or a rejected
               inspection. This library shows the conditions our crews document in the field, what causes
               them, and the sequence that fixes them for good.
@@ -164,7 +164,7 @@ export default function Conditions() {
             <div className="p-5">
               <p className="text-xs font-semibold tracking-[.16em] text-[#71803d] uppercase">Start with evidence</p>
               <p className="mt-2 text-xl font-semibold">See how we diagnose the roofline before recommending a repair.</p>
-              <p className="mt-3 text-sm leading-6 text-[#62695f]">A visible stain is a clue—not a scope. Open the roofing guide for the inspection sequence, product options, and warranty questions worth asking.</p>
+              <p className="mt-3 text-sm leading-6 text-[#524752]">A visible stain is a clue—not a scope. Open the roofing guide for the inspection sequence, product options, and warranty questions worth asking.</p>
               <span className="mt-4 inline-flex items-center text-xs font-semibold text-[#71803d]">Open the roofing guide <ArrowUpRight className="ml-1 size-3.5 transition group-hover:translate-x-1" /></span>
             </div>
           </Link>
@@ -174,7 +174,7 @@ export default function Conditions() {
       {/* Quick index, so the page reads like a reference rather than a pitch. */}
       <section className="border-y border-[#1d211d]/10 bg-[#ece9e0]">
         <div className="mx-auto flex max-w-7xl flex-wrap gap-2 px-5 py-5 sm:px-8 lg:px-10">
-          <span className="mr-2 text-xs font-semibold tracking-[.14em] text-[#7a8377] uppercase">Jump to</span>
+          <span className="mr-2 text-xs font-semibold tracking-[.14em] text-[#6b5a69] uppercase">Jump to</span>
           {CONDITIONS.map((condition) => (
             <a
               key={condition.slug}
@@ -219,7 +219,7 @@ export default function Conditions() {
             );
           })}
         </div>
-        <p className="mt-4 text-xs leading-5 text-[#7c8579]">{PHOTO_CREDIT} Your inspection photos and written scope are specific to your home.</p>
+        <p className="mt-4 text-xs leading-5 text-[#6b5a69]">{PHOTO_CREDIT} Your inspection photos and written scope are specific to your home.</p>
       </section>
 
       {/* Condition deep-dives, laid out as a two-column reference with a sticky rail. */}
@@ -259,20 +259,20 @@ export default function Conditions() {
                       </div>
                       <dl className="mt-6 space-y-4 text-sm leading-6">
                         <div>
-                          <dt className="text-[11px] font-semibold tracking-[.14em] text-[#9aa095] uppercase">What you notice</dt>
-                          <dd className="mt-1 text-[#4f5a4d]">{condition.symptom}</dd>
+                          <dt className="text-[11px] font-semibold tracking-[.14em] text-[#6b5a69] uppercase">What you notice</dt>
+                          <dd className="mt-1 text-[#453b45]">{condition.symptom}</dd>
                         </div>
                         <div>
-                          <dt className="text-[11px] font-semibold tracking-[.14em] text-[#9aa095] uppercase">Usual cause</dt>
-                          <dd className="mt-1 text-[#4f5a4d]">{condition.cause}</dd>
+                          <dt className="text-[11px] font-semibold tracking-[.14em] text-[#6b5a69] uppercase">Usual cause</dt>
+                          <dd className="mt-1 text-[#453b45]">{condition.cause}</dd>
                         </div>
                         <div>
                           <dt className="text-[11px] font-semibold tracking-[.14em] text-[#b4543a] uppercase">Cost of waiting</dt>
-                          <dd className="mt-1 text-[#4f5a4d]">{condition.waiting}</dd>
+                          <dd className="mt-1 text-[#453b45]">{condition.waiting}</dd>
                         </div>
                         <div>
                           <dt className="text-[11px] font-semibold tracking-[.14em] text-[#71803d] uppercase">What we do first</dt>
-                          <dd className="mt-1 text-[#4f5a4d]">{condition.action}</dd>
+                          <dd className="mt-1 text-[#453b45]">{condition.action}</dd>
                         </div>
                       </dl>
                       <Link
@@ -297,7 +297,7 @@ export default function Conditions() {
           <h2 className="mt-4 text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-5xl">
             Deferred maintenance is not a savings plan.
           </h2>
-          <p className="mt-5 text-base leading-7 text-[#596357]">
+          <p className="mt-5 text-base leading-7 text-[#524752]">
             These are illustrative multipliers used for planning conversations, not quotes. They show the
             general shape of how repair cost grows once water or movement is involved. Every home is
             different, and we always price your actual scope.
@@ -456,7 +456,7 @@ export default function Conditions() {
             </span>
             LoveMeAfter
           </Link>
-          <p className="text-[#62695f]">Conditions library · education, not a diagnosis of your home.</p>
+          <p className="text-[#524752]">Conditions library · education, not a diagnosis of your home.</p>
           <Link to="/services" className="font-semibold text-[#71803d]">
             Browse every project type <ArrowUpRight className="ml-1 inline size-4" />
           </Link>
