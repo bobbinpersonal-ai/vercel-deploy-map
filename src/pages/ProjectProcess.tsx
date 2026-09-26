@@ -4,7 +4,7 @@ import { LogoMark } from "@/components/Logo";
 import { clip, usePageMeta } from "@/components/PageMeta";
 import { Link, useNavigate, useParams } from "react-router";
 import { getGuide, relatedGuides } from "@/data/project-guides";
-import { CATEGORY_PHOTOS, px } from "@/data/photos";
+import { CATEGORY_PHOTOS } from "@/data/photos";
 import { PhaseTimeline, SeverityMeter } from "@/components/GeneratedGraphics";
 import { FinancingShowcase } from "@/components/FinancingShowcase";
 import { ProjectVideo } from "@/components/ProjectVideo";
@@ -131,7 +131,6 @@ export default function ProjectProcess() {
   }
 
   const related = relatedGuides(project, 3);
-  const products = project.products ?? [];
   const insight = CATEGORY_INSIGHT[project.category] ?? DEFAULT_INSIGHT;
   const fieldPhotos = CATEGORY_PHOTOS[project.category] ?? CATEGORY_PHOTOS["Home improvement"];
 
@@ -195,39 +194,6 @@ export default function ProjectProcess() {
       <ManufacturerShowcase slug={project.slug} />
 
       <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
-        <div className="grid gap-5 md:grid-cols-2">
-          <div className="h-72 rounded-3xl bg-cover bg-center" style={{ backgroundImage: `url(${project.gallery[0]})` }} />
-          <div className="h-72 rounded-3xl bg-cover bg-center" style={{ backgroundImage: `url(${project.gallery[1]})` }} />
-        </div>
-
-        {products.length > 0 && (
-          <div className="mt-16">
-            <p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">The products involved</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-.055em] sm:text-5xl">What we actually install.</h2>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-[#62695f]">
-              Close-up references for the materials, fixtures, and finishes this project involves — so you know what
-              you are choosing between before anyone quotes you.
-            </p>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {products.map((product) => (
-                <figure
-                  key={product.label}
-                  className="group overflow-hidden rounded-2xl border border-[#1d211d]/10 bg-white"
-                >
-                  <div
-                    className="h-48 bg-cover bg-center transition duration-700 group-hover:scale-[1.03]"
-                    style={{ backgroundImage: `url(${product.image})` }}
-                  />
-                  <figcaption className="flex items-center justify-between gap-3 p-4">
-                    <span className="text-sm font-semibold">{product.label}</span>
-
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-          </div>
-        )}
-
         <div className="mt-16 grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,.95fr)] lg:items-start">
           <div>
             <p className="text-xs font-semibold tracking-[.18em] text-[#b4543a] uppercase">Before the work looks good</p>
@@ -241,14 +207,15 @@ export default function ProjectProcess() {
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               {fieldPhotos.map(([kind, label, id]) => (
                 <figure key={label} className="group overflow-hidden rounded-2xl border border-[#1d211d]/10 bg-white">
-                  <div
-                    className="h-40 bg-cover bg-center transition duration-700 group-hover:scale-[1.04]"
-                    style={{ backgroundImage: `url(${px(id, 700)})` }}
+                  <img
+                    src={`https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=700`}
+                    alt={`${label} illustrative field reference`}
+                    loading="lazy"
+                    className="h-40 w-full object-cover transition duration-700 group-hover:scale-[1.04]"
                   />
                   <figcaption className="p-3">
-                    <p className="text-[10px] font-semibold tracking-[.14em] text-[#9aa095] uppercase">{kind}</p>
+                    <p className="text-[10px] font-semibold tracking-[.14em] text-[#9aa095] uppercase">{kind} · reference image</p>
                     <p className="mt-1 text-xs font-semibold leading-5">{label}</p>
-
                   </figcaption>
                 </figure>
               ))}

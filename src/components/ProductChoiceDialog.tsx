@@ -11,6 +11,7 @@ import { px } from "@/data/photos";
 import { PRODUCT_FAMILIES } from "@/data/product-options";
 import type { ProductOption } from "@/data/product-options";
 import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
+import { getIllustrativeProductImage, getProductImage } from "@/lib/product-imagery";
 
 export type MaterialSelection = {
   group: string;
@@ -48,10 +49,9 @@ function familyForMaterial(group: string, label: string) {
 
 function ProductImage({ product }: { product: ProductOption }) {
   const [failed, setFailed] = useState(false);
-  if (!product.imageUrl || failed) {
-    return <div className="flex h-44 flex-col items-center justify-center bg-[radial-gradient(ellipse_at_50%_45%,rgba(239,142,180,.2),transparent_65%),linear-gradient(140deg,#352a38,#211824)] px-5 text-center sm:h-52"><OfficialBrandLogo brand={product.brand} domain={product.domain} className="size-12 rounded-lg bg-white p-2" /><p className="mt-3 text-sm font-semibold text-white">{product.brand}</p><p className="mt-1 text-xs leading-5 text-white/70">{product.line}</p><p className="mt-2 text-[10px] text-white/50">Open the manufacturer page below for current product imagery.</p></div>;
-  }
-  return <img src={product.imageUrl} alt={product.imageAlt ?? `${product.brand} ${product.line} manufacturer product`} loading="lazy" referrerPolicy="no-referrer" onError={() => setFailed(true)} className="h-44 w-full rounded-xl object-cover sm:h-52" />;
+  const image = getProductImage(product);
+  const resolvedImage = failed ? getIllustrativeProductImage(product) : image;
+  return <div className="relative"><img src={resolvedImage.url} alt={resolvedImage.alt} loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setFailed(true)} className="h-44 w-full rounded-xl object-cover sm:h-52" /><span className="absolute bottom-2 left-2 rounded-full border border-white/20 bg-[#211824]/85 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.1em] text-white/90">{resolvedImage.source}</span></div>;
 }
 
 export function ProductChoiceDialog({

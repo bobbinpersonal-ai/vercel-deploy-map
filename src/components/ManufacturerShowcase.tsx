@@ -9,31 +9,18 @@ import {
 } from "@/components/ui/dialog";
 import { getProductFamily, PRODUCT_FAMILIES, type ProductOption } from "../data/product-options";
 import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
-
-const VERIFIED_PRODUCT_REFERENCES: Record<string, string> = {
-  "Carrier|Infinity 24 variable-speed heat pump · 25VNA4": "https://images.carriercms.com/image/upload/v1683828998/carrier/residential-hvac/products/heat-pumps/infinity-24-heat-pump-with-greenspeed-intelligence-25VNA4.png",
-};
-
-function productImageUrl(product: ProductOption) {
-  return product.imageUrl ?? VERIFIED_PRODUCT_REFERENCES[`${product.brand}|${product.line}`];
-}
+import { getIllustrativeProductImage, getProductImage } from "@/lib/product-imagery";
 
 function ProductImage({ product, className = "" }: { product: ProductOption; className?: string }) {
   const [failed, setFailed] = useState(false);
-  const imageUrl = productImageUrl(product);
-  if (!imageUrl || failed) {
-    return (
-      <div className={`flex items-center justify-center bg-[radial-gradient(ellipse_at_50%_45%,rgba(213,236,119,.15),transparent_65%),linear-gradient(140deg,#29342b,#182019)] ${className}`} aria-label={`${product.brand} ${product.line} product reference`}>
-        <div className="max-w-xs px-5 text-center">
-          <OfficialBrandLogo brand={product.brand} domain={product.domain} className="mx-auto size-12 rounded-lg bg-white p-2" />
-          <p className="mt-3 text-sm font-semibold text-white/90">{product.brand}</p>
-          <p className="mt-1 text-xs leading-5 text-white/70">{product.line}</p>
-          <p className="mt-3 text-[10px] leading-4 text-white/45">See current model photography on the linked manufacturer page.</p>
-        </div>
-      </div>
-    );
-  }
-  return <img src={imageUrl} alt={product.imageAlt ?? `${product.brand} ${product.line} product`} loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setFailed(true)} className={`w-full object-cover ${className}`} />;
+  const image = getProductImage(product);
+  const resolvedImage = failed ? getIllustrativeProductImage(product) : image;
+  return (
+    <div className={`relative overflow-hidden ${className}`}>
+      <img src={resolvedImage.url} alt={resolvedImage.alt} loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setFailed(true)} className="size-full w-full object-cover" />
+      <span className="absolute bottom-3 left-3 rounded-full border border-white/20 bg-[#111714]/85 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.12em] text-white/90 backdrop-blur">{resolvedImage.source}</span>
+    </div>
+  );
 }
 
 type ManufacturerLogoProps = {
@@ -150,7 +137,7 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
                   aria-label={`View ${product.brand} ${product.line} product details`}
                   className="group flex items-center gap-2 rounded-full border border-white/10 bg-[#211924] py-1.5 pl-2 pr-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-[#ef8eb4] hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef8eb4]"
                 >
-                  {productImageUrl(product) ? <img src={productImageUrl(product)} alt="" loading="lazy" className="size-10 rounded-full border border-white/15 bg-white object-cover" /> : <span className="flex size-10 items-center justify-center rounded-full bg-white/[.06]"><OfficialBrandLogo brand={product.brand} domain={product.domain} className="size-7" /></span>}
+                  <img src={getProductImage(product).url} alt="" loading="lazy" className="size-10 rounded-full border border-white/15 bg-white object-cover" onError={(event) => { event.currentTarget.src = getIllustrativeProductImage(product).url; }} />
                   <span className="text-xs font-semibold text-white/90">{product.brand}<span className="ml-1 font-normal text-white/50">· {product.line}</span></span>
                 </button>
               ))}
@@ -191,7 +178,7 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
             {family.options.map((product) => (
               <article key={`${product.brand}-${product.line}`} className="group overflow-hidden rounded-3xl border border-[#1d211d]/10 bg-[#1c171e] text-white shadow-[0_18px_50px_-35px_rgba(0,0,0,.75)] transition hover:-translate-y-1 hover:border-[#ef8eb4]/40">
                 <button type="button" onClick={() => setSelectedProduct(product)} aria-label={`Open detailed ${product.brand} ${product.line} overview`} className="block w-full text-left focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[#d5ec77]">
-                  <div className="relative h-52 overflow-hidden bg-[#29342b] sm:h-60"><ProductImage product={product} className="h-full transition duration-700 group-hover:scale-[1.035]" />{productImageUrl(product) && <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-[#111714]/80 px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[#d5ec77] backdrop-blur">Manufacturer product image</span>}<span className="absolute bottom-4 right-4 flex size-10 items-center justify-center rounded-full border border-white/20 bg-[#111714]/75 text-white backdrop-blur transition group-hover:bg-[#d5ec77] group-hover:text-[#1d211d]"><ArrowUpRight className="size-4" /></span></div>
+                  <div className="relative h-52 overflow-hidden bg-[#29342b] sm:h-60"><ProductImage product={product} className="h-full transition duration-700 group-hover:scale-[1.035]" /><span className="absolute bottom-4 right-4 flex size-10 items-center justify-center rounded-full border border-white/20 bg-[#111714]/75 text-white backdrop-blur transition group-hover:bg-[#d5ec77] group-hover:text-[#1d211d]"><ArrowUpRight className="size-4" /></span></div>
                   <div className="p-5 sm:p-6"><div className="flex items-center justify-between gap-3"><ManufacturerLogo brand={product.brand} domain={product.domain} /><span className="text-[10px] font-semibold uppercase tracking-[.12em] text-white/45">{product.highlights?.length ?? 0} system details</span></div><h3 className="mt-3 text-xl font-semibold leading-tight text-white">{product.line}</h3><p className="mt-3 line-clamp-3 text-sm leading-6 text-white/70">{product.why}</p><span className="mt-5 inline-flex items-center text-xs font-semibold text-[#f3a4c2]">Explore product &amp; system details <ArrowUpRight className="ml-2 size-4" /></span></div>
                 </button>
                 <div className="flex border-t border-white/10 px-5 py-3 sm:px-6"><a href={product.productUrl ?? product.officialUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-xs font-semibold text-white/70 transition hover:text-[#d5ec77]">Official product information <ExternalLink className="size-3.5" /></a></div>
@@ -203,7 +190,7 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
             <p className="font-semibold text-white">Warranty clarity matters.</p>
             <p className="mt-1 text-white/70">A manufacturer's limited warranty is not automatically a promise that every installation, labor item, finish, or failure is covered. Keep the chosen product, complete scope, product documentation, registration steps, maintenance requirements, exclusions, and service contact together in your home records.</p>
           </div>
-          <p className="mt-4 text-[10px] leading-4 text-white/55">Cards marked “Manufacturer product image” use product photography hosted by the manufacturer. Where an embeddable manufacturer image was not available, the card shows the official brand and exact product line instead of substituting generic or stock photography; open the manufacturer product page for its current images, specifications, and documents.</p>
+          <p className="mt-4 text-[10px] leading-4 text-white/55">Every product choice includes an image. Images are labeled as manufacturer product photos when hosted by that manufacturer; otherwise, they are clearly marked illustrative product references and may not depict the exact brand, model, or configuration.</p>
         </div>
       </section>
       <ProductDetailsDialog product={selectedProduct} onClose={() => setSelectedProduct(null)} />

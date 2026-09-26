@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { getProductFamily } from "@/data/product-options";
 import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
+import { getIllustrativeProductImage, getProductImage } from "@/lib/product-imagery";
 
 export function BrandProductExample({ slug, label, brand, productLine, domain }: {
   slug: string;
@@ -15,17 +16,23 @@ export function BrandProductExample({ slug, label, brand, productLine, domain }:
   const activeProduct = products.find((product) => product.line === selectedLine)
     ?? products.find((product) => product.line === productLine)
     ?? products[0];
+  const productImage = activeProduct ? getProductImage(activeProduct) : null;
+  const [imageFailed, setImageFailed] = useState(false);
+  const resolvedProductImage = productImage && activeProduct && imageFailed
+    ? getIllustrativeProductImage(activeProduct)
+    : productImage;
 
   return (
     <figure className="overflow-hidden rounded-2xl border border-white/10 bg-[#302733]">
       <div className="relative h-56 overflow-hidden bg-[#292431] sm:h-72">
-        {activeProduct?.imageUrl ? (
+        {resolvedProductImage ? (
           <img
-            src={activeProduct.imageUrl}
-            alt={activeProduct.imageAlt ?? `${activeProduct.brand} ${activeProduct.line} product photograph`}
+            src={resolvedProductImage.url}
+            alt={resolvedProductImage.alt}
             loading="lazy"
             decoding="async"
             referrerPolicy="no-referrer"
+            onError={() => setImageFailed(true)}
             className="size-full object-cover"
           />
         ) : (
@@ -33,7 +40,7 @@ export function BrandProductExample({ slug, label, brand, productLine, domain }:
             <div><p className="text-[10px] font-bold tracking-[.16em] text-[#ffc6dc] uppercase">Manufacturer product line</p><OfficialBrandLogo brand={activeProduct?.brand ?? brand} domain={activeProduct?.domain ?? domain} className="mx-auto mt-4 size-12 rounded-lg bg-white p-2" /><p className="mt-3 text-lg font-semibold text-white">{activeProduct?.brand ?? brand}</p><p className="mt-1 text-sm text-white/75">{activeProduct?.line ?? productLine ?? label}</p><p className="mt-3 text-[10px] text-white/50">Open manufacturer product page for its current product image.</p></div>
           </div>
         )}
-        <span className="absolute left-4 top-4 rounded-full border border-white/25 bg-[#211824]/80 px-3 py-1 text-[10px] font-bold tracking-[.12em] text-white backdrop-blur">{activeProduct?.imageUrl ? "MANUFACTURER PRODUCT PHOTO" : "PRODUCT FAMILY"}</span>
+        <span className="absolute left-4 top-4 rounded-full border border-white/25 bg-[#211824]/80 px-3 py-1 text-[10px] font-bold tracking-[.12em] text-white backdrop-blur">{resolvedProductImage?.source ?? "PRODUCT FAMILY"}</span>
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#211824] via-[#211824]/75 to-transparent px-5 pb-4 pt-12">
           <p className="text-[10px] font-bold tracking-[.16em] text-[#ffc6dc] uppercase">{activeProduct?.brand ?? brand} · {activeProduct?.line ?? "Product collection"}</p>
           {activeProduct?.productUrl && <a href={activeProduct.productUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-white underline-offset-4 hover:text-[#ffc6dc] hover:underline">See manufacturer's product details <ExternalLink className="size-3" /></a>}
@@ -45,14 +52,14 @@ export function BrandProductExample({ slug, label, brand, productLine, domain }:
           <div className="flex gap-2 overflow-x-auto pb-1" aria-label={`${brand} product lines`}>
             {products.map((product) => (
               <button key={product.line} type="button" onClick={() => setSelectedLine(product.line)} aria-pressed={(activeProduct?.line ?? productLine) === product.line} className="group flex w-28 shrink-0 flex-col overflow-hidden rounded-xl border border-white/10 bg-white/[.04] text-left transition hover:border-[#ef8eb4]/60 aria-pressed:border-[#ef8eb4]">
-                {product.imageUrl ? <img src={product.imageUrl} alt="" loading="lazy" decoding="async" referrerPolicy="no-referrer" className="h-14 w-full object-cover" /> : <span className="flex h-14 items-center justify-center bg-white/[.05]"><OfficialBrandLogo brand={product.brand} domain={product.domain} className="size-7 rounded-md bg-white p-1" /></span>}
+                <img src={getProductImage(product).url} alt="" loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={(event) => { event.currentTarget.src = getIllustrativeProductImage(product).url; }} className="h-14 w-full object-cover" />
                 <span className="flex min-h-11 items-center justify-between gap-1 px-2 py-1.5 text-[10px] font-medium leading-4 text-white/75"><span className="line-clamp-2">{product.line}</span><ArrowUpRight className="size-3 shrink-0 text-[#ffc6dc]" /></span>
               </button>
             ))}
           </div>
         </div>
       )}
-      <figcaption className="px-4 py-3 text-xs leading-5 text-white/75">Manufacturer-sourced product references; exact configurations, specifications, and local availability are confirmed for your project.</figcaption>
+      <figcaption className="px-4 py-3 text-xs leading-5 text-white/75">Images are labeled as manufacturer photos when official; otherwise they are illustrative examples, not the exact manufacturer product. Confirm exact configurations, specifications, and local availability for your project.</figcaption>
     </figure>
   );
 }
