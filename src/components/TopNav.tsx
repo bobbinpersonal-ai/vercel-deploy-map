@@ -2,6 +2,7 @@ import { ArrowUpRight, Menu, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { Logo } from "@/components/Logo";
+import { openEstimateRequest } from "@/lib/estimate-request";
 
 const PHONE_DISPLAY = "424 426 0760";
 const PHONE_HREF = "tel:+14244260760";
@@ -48,13 +49,13 @@ export function TopNav() {
           {links.map(([to, label]) => <Link key={to} to={to} className="transition hover:text-white">{label}</Link>)}
           <Link to="/contractors" className="transition hover:text-white">Work with us</Link>
           <a href={PHONE_HREF} className="flex items-center gap-2 text-white"><Phone className="size-4" />{PHONE_DISPLAY}</a>
-          <Link to="/#estimate-form" className="flex items-center gap-1.5 rounded-full bg-[#d5ec77] px-4 py-2 font-semibold text-[#1d211d] hover:bg-[#e1f895]">Estimate <ArrowUpRight className="size-3.5" /></Link>
+          <button type="button" onClick={() => openEstimateRequest()} className="flex items-center gap-1.5 rounded-full bg-[#d5ec77] px-4 py-2 font-semibold text-[#1d211d] hover:bg-[#e1f895]">Free assessment <ArrowUpRight className="size-3.5" /></button>
         </div>
         <button type="button" aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)} className="rounded-full p-2 hover:bg-white/10 lg:hidden">
           {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>
       </nav>
-      {menuOpen && <div className="mx-4 mb-3 rounded-2xl border border-white/10 bg-[#182019] p-5 shadow-2xl lg:hidden"><div className="flex flex-col gap-4 text-sm">{links.map(([to, label]) => <Link key={to} to={to} onClick={() => setMenuOpen(false)}>{label}</Link>)}<Link to="/contractors" onClick={() => setMenuOpen(false)}>Work with us</Link><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Link to="/#estimate-form" onClick={() => setMenuOpen(false)} className="rounded-full bg-[#d5ec77] px-4 py-3 text-center font-semibold text-[#1d211d]">Get an estimate</Link></div></div>}
+      {menuOpen && <div className="mx-4 mb-3 rounded-2xl border border-white/10 bg-[#182019] p-5 shadow-2xl lg:hidden"><div className="flex flex-col gap-4 text-sm">{links.map(([to, label]) => <Link key={to} to={to} onClick={() => setMenuOpen(false)}>{label}</Link>)}<Link to="/contractors" onClick={() => setMenuOpen(false)}>Work with us</Link><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><button type="button" onClick={() => { setMenuOpen(false); openEstimateRequest(); }} className="rounded-full bg-[#d5ec77] px-4 py-3 text-center font-semibold text-[#1d211d]">Get a free assessment</button></div></div>}
     </header>
   );
 }

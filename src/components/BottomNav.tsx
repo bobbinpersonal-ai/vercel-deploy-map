@@ -7,6 +7,7 @@ import { BrandProductExample } from "@/components/BrandProductExample";
 import { AlertTriangle, ArrowLeft, ArrowRight, ArrowUpRight, HardHat, House, MapPin, Phone, Wallet, Wrench } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
+import { openEstimateRequest } from "@/lib/estimate-request";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const PHONE_DISPLAY = "424 426 0760";
@@ -350,7 +351,7 @@ export function BottomNav() {
           </div>
           <div className="hidden shrink-0 items-center gap-2 sm:flex">
             <a href={PHONE_HREF} className="flex items-center gap-2 rounded-full border border-white/20 px-3 py-2 text-xs font-semibold text-white/90 hover:bg-white/10"><Phone className="size-3.5" /> {PHONE_DISPLAY}</a>
-            <Link to="/#estimate-form" className="flex items-center gap-1.5 rounded-full bg-[#ef8eb4] px-4 py-2 text-xs font-semibold text-[#24131d] hover:bg-[#f6b0ca]">Free estimate <ArrowUpRight className="size-3.5" /></Link>
+            <button type="button" onClick={() => openEstimateRequest()} className="flex items-center gap-1.5 rounded-full bg-[#ef8eb4] px-4 py-2 text-xs font-semibold text-[#24131d] hover:bg-[#f6b0ca]">Free assessment <ArrowUpRight className="size-3.5" /></button>
           </div>
         </div>
       </div>

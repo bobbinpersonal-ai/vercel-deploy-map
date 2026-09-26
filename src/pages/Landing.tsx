@@ -1,5 +1,4 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db, trackEvent } from "@/lib/firebase";
+import { trackEvent } from "@/lib/firebase";
 import { usePageMeta } from "@/components/PageMeta";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
@@ -8,13 +7,11 @@ import {
   ArrowUpRight,
   BadgeCheck,
   Check,
-  ChevronRight,
   CircleDollarSign,
   ClipboardCheck,
   CalendarDays,
   Fence,
   House,
-  MapPin,
   Menu,
   Paintbrush,
   Phone,
@@ -23,7 +20,7 @@ import {
   Wrench,
   X,
 } from "lucide-react";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { ExpertTopic } from "@/components/ExpertTopic";
 import { Logo } from "@/components/Logo";
@@ -36,6 +33,7 @@ import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 import { HomeImprovementProcess } from "@/components/HomeImprovementProcess";
 import { ManufacturerShowcase } from "@/components/ManufacturerShowcase";
 import { BrandPillsShowcase } from "@/components/BrandPillsShowcase";
+import { openEstimateRequest } from "@/lib/estimate-request";
 
 /** Real product photography shown on the homepage, grouped by the trade. */
 const PRODUCT_STRIP: [string, string, number][] = [
@@ -148,33 +146,19 @@ const SERVICES = [
   { title: "Multi-trade renovations", slug: "multi-trade", detail: "One coordinated plan for complex home projects", icon: ClipboardCheck },
 ];
 
-const SERVICE_ESTIMATES: Record<string, number> = {
-  Roofing: 15000,
-  Windows: 20000,
-  Siding: 25000,
-  Gutters: 5000,
-  Lighting: 5000,
-};
-
 const FAQS = [
   ["Is the estimate really free?", "Yes. We provide a no-obligation inspection, a written scope, and a clear price before you decide to move forward."],
-  ["How quickly can someone come out?", "We offer same-day callbacks in our active markets and work hard to schedule inspections around your calendar."],
-  ["Are your crews insured?", "Every crew is checked for current insurance, registration, references, and the local requirements that apply to your project."],
+  ["How quickly can someone come out?", "We aim to respond promptly in active markets. Visit timing depends on your location, project, and current schedule."],
+  ["How do you check the people doing the work?", "Before work begins, we check insurance, registration, references, and any license or credential required for that project and location. Requirements vary by trade and jurisdiction."],
   ["Do you work with insurance claims?", "We document storm damage and can meet your adjuster. We are not public insurance adjusters and will never promise to waive your deductible."],
   ["Do I have to pay for everything upfront?", "No. Many homeowners spread the cost with an optional home improvement loan from a recognized lender such as LightStream, SoFi, LendingPoint, Best Egg, Upgrade, Prosper, OneMain Financial, or Axos Bank. Approval, APR, term, and fees are set by the lender, and you can always pay with cash or your own financing instead."],
 ];
 
 export default function Landing() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [locationStatus, setLocationStatus] = useState<string | null>(null);
-  const [address, setAddress] = useState("");
-  const [cityStateZip, setCityStateZip] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [showTopNav, setShowTopNav] = useState(true);
 
-  const [selectedProject, setSelectedProject] = useState("Roofing");
+  const [selectedProject, setSelectedProject] = useState("");
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [consultationSlot, setConsultationSlot] = useState<ConsultationSlot | null>(null);
 
@@ -203,7 +187,7 @@ export default function Landing() {
 
   const scrollToEstimate = () => {
     void trackEvent("estimate_cta_clicked", { placement: "landing_page" });
-    document.getElementById("estimate-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    openEstimateRequest(selectedProject || undefined, consultationSlot ?? undefined);
   };
   const goToEstimate = () => scrollToEstimate();
   const goToSchedule = () => {
@@ -213,87 +197,11 @@ export default function Landing() {
   const confirmConsultationSlot = (slot: ConsultationSlot) => {
     setConsultationSlot(slot);
     setScheduleOpen(false);
-    window.setTimeout(() => {
-      document.getElementById("estimate-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 100);
+    window.setTimeout(() => openEstimateRequest(selectedProject || undefined, slot), 100);
   };
-  const locateMe = () => {
-    if (!navigator.geolocation) {
-      setLocationStatus("Location is unavailable in this browser. Enter your address manually.");
-      return;
-    }
-    setLocationStatus("Finding your address…");
-    navigator.geolocation.getCurrentPosition(
-      async ({ coords }) => {
-        try {
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&lat=${coords.latitude}&lon=${coords.longitude}`,
-          );
-          if (!response.ok) throw new Error("Address lookup failed");
-          const result = await response.json() as { display_name?: string; address?: Record<string, string> };
-          const parts = result.address ?? {};
-          const street = [parts.house_number, parts.road].filter(Boolean).join(" ");
-          const city = parts.city ?? parts.town ?? parts.village ?? parts.hamlet ?? "";
-          const region = [city, parts.state, parts.postcode].filter(Boolean).join(", ");
-          if (street) setAddress(street);
-          if (region) setCityStateZip(region);
-          setLocationStatus(street || region ? "Address found — please confirm it before submitting." : "We found your location, but not a street address. Please enter it manually.");
-        } catch {
-          setLocationStatus("We found your location, but couldn't fill the address. Please enter it manually.");
-        }
-      },
-      () => setLocationStatus("We couldn't access your location. You can enter your address manually."),
-      { enableHighAccuracy: false, timeout: 8000 },
-    );
-  };
-
-  const handleEstimateSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsSubmitting(true);
-    setSubmissionError(null);
-    const data = new FormData(event.currentTarget);
-    const service = String(data.get("service") ?? "Not sure yet");
-
-    try {
-      await addDoc(collection(db, "leads"), {
-        name: String(data.get("name") ?? ""),
-        email: String(data.get("email") ?? ""),
-        phone: String(data.get("phone") ?? ""),
-        address: String(data.get("address") ?? ""),
-        city: String(data.get("cityStateZip") ?? ""),
-        service,
-        consultationSlot,
-        estimatedValue: SERVICE_ESTIMATES[service] ?? 15000,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-        stage: consultationSlot ? "appointment_requested" : "new",
-        source: "inbound_scheduled_intake",
-      });
-      void trackEvent("estimate_request_submitted", {
-        service,
-        source: "inbound_scheduled_intake",
-        consultationRequested: Boolean(consultationSlot),
-      });
-      setSubmitted(true);
-    } catch (error) {
-      const firebaseCode = typeof error === "object" && error !== null && "code" in error
-        ? String(error.code)
-        : "unknown-error";
-      console.error("[Estimate form] Could not submit lead:", error);
-      const reason = firebaseCode.includes("permission-denied")
-        ? "Our system blocked the request. Please call us while we fix it."
-        : firebaseCode.includes("unavailable") || firebaseCode.includes("network")
-          ? "We couldn’t reach the estimate system. Check your connection and try again."
-          : "Your request wasn’t sent. Please try again or call us.";
-      setSubmissionError(`${reason} (Reference: ${firebaseCode})`);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   usePageMeta(
     "LoveMeAfter | Home improvement, without the runaround",
-    "Roofing, siding, windows, gutters, paint, paving, fencing, kitchens and more — one coordinated crew network across 17 states. Free written estimate.",
+    "Roofing, siding, windows, gutters, paint, paving, fencing, kitchens and more — coordinated residential projects across 17 states. Request a free written assessment.",
   );
 
   return (
@@ -313,14 +221,14 @@ export default function Landing() {
             <Link to="/contractors" className="transition-colors hover:text-white">Work with us</Link>
             <Link to="/login" className="transition-colors hover:text-white">Team login</Link>
             <a href={PHONE_HREF} className="flex items-center gap-2 text-white"><Phone className="size-4" /> {PHONE_DISPLAY}</a>
-            <Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] px-5 text-[#1d211d] hover:bg-[#e1f895]">Get an estimate <ArrowUpRight className="ml-1 size-4" /></Button>
+            <Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] px-5 text-[#1d211d] hover:bg-[#e1f895]">Get a free assessment <ArrowUpRight className="ml-1 size-4" /></Button>
           </div>
           <button aria-label="Toggle menu" onClick={() => setMenuOpen(!menuOpen)} className="xl:hidden"><Menu className="size-6" /></button>
         </nav>
         {menuOpen && (
           <div className="absolute inset-x-4 top-20 rounded-2xl bg-[#182019] p-5 shadow-2xl xl:hidden">
             <button onClick={() => setMenuOpen(false)} className="absolute right-4 top-4"><X className="size-5" /></button>
-            <div className="flex flex-col gap-5 pt-4 text-sm"><Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link><Link to="/areas" onClick={() => setMenuOpen(false)}>Service areas</Link><Link to="/insights" onClick={() => setMenuOpen(false)}>Expert guides</Link><Link to="/conditions" onClick={() => setMenuOpen(false)}>Field conditions</Link><Link to="/trades" onClick={() => setMenuOpen(false)}>Trade network</Link><Link to="/financing" onClick={() => setMenuOpen(false)}>Financing</Link><Link to="/contractors" onClick={() => setMenuOpen(false)}>Work with us</Link><Link to="/login" onClick={() => setMenuOpen(false)}>Team login</Link><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] text-[#1d211d]">Get an estimate</Button></div>
+            <div className="flex flex-col gap-5 pt-4 text-sm"><Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link><Link to="/areas" onClick={() => setMenuOpen(false)}>Service areas</Link><Link to="/insights" onClick={() => setMenuOpen(false)}>Expert guides</Link><Link to="/conditions" onClick={() => setMenuOpen(false)}>Field conditions</Link><Link to="/trades" onClick={() => setMenuOpen(false)}>Trade network</Link><Link to="/financing" onClick={() => setMenuOpen(false)}>Financing</Link><Link to="/contractors" onClick={() => setMenuOpen(false)}>Work with us</Link><Link to="/login" onClick={() => setMenuOpen(false)}>Team login</Link><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] text-[#1d211d]">Get a free assessment</Button></div>
           </div>
         )}
       </header>
@@ -354,56 +262,29 @@ export default function Landing() {
         </div>
         <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-5 pb-20 pt-36 sm:px-8 lg:grid-cols-[1.08fr_.92fr] lg:px-10 lg:pb-28 lg:pt-48">
           <div className="max-w-2xl">
-            <div className="mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase"><span className="size-2 rounded-full bg-[#d5ec77]" /> Free estimates · same-day callback</div>
+            <div className="mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase"><span className="size-2 rounded-full bg-[#d5ec77]" /> Free assessment · no-pressure start</div>
             <h1 className="text-5xl leading-[.96] font-semibold tracking-[-.06em] sm:text-7xl lg:text-[6.4rem]">Make home feel <span className="text-[#d5ec77]">right again.</span></h1>
             <p className="mt-8 max-w-lg text-lg leading-8 text-white/80">We take on projects with a clear homeowner benefit: protecting your home, improving everyday life, or supporting its long-term value. If the work doesn’t make sense for you, we’ll say so.</p>
-            <div className="mt-10 flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#d5ec77] px-7 text-base font-semibold text-[#1d211d] hover:bg-[#e1f895]">Start with a free estimate <ArrowUpRight className="ml-2 size-5" /></Button><button onClick={goToSchedule} className="flex h-14 items-center gap-2 rounded-full border border-white/35 px-6 text-sm font-medium hover:bg-white/10"><CalendarDays className="size-4" /> Book an in-person design consultation</button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-white/25 px-6 text-sm font-medium hover:bg-white/10"><Phone className="size-4" /> Talk to a human</a></div>
-            <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3 text-sm text-white/75"><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> No obligation</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> Written scope</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> 10-year workmanship warranty</span></div>
+            <div className="mt-10 flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#d5ec77] px-7 text-base font-semibold text-[#1d211d] hover:bg-[#e1f895]">Start with a free assessment <ArrowUpRight className="ml-2 size-5" /></Button><button onClick={goToSchedule} className="flex h-14 items-center gap-2 rounded-full border border-white/35 px-6 text-sm font-medium hover:bg-white/10"><CalendarDays className="size-4" /> Book an in-person design consultation</button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-white/25 px-6 text-sm font-medium hover:bg-white/10"><Phone className="size-4" /> Talk to a human</a></div>
+            <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3 text-sm text-white/75"><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> No obligation</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> Written scope</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> Required credentials verified for the scope</span></div>
             <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl border border-white/30 bg-[#141b15]/55 px-4 py-3 backdrop-blur-md">
               <span className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[.16em] text-[#d5ec77] uppercase"><CircleDollarSign className="size-4" /> Financing available</span>
               <span className="max-w-md text-xs leading-5 text-white/85">Spread the cost instead of paying it all at once — compare options from recognized home improvement lenders.</span>
               <Link to="/financing" className="text-xs font-semibold text-[#d5ec77] underline underline-offset-4">See lenders <ArrowUpRight className="ml-0.5 inline size-3.5" /></Link>
             </div>
           </div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, delay: .15 }} className="self-end rounded-3xl border border-white/15 bg-[#182019] p-6 text-white shadow-2xl sm:p-8 lg:mb-1">
-            <div className="flex items-start justify-between"><div><p className="text-xs font-semibold tracking-[.16em] text-[#d5ec77] uppercase">YOUR FIRST STEP · 30 SECONDS</p><h2 className="mt-3 text-3xl font-semibold tracking-[-.05em]">Tell us what needs doing.</h2></div><span className="flex size-11 items-center justify-center rounded-full bg-[#d5ec77] text-[#1d211d]"><ArrowUpRight className="size-5" /></span></div>
-            <p className="mt-4 text-sm leading-6 text-white/90">A few details helps our inside sales team make your scheduled callback useful — not a sales pitch.</p>
-            {submitted ? (
-              <div className="mt-7 rounded-2xl border border-[#d5ec77]/45 bg-[#d5ec77]/14 p-5 text-sm leading-6 text-white backdrop-blur-[2px]">
-                <p className="font-semibold text-white">{consultationSlot ? "Your estimate and in-home visit request are in." : "Thanks — your estimate request is in."}</p>
-                <p className="mt-1">{consultationSlot ? `We’ll follow up to confirm your requested visit for ${consultationSlot.dateLabel} at ${consultationSlot.time}.` : "A LoveMeAfter coordinator will call you back the same day in active markets."}</p>
-              </div>
-            ) : (
-              <form id="estimate-form" onSubmit={handleEstimateSubmit} aria-busy={isSubmitting} className="mt-7 scroll-mt-24 space-y-3">
-                <p id="estimate-form-note" className="text-xs leading-5 text-white/70">Name and phone are required. Address details are optional.</p>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <input name="name" required autoComplete="name" placeholder="Full name" aria-label="Full name" className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50" />
-                  <input name="phone" required type="tel" autoComplete="tel" inputMode="tel" placeholder="Phone number" aria-label="Phone number" className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50" />
-                  <input name="email" type="email" required={Boolean(consultationSlot)} placeholder={consultationSlot ? "Email address (required for visit confirmation)" : "Email address (optional)"} aria-label={consultationSlot ? "Email address, required for visit confirmation" : "Email address, optional"} className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50 sm:col-span-2" />
-                </div>
-                <div className="flex gap-2">
-                  <input name="address" autoComplete="street-address" value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Street address (optional)" aria-label="Street address" className="h-14 min-w-0 flex-1 rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50" />
-                  <button type="button" onClick={locateMe} aria-label="Locate me" className="flex h-14 shrink-0 items-center gap-2 rounded-xl border border-white/35 bg-white/10 px-3 text-xs font-semibold text-white transition hover:border-[#d5ec77] hover:bg-white/15" title="Use my location"><MapPin className="size-4" /> <span className="hidden sm:inline">Locate me</span></button>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <input name="cityStateZip" autoComplete="address-level2" value={cityStateZip} onChange={(event) => setCityStateZip(event.target.value)} placeholder="City, state & ZIP (optional)" aria-label="City, state and ZIP" className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition placeholder:text-[#697568] focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50" />
-                  <select name="service" aria-label="Service needed" value={selectedProject} onChange={(event) => setSelectedProject(event.target.value)} className="h-14 w-full rounded-xl border border-[#cbd2c5] bg-[#f8f8f3] px-4 text-sm font-medium text-[#1d211d] outline-none transition focus:border-[#d5ec77] focus:ring-2 focus:ring-[#d5ec77]/50">{SERVICES.map((service) => <option key={service.title}>{service.title}</option>)}<option>Not sure yet</option></select>
-                </div>
-                {submissionError && <p role="alert" className="rounded-lg border border-red-300/40 bg-red-950/40 px-3 py-2 text-sm leading-5 text-red-100">{submissionError} <a href={PHONE_HREF} className="font-semibold underline underline-offset-2">Call {PHONE_DISPLAY}</a></p>}
-                {locationStatus && <p className="flex items-start gap-2 text-xs leading-5 text-[#d5ec77]"><MapPin className="mt-0.5 size-3.5 shrink-0" />{locationStatus}</p>}
-                {consultationSlot && (
-                  <div className="flex items-center justify-between gap-3 rounded-xl border border-[#d5ec77]/55 bg-[#d5ec77]/15 px-3 py-2.5 text-xs text-white">
-                    <span className="min-w-0"><span className="block font-semibold text-[#e4f5a4]">In-home visit selected</span><span className="mt-0.5 block truncate text-white/80">{consultationSlot.dateLabel} · {consultationSlot.time} · 45 minutes</span></span>
-                    <button type="button" onClick={goToSchedule} className="shrink-0 font-semibold text-[#d5ec77] underline underline-offset-4">Change</button>
-                    <input type="hidden" name="consultationDate" value={consultationSlot.date} />
-                    <input type="hidden" name="consultationDateLabel" value={consultationSlot.dateLabel} />
-                    <input type="hidden" name="consultationTime" value={consultationSlot.time} />
-                  </div>
-                )}
-                <div className="grid gap-2 sm:grid-cols-2"><Button type="submit" disabled={isSubmitting} className="h-14 rounded-xl bg-[#1d211d] text-sm font-semibold text-white hover:bg-[#30382f]">{isSubmitting ? "Sending your request…" : consultationSlot ? "Send estimate & visit request" : "Request my inside-sales callback"} {!isSubmitting && <ChevronRight className="ml-1 size-4" />}</Button><button type="button" onClick={goToSchedule} className="flex h-14 items-center justify-center gap-2 rounded-xl border border-white/40 bg-white/15 text-sm font-semibold text-white transition hover:border-[#d5ec77] hover:bg-white/20"><CalendarDays className="size-4" /> {consultationSlot ? "Change in-person visit" : "Book in-person design consultation"}</button></div>
-              </form>
-            )}
-            <p className="mt-4 text-center text-xs text-white/65">Free estimate · inbound scheduled intake call · no obligation</p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, delay: .15 }} className="self-end rounded-3xl border border-white/15 bg-[#182019]/90 p-6 text-white shadow-2xl backdrop-blur-xl sm:p-8 lg:mb-1">
+            <p className="text-xs font-semibold tracking-[.16em] text-[#d5ec77] uppercase">A clearer way to decide</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-.05em] sm:text-4xl">Know what the project gives back.</h2>
+            <p className="mt-4 text-sm leading-6 text-white/75">Start with the home outcome—not a product pitch. We’ll help you weigh protection, everyday comfort, maintenance, and resale against a written scope and real price.</p>
+            <div className="mt-7 space-y-4 border-t border-white/10 pt-6">
+              {[[ShieldCheck, "Protect what you own", "Get ahead of avoidable damage and costly repeat repairs."], [House, "Feel the difference daily", "Make rooms quieter, more comfortable, safer, or easier to maintain."], [CircleDollarSign, "Choose a payment path", "Compare cash, your own financing, or optional lender offers—subject to approval."]].map(([Icon, title, detail]) => {
+                const BenefitIcon = Icon as typeof ShieldCheck;
+                return <div key={title as string} className="flex gap-3"><span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#d5ec77]/10 text-[#d5ec77]"><BenefitIcon className="size-4" /></span><div><p className="text-sm font-semibold">{title as string}</p><p className="mt-1 text-xs leading-5 text-white/65">{detail as string}</p></div></div>;
+              })}
+            </div>
+            <Button onClick={goToEstimate} className="mt-8 h-12 w-full rounded-full bg-[#d5ec77] text-sm font-bold text-[#1d211d] hover:bg-[#e1f895]">Get my free home assessment <ArrowUpRight className="ml-2 size-4" /></Button>
+            <p className="mt-3 text-center text-[11px] leading-5 text-white/55">No obligation · written scope · required credentials verified for the work</p>
           </motion.div>
         </div>
       </section>
@@ -452,7 +333,7 @@ export default function Landing() {
         <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-10">
           <div className="grid gap-6 sm:grid-cols-3">
             <div><p className="text-3xl font-semibold tracking-[-.05em]">{PROJECT_INDEX_COUNT} project types</p><p className="mt-1 text-sm text-[#65705e]">Exterior · interior · systems · property</p></div>
-            <div><p className="text-3xl font-semibold tracking-[-.05em]">Same-day</p><p className="mt-1 text-sm text-[#65705e]">Callback in active markets</p></div>
+            <div><p className="text-3xl font-semibold tracking-[-.05em]">Prompt</p><p className="mt-1 text-sm text-[#65705e]">Follow-up in active markets</p></div>
             <div><p className="text-3xl font-semibold tracking-[-.05em]">10 years</p><p className="mt-1 text-sm text-[#65705e]">Minimum workmanship warranty</p></div>
           </div>
           <div className="mt-8 border-t border-[#1d211d]/10 pt-7">
@@ -548,7 +429,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="video-through-section relative z-10 border-b border-[#1d211d]/10 bg-[#f7f5f0]/80 backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10"><div className="grid gap-10 lg:grid-cols-[minmax(0,.75fr)_minmax(0,1.25fr)] lg:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">Your project, clarified</p><h2 className="mt-4 max-w-md text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-5xl">Start with the right next step.</h2><p className="mt-5 max-w-md text-base leading-7 text-[#62695f]">Pick the part of your home you are thinking about. We will use it to shape a more useful first conversation — not a generic sales call.</p></div><div className="relative min-w-0"><div className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-4 [scrollbar-color:#71803d_transparent] sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">{SERVICES.map(({ title, slug, detail, icon: Icon }, index) => <div key={title} className={`flex min-h-[210px] w-[245px] shrink-0 snap-start flex-col rounded-2xl border p-5 transition hover:-translate-y-0.5 hover:border-[#71803d] sm:w-[265px] ${selectedProject === title ? "border-[#71803d] bg-[#eaf0d0]" : "border-[#1d211d]/12 bg-white/60"}`}><button onClick={() => { setSelectedProject(title); void trackEvent("project_interest_selected", { service: title }); scrollToEstimate(); }} className="flex flex-1 flex-col text-left"><div className="flex items-start justify-between gap-3"><span className="flex size-9 items-center justify-center rounded-xl bg-[#eaf0d0] text-[#71803d]"><Icon className="size-4" /></span><span className="text-xs font-semibold text-[#a0a89d]">{String(index + 1).padStart(2, "0")}</span></div><h3 className="mt-6 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-[#62695f]">{detail}</p><p className="mt-4 text-[10px] font-semibold tracking-[.12em] text-[#71803d] uppercase">{selectedProject === title ? "Selected · " : "Explore · "}Get a free estimate</p></button><Link to={`/services/${slug}`} className="mt-4 inline-flex items-center border-t border-[#1d211d]/10 pt-4 text-[10px] font-semibold tracking-[.12em] text-[#71803d] uppercase transition hover:text-[#4f5a2f]">Read the full guide <ArrowUpRight className="ml-1 size-3.5" /></Link></div>)}</div><div className="mt-3 flex items-center justify-between text-xs text-[#7b8578]"><span>Swipe or scroll to explore featured project types · all {PROJECT_INDEX_COUNT} services are in the catalog</span><span className="hidden font-semibold text-[#71803d] sm:inline">More projects →</span></div></div></div></div></section>
+      <section className="video-through-section relative z-10 border-b border-[#1d211d]/10 bg-[#f7f5f0]/80 backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10"><div className="grid gap-10 lg:grid-cols-[minmax(0,.75fr)_minmax(0,1.25fr)] lg:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">Your project, clarified</p><h2 className="mt-4 max-w-md text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-5xl">Start with the right next step.</h2><p className="mt-5 max-w-md text-base leading-7 text-[#62695f]">Pick the part of your home you are thinking about. We will use it to shape a more useful first conversation — not a generic sales call.</p></div><div className="relative min-w-0"><div className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-4 [scrollbar-color:#71803d_transparent] sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">{SERVICES.map(({ title, slug, detail, icon: Icon }, index) => <div key={title} className={`flex min-h-[210px] w-[245px] shrink-0 snap-start flex-col rounded-2xl border p-5 transition hover:-translate-y-0.5 hover:border-[#71803d] sm:w-[265px] ${selectedProject === title ? "border-[#71803d] bg-[#eaf0d0]" : "border-[#1d211d]/12 bg-white/60"}`}><button onClick={() => { setSelectedProject(title); void trackEvent("project_interest_selected", { service: title }); void trackEvent("estimate_cta_clicked", { placement: "landing_project_card", service: title }); openEstimateRequest(title, consultationSlot ?? undefined); }} className="flex flex-1 flex-col text-left"><div className="flex items-start justify-between gap-3"><span className="flex size-9 items-center justify-center rounded-xl bg-[#eaf0d0] text-[#71803d]"><Icon className="size-4" /></span><span className="text-xs font-semibold text-[#a0a89d]">{String(index + 1).padStart(2, "0")}</span></div><h3 className="mt-6 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-[#62695f]">{detail}</p><p className="mt-4 text-[10px] font-semibold tracking-[.12em] text-[#71803d] uppercase">{selectedProject === title ? "Selected · " : "Explore · "}Get a free estimate</p></button><Link to={`/services/${slug}`} className="mt-4 inline-flex items-center border-t border-[#1d211d]/10 pt-4 text-[10px] font-semibold tracking-[.12em] text-[#71803d] uppercase transition hover:text-[#4f5a2f]">Read the full guide <ArrowUpRight className="ml-1 size-3.5" /></Link></div>)}</div><div className="mt-3 flex items-center justify-between text-xs text-[#7b8578]"><span>Swipe or scroll to explore featured project types · all {PROJECT_INDEX_COUNT} services are in the catalog</span><span className="hidden font-semibold text-[#71803d] sm:inline">More projects →</span></div></div></div></div></section>
 
 
       <section className="video-through-section relative z-10 border-b border-[#1d211d]/10 bg-[#eaf0d0]/72 backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-24"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#71803d] uppercase">What we actually install</p><h2 className="mt-4 max-w-2xl text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-5xl">Real products, not a mood board.</h2><p className="mt-5 max-w-2xl text-base leading-7 text-[#596357]">Cabinets, sinks, counters, tile, doors, windows, roofing, siding, paving, fencing, HVAC, and solar. Swipe through the materials and fixtures behind every scope we write.</p></div><Link to="/services" className="inline-flex shrink-0 items-center text-sm font-semibold text-[#71803d]">See every project type <ArrowUpRight className="ml-1 size-4" /></Link></div><div className="-mx-5 mt-10 flex min-w-0 snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-4 [scrollbar-color:#71803d_transparent] sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">{PRODUCT_STRIP.map(([group, label, id]) => <figure key={label} className="group w-[190px] shrink-0 snap-start overflow-hidden rounded-2xl border border-[#1d211d]/10 bg-white sm:w-[210px]"><div className="h-40 bg-cover bg-center transition duration-700 group-hover:scale-[1.05]" style={{ backgroundImage: `url(${px(id, 700)})` }} /><figcaption className="p-4"><p className="text-[10px] font-semibold tracking-[.12em] text-[#9aa095] uppercase">{group}</p><p className="mt-1 text-sm font-semibold">{label}</p></figcaption></figure>)}</div><p className="mt-4 text-xs leading-5 text-[#71803d]">Swipe or scroll for more project materials.</p></div></section>
@@ -556,15 +437,13 @@ export default function Landing() {
 
       <section className="video-through-section relative z-10 border-y border-[#1d211d]/10 bg-[#182019]/88 text-white backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-24"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase">What we actually find</p><h2 className="mt-4 max-w-2xl text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-5xl">Storm damage, rot, mold, and failed work.</h2><p className="mt-5 max-w-2xl text-base leading-7 text-white/70">Half of this business is seeing what other people missed or covered up. Here is the kind of condition our crews document before anyone writes a scope.</p></div><Link to="/conditions" className="inline-flex shrink-0 items-center text-sm font-semibold text-[#d5ec77]">Open the field conditions library <ArrowUpRight className="ml-1 size-4" /></Link></div><div className="mt-10 grid auto-rows-[96px] grid-cols-2 gap-3 sm:auto-rows-[118px] sm:grid-cols-4">{DAMAGE_PHOTOS.slice(0, 10).map(([label, id], index) => <figure key={label} className={`group relative overflow-hidden rounded-2xl bg-[#101510] ${index === 0 || index === 6 ? "col-span-2 row-span-2" : index === 3 ? "col-span-2" : ""}`}><div className="absolute inset-0 bg-cover bg-center transition duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${px(id, 700)})` }} /><div className="absolute inset-0 bg-gradient-to-t from-[#0f1610]/85 via-transparent to-transparent" /><figcaption className="absolute inset-x-0 bottom-0 p-3 text-[11px] font-semibold text-white">{label}</figcaption></figure>)}</div><div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start"><p className="text-xs leading-5 text-white/55">Field condition examples help explain what an inspection may uncover. Your home gets its own photos and written scope.</p><aside className="rounded-2xl border border-white/10 bg-[#211824] p-5 text-white sm:p-6"><p className="text-xs font-semibold tracking-[.14em] text-[#ef8eb4] uppercase">What return can mean</p><ul className="mt-4 space-y-3 text-sm leading-6 text-white/75"><li><strong className="text-white">Prevent escalation:</strong> address documented water entry before it spreads.</li><li><strong className="text-white">Improve daily life:</strong> make rooms safer, more comfortable, or easier to maintain.</li><li><strong className="text-white">Support resale:</strong> use local scope and sourced benchmarks—not a guaranteed percentage.</li></ul></aside></div></div></section>
 
-      <section className="video-through-section relative z-10 mx-auto grid max-w-7xl gap-12 bg-[#f7f5f0]/68 px-5 py-24 text-[#1d211d] backdrop-blur-sm sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:px-10 lg:py-32"><div><p className="text-xs font-semibold tracking-[.18em] text-[#71803d] uppercase">A better standard</p><h2 className="mt-4 text-4xl font-semibold leading-[1] tracking-[-.055em] sm:text-6xl">The details are the difference.</h2><p className="mt-6 max-w-md text-lg leading-8 text-[#596357]">We built LoveMeAfter around the parts homeowners usually have to chase: a callback, a real scope, proof of insurance, and someone accountable when the work is done.</p><Button onClick={goToEstimate} className="mt-8 rounded-full bg-[#1d211d] px-6 text-white hover:bg-[#30382f]">Start with a free estimate <ArrowUpRight className="ml-1 size-4" /></Button></div><div className="grid gap-3 sm:grid-cols-2"><div className="overflow-hidden rounded-2xl bg-[#eaf0d0]"><div className="h-44 bg-cover bg-center" style={{ backgroundImage: `url(${px(photoId(WORKER_PHOTOS, "Foreman on site"), 900)})` }} /><div className="p-7"><BadgeCheck className="size-6 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">Crews we actually check</h3><p className="mt-2 text-sm leading-6 text-[#65705e]">Before a crew touches your home we verify insurance, registration, references, and the local requirements that apply — and we keep the paperwork on file.</p></div></div><div className="overflow-hidden rounded-2xl bg-[#ece9e0]"><div className="h-44 bg-cover bg-center" style={{ backgroundImage: `url(${px(photoId(JOBSITE_PHOTOS, "Inspection checklist"), 900)})` }} /><div className="p-7"><ClipboardCheck className="size-6 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">A written scope</h3><p className="mt-2 text-sm leading-6 text-[#65705e]">You get the inspection photos, what is included, what can wait, and what the work will actually cost — in writing, before you commit to anything.</p></div></div><div className="rounded-2xl bg-[#1d211d] p-7 text-white sm:col-span-2"><CircleDollarSign className="size-6 text-[#d5ec77]" /><h3 className="mt-10 text-xl font-semibold">No surprise fees, no pressure</h3><p className="mt-2 max-w-lg text-sm leading-6 text-white/75">The estimate is free. The decision stays yours — pay in full, or spread the cost with an optional home improvement loan from a recognized lender. We earn the job by being clear enough to trust.</p><Link to="/financing" className="mt-4 inline-flex items-center text-xs font-semibold text-[#d5ec77]">Compare lender options <ArrowUpRight className="ml-1 size-3.5" /></Link></div></div></section>
+      <section className="video-through-section relative z-10 mx-auto grid max-w-7xl gap-12 bg-[#f7f5f0]/68 px-5 py-24 text-[#1d211d] backdrop-blur-sm sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:px-10 lg:py-32"><div><p className="text-xs font-semibold tracking-[.18em] text-[#71803d] uppercase">A better standard</p><h2 className="mt-4 text-4xl font-semibold leading-[1] tracking-[-.055em] sm:text-6xl">The details are the difference.</h2><p className="mt-6 max-w-md text-lg leading-8 text-[#596357]">We built LoveMeAfter around the parts homeowners usually have to chase: a callback, a real scope, proof of insurance, and someone accountable when the work is done.</p><Button onClick={goToEstimate} className="mt-8 rounded-full bg-[#1d211d] px-6 text-white hover:bg-[#30382f]">Start with a free assessment <ArrowUpRight className="ml-1 size-4" /></Button></div><div className="grid gap-3 sm:grid-cols-2"><div className="overflow-hidden rounded-2xl bg-[#eaf0d0]"><div className="h-44 bg-cover bg-center" style={{ backgroundImage: `url(${px(photoId(WORKER_PHOTOS, "Foreman on site"), 900)})` }} /><div className="p-7"><BadgeCheck className="size-6 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">A documented project review</h3><p className="mt-2 text-sm leading-6 text-[#65705e]">Before work begins, insurance, references, and credentials required for the trade and location are part of the project review. We keep the applicable records on file.</p></div></div><div className="overflow-hidden rounded-2xl bg-[#ece9e0]"><div className="h-44 bg-cover bg-center" style={{ backgroundImage: `url(${px(photoId(JOBSITE_PHOTOS, "Inspection checklist"), 900)})` }} /><div className="p-7"><ClipboardCheck className="size-6 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">A written scope</h3><p className="mt-2 text-sm leading-6 text-[#65705e]">You get the inspection photos, what is included, what can wait, and what the work will actually cost — in writing, before you commit to anything.</p></div></div><div className="rounded-2xl bg-[#1d211d] p-7 text-white sm:col-span-2"><CircleDollarSign className="size-6 text-[#d5ec77]" /><h3 className="mt-10 text-xl font-semibold">No surprise fees, no pressure</h3><p className="mt-2 max-w-lg text-sm leading-6 text-white/75">The estimate is free. The decision stays yours — pay in full, or spread the cost with an optional home improvement loan from a recognized lender. We earn the job by being clear enough to trust.</p><Link to="/financing" className="mt-4 inline-flex items-center text-xs font-semibold text-[#d5ec77]">Compare lender options <ArrowUpRight className="ml-1 size-3.5" /></Link></div></div></section>
 
       <section id="home-value" className="video-through-section relative z-10 border-y border-[#1d211d]/10 bg-[#f1f4e7] backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10 lg:py-32"><div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr] lg:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#71803d] uppercase">A homeowner-first investment brief</p><h2 className="mt-4 max-w-xl text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-6xl">Work should earn its place in your home.</h2><p className="mt-6 max-w-xl text-base leading-7 text-[#596357]">We recommend projects for a practical reason: protect the home, improve how it feels to live there, reduce avoidable upkeep, or make a well-supported resale case. If there is no meaningful benefit for you, it is not the right project.</p></div><div className="rounded-2xl bg-[#1d211d] p-7 text-white sm:p-8"><div className="flex items-center gap-3 text-[#d5ec77]"><CircleDollarSign className="size-5" /><p className="text-xs font-semibold tracking-[.16em] uppercase">National benchmark, not a promise</p></div><p className="mt-5 text-2xl font-semibold tracking-[-.03em]">Some defined projects exceed their cost at resale.</p><p className="mt-3 text-sm leading-6 text-white/68">Zonda’s 2025 Cost vs. Value report compares standardized remodeling projects across U.S. markets. Local costs, scope, condition, and timing still decide your result.</p></div></div><div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{[["Garage door replacement", "267.7%", "$4,672 benchmark cost", "$12,507 estimated value at sale", "Highest cost-recovery example in Zonda's 2025 national report."], ["Steel entry door", "216.4%", "$2,435 benchmark cost", "$5,270 estimated value at sale", "A defined, smaller-scope upgrade in the report."], ["Manufactured stone veneer", "207.9%", "$11,702 benchmark cost", "$24,328 estimated value at sale", "One of the report's top exterior replacement projects."], ["Fiber-cement siding", "113.7%", "$21,485 benchmark cost", "$24,420 estimated value at sale", "The reported recovery applies to a defined fiber-cement scope."], ["Minor kitchen remodel", "112.9%", "$28,458 benchmark cost", "$32,141 estimated value at sale", "The report's highest-ranked interior project."]].map(([title, returnRate, cost, outcome, note]) => <article key={title} className="rounded-2xl border border-[#1d211d]/10 bg-white p-6"><p className="text-xs font-semibold tracking-[.14em] text-[#71803d] uppercase">{title}</p><p className="mt-5 text-4xl font-semibold tracking-[-.06em]">{returnRate}</p><p className="mt-1 text-xs font-medium text-[#7a8377]">estimated cost recouped at resale</p><div className="mt-5 border-t border-[#1d211d]/10 pt-4"><p className="text-sm font-semibold">{cost}</p><p className="mt-1 text-sm text-[#596357]">{outcome}</p><p className="mt-4 text-xs leading-5 text-[#7a8377]">{note}</p></div></article>)}</div><div className="mt-10 grid gap-4 lg:grid-cols-3"><div className="rounded-2xl bg-[#dce8b0] p-6"><ShieldCheck className="size-5 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">Protect your equity</h3><p className="mt-2 text-sm leading-6 text-[#596357]">Water, roof, drainage, and envelope work can prevent a small defect from becoming a larger loss.</p></div><div className="rounded-2xl bg-[#ebe8dc] p-6"><Sparkles className="size-5 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">Upgrade daily life</h3><p className="mt-2 text-sm leading-6 text-[#596357]">Quiet rooms, steady temperatures, better light, lower maintenance, and a home that feels good to return to are real returns too.</p></div><div className="rounded-2xl bg-[#e5eee7] p-6"><BadgeCheck className="size-5 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">Make the sale easier</h3><p className="mt-2 text-sm leading-6 text-[#596357]">A documented, well-maintained exterior gives buyers fewer reasons to discount the home or ask for concessions.</p></div></div><div className="mt-10 flex flex-col gap-4 border-t border-[#1d211d]/10 pt-6 text-xs leading-5 text-[#687265] sm:flex-row sm:items-start sm:justify-between"><p className="max-w-3xl"><strong>How to read this:</strong> these selected examples are standardized projects that recouped more than 100% of their cost in Zonda/JLC’s 2025 national Cost vs. Value report. They are not representative of every project, an appraisal, quote, or guarantee; many improvements do not recoup their full cost at sale. Your scope, home, location, and market determine your result.</p><a className="shrink-0 font-semibold text-[#71803d] underline underline-offset-4" href="https://zondahome.com/2025-cost-vs-value-report/" target="_blank" rel="noreferrer">See the source report <ArrowUpRight className="ml-1 inline size-3.5" /></a></div></div></section>\n\n      <ExpertTopic />
 
       <section id="questions" className="relative z-10 border-y border-[#1d211d]/10 bg-[#ece9e0]/64 backdrop-blur-sm"><div className="mx-auto grid max-w-7xl gap-12 px-5 py-24 sm:px-8 lg:grid-cols-[.75fr_1.25fr] lg:px-10 lg:py-32"><div><p className="text-xs font-semibold tracking-[.18em] text-[#87964b] uppercase">Good questions</p><h2 className="mt-4 text-4xl font-semibold leading-[1] tracking-[-.055em] sm:text-6xl">Before you invite us over.</h2></div><Accordion type="single" collapsible>{FAQS.map(([question, answer]) => <AccordionItem key={question} value={question} className="border-[#1d211d]/15"><AccordionTrigger className="py-6 text-left text-lg font-semibold hover:no-underline">{question}</AccordionTrigger><AccordionContent className="max-w-xl pb-6 text-base leading-7 text-[#62695f]">{answer}</AccordionContent></AccordionItem>)}</Accordion></div></section>
 
-      <section id="schedule" className="relative z-10 bg-[#f7f5f0] px-5 py-8 sm:px-8 lg:px-10"><div className="mx-auto max-w-7xl"><LeadershipSchedule /></div></section>
-
-      <section className="relative z-10 bg-[#d5ec77]/76 backdrop-blur-sm"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 px-5 py-16 sm:px-8 lg:flex-row lg:items-center lg:px-10 lg:py-20"><div><p className="text-xs font-semibold tracking-[.18em] text-[#657035] uppercase">Ready when you are</p><h2 className="mt-3 max-w-2xl text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-6xl">Find out what it actually costs.</h2></div><div className="flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#1d211d] px-7 text-base text-white hover:bg-[#30382f]">Get my free estimate <ArrowUpRight className="ml-2 size-5" /></Button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-[#1d211d]/25 px-6 text-sm font-semibold hover:bg-white/20"><Phone className="size-4" /> {PHONE_DISPLAY}</a></div></div></section>
+      <section className="relative z-10 bg-[#d5ec77]/76 backdrop-blur-sm"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 px-5 py-16 sm:px-8 lg:flex-row lg:items-center lg:px-10 lg:py-20"><div><p className="text-xs font-semibold tracking-[.18em] text-[#657035] uppercase">Ready when you are</p><h2 className="mt-3 max-w-2xl text-4xl font-semibold leading-[.98] tracking-[-.055em] sm:text-6xl">Find out what it actually costs.</h2></div><div className="flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#1d211d] px-7 text-base text-white hover:bg-[#30382f]">Get my free assessment <ArrowUpRight className="ml-2 size-5" /></Button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-[#1d211d]/25 px-6 text-sm font-semibold hover:bg-white/20"><Phone className="size-4" /> {PHONE_DISPLAY}</a></div></div></section>
 
       <section className="relative z-10 border-y border-[#1d211d]/10 bg-[#f7f5f0]/82 px-5 py-16 backdrop-blur-sm sm:px-8 lg:px-10 lg:py-20">
         <div className="mx-auto max-w-7xl">
@@ -572,7 +451,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <footer className="relative z-10 bg-[#1d211d]/88 text-white"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-10 text-sm sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10"><a href="#top" className="flex items-center"><Logo tone="light" compact={false} className="gap-2" /></a><div className="flex flex-wrap gap-4 text-white/45"><p>Free estimates · same-day callback · clear scopes · built for clarity</p><Link to="/conditions" className="text-[#d5ec77]">Field conditions</Link><Link to="/trades" className="text-[#d5ec77]">Trade network</Link><Link to="/careers" className="text-[#d5ec77]">Careers</Link><Link to="/contractors" className="text-[#d5ec77]">Contractor partners</Link></div><a href={PHONE_HREF} className="font-medium text-[#d5ec77]">{PHONE_DISPLAY}</a></div></footer>
+      <footer className="relative z-10 bg-[#1d211d]/88 text-white"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-10 text-sm sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10"><a href="#top" className="flex items-center"><Logo tone="light" compact={false} className="gap-2" /></a><div className="flex flex-wrap gap-4 text-white/45"><p>Free assessments · clear scopes · built for clarity</p><Link to="/conditions" className="text-[#d5ec77]">Field conditions</Link><Link to="/trades" className="text-[#d5ec77]">Trade network</Link><Link to="/careers" className="text-[#d5ec77]">Careers</Link><Link to="/contractors" className="text-[#d5ec77]">Contractor partners</Link></div><a href={PHONE_HREF} className="font-medium text-[#d5ec77]">{PHONE_DISPLAY}</a></div></footer>
     </main>
   );
 }

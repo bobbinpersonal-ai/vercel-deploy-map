@@ -10,6 +10,7 @@ import { PhaseTimeline, SeverityMeter } from "@/components/GeneratedGraphics";
 import { FinancingShowcase } from "@/components/FinancingShowcase";
 import { ProjectVideo } from "@/components/ProjectVideo";
 import { ManufacturerShowcase } from "@/components/ManufacturerShowcase";
+import { openEstimateRequest } from "@/lib/estimate-request";
 
 /** Per-category field risk and phasing, so guides read differently by trade. */
 const CATEGORY_INSIGHT: Record<
@@ -166,18 +167,19 @@ export default function ProjectProcess() {
             <span className="rounded-full border border-[#d5ec77]/40 px-3 py-1 text-[11px] font-semibold tracking-[.16em] text-[#d5ec77] uppercase">
               {project.category}
             </span>
-            <span className="text-[11px] font-semibold tracking-[.16em] text-white/50 uppercase">{project.eyebrow}</span>
+            <span className="text-[11px] font-semibold tracking-[.16em] text-white/75 uppercase">{project.eyebrow}</span>
           </div>
           <h1 className="mt-5 max-w-4xl text-5xl font-semibold leading-[.95] tracking-[-.06em] sm:text-7xl">
             {project.title}
           </h1>
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-white/75">{project.intro}</p>
+          <p className="mt-7 max-w-2xl text-lg leading-8 text-white/80">{project.intro}</p>
+          <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs font-medium text-white/75"><span><strong className="text-white">Benefit-first:</strong> protection, everyday comfort, or a supported ROI case.</span><span><strong className="text-white">Pay your way:</strong> cash or optional lender financing, if approved.</span><span><strong className="text-white">Right-qualified pros:</strong> credentials matched to scope and local rules.</span></div>
           <div className="mt-9 flex flex-wrap gap-3">
             <Button
-              onClick={() => navigate("/#estimate-form")}
+              onClick={() => openEstimateRequest(project.title)}
               className="h-14 rounded-full bg-[#d5ec77] px-7 text-[#1d211d] hover:bg-[#e1f895]"
             >
-              Start with a free estimate <ArrowUpRight className="ml-2 size-5" />
+              Start with a free assessment <ArrowUpRight className="ml-2 size-5" />
             </Button>
             <a
               href="tel:+14244260760"
@@ -360,23 +362,30 @@ export default function ProjectProcess() {
             </p>
           </div>
           <div className="space-y-3">
-            {project.faqs.map(([question, answer], index) => (
+            {project.faqs.map(([question, answer], index) => {
+              const staffingQuestion = /subcontract|self-perform/i.test(question);
+              const displayQuestion = staffingQuestion ? "How are projects staffed?" : question;
+              const displayAnswer = staffingQuestion
+                ? "We are growing our in-house field team while matching each project to qualified professionals based on trade, scope, and location. Required credentials and insurance are checked as applicable before work begins."
+                : answer;
+              return (
               <details
-                key={question}
+                key={displayQuestion}
                 open={index === 0}
                 className="group rounded-2xl border border-[#1d211d]/10 bg-white"
               >
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 sm:p-6">
-                  <span className="text-base font-semibold">{question}</span>
+                  <span className="text-base font-semibold">{displayQuestion}</span>
                   <span className="shrink-0 rounded-full border border-[#1d211d]/15 px-3 py-1 text-xs font-semibold text-[#71803d] transition group-open:rotate-90">
                     →
                   </span>
                 </summary>
                 <p className="border-t border-[#1d211d]/10 px-5 pb-6 pt-5 text-sm leading-6 text-[#62695f] sm:px-6">
-                  {answer}
+                  {displayAnswer}
                 </p>
               </details>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -389,8 +398,7 @@ export default function ProjectProcess() {
               This project is coordinated, not handed off.
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-white/70">
-              LoveMeAfter coordinates every trade under one written scope. See the full network, or read the
-              field conditions library to learn what failing work actually looks like.
+              LoveMeAfter coordinates each phase under one written scope. Specialists are matched to the trade and location, with required credentials, permits, and insurance verified as applicable. See the full network or explore field conditions.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -453,7 +461,7 @@ export default function ProjectProcess() {
           </div>
           <div className="flex flex-wrap gap-3">
             <Button
-              onClick={() => navigate("/#estimate-form")}
+              onClick={() => openEstimateRequest(project.title)}
               className="h-14 rounded-full bg-[#1d211d] px-7 font-semibold text-white hover:bg-[#30382f]"
             >
               Request a free estimate <ArrowUpRight className="ml-2 size-5" />

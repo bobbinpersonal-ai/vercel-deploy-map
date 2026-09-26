@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { CostDonut, DecisionFlow, PhaseTimeline, RoiBarChart, SeverityMeter, TradeShareChart } from "@/components/GeneratedGraphics";
 import { DAMAGE_PHOTOS, JOBSITE_PHOTOS, PHOTO_CREDIT, WORKER_PHOTOS, px } from "@/data/photos";
+import { openEstimateRequest } from "@/lib/estimate-request";
 
 const PHONE_HREF = "tel:+14244260760";
 
@@ -136,9 +137,7 @@ export default function Conditions() {
             <a href={PHONE_HREF} className="hidden items-center gap-2 text-sm text-[#453b45] sm:flex">
               <Phone className="size-4" /> 424 426 0760
             </a>
-            <Button onClick={() => navigate("/")} variant="ghost" className="text-[#1d211d] hover:bg-[#1d211d]/5">
-              <ArrowLeft className="mr-2 size-4" /> Back home
-            </Button>
+            <div className="flex items-center gap-2"><Button onClick={() => openEstimateRequest()} className="rounded-full bg-[#ef8eb4] px-4 text-[#24131d] hover:bg-[#f6b0ca]">Free assessment</Button><Button onClick={() => navigate("/")} variant="ghost" className="text-[#1d211d] hover:bg-[#1d211d]/5"><ArrowLeft className="mr-2 size-4" /> Back home</Button></div>
           </div>
         </nav>
       </header>
@@ -433,10 +432,10 @@ export default function Conditions() {
           </div>
           <div className="flex flex-wrap gap-3">
             <Button
-              onClick={() => navigate("/#estimate-form")}
+              onClick={() => openEstimateRequest()}
               className="h-14 rounded-full bg-[#1d211d] px-7 font-semibold text-white hover:bg-[#30382f]"
             >
-              Get a free estimate <ArrowUpRight className="ml-2 size-5" />
+              Get a free assessment <ArrowUpRight className="ml-2 size-5" />
             </Button>
             <a
               href={PHONE_HREF}

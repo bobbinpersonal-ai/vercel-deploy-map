@@ -60,7 +60,7 @@ const PIPELINE = [
 
 const LAUNCH = [
   ["Foundation", "Domain, Cloudflare deployment, forms, phone routing, analytics, legal disclaimers, service areas, and team access."],
-  ["Offer", "Define the free estimate promise, same-day callback coverage, service boundaries, warranty language, and financing disclosure."],
+  ["Offer", "Define the free assessment promise, realistic follow-up expectations, service boundaries, warranty language, and financing disclosure."],
   ["People", "Assign one owner and backup for marketing, intake, sales, operations, installer network, partnerships, and customer care."],
   ["Proof", "Collect permissioned project photos, worker stories, reviews, licenses/insurance process, and five market-specific examples."],
   ["Process", "Publish the lead SLA, call script, inspection checklist, estimate template, sales handoff, production handoff, and closeout checklist."],

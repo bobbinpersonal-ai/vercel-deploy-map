@@ -49,7 +49,7 @@ export function InteractiveHouseMap() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#101610]/60 via-transparent to-transparent" />
           <div className="absolute inset-x-4 bottom-4 z-10 flex flex-col gap-3 sm:inset-x-6 sm:bottom-6 sm:flex-row sm:items-end sm:justify-between">
-            <p className="max-w-sm text-xs leading-5 text-white/90">Roofing, siding, doors, windows, and outdoor projects—inspected, scoped, and coordinated by our team.</p>
+            <p className="max-w-sm text-xs leading-5 text-white/90">Roofing, siding, doors, windows, and outdoor projects—inspected, scoped, and coordinated around the right qualified professionals.</p>
             <div className="flex shrink-0 rounded-full border border-white/20 bg-[#182019]/75 p-1 backdrop-blur-md">
               {(Object.keys(VIEWS) as (keyof typeof VIEWS)[]).map((key) => (
                 <button

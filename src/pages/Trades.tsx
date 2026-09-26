@@ -228,9 +228,7 @@ export default function Trades() {
               We coordinate every trade. You get one accountable scope.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-white/70">
-              LoveMeAfter coordinates a complete residential trade network under one accountable process.
-              Roofing, electrical, plumbing, HVAC, tile, masonry, concrete, landscaping, and more — qualified,
-              insured, sequenced, and held to one written standard.
+              LoveMeAfter coordinates residential projects under one accountable process. We’re growing our in-house field team while matching each scope with qualified trade professionals. Required credentials, permits, and insurance are checked as applicable to the work and location.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
@@ -283,8 +281,7 @@ export default function Trades() {
             </h2>
           </div>
           <p className="max-w-md text-sm leading-6 text-[#62695f]">
-            A licensed trade is noted where state or local law requires a license for the scope. We confirm
-            credentials for every crew before they touch your home.
+            A licensed trade is noted where state or local law requires a license for the scope. Required credentials and insurance are checked for the professionals assigned to a project, as applicable to its location and work.
           </p>
         </div>
 
@@ -418,8 +415,7 @@ export default function Trades() {
               Run your trade. We handle the homeowner relationship.
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-7 text-[#596357]">
-              Qualified scopes, confirmed appointments, documented expectations, and payment on agreed
-              terms. If you run a clean operation, we want your calendar.
+              Qualified scopes, clear expectations, and payment on agreed terms. Project opportunities depend on market demand and capacity. If you run a clean operation, we’d like to hear from you.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
