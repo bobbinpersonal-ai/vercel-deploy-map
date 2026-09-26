@@ -39,6 +39,11 @@ const PROJECT_RAIL = PROJECT_INDEX.map((project) => ({
 }));
 
 const HIDDEN_PREFIXES = ["/admin", "/auth", "/login", "/dashboard"];
+const NAV_SCROLL_THRESHOLD = 0.1;
+const hasScrolledPastNavThreshold = () => {
+  const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+  return window.scrollY / maxScroll >= NAV_SCROLL_THRESHOLD;
+};
 type BrandPillEntry = (typeof BRAND_PILLS)[number];
 
 export function BottomNav() {
@@ -48,12 +53,25 @@ export function BottomNav() {
   const pointerDrag = useRef<{ startX: number; startScrollLeft: number; moved: boolean } | null>(null);
   const suppressClick = useRef(false);
   const [dragging, setDragging] = useState(false);
+  const [showBottomNav, setShowBottomNav] = useState(hasScrolledPastNavThreshold);
   const [selectedBrand, setSelectedBrand] = useState<{ brand: BrandPillEntry; projectLabel: string } | null>(null);
   const isHidden = HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
   useEffect(() => {
+    const updateVisibility = () => setShowBottomNav(!isHidden && hasScrolledPastNavThreshold());
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    window.addEventListener("resize", updateVisibility);
+    return () => {
+      window.removeEventListener("scroll", updateVisibility);
+      window.removeEventListener("resize", updateVisibility);
+    };
+  }, [isHidden, pathname]);
+
+  useEffect(() => {
     const scroller = railRef.current;
-    if (!scroller || isHidden) return;
+    if (!scroller || isHidden || !showBottomNav) return;
+    const mobile = window.matchMedia("(max-width: 639px)");
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
@@ -69,7 +87,7 @@ export function BottomNav() {
       lastFrameTime = 0;
     };
     const animate = (time: number) => {
-      if (reducedMotion.matches || document.visibilityState !== "visible") {
+      if (!mobile.matches || reducedMotion.matches || document.visibilityState !== "visible") {
         stop();
         return;
       }
@@ -92,7 +110,7 @@ export function BottomNav() {
       frame = window.requestAnimationFrame(animate);
     };
     const start = () => {
-      if (!frame && !reducedMotion.matches) frame = window.requestAnimationFrame(animate);
+      if (!frame && mobile.matches && !reducedMotion.matches) frame = window.requestAnimationFrame(animate);
     };
     const pauseTemporarily = () => {
       pausedByInteraction = true;
@@ -107,8 +125,8 @@ export function BottomNav() {
       window.clearTimeout(resumeTimer);
     };
     const onFocusOut = () => pauseTemporarily();
-    const onMotionChange = () => {
-      if (reducedMotion.matches) stop();
+    const onEnvironmentChange = () => {
+      if (!mobile.matches || reducedMotion.matches || document.visibilityState !== "visible") stop();
       else start();
     };
 
@@ -117,8 +135,9 @@ export function BottomNav() {
     scroller.addEventListener("wheel", pauseTemporarily, { passive: true });
     scroller.addEventListener("focusin", onFocusIn);
     scroller.addEventListener("focusout", onFocusOut);
-    reducedMotion.addEventListener("change", onMotionChange);
-    document.addEventListener("visibilitychange", onMotionChange);
+    mobile.addEventListener("change", onEnvironmentChange);
+    reducedMotion.addEventListener("change", onEnvironmentChange);
+    document.addEventListener("visibilitychange", onEnvironmentChange);
     start();
 
     return () => {
@@ -129,14 +148,15 @@ export function BottomNav() {
       scroller.removeEventListener("wheel", pauseTemporarily);
       scroller.removeEventListener("focusin", onFocusIn);
       scroller.removeEventListener("focusout", onFocusOut);
-      reducedMotion.removeEventListener("change", onMotionChange);
-      document.removeEventListener("visibilitychange", onMotionChange);
+      mobile.removeEventListener("change", onEnvironmentChange);
+      reducedMotion.removeEventListener("change", onEnvironmentChange);
+      document.removeEventListener("visibilitychange", onEnvironmentChange);
     };
-  }, [isHidden, pathname]);
+  }, [isHidden, pathname, showBottomNav]);
 
   useEffect(() => {
     const scroller = quickNavRef.current;
-    if (!scroller || isHidden) return;
+    if (!scroller || isHidden || !showBottomNav) return;
 
     const mobile = window.matchMedia("(max-width: 639px)");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -233,7 +253,7 @@ export function BottomNav() {
     : undefined;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50">
+    <div aria-hidden={!showBottomNav} inert={!showBottomNav} className={`fixed inset-x-0 bottom-0 z-50 transition-all duration-500 ${showBottomNav ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-full opacity-0"}`}>
       <div className="border-t border-white/10 bg-[#211824]/95 backdrop-blur-md">
         <div className="flex items-center gap-1 px-1.5 sm:px-2">
           <button type="button" onClick={() => moveRail(-1)} className="flex size-8 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[.05] text-white/70 transition hover:border-[#d5ec77]/60 hover:text-[#d5ec77]" aria-label="Scroll service and brand pills left">

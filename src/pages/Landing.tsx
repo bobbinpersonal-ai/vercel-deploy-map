@@ -187,7 +187,7 @@ export default function Landing() {
   useEffect(() => {
     const updateTopNav = () => {
       const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
-      setShowTopNav(window.scrollY / maxScroll < 0.3);
+      setShowTopNav(window.scrollY / maxScroll < 0.1);
     };
     updateTopNav();
     window.addEventListener("scroll", updateTopNav, { passive: true });
@@ -228,7 +228,7 @@ export default function Landing() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-transparent text-[#1d211d]">
-      <header className={`fixed inset-x-0 top-0 z-50 text-white transition-all duration-500 ${showTopNav ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-3 opacity-0"}`}>
+      <header aria-hidden={!showTopNav} inert={!showTopNav} className={`fixed inset-x-0 top-0 z-50 text-white transition-all duration-500 ${showTopNav ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-3 opacity-0"}`}>
         <div className="absolute inset-0 -z-10 border-b border-white/10 bg-[#182019]/82 shadow-[0_8px_32px_rgba(0,0,0,.24)] backdrop-blur-md" />
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-10">
 

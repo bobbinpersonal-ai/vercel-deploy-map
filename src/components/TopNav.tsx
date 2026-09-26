@@ -7,17 +7,19 @@ import { openEstimateRequest } from "@/lib/estimate-request";
 const PHONE_DISPLAY = "424 426 0760";
 const PHONE_HREF = "tel:+14244260760";
 const HIDDEN_PREFIXES = ["/admin", "/auth", "/login", "/dashboard"];
+const NAV_SCROLL_THRESHOLD = 0.1;
+const isNearTop = () => {
+  const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+  return window.scrollY / maxScroll < NAV_SCROLL_THRESHOLD;
+};
 
 export function TopNav() {
   const { pathname } = useLocation();
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(isNearTop);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const update = () => {
-      const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
-      setVisible(window.scrollY / maxScroll < 0.3);
-    };
+    const update = () => setVisible(isNearTop());
     update();
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
@@ -39,7 +41,7 @@ export function TopNav() {
   ] as const;
 
   return (
-    <header className={`fixed inset-x-0 top-0 z-[45] text-white transition-all duration-500 ${visible ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-3 opacity-0"}`}>
+    <header aria-hidden={!visible} inert={!visible} className={`fixed inset-x-0 top-0 z-[45] text-white transition-all duration-500 ${visible ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-3 opacity-0"}`}>
       <div className="absolute inset-0 -z-10 border-b border-white/10 bg-[#182019]/82 shadow-[0_8px_32px_rgba(0,0,0,.24)] backdrop-blur-md" />
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-10">
         <Link to="/" className="flex items-center" onClick={() => setMenuOpen(false)}>
