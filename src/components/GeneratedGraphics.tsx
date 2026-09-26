@@ -6,11 +6,11 @@
  * crisp on any screen, themeable, and honest: the numbers come from props.
  */
 
-const INK = "#1d211d";
-const ACCENT = "#71803d";
-const ACCENT_LIGHT = "#d5ec77";
-const MUTED = "#9aa095";
-const GRID = "#d9dbd2";
+const INK = "#f6eaf1";
+const ACCENT = "#ef8eb4";
+const ACCENT_LIGHT = "#ffc6dc";
+const MUTED = "#b7aab5";
+const GRID = "#473b48";
 
 export type BarDatum = { label: string; value: number; note?: string };
 
@@ -30,7 +30,7 @@ export function RoiBarChart({
 }) {
   const ceiling = max ?? Math.max(...data.map((d) => d.value), 1);
   return (
-    <figure className="rounded-2xl border border-[#1d211d]/10 bg-white p-5 sm:p-6">
+    <figure className="rounded-2xl border border-white/10 bg-[#211924] p-5 text-white sm:p-6">
       {title && <figcaption className="text-sm font-semibold">{title}</figcaption>}
       <div
         role="img"
@@ -42,19 +42,19 @@ export function RoiBarChart({
           return (
             <div key={datum.label}>
               <div className="flex items-baseline justify-between gap-3">
-                <span className="text-xs font-medium text-[#4f5a4d]">{datum.label}</span>
+                <span className="text-xs font-medium text-white/75">{datum.label}</span>
                 <span className="text-xs font-semibold tabular-nums" style={{ color: INK }}>
                   {datum.value}
                   {unit}
                 </span>
               </div>
-              <div className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full" style={{ background: "#eceae2" }}>
+              <div className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full" style={{ background: "#473b48" }}>
                 <div
                   className="h-full rounded-full"
                   style={{ width: `${width}%`, background: datum.value >= 100 ? ACCENT : ACCENT_LIGHT }}
                 />
               </div>
-              {datum.note && <p className="mt-1 text-[11px] leading-4 text-[#87907f]">{datum.note}</p>}
+              {datum.note && <p className="mt-1 text-[11px] leading-4 text-white/55">{datum.note}</p>}
             </div>
           );
         })}
@@ -82,7 +82,7 @@ export function CostDonut({
   let offset = 0;
 
   return (
-    <figure className="rounded-2xl border border-[#1d211d]/10 bg-white p-5 sm:p-6">
+    <figure className="rounded-2xl border border-white/10 bg-[#211924] p-5 text-white sm:p-6">
       {title && <figcaption className="text-sm font-semibold">{title}</figcaption>}
       <div className={`flex flex-col items-center gap-6 sm:flex-row ${title ? "mt-5" : ""}`}>
         <svg
@@ -92,7 +92,7 @@ export function CostDonut({
           aria-label={ariaLabel ?? title ?? "Cost breakdown chart"}
         >
           <g transform="rotate(-90 70 70)">
-            <circle cx="70" cy="70" r={radius} fill="none" stroke="#eceae2" strokeWidth="18" />
+            <circle cx="70" cy="70" r={radius} fill="none" stroke="#473b48" strokeWidth="18" />
             {data.map((datum, index) => {
               const fraction = datum.value / total;
               const dash = fraction * circumference;
@@ -133,8 +133,8 @@ export function CostDonut({
                 className="size-2.5 shrink-0 rounded-full"
                 style={{ background: palette[index % palette.length] }}
               />
-              <span className="flex-1 text-[#4f5a4d]">{datum.label}</span>
-              <span className="font-semibold tabular-nums text-[#1d211d]">
+              <span className="flex-1 text-white/75">{datum.label}</span>
+              <span className="font-semibold tabular-nums text-white">
                 {Math.round((datum.value / total) * 100)}%
               </span>
             </li>
@@ -159,7 +159,7 @@ export function PhaseTimeline({
   const ticks = Math.min(6, Math.max(2, Math.round(totalDays / 7)));
 
   return (
-    <figure className="rounded-2xl border border-[#1d211d]/10 bg-white p-5 sm:p-6">
+    <figure className="rounded-2xl border border-white/10 bg-[#211924] p-5 text-white sm:p-6">
       {title && <figcaption className="text-sm font-semibold">{title}</figcaption>}
       <div role="img" aria-label={ariaLabel ?? title ?? "Project timeline"} className={title ? "mt-5" : ""}>
         <div className="flex gap-3">
@@ -216,9 +216,9 @@ export function SeverityMeter({
   const path = `M 20 76 A ${radius} ${radius} 0 0 1 144 76`;
 
   return (
-    <figure className="rounded-2xl border border-[#1d211d]/10 bg-white p-5 sm:p-6">
+    <figure className="rounded-2xl border border-white/10 bg-[#211924] p-5 text-white sm:p-6">
       <svg viewBox="0 0 164 100" className="w-full" role="img" aria-label={ariaLabel ?? label}>
-        <path d={path} fill="none" stroke="#eceae2" strokeWidth="14" strokeLinecap="round" />
+        <path d={path} fill="none" stroke="#473b48" strokeWidth="14" strokeLinecap="round" />
         <path
           d={path}
           fill="none"
@@ -256,7 +256,7 @@ export function TradeShareChart({
   const total = data.reduce((sum, d) => sum + d.value, 0) || 1;
 
   return (
-    <figure className="rounded-2xl border border-[#1d211d]/10 bg-white p-5 sm:p-6">
+    <figure className="rounded-2xl border border-white/10 bg-[#211924] p-5 text-white sm:p-6">
       {title && <figcaption className="text-sm font-semibold">{title}</figcaption>}
       <div className={title ? "mt-5" : ""}>
         <div
@@ -279,8 +279,8 @@ export function TradeShareChart({
                 className="size-2.5 shrink-0 rounded-full"
                 style={{ background: palette[index % palette.length] }}
               />
-              <span className="flex-1 text-[#4f5a4d]">{datum.label}</span>
-              <span className="font-semibold tabular-nums text-[#1d211d]">{datum.value}</span>
+              <span className="flex-1 text-white/75">{datum.label}</span>
+              <span className="font-semibold tabular-nums text-white">{datum.value}</span>
             </li>
           ))}
         </ul>
@@ -300,14 +300,14 @@ export function DecisionFlow({
   ariaLabel?: string;
 }) {
   return (
-    <figure className="rounded-2xl border border-[#1d211d]/10 bg-white p-5 sm:p-6">
+    <figure className="rounded-2xl border border-white/10 bg-[#211924] p-5 text-white sm:p-6">
       {title && <figcaption className="text-sm font-semibold">{title}</figcaption>}
       <div role="img" aria-label={ariaLabel ?? title ?? "Decision diagram"} className={title ? "mt-5" : ""}>
         <ol className="space-y-4">
           {steps.map((step, index) => (
             <li key={step.question} className="grid gap-3 sm:grid-cols-[1.2fr_1fr_1fr] sm:items-stretch">
               <div className="rounded-xl border border-[#1d211d]/10 bg-[#f7f5f0] p-3">
-                <p className="text-[10px] font-semibold tracking-[.14em] text-[#9aa095] uppercase">
+                <p className="text-[10px] font-semibold tracking-[.14em] text-white/50 uppercase">
                   Step {index + 1}
                 </p>
                 <p className="mt-1 text-xs font-semibold leading-5">{step.question}</p>

@@ -46,10 +46,9 @@ export function BottomNav() {
   const isHidden = HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
   useEffect(() => {
-    const scroller = quickNavRef.current;
+    const scroller = railRef.current;
     if (!scroller || isHidden) return;
 
-    const mobile = window.matchMedia("(max-width: 639px)");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
     let resumeTimer: number | undefined;
@@ -64,7 +63,7 @@ export function BottomNav() {
       lastFrameTime = 0;
     };
     const animate = (time: number) => {
-      if (!mobile.matches || reducedMotion.matches || document.visibilityState !== "visible") {
+      if (reducedMotion.matches || document.visibilityState !== "visible") {
         stop();
         return;
       }
@@ -73,7 +72,7 @@ export function BottomNav() {
         const maxScroll = scroller.scrollWidth - scroller.clientWidth;
         if (maxScroll > 4 && time >= edgePauseUntil) {
           const elapsed = lastFrameTime ? Math.min(time - lastFrameTime, 40) : 0;
-          scroller.scrollLeft = Math.max(0, Math.min(maxScroll, scroller.scrollLeft + direction * elapsed * 0.026));
+          scroller.scrollLeft = Math.max(0, Math.min(maxScroll, scroller.scrollLeft + direction * elapsed * 0.03));
           if (scroller.scrollLeft >= maxScroll - 1) {
             direction = -1;
             edgePauseUntil = time + 900;
@@ -87,7 +86,7 @@ export function BottomNav() {
       frame = window.requestAnimationFrame(animate);
     };
     const start = () => {
-      if (!frame && mobile.matches && !reducedMotion.matches) frame = window.requestAnimationFrame(animate);
+      if (!frame && !reducedMotion.matches) frame = window.requestAnimationFrame(animate);
     };
     const pauseTemporarily = () => {
       pausedByInteraction = true;
@@ -102,9 +101,9 @@ export function BottomNav() {
       window.clearTimeout(resumeTimer);
     };
     const onFocusOut = () => pauseTemporarily();
-    const onMediaChange = () => {
-      if (mobile.matches && !reducedMotion.matches) start();
-      else stop();
+    const onMotionChange = () => {
+      if (reducedMotion.matches) stop();
+      else start();
     };
 
     scroller.addEventListener("pointerdown", pauseTemporarily);
@@ -112,9 +111,8 @@ export function BottomNav() {
     scroller.addEventListener("wheel", pauseTemporarily, { passive: true });
     scroller.addEventListener("focusin", onFocusIn);
     scroller.addEventListener("focusout", onFocusOut);
-    mobile.addEventListener("change", onMediaChange);
-    reducedMotion.addEventListener("change", onMediaChange);
-    document.addEventListener("visibilitychange", onMediaChange);
+    reducedMotion.addEventListener("change", onMotionChange);
+    document.addEventListener("visibilitychange", onMotionChange);
     start();
 
     return () => {
@@ -125,9 +123,8 @@ export function BottomNav() {
       scroller.removeEventListener("wheel", pauseTemporarily);
       scroller.removeEventListener("focusin", onFocusIn);
       scroller.removeEventListener("focusout", onFocusOut);
-      mobile.removeEventListener("change", onMediaChange);
-      reducedMotion.removeEventListener("change", onMediaChange);
-      document.removeEventListener("visibilitychange", onMediaChange);
+      reducedMotion.removeEventListener("change", onMotionChange);
+      document.removeEventListener("visibilitychange", onMotionChange);
     };
   }, [isHidden, pathname]);
 
@@ -142,7 +139,7 @@ export function BottomNav() {
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-50">
-      <div className="border-t border-white/10 bg-[#182019]/95 backdrop-blur-md">
+      <div className="border-t border-white/10 bg-[#211824]/95 backdrop-blur-md">
         <div className="flex items-center gap-1 px-1.5 sm:px-2">
           <button type="button" onClick={() => moveRail(-1)} className="flex size-8 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[.05] text-white/70 transition hover:border-[#d5ec77]/60 hover:text-[#d5ec77]" aria-label="Scroll service and brand pills left">
             <ArrowLeft className="size-4" />
@@ -239,17 +236,15 @@ export function BottomNav() {
             <ArrowRight className="size-4" />
           </button>
         </div>
-      </div>
-
-      <div className="border-t border-black/10 bg-white/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center gap-3 px-3 py-2.5 sm:px-5 lg:px-8">
-          <Link to="/" aria-label="LoveMeAfter home" className="shrink-0 pl-1 pr-2"><Logo tone="black" /></Link>
+      </div>        <div className="border-t border-white/10 bg-[#171119]/95 backdrop-blur-md">
+          <div className="mx-auto flex max-w-7xl items-center gap-3 px-3 py-2.5 sm:px-5 lg:px-8">
+          <Link to="/" aria-label="LoveMeAfter home" className="shrink-0 pl-1 pr-2"><Logo tone="light" /></Link>
           <div ref={quickNavRef} className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <nav aria-label="Quick navigation" className="flex w-max items-center gap-1.5">
               {LINKS.map(({ to, label, icon: Icon }) => {
                 const active = pathname === to || pathname.startsWith(`${to}/`);
                 return (
-                  <Link key={to} to={to} aria-current={active ? "page" : undefined} className={`flex items-center gap-1.5 rounded-full border px-3 py-2 text-xs font-semibold whitespace-nowrap transition ${active ? "border-black bg-black text-white" : "border-black/12 bg-white text-[#3f463d] hover:border-black/40 hover:text-black"}`}>
+                  <Link key={to} to={to} aria-current={active ? "page" : undefined} className={`flex items-center gap-1.5 rounded-full border px-3 py-2 text-xs font-semibold whitespace-nowrap transition ${active ? "border-[#ef8eb4] bg-[#ef8eb4] text-[#24131d]" : "border-white/15 bg-white/[.06] text-white/75 hover:border-[#ef8eb4]/70 hover:text-[#ffd8e7]"}`}>
                     <Icon className="size-3.5" />{label}
                   </Link>
                 );
@@ -257,8 +252,8 @@ export function BottomNav() {
             </nav>
           </div>
           <div className="hidden shrink-0 items-center gap-2 sm:flex">
-            <a href={PHONE_HREF} className="flex items-center gap-2 rounded-full border border-black/15 px-3 py-2 text-xs font-semibold text-black hover:bg-black/5"><Phone className="size-3.5" /> {PHONE_DISPLAY}</a>
-            <Link to="/#estimate-form" className="flex items-center gap-1.5 rounded-full bg-black px-4 py-2 text-xs font-semibold text-white hover:bg-[#2a2f28]">Free estimate <ArrowUpRight className="size-3.5" /></Link>
+            <a href={PHONE_HREF} className="flex items-center gap-2 rounded-full border border-white/20 px-3 py-2 text-xs font-semibold text-white/90 hover:bg-white/10"><Phone className="size-3.5" /> {PHONE_DISPLAY}</a>
+            <Link to="/#estimate-form" className="flex items-center gap-1.5 rounded-full bg-[#ef8eb4] px-4 py-2 text-xs font-semibold text-[#24131d] hover:bg-[#f6b0ca]">Free estimate <ArrowUpRight className="size-3.5" /></Link>
           </div>
         </div>
       </div>

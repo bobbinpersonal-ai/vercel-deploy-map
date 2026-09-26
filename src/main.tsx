@@ -197,7 +197,7 @@ createRoot(document.getElementById("root")!).render(
     <RootErrorBoundary>
       <BrowserRouter>
         <RouteSyncer />
-        <div className="pb-[110px]">
+        <div className="site-theme pb-[110px]">
         <Suspense fallback={<RouteLoading />}>
           <Routes>
             <Route path="/" element={<Landing />} />
