@@ -31,7 +31,6 @@ import { FinancingShowcase } from "@/components/FinancingShowcase";
 import { LeadershipSchedule, type ConsultationSlot } from "@/components/LeadershipSchedule";
 import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 import { HomeImprovementProcess } from "@/components/HomeImprovementProcess";
-import { ManufacturerShowcase } from "@/components/ManufacturerShowcase";
 import { BrandPillsShowcase } from "@/components/BrandPillsShowcase";
 import { openEstimateRequest } from "@/lib/estimate-request";
 
@@ -65,6 +64,29 @@ const PRODUCT_STRIP: [string, string, number][] = [
   ["Systems", "Breaker panel", 5767595],
   ["Systems", "Attic insulation", 8082327],
   ["Systems", "Solar array", 38021376],
+  ["Kitchen", "Cabinet doors & hardware", 5825540],
+  ["Bath", "Bathroom faucet", 10568026],
+  ["Bath", "Bathroom mirror", 4758745],
+  ["Interior", "Closet shelving", 7587738],
+  ["Exterior", "Gutter & roofline", 2663254],
+  ["Exterior", "Siding trim detail", 9646276],
+  ["Exterior", "Garage door panels", 34930005],
+  ["Property", "Fence gate & posts", 11903184],
+  ["Property", "Stonework detail", 36259359],
+  ["Property", "Paver edging", 9173338],
+  ["Systems", "Ductwork", 19431067],
+  ["Systems", "Lighting fixture", 12689254],
+];
+
+const CONSTRUCTION_GALLERY: [string, string, number][] = [
+  ["Roofing", "Shingle installation", 32050399],
+  ["Electrical", "Panel and wiring work", 33694016],
+  ["Plumbing", "On-site plumbing repair", 32588548],
+  ["Heating & cooling", "HVAC service visit", 32497161],
+  ["Tile", "Tile installation", 11806476],
+  ["Carpentry", "Framing and woodwork", 32357250],
+  ["Site preparation", "Excavation equipment", 37393680],
+  ["Project coordination", "Crew meeting on site", 8070723],
 ];
 
 
@@ -434,6 +456,31 @@ export default function Landing() {
 
       <section className="video-through-section relative z-10 border-b border-[#1d211d]/10 bg-[#eaf0d0]/72 backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-24"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#71803d] uppercase">What we actually install</p><h2 className="mt-4 max-w-2xl text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-5xl">Real products, not a mood board.</h2><p className="mt-5 max-w-2xl text-base leading-7 text-[#596357]">Cabinets, sinks, counters, tile, doors, windows, roofing, siding, paving, fencing, HVAC, and solar. Swipe through the materials and fixtures behind every scope we write.</p></div><Link to="/services" className="inline-flex shrink-0 items-center text-sm font-semibold text-[#71803d]">See every project type <ArrowUpRight className="ml-1 size-4" /></Link></div><div className="-mx-5 mt-10 flex min-w-0 snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-4 [scrollbar-color:#71803d_transparent] sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">{PRODUCT_STRIP.map(([group, label, id]) => <figure key={label} className="group w-[190px] shrink-0 snap-start overflow-hidden rounded-2xl border border-[#1d211d]/10 bg-white sm:w-[210px]"><div className="h-40 bg-cover bg-center transition duration-700 group-hover:scale-[1.05]" style={{ backgroundImage: `url(${px(id, 700)})` }} /><figcaption className="p-4"><p className="text-[10px] font-semibold tracking-[.12em] text-[#9aa095] uppercase">{group}</p><p className="mt-1 text-sm font-semibold">{label}</p></figcaption></figure>)}</div><p className="mt-4 text-xs leading-5 text-[#71803d]">Swipe or scroll for more project materials.</p></div></section>
 
+      <section className="video-through-section relative z-10 border-b border-white/10 bg-[#182019] text-white">
+        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-10 lg:py-20">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase">Work in the field</p>
+              <h2 className="mt-4 max-w-2xl text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-5xl">A closer look at the crafts behind a project.</h2>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-white/70">From careful installation to site preparation, see examples of the work and trades that can go into a home improvement.</p>
+            </div>
+            <Link to="/trades" className="inline-flex shrink-0 items-center text-sm font-semibold text-[#d5ec77]">Explore our trade network <ArrowUpRight className="ml-1 size-4" /></Link>
+          </div>
+          <div className="mt-9 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {CONSTRUCTION_GALLERY.map(([trade, label, id], index) => (
+              <figure key={label} className={`group relative overflow-hidden rounded-2xl bg-[#101510] ${index === 0 || index === 5 ? "row-span-2 min-h-[240px] sm:min-h-[320px]" : "min-h-[150px] sm:min-h-[155px]"}`}>
+                <img src={px(id, 900)} alt={`${label} reference photo`} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0f1610]/85 via-[#0f1610]/10 to-transparent" />
+                <figcaption className="absolute inset-x-0 bottom-0 p-4">
+                  <span className="text-[9px] font-bold tracking-[.14em] text-[#d5ec77] uppercase">{trade}</span>
+                  <p className="mt-1 text-sm font-semibold text-white">{label}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="mt-4 text-xs leading-5 text-white/55">Illustrative reference photography—not completed LoveMeAfter projects. Our team documents each home and job separately.</p>
+        </div>
+      </section>
 
       <section className="video-through-section relative z-10 border-y border-[#1d211d]/10 bg-[#182019]/88 text-white backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-24"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase">What we actually find</p><h2 className="mt-4 max-w-2xl text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-5xl">Storm damage, rot, mold, and failed work.</h2><p className="mt-5 max-w-2xl text-base leading-7 text-white/70">Half of this business is seeing what other people missed or covered up. Here is the kind of condition our crews document before anyone writes a scope.</p></div><Link to="/conditions" className="inline-flex shrink-0 items-center text-sm font-semibold text-[#d5ec77]">Open the field conditions library <ArrowUpRight className="ml-1 size-4" /></Link></div><div className="mt-10 grid auto-rows-[96px] grid-cols-2 gap-3 sm:auto-rows-[118px] sm:grid-cols-4">{DAMAGE_PHOTOS.slice(0, 10).map(([label, id], index) => <figure key={label} className={`group relative overflow-hidden rounded-2xl bg-[#101510] ${index === 0 || index === 6 ? "col-span-2 row-span-2" : index === 3 ? "col-span-2" : ""}`}><div className="absolute inset-0 bg-cover bg-center transition duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${px(id, 700)})` }} /><div className="absolute inset-0 bg-gradient-to-t from-[#0f1610]/85 via-transparent to-transparent" /><figcaption className="absolute inset-x-0 bottom-0 p-3 text-[11px] font-semibold text-white">{label}</figcaption></figure>)}</div><div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start"><p className="text-xs leading-5 text-white/55">Field condition examples help explain what an inspection may uncover. Your home gets its own photos and written scope.</p><aside className="rounded-2xl border border-white/10 bg-[#211824] p-5 text-white sm:p-6"><p className="text-xs font-semibold tracking-[.14em] text-[#ef8eb4] uppercase">What return can mean</p><ul className="mt-4 space-y-3 text-sm leading-6 text-white/75"><li><strong className="text-white">Prevent escalation:</strong> address documented water entry before it spreads.</li><li><strong className="text-white">Improve daily life:</strong> make rooms safer, more comfortable, or easier to maintain.</li><li><strong className="text-white">Support resale:</strong> use local scope and sourced benchmarks—not a guaranteed percentage.</li></ul></aside></div></div></section>
 
