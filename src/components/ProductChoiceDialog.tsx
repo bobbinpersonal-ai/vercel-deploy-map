@@ -10,6 +10,7 @@ import {
 import { px } from "@/data/photos";
 import { PRODUCT_FAMILIES } from "@/data/product-options";
 import type { ProductOption } from "@/data/product-options";
+import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 
 export type MaterialSelection = {
   group: string;
@@ -48,7 +49,7 @@ function familyForMaterial(group: string, label: string) {
 function ProductImage({ product }: { product: ProductOption }) {
   const [failed, setFailed] = useState(false);
   if (!product.imageUrl || failed) {
-    return <div className="flex h-44 items-center justify-center bg-[radial-gradient(ellipse_at_50%_45%,rgba(239,142,180,.2),transparent_65%),linear-gradient(140deg,#352a38,#211824)] text-center text-sm font-semibold text-white/75 sm:h-52">{product.brand}<br />{product.line}</div>;
+    return <div className="flex h-44 flex-col items-center justify-center bg-[radial-gradient(ellipse_at_50%_45%,rgba(239,142,180,.2),transparent_65%),linear-gradient(140deg,#352a38,#211824)] px-5 text-center sm:h-52"><OfficialBrandLogo brand={product.brand} domain={product.domain} className="size-12 rounded-lg bg-white p-2" /><p className="mt-3 text-sm font-semibold text-white">{product.brand}</p><p className="mt-1 text-xs leading-5 text-white/70">{product.line}</p><p className="mt-2 text-[10px] text-white/50">Open the manufacturer page below for current product imagery.</p></div>;
   }
   return <img src={product.imageUrl} alt={product.imageAlt ?? `${product.brand} ${product.line} manufacturer product`} loading="lazy" referrerPolicy="no-referrer" onError={() => setFailed(true)} className="h-44 w-full rounded-xl object-cover sm:h-52" />;
 }
@@ -63,6 +64,7 @@ export function ProductChoiceDialog({
   const familyKey = selection?.familySlug ?? (selection ? familyForMaterial(selection.group, selection.label) : "general");
   const family = PRODUCT_FAMILIES[familyKey] ?? PRODUCT_FAMILIES.general;
   const imageUrl = selection?.imageUrl ?? (selection?.imageId ? px(selection.imageId, 1100) : undefined);
+  const useProductImage = Boolean(selection?.imageUrl || selection?.imageId);
   const products = family.options;
 
   return (
@@ -71,15 +73,15 @@ export function ProductChoiceDialog({
         {selection && (
           <div>
             <div className="grid border-b border-white/10 bg-[#2a202c] sm:grid-cols-[.9fr_1.1fr]">
-              {imageUrl ? <img src={imageUrl} alt={`${selection.label} manufacturer product`} className="h-56 w-full object-cover sm:h-full sm:min-h-72" loading="lazy" referrerPolicy="no-referrer" /> : <div className="flex min-h-56 items-center justify-center bg-[linear-gradient(145deg,#463343,#211824)] text-center font-semibold text-white/70">{selection.label}</div>}
+              {imageUrl ? <img src={imageUrl} alt={`${selection.label} product reference`} className="h-56 w-full object-cover sm:h-full sm:min-h-72" loading="lazy" referrerPolicy="no-referrer" /> : <div className="flex min-h-56 items-center justify-center bg-[linear-gradient(145deg,#463343,#211824)] text-center font-semibold text-white/70">{selection.label}</div>}
               <div className="p-6 pr-14 sm:p-8 sm:pr-16">
-                <p className="text-[10px] font-bold tracking-[.16em] text-[#ffc6dc] uppercase">{selection.group} · real product references</p>
+                <p className="text-[10px] font-bold tracking-[.16em] text-[#ffc6dc] uppercase">{selection.group} · {useProductImage ? "product reference" : "manufacturer choices"}</p>
                 <DialogHeader className="mt-3 text-left">
                   <DialogTitle className="text-3xl font-semibold tracking-[-.045em] text-white sm:text-4xl">{selection.label}</DialogTitle>
                   <DialogDescription className="mt-3 text-sm leading-6 text-white/70">{family.intro}</DialogDescription>
                 </DialogHeader>
                 {selection.officialUrl && <a href={selection.officialUrl} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-xs font-semibold text-[#ffc6dc] transition hover:border-[#ef8eb4] hover:bg-white/5">Open manufacturer product page <ExternalLink className="size-3.5" /></a>}
-                <p className="mt-4 text-xs leading-5 text-white/50">Product photography and brand names identify manufacturer examples. Confirm current product configuration, code fit, market availability, pricing, installation instructions, and warranty documents before ordering.</p>
+                <p className="mt-4 text-xs leading-5 text-white/60">Examples and product categories identify manufacturer choices. Confirm the exact model/configuration, code fit, market availability, pricing, installation instructions, and warranty documents before ordering.</p>
               </div>
             </div>
 
@@ -89,8 +91,8 @@ export function ProductChoiceDialog({
                 <div className="mt-5 grid gap-4 md:grid-cols-2">
                   {products.map((product) => (
                     <article key={`${product.brand}-${product.line}`} className="overflow-hidden rounded-2xl border border-white/10 bg-white/[.04]">
-                      <div className="relative p-3"><ProductImage product={product} /><span className="absolute left-5 top-5 rounded-full border border-white/20 bg-[#211824]/80 px-2.5 py-1 text-[9px] font-bold tracking-[.1em] text-white/80 uppercase backdrop-blur">{product.brand}</span></div>
-                      <div className="px-5 pb-5"><h4 className="text-lg font-semibold">{product.line}</h4><p className="mt-2 text-sm leading-6 text-white/70">{product.why}</p>
+                      <div className="relative p-3"><ProductImage product={product} /></div>
+                      <div className="px-5 pb-5"><div className="flex items-center gap-2"><OfficialBrandLogo brand={product.brand} domain={product.domain} className="size-6" /><span className="text-xs font-semibold text-[#ffc6dc]">{product.brand}</span></div><h4 className="mt-2 text-lg font-semibold">{product.line}</h4><p className="mt-2 text-sm leading-6 text-white/70">{product.why}</p>
                         {product.highlights?.length ? <div className="mt-4"><p className="text-[10px] font-semibold tracking-[.12em] text-[#ffc6dc] uppercase">System components &amp; sub-products</p><div className="mt-2 flex flex-wrap gap-1.5">{product.highlights.map((item) => <span key={item} className="rounded-full border border-white/10 bg-white/[.04] px-2.5 py-1 text-[10px] leading-4 text-white/70">{item}</span>)}</div></div> : null}
                         <div className="mt-4 flex gap-2 border-t border-white/10 pt-3"><ShieldCheck className="mt-0.5 size-4 shrink-0 text-[#ffc6dc]" /><p className="text-xs leading-5 text-white/60"><span className="font-semibold text-white/80">Warranty to verify: </span>{product.warranty}</p></div>
                         <a href={product.productUrl ?? product.officialUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center text-xs font-semibold text-[#ffc6dc] hover:text-white">Manufacturer page &amp; current specs <ArrowUpRight className="ml-1 size-3.5" /></a>

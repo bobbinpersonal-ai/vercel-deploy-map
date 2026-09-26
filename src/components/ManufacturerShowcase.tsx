@@ -10,6 +10,32 @@ import {
 import { getProductFamily, PRODUCT_FAMILIES, type ProductOption } from "../data/product-options";
 import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 
+const VERIFIED_PRODUCT_REFERENCES: Record<string, string> = {
+  "Carrier|Infinity 24 variable-speed heat pump · 25VNA4": "https://images.carriercms.com/image/upload/v1683828998/carrier/residential-hvac/products/heat-pumps/infinity-24-heat-pump-with-greenspeed-intelligence-25VNA4.png",
+};
+
+function productImageUrl(product: ProductOption) {
+  return product.imageUrl ?? VERIFIED_PRODUCT_REFERENCES[`${product.brand}|${product.line}`];
+}
+
+function ProductImage({ product, className = "" }: { product: ProductOption; className?: string }) {
+  const [failed, setFailed] = useState(false);
+  const imageUrl = productImageUrl(product);
+  if (!imageUrl || failed) {
+    return (
+      <div className={`flex items-center justify-center bg-[radial-gradient(ellipse_at_50%_45%,rgba(213,236,119,.15),transparent_65%),linear-gradient(140deg,#29342b,#182019)] ${className}`} aria-label={`${product.brand} ${product.line} product reference`}>
+        <div className="max-w-xs px-5 text-center">
+          <OfficialBrandLogo brand={product.brand} domain={product.domain} className="mx-auto size-12 rounded-lg bg-white p-2" />
+          <p className="mt-3 text-sm font-semibold text-white/90">{product.brand}</p>
+          <p className="mt-1 text-xs leading-5 text-white/70">{product.line}</p>
+          <p className="mt-3 text-[10px] leading-4 text-white/45">See current model photography on the linked manufacturer page.</p>
+        </div>
+      </div>
+    );
+  }
+  return <img src={imageUrl} alt={product.imageAlt ?? `${product.brand} ${product.line} product`} loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setFailed(true)} className={`w-full object-cover ${className}`} />;
+}
+
 type ManufacturerLogoProps = {
   brand: string;
   domain: string;
@@ -29,21 +55,6 @@ type ManufacturerShowcaseProps = {
   compact?: boolean;
 };
 
-function ProductImage({ product, className = "" }: { product: ProductOption; className?: string }) {
-  const [failed, setFailed] = useState(false);
-  if (!product.imageUrl || failed) {
-    return (
-      <div className={`flex items-center justify-center bg-[radial-gradient(ellipse_at_50%_45%,rgba(213,236,119,.15),transparent_65%),linear-gradient(140deg,#29342b,#182019)] ${className}`} aria-label={`${product.brand} ${product.line} product reference`}>
-        <div className="max-w-xs px-5 text-center">
-          <span className="mx-auto flex size-14 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-sm font-bold tracking-wider text-[#d5ec77]">{product.brand.split(/\\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase()}</span>
-          <p className="mt-3 text-sm font-semibold text-white/85">{product.brand}</p>
-          <p className="mt-1 text-xs leading-5 text-white/55">{product.line}</p>
-        </div>
-      </div>
-    );
-  }
-  return <img src={product.imageUrl} alt={product.imageAlt ?? `${product.brand} ${product.line} product`} loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setFailed(true)} className={`w-full object-cover ${className}`} />;
-}
 
 function ProductDetailsDialog({ product, onClose }: { product: ProductOption | null; onClose: () => void }) {
   return (
@@ -56,7 +67,7 @@ function ProductDetailsDialog({ product, onClose }: { product: ProductOption | n
               <div className="px-6 py-6 pr-14 sm:px-8 sm:py-8">
               <p className="text-[10px] font-bold tracking-[.16em] text-[#d5ec77] uppercase">Manufacturer product overview</p>
               <DialogHeader className="mt-2 text-left">
-                <DialogTitle className="text-3xl font-semibold tracking-[-.045em] text-white">{product.brand}</DialogTitle>
+                <DialogTitle className="flex items-center gap-3 text-3xl font-semibold tracking-[-.045em] text-white"><OfficialBrandLogo brand={product.brand} domain={product.domain} className="size-9 rounded-md bg-white p-1" />{product.brand}</DialogTitle>
                 <DialogDescription className="mt-1 text-base font-medium text-white/70">{product.line}</DialogDescription>
               </DialogHeader>
               <a href={product.productUrl ?? product.officialUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-[#d5ec77] underline-offset-4 hover:underline">View manufacturer catalog <ExternalLink className="size-3.5" /></a>
@@ -139,7 +150,7 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
                   aria-label={`View ${product.brand} ${product.line} product details`}
                   className="group flex items-center gap-2 rounded-full border border-white/10 bg-[#211924] py-1.5 pl-2 pr-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-[#ef8eb4] hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef8eb4]"
                 >
-                  {product.imageUrl ? <img src={product.imageUrl} alt="" loading="lazy" className="size-10 rounded-full border border-white/15 bg-white object-cover" /> : <span className="flex size-10 items-center justify-center rounded-full bg-white/[.06]"><OfficialBrandLogo brand={product.brand} domain={product.domain} className="size-7" /></span>}
+                  {productImageUrl(product) ? <img src={productImageUrl(product)} alt="" loading="lazy" className="size-10 rounded-full border border-white/15 bg-white object-cover" /> : <span className="flex size-10 items-center justify-center rounded-full bg-white/[.06]"><OfficialBrandLogo brand={product.brand} domain={product.domain} className="size-7" /></span>}
                   <span className="text-xs font-semibold text-white/90">{product.brand}<span className="ml-1 font-normal text-white/50">· {product.line}</span></span>
                 </button>
               ))}
@@ -180,8 +191,8 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
             {family.options.map((product) => (
               <article key={`${product.brand}-${product.line}`} className="group overflow-hidden rounded-3xl border border-[#1d211d]/10 bg-[#1c171e] text-white shadow-[0_18px_50px_-35px_rgba(0,0,0,.75)] transition hover:-translate-y-1 hover:border-[#ef8eb4]/40">
                 <button type="button" onClick={() => setSelectedProduct(product)} aria-label={`Open detailed ${product.brand} ${product.line} overview`} className="block w-full text-left focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[#d5ec77]">
-                  <div className="relative h-52 overflow-hidden bg-[#29342b] sm:h-60"><ProductImage product={product} className="h-full transition duration-700 group-hover:scale-[1.035]" />{product.imageUrl && <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-[#111714]/80 px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[#d5ec77] backdrop-blur">Manufacturer image</span>}<span className="absolute bottom-4 right-4 flex size-10 items-center justify-center rounded-full border border-white/20 bg-[#111714]/75 text-white backdrop-blur transition group-hover:bg-[#d5ec77] group-hover:text-[#1d211d]"><ArrowUpRight className="size-4" /></span></div>
-                  <div className="p-5 sm:p-6"><div className="flex items-center justify-between gap-3"><ManufacturerLogo brand={product.brand} domain={product.domain} /><span className="text-[10px] font-semibold uppercase tracking-[.12em] text-white/45">{product.highlights?.length ?? 0} suite details</span></div><h3 className="mt-5 text-xl font-semibold leading-tight text-white">{product.line}</h3><p className="mt-3 line-clamp-3 text-sm leading-6 text-white/70">{product.why}</p><span className="mt-5 inline-flex items-center text-xs font-semibold text-[#f3a4c2]">Explore product &amp; system details <ArrowUpRight className="ml-2 size-4" /></span></div>
+                  <div className="relative h-52 overflow-hidden bg-[#29342b] sm:h-60"><ProductImage product={product} className="h-full transition duration-700 group-hover:scale-[1.035]" />{productImageUrl(product) && <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-[#111714]/80 px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[#d5ec77] backdrop-blur">Manufacturer product image</span>}<span className="absolute bottom-4 right-4 flex size-10 items-center justify-center rounded-full border border-white/20 bg-[#111714]/75 text-white backdrop-blur transition group-hover:bg-[#d5ec77] group-hover:text-[#1d211d]"><ArrowUpRight className="size-4" /></span></div>
+                  <div className="p-5 sm:p-6"><div className="flex items-center justify-between gap-3"><ManufacturerLogo brand={product.brand} domain={product.domain} /><span className="text-[10px] font-semibold uppercase tracking-[.12em] text-white/45">{product.highlights?.length ?? 0} system details</span></div><h3 className="mt-3 text-xl font-semibold leading-tight text-white">{product.line}</h3><p className="mt-3 line-clamp-3 text-sm leading-6 text-white/70">{product.why}</p><span className="mt-5 inline-flex items-center text-xs font-semibold text-[#f3a4c2]">Explore product &amp; system details <ArrowUpRight className="ml-2 size-4" /></span></div>
                 </button>
                 <div className="flex border-t border-white/10 px-5 py-3 sm:px-6"><a href={product.productUrl ?? product.officialUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-xs font-semibold text-white/70 transition hover:text-[#d5ec77]">Official product information <ExternalLink className="size-3.5" /></a></div>
               </article>
@@ -192,7 +203,7 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
             <p className="font-semibold text-white">Warranty clarity matters.</p>
             <p className="mt-1 text-white/70">A manufacturer's limited warranty is not automatically a promise that every installation, labor item, finish, or failure is covered. Keep the chosen product, complete scope, product documentation, registration steps, maintenance requirements, exclusions, and service contact together in your home records.</p>
           </div>
-          <p className="mt-4 text-[10px] leading-4 text-white/45">Manufacturer-owned images and links are presented for product identification and homeowner research. Brands and product examples are illustrative; exact products, scope, pricing, availability, code approvals, and warranty terms are confirmed for the address before an order.</p>
+          <p className="mt-4 text-[10px] leading-4 text-white/55">Cards marked “Manufacturer product image” use product photography hosted by the manufacturer. Where an embeddable manufacturer image was not available, the card shows the official brand and exact product line instead of substituting generic or stock photography; open the manufacturer product page for its current images, specifications, and documents.</p>
         </div>
       </section>
       <ProductDetailsDialog product={selectedProduct} onClose={() => setSelectedProduct(null)} />
