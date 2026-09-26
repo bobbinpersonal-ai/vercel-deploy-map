@@ -5,6 +5,7 @@ import { BRAND_PILLS } from "@/data/brand-pills";
 import { AlertTriangle, ArrowLeft, ArrowRight, ArrowUpRight, HardHat, House, MapPin, Phone, Wallet, Wrench } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const PHONE_DISPLAY = "424 426 0760";
 const PHONE_HREF = "tel:+14244260760";
@@ -35,6 +36,7 @@ const PROJECT_RAIL = PROJECT_INDEX.map((project) => ({
 }));
 
 const HIDDEN_PREFIXES = ["/admin", "/auth", "/login", "/dashboard"];
+type BrandPillEntry = (typeof BRAND_PILLS)[number];
 
 export function BottomNav() {
   const { pathname } = useLocation();
@@ -43,6 +45,7 @@ export function BottomNav() {
   const pointerDrag = useRef<{ startX: number; startScrollLeft: number; moved: boolean } | null>(null);
   const suppressClick = useRef(false);
   const [dragging, setDragging] = useState(false);
+  const [selectedBrand, setSelectedBrand] = useState<{ brand: BrandPillEntry; projectLabel: string } | null>(null);
   const isHidden = HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
   useEffect(() => {
@@ -238,10 +241,7 @@ export function BottomNav() {
               if (event.pointerType === "mouse" && event.button !== 0) return;
               suppressClick.current = false;
               pointerDrag.current = { startX: event.clientX, startScrollLeft: event.currentTarget.scrollLeft, moved: false };
-              if (event.pointerType === "mouse") {
-                event.currentTarget.setPointerCapture(event.pointerId);
-                setDragging(true);
-              }
+              if (event.pointerType === "mouse") setDragging(true);
             }}
             onPointerMove={(event) => {
               const drag = pointerDrag.current;
@@ -259,6 +259,11 @@ export function BottomNav() {
               setDragging(false);
             }}
             onPointerCancel={() => { pointerDrag.current = null; setDragging(false); }}
+            onPointerLeave={() => {
+              if (pointerDrag.current?.moved) suppressClick.current = true;
+              pointerDrag.current = null;
+              setDragging(false);
+            }}
             onClickCapture={(event) => {
               if (suppressClick.current) {
                 suppressClick.current = false;
@@ -286,15 +291,16 @@ export function BottomNav() {
                     {project.label}
                   </Link>
                   {brands.map((brand) => (
-                    <Link
+                    <button
                       key={`${brand.domain}-${brand.brand}`}
-                      to={`/services/${project.slug}`}
-                      aria-label={`${brand.brand}, manufacturer for ${project.label}`}
-                      className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#d5ec77]/40 bg-[#d5ec77]/10 px-2.5 py-1.5 text-[10px] font-semibold whitespace-nowrap text-[#e6f4ae] transition hover:border-[#d5ec77] hover:bg-[#d5ec77]/20"
+                      type="button"
+                      aria-label={`View ${brand.brand} details for ${project.label}`}
+                      onClick={() => setSelectedBrand({ brand, projectLabel: project.label })}
+                      className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#d5ec77]/40 bg-[#d5ec77]/10 px-2.5 py-1.5 text-[10px] font-semibold whitespace-nowrap text-[#e6f4ae] transition hover:border-[#d5ec77] hover:bg-[#d5ec77]/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d5ec77]"
                     >
                       <OfficialBrandLogo brand={brand.brand} domain={brand.domain} className="size-4 rounded-full bg-white" />
                       {brand.brand}
-                    </Link>
+                    </button>
                   ))}
                   {project.slug === "lighting" && (
                     <Link to="/services/lighting" className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#e9b66a]/45 bg-[#e9b66a]/10 px-3 py-1.5 text-[10px] font-semibold whitespace-nowrap text-[#ffdfb0] transition hover:border-[#e9b66a] hover:bg-[#e9b66a]/20">
@@ -343,6 +349,37 @@ export function BottomNav() {
           </div>
         </div>
       </div>
+      <Dialog open={Boolean(selectedBrand)} onOpenChange={(open) => { if (!open) setSelectedBrand(null); }}>
+        <DialogContent className="max-h-[85vh] overflow-y-auto rounded-3xl border-white/15 bg-[#211824] p-0 text-white shadow-[0_30px_100px_rgba(0,0,0,.55)] sm:max-w-md [&>button]:right-5 [&>button]:top-5 [&>button]:text-white/65 [&>button:hover]:text-white">
+          {selectedBrand && (
+            <div>
+              <div className="border-b border-white/10 bg-white/[.035] px-6 py-6 pr-14">
+                <div className="flex items-center gap-4">
+                  <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white p-2">
+                    <OfficialBrandLogo brand={selectedBrand.brand.brand} domain={selectedBrand.brand.domain} alt={`${selectedBrand.brand.brand} logo`} className="size-10" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold tracking-[.16em] text-[#ffc6dc] uppercase">Manufacturer · {selectedBrand.projectLabel}</p>
+                    <DialogTitle className="mt-1 text-2xl font-semibold tracking-[-.04em] text-white">{selectedBrand.brand.brand}</DialogTitle>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-5 px-6 py-6">
+                <DialogHeader className="text-left">
+                  <DialogDescription className="text-sm leading-6 text-white/75">{selectedBrand.brand.note}. Product availability and specifications vary by project and location.</DialogDescription>
+                </DialogHeader>
+                <div className="rounded-2xl border border-[#ef8eb4]/20 bg-[#ef8eb4]/[.08] p-4">
+                  <p className="text-xs font-semibold text-[#ffc6dc]">What this means for your project</p>
+                  <p className="mt-2 text-sm leading-6 text-white/75">We can review this manufacturer’s options alongside the written scope, installation requirements, warranty details, and other products that may suit your home.</p>
+                </div>
+                <Link to={`/services/${selectedBrand.brand.slug}`} onClick={() => setSelectedBrand(null)} className="inline-flex items-center rounded-full bg-[#ef8eb4] px-4 py-2.5 text-xs font-semibold text-[#24131d] transition hover:bg-[#f6b0ca]">
+                  Explore {selectedBrand.projectLabel} <ArrowUpRight className="ml-1 size-3.5" />
+                </Link>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
