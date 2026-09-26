@@ -272,7 +272,7 @@ export default function Landing() {
         </div>
       )}
 
-      <section id="top" className="relative isolate min-h-[730px] bg-transparent text-white">
+      <section id="top" className="landing-hero relative isolate min-h-[730px] bg-transparent text-white">
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(20,12,22,.92)_0%,rgba(20,12,22,.67)_44%,rgba(20,12,22,.22)_100%),linear-gradient(0deg,rgba(20,12,22,.24),transparent_45%),url('https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=2400&q=90')] bg-cover bg-[center_58%]" />
         <div className="fixed inset-0 z-0 overflow-hidden bg-[#182019] pointer-events-none">
           <div

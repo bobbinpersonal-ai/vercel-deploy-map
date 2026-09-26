@@ -16,7 +16,7 @@ const isChunkLoadError = (error: unknown) =>
     error instanceof Error ? error.message : String(error),
   );
 
-function lazyRoute<T extends React.ComponentType<any>>(
+function lazyRoute<T extends React.ComponentType>(
   load: () => Promise<{ default: T }>,
 ) {
   return lazy(() =>

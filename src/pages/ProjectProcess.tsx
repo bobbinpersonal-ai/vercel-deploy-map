@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, CircleDollarSign, Phone, ShieldCheck } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 import { clip, usePageMeta } from "@/components/PageMeta";
-import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { getGuide, relatedGuides } from "@/data/project-guides";
 import { CATEGORY_PHOTOS, px } from "@/data/photos";

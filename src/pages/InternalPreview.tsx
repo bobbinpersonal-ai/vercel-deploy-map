@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, BadgeDollarSign, BookOpen, Check, ClipboardCheck, HardHat, Home, Phone, ShieldCheck, Target, Trophy, Users, Wrench } from "lucide-react";
+import { ArrowLeft, BadgeDollarSign, BookOpen, ClipboardCheck, HardHat, Home, Phone, ShieldCheck, Target, Trophy, Users, Wrench } from "lucide-react";
 import { Link } from "react-router";
 
 type Section = "overview" | "sales" | "appointments" | "installers" | "sops";

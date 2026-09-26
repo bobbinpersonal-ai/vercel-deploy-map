@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { createFirestoreRecord } from "@/lib/firestore-data";
-import { ArrowLeft, ArrowRight, ArrowUpRight, BadgeCheck, CalendarDays, Check, CheckCircle2, ClipboardCheck, HardHat, Loader2, MapPin, Phone, ShieldCheck, Sparkles, Users, Wrench } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Check, CheckCircle2, ClipboardCheck, HardHat, Loader2, MapPin, Phone, ShieldCheck, Sparkles, Users, Wrench } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";

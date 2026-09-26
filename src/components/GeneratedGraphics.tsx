@@ -79,7 +79,14 @@ export function CostDonut({
   const total = data.reduce((sum, d) => sum + d.value, 0) || 1;
   const radius = 54;
   const circumference = 2 * Math.PI * radius;
-  let offset = 0;
+  const slices = data.reduce<{ datum: BarDatum; index: number; dash: number; offset: number; nextOffset: number }[]>(
+    (result, datum, index) => {
+      const dash = (datum.value / total) * circumference;
+      const offset = result[index - 1]?.nextOffset ?? 0;
+      return [...result, { datum, index, dash, offset, nextOffset: offset + dash }];
+    },
+    [],
+  );
 
   return (
     <figure className="rounded-2xl border border-white/10 bg-[#211924] p-5 text-white sm:p-6">
@@ -93,25 +100,19 @@ export function CostDonut({
         >
           <g transform="rotate(-90 70 70)">
             <circle cx="70" cy="70" r={radius} fill="none" stroke="#473b48" strokeWidth="18" />
-            {data.map((datum, index) => {
-              const fraction = datum.value / total;
-              const dash = fraction * circumference;
-              const element = (
-                <circle
-                  key={datum.label}
-                  cx="70"
-                  cy="70"
-                  r={radius}
-                  fill="none"
-                  stroke={palette[index % palette.length]}
-                  strokeWidth="18"
-                  strokeDasharray={`${dash} ${circumference - dash}`}
-                  strokeDashoffset={-offset}
-                />
-              );
-              offset += dash;
-              return element;
-            })}
+            {slices.map(({ datum, index, dash, offset }) => (
+              <circle
+                key={datum.label}
+                cx="70"
+                cy="70"
+                r={radius}
+                fill="none"
+                stroke={palette[index % palette.length]}
+                strokeWidth="18"
+                strokeDasharray={`${dash} ${circumference - dash}`}
+                strokeDashoffset={-offset}
+              />
+            ))}
           </g>
           {centerLabel && (
             <text

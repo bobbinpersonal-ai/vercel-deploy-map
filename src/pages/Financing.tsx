@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowUpRight, Check, Clock3, Phone, ShieldCheck } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 import { usePageMeta } from "@/components/PageMeta";
-import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { FINANCING_LENDERS } from "@/data/financing-lenders";
 

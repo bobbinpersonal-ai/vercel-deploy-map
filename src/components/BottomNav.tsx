@@ -3,7 +3,6 @@ import { PROJECT_INDEX } from "@/data/project-index";
 import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 import { BRAND_PILLS } from "@/data/brand-pills";
 import { getProductFamily } from "@/data/product-options";
-import { PRODUCT_FAMILIES } from "@/data/product-options";
 import { BrandProductExample } from "@/components/BrandProductExample";
 import { AlertTriangle, ArrowLeft, ArrowRight, ArrowUpRight, HardHat, House, MapPin, Phone, Wallet, Wrench } from "lucide-react";
 import { useEffect, useRef, useState } from "react";

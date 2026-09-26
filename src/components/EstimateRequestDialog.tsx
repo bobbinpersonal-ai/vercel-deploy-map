@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle2, LoaderCircle, MapPin, X } from "lucide-react"
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { db, trackEvent } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
-import { ESTIMATE_REQUEST_EVENT, openEstimateRequest, type RequestedVisit } from "@/lib/estimate-request";
+import { ESTIMATE_REQUEST_EVENT, type RequestedVisit } from "@/lib/estimate-request";
 
 const PROJECTS = [
   "Roofing", "Windows & doors", "Siding & exterior", "Gutters & drainage", "Kitchen", "Bathroom", "HVAC & comfort", "Electrical", "Plumbing", "Deck, patio & fence", "Driveway & concrete", "Painting & finishes", "Insulation & weatherization", "Landscaping & drainage", "Solar & backup power", "Other / not sure",
@@ -23,7 +23,13 @@ function matchProject(service?: string) {
 const TIMING = ["As soon as practical", "Within 30 days", "1–3 months", "Just exploring"];
 
 function escapeHtml(value: string) {
-  return value.replace(/[&<>\"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" })[character] ?? character);
+  const entities: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+  };
+  return value.replace(/[&<>\u0022]/g, (character) => entities[character] ?? character);
 }
 
 export function EstimateRequestDialog() {

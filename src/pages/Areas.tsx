@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowUpRight, Check, MapPin, Phone } from "lucide-react";
 import { openEstimateRequest } from "@/lib/estimate-request";
 import { LogoMark } from "@/components/Logo";
 import { usePageMeta } from "@/components/PageMeta";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import usaMap from "@svg-maps/usa";
 import { MARKETS } from "@/data/markets";

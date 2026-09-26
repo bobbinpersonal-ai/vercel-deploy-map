@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/use-auth";
 import { createFirestoreRecord, updateFirestoreRecord, useFirestoreCollection } from "@/lib/firestore-data";
-import { BarChart3, Loader2, LogOut, Plus, RefreshCw, Users, Wallet, Phone, BriefcaseBusiness } from "lucide-react";
-import { useMemo, useState } from "react";
+import { BarChart3, Loader2, LogOut, Plus, Users, Wallet, Phone, BriefcaseBusiness } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 

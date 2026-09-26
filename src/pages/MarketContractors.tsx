@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowUpRight, BadgeCheck, CalendarCheck, Check, ClipboardCheck, Phone, ShieldCheck } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 import { clip, usePageMeta } from "@/components/PageMeta";
-import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { getMarket } from "@/data/markets";
 import { ExpertTopic } from "@/components/ExpertTopic";

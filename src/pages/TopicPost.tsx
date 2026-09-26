@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowUpRight, BookOpen, Check, Heart, Phone, ShieldCheck, Target } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BookOpen, Check, Heart, Phone } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router";
 import { clip, usePageMeta } from "@/components/PageMeta";
 import { openEstimateRequest } from "@/lib/estimate-request";

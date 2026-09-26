@@ -1,10 +1,8 @@
-import { ArrowLeft, ArrowUpRight, BadgeCheck, BriefcaseBusiness, Heart, HardHat, Handshake, MapPin, Megaphone, Phone, Users, Wrench } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BadgeCheck, Heart, HardHat, Phone } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { usePageMeta } from "@/components/PageMeta";
 import { CareerArtwork } from "@/components/CareerArtwork";
 import { JOB_OPENINGS } from "@/data/job-openings";
-
-const ICONS = { HardHat, Wrench, BadgeCheck, BriefcaseBusiness, Megaphone, Handshake, MapPin, Users };
 
 export default function Careers() {
   const navigate = useNavigate();

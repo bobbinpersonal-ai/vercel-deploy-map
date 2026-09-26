@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowUpRight, Handshake, Phone } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 import { usePageMeta } from "@/components/PageMeta";
-import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { CostDonut, PhaseTimeline, RoiBarChart, TradeShareChart } from "@/components/GeneratedGraphics";
 import { JOBSITE_PHOTOS, PHOTO_CREDIT, WORKER_PHOTOS, px } from "@/data/photos";

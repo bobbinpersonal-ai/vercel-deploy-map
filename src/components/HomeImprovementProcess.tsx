@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
-import { ArrowUpRight, CalendarCheck, Check, ClipboardCheck, Compass, Hammer, Home, Palette, PhoneCall, Sparkles, Users } from "lucide-react";
+import { ArrowUpRight, CalendarCheck, Check, ClipboardCheck, Compass, Hammer, Home, Palette, Sparkles, Users } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { px } from "@/data/photos";
