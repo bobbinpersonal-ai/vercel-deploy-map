@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowUpRight, Check, ChevronRight, Fence, House, Phone, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowUpRight, Check, ChevronRight, Fence, House, Phone, ShieldCheck, Sparkles } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 import { usePageMeta } from "@/components/PageMeta";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 import { ExpertTopic } from "@/components/ExpertTopic";
 import { FinancingShowcase } from "@/components/FinancingShowcase";
-import { ProjectVideo } from "@/components/ProjectVideo";
 import { ManufacturerShowcase } from "@/components/ManufacturerShowcase";
 import { DAMAGE_PHOTOS, px } from "@/data/photos";
 import { ProductChoiceDialog, type MaterialSelection } from "@/components/ProductChoiceDialog";
