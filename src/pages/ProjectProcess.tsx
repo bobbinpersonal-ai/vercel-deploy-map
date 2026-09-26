@@ -205,7 +205,7 @@ export default function ProjectProcess() {
               scope. We photograph it, label it, and put it in the estimate so nothing is a surprise.
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
-              {fieldPhotos.map(([kind, label, id]) => (
+              {fieldPhotos.map(([, label, id]) => (
                 <figure key={label} className="group overflow-hidden rounded-2xl border border-[#1d211d]/10 bg-white">
                   <img
                     src={`https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=700`}
@@ -213,10 +213,6 @@ export default function ProjectProcess() {
                     loading="lazy"
                     className="h-40 w-full object-cover transition duration-700 group-hover:scale-[1.04]"
                   />
-                  <figcaption className="p-3">
-                    <p className="text-[10px] font-semibold tracking-[.14em] text-[#9aa095] uppercase">{kind} · reference image</p>
-                    <p className="mt-1 text-xs font-semibold leading-5">{label}</p>
-                  </figcaption>
                 </figure>
               ))}
             </div>
