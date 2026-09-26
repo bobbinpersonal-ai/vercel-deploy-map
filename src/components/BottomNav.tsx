@@ -2,6 +2,8 @@ import { Logo } from "@/components/Logo";
 import { PROJECT_INDEX } from "@/data/project-index";
 import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 import { BRAND_PILLS } from "@/data/brand-pills";
+import { getProductFamily } from "@/data/product-options";
+import { BrandProductExample } from "@/components/BrandProductExample";
 import { AlertTriangle, ArrowLeft, ArrowRight, ArrowUpRight, HardHat, House, MapPin, Phone, Wallet, Wrench } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
@@ -225,6 +227,13 @@ export function BottomNav() {
   const moveRail = (direction: -1 | 1) => {
     railRef.current?.scrollBy({ left: direction * Math.max(220, railRef.current.clientWidth * 0.72), behavior: "smooth" });
   };
+  const selectedProduct = selectedBrand
+    ? getProductFamily(selectedBrand.brand.slug).options.find((option) => {
+        const selectedName = selectedBrand.brand.brand.toLowerCase();
+        const optionName = option.brand.toLowerCase();
+        return selectedName === optionName || selectedName.includes(optionName) || optionName.includes(selectedName);
+      })
+    : undefined;
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-50">
@@ -276,17 +285,13 @@ export function BottomNav() {
               if (rail && Math.abs(event.deltaY) > Math.abs(event.deltaX)) rail.scrollLeft += event.deltaY;
             }}
           >
-            <div className="flex w-max items-center gap-2 pr-2">
+            <div className="flex w-max items-center gap-2.5 pr-2">
               {PROJECT_RAIL.map(({ project, brands }, projectIndex) => (
                 <div key={project.slug} className="flex shrink-0 items-center gap-2">
                   <Link
                     to={`/services/${project.slug}`}
                     aria-current={activeService === project.slug ? "page" : undefined}
-                    className={`rounded-full border px-3 py-1.5 text-[11px] font-medium whitespace-nowrap transition ${
-                      activeService === project.slug
-                        ? "border-[#d5ec77] bg-[#d5ec77] text-[#1d211d]"
-                        : "border-white/20 bg-white/10 text-white/80 hover:border-[#d5ec77] hover:bg-[#d5ec77] hover:text-[#1d211d]"
-                    }`}
+                    className={`project-rail-pill rounded-full border px-3.5 py-2 text-xs font-semibold whitespace-nowrap transition sm:text-[13px] ${activeService === project.slug ? "is-active" : ""}`}
                   >
                     {project.label}
                   </Link>
@@ -296,9 +301,9 @@ export function BottomNav() {
                       type="button"
                       aria-label={`View ${brand.brand} details for ${project.label}`}
                       onClick={() => setSelectedBrand({ brand, projectLabel: project.label })}
-                      className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#ef8eb4]/45 bg-[#ef8eb4]/10 px-2.5 py-1.5 text-[11px] font-semibold whitespace-nowrap text-[#ffd8e7] transition hover:border-[#ef8eb4] hover:bg-[#ef8eb4]/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef8eb4]"
+                      className="brand-rail-pill flex shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-xs font-semibold whitespace-nowrap transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef8eb4] sm:gap-2.5 sm:px-3.5 sm:py-2.5 sm:text-[13px]"
                     >
-                      <OfficialBrandLogo brand={brand.brand} domain={brand.domain} className="size-4 rounded-full bg-white" />
+                      <OfficialBrandLogo brand={brand.brand} domain={brand.domain} className="size-[23px] rounded-full bg-white sm:size-8" />
                       {brand.brand}
                     </button>
                   ))}
@@ -311,7 +316,7 @@ export function BottomNav() {
                     const lender = RAIL_LENDERS[(projectIndex + 1) / 10 - 1];
                     return (
                       <span key={`lender-${projectIndex}`} className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/20 bg-white/[.06] px-2.5 py-1.5 text-[10px] font-semibold whitespace-nowrap text-white/85" title="Lender approval, rates, promotions, and terms vary by offer.">
-                        <OfficialBrandLogo brand={lender.name} domain={lender.domain} className="size-4 rounded-full bg-white" />
+                        <OfficialBrandLogo brand={lender.name} domain={lender.domain} className="size-[23px] rounded-full bg-white sm:size-8" />
                         <Link to="/financing" aria-label={`${lender.name}: ${lender.detail}`}>{lender.name}</Link>
                         <span className="font-normal text-white/80">· {lender.detail}</span>
                       </span>
@@ -365,16 +370,30 @@ export function BottomNav() {
                 </div>
               </div>
               <div className="space-y-5 px-6 py-6">
+                <BrandProductExample
+                  key={`${selectedBrand.brand.slug}-${selectedBrand.brand.brand}`}
+                  slug={selectedBrand.brand.slug}
+                  label={selectedProduct?.line ?? selectedBrand.brand.note}
+                  brand={selectedBrand.brand.brand}
+                  productLine={selectedProduct?.line}
+                />
                 <DialogHeader className="text-left">
-                  <DialogDescription className="text-sm leading-6 text-white/75">{selectedBrand.brand.note}. Product availability and specifications vary by project and location.</DialogDescription>
+                  <DialogDescription className="text-sm leading-6 text-white/85">{selectedBrand.brand.note}. Product availability and specifications vary by project and location.</DialogDescription>
                 </DialogHeader>
                 <div className="rounded-2xl border border-[#ef8eb4]/20 bg-[#ef8eb4]/[.08] p-4">
                   <p className="text-xs font-semibold text-[#ffc6dc]">What this means for your project</p>
                   <p className="mt-2 text-sm leading-6 text-white/75">We can review this manufacturer’s options alongside the written scope, installation requirements, warranty details, and other products that may suit your home.</p>
                 </div>
-                <Link to={`/services/${selectedBrand.brand.slug}`} onClick={() => setSelectedBrand(null)} className="inline-flex items-center rounded-full bg-[#ef8eb4] px-4 py-2.5 text-xs font-semibold text-[#24131d] transition hover:bg-[#f6b0ca]">
-                  Explore {selectedBrand.projectLabel} <ArrowUpRight className="ml-1 size-3.5" />
-                </Link>
+                <div className="flex flex-wrap items-center gap-3">
+                  <Link to={`/services/${selectedBrand.brand.slug}`} onClick={() => setSelectedBrand(null)} className="inline-flex items-center rounded-full bg-[#ef8eb4] px-4 py-2.5 text-xs font-semibold text-[#24131d] transition hover:bg-[#f6b0ca]">
+                    Explore {selectedBrand.projectLabel} <ArrowUpRight className="ml-1 size-3.5" />
+                  </Link>
+                  {selectedProduct && (
+                    <a href={selectedProduct.officialUrl} target="_blank" rel="noreferrer" className="inline-flex items-center rounded-full border border-white/20 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-white/10">
+                      Official {selectedProduct.brand} details <ArrowUpRight className="ml-1 size-3.5" />
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           )}

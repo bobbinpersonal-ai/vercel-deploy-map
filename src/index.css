@@ -114,6 +114,49 @@
 
 /* Keep the site's reading surfaces dark even where older page components still
    carry light palette utility classes. Pink is reserved for brand accents and CTAs. */
+.site-theme .brand-logo-frame {
+  background: #fff !important;
+  color: #24131d !important;
+  border: 1px solid rgb(36 19 29 / 18%);
+}
+
+.site-theme .brand-logo-frame .brand-logo-fallback {
+  color: #24131d !important;
+}
+
+.site-theme .brand-rail-pill,
+.site-theme .project-rail-pill {
+  color: #fff5fa !important;
+}
+
+.site-theme .brand-rail-pill:hover,
+.site-theme .project-rail-pill:hover,
+.site-theme .project-rail-pill.is-active {
+  color: #24131d !important;
+}
+
+.site-theme .project-rail-pill {
+  background-color: #302733 !important;
+}
+
+.site-theme .project-rail-pill:hover,
+.site-theme .project-rail-pill.is-active {
+  background-color: #ef8eb4 !important;
+}
+
+.site-theme .brand-rail-pill {
+  background-color: #3b2632 !important;
+}
+
+.site-theme .brand-rail-pill:hover {
+  background-color: #583247 !important;
+}
+
+.site-theme .project-rail-pill:hover *,
+.site-theme .project-rail-pill.is-active *,
+.site-theme .brand-rail-pill:hover * {
+  color: #24131d !important;
+}
 .video-through-section {
   background-color: #171219 !important;
   background-image: none !important;
@@ -280,8 +323,6 @@ main > section:not([class*="bg-"]) > div {
 .site-theme [class*="bg-[#e1f895]/"] [class*="text-[#e6f4ae]"] {
   color: #ffd8e7 !important;
 }
-  color: #24131d !important;
-}
 
 .site-theme [class*="text-red-700"] {
   color: #ffb3b3 !important;
@@ -317,6 +358,33 @@ main > section:not([class*="bg-"]) > div {
   accent-color: #ef8eb4;
 }
 
+.project-rail-pill {
+  border-color: rgb(255 255 255 / 24%);
+  background-color: #302733;
+  color: #fff5fa;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 5%) inset;
+}
+
+.project-rail-pill:hover,
+.project-rail-pill.is-active {
+  border-color: #ef8eb4;
+  background-color: #ef8eb4;
+  color: #24131d;
+}
+
+.brand-rail-pill {
+  border-color: rgb(239 142 180 / 55%);
+  background-color: #3b2632;
+  color: #fff5fa;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 8%) inset;
+}
+
+.brand-rail-pill:hover {
+  border-color: #ffc6dc;
+  background-color: #583247;
+  color: #fff;
+}
+
 .project-pill-scroller {
   overscroll-behavior-inline: contain;
   -webkit-overflow-scrolling: touch;
@@ -328,6 +396,15 @@ main > section:not([class*="bg-"]) > div {
 
 @media (prefers-reduced-motion: reduce) {
   .project-pill-scroller { scroll-behavior: auto; }
+}
+
+.site-theme .brand-logo-frame {
+  background-color: #fff !important;
+  color: #24131d !important;
+}
+
+.site-theme .brand-logo-frame .brand-logo-fallback {
+  color: #24131d !important;
 }
 
 .pip-scroll__item {
