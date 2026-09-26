@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
 import { px } from "@/data/photos";
@@ -32,7 +32,6 @@ const VIEWS = {
 export function InteractiveHouseMap() {
   const [view, setView] = useState<"front" | "back">("front");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const selected = useMemo(() => ZONES.find((zone) => zone.id === selectedId) ?? null, [selectedId]);
   const chooseZone = (zone: Zone) => {
     setView(zone.view);
     setSelectedId(zone.id);
@@ -73,34 +72,35 @@ export function InteractiveHouseMap() {
 
         <div className="mt-7 grid gap-2 sm:grid-cols-2">
           {ZONES.map((zone) => (
-            <button
-              type="button"
-              key={zone.id}
-              onClick={() => chooseZone(zone)}
-              className={`group flex items-center justify-between rounded-2xl border p-3 text-left transition hover:-translate-y-0.5 ${selectedId === zone.id ? "border-[#71803d]/45 bg-white" : "border-[#1d211d]/10 bg-white/65 hover:border-[#71803d]/40"}`}
-            >
-              <span className="flex items-center gap-3">
-                <span className="size-2 rounded-full bg-[#92b477]" />
-                <span><span className="block text-sm font-semibold text-[#1d211d]">{zone.label}</span><span className="block text-[10px] font-semibold tracking-[.12em] text-[#879078] uppercase">{zone.kicker} · {zone.view === "front" ? "Front" : "Back"}</span></span>
-              </span>
-              <ArrowUpRight className="size-4 text-[#71803d] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </button>
+            <div key={zone.id} className={`min-w-0 ${selectedId === zone.id ? "sm:col-span-2" : ""}`}>
+              <button
+                type="button"
+                onClick={() => chooseZone(zone)}
+                aria-expanded={selectedId === zone.id}
+                className={`group flex w-full items-center justify-between rounded-2xl border p-3 text-left transition hover:-translate-y-0.5 ${selectedId === zone.id ? "border-[#71803d]/45 bg-white" : "border-[#1d211d]/10 bg-white/65 hover:border-[#71803d]/40"}`}
+              >
+                <span className="flex items-center gap-3">
+                  <span className="size-2 rounded-full bg-[#92b477]" />
+                  <span><span className="block text-sm font-semibold text-[#1d211d]">{zone.label}</span><span className="block text-[10px] font-semibold tracking-[.12em] text-[#879078] uppercase">{zone.kicker} · {zone.view === "front" ? "Front" : "Back"}</span></span>
+                </span>
+                <ArrowUpRight className="size-4 text-[#71803d] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </button>
+              {selectedId === zone.id && (
+                <article className="mt-2 overflow-hidden rounded-2xl border border-[#71803d]/30 bg-[#1d211d] text-white shadow-xl">
+                  <div className="h-36 bg-cover bg-center" style={{ backgroundImage: `url(${px(zone.image, 900)})` }} />
+                  <div className="p-5">
+                    <p className="text-xs font-semibold tracking-[.16em] text-[#d5ec77] uppercase">{zone.kicker}</p>
+                    <h3 className="mt-2 text-2xl font-semibold tracking-[-.03em]">{zone.label}</h3>
+                    <p className="mt-2 text-sm leading-6 text-white/72">{zone.description}</p>
+                    <Link to={`/services/${zone.slug}`} className="mt-5 inline-flex items-center rounded-full bg-[#d5ec77] px-4 py-2.5 text-xs font-semibold text-[#1d211d] transition hover:bg-[#e5f795]">
+                      View {zone.kicker.toLowerCase()} project guide <ArrowUpRight className="ml-1 size-3.5" />
+                    </Link>
+                  </div>
+                </article>
+              )}
+            </div>
           ))}
         </div>
-
-        {selected && (
-          <article className="mt-4 overflow-hidden rounded-2xl border border-[#71803d]/30 bg-[#1d211d] text-white shadow-xl">
-            <div className="h-36 bg-cover bg-center" style={{ backgroundImage: `url(${px(selected.image, 900)})` }} />
-            <div className="p-5">
-              <p className="text-xs font-semibold tracking-[.16em] text-[#d5ec77] uppercase">{selected.kicker}</p>
-              <h3 className="mt-2 text-2xl font-semibold tracking-[-.03em]">{selected.label}</h3>
-              <p className="mt-2 text-sm leading-6 text-white/72">{selected.description}</p>
-              <Link to={`/services/${selected.slug}`} className="mt-5 inline-flex items-center rounded-full bg-[#d5ec77] px-4 py-2.5 text-xs font-semibold text-[#1d211d] transition hover:bg-[#e5f795]">
-                View {selected.kicker.toLowerCase()} project guide <ArrowUpRight className="ml-1 size-3.5" />
-              </Link>
-            </div>
-          </article>
-        )}
       </div>
     </div>
   );
