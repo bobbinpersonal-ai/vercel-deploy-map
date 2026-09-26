@@ -71,11 +71,11 @@ export function Logo({
   const sub = tone === "black" ? "text-[#6b7368]" : "text-white/60";
   return (
     <span className={`flex items-center gap-2.5 ${ink} ${className}`}>
-      <LogoMark className="size-9 shrink-0" />
+      <LogoMark className="size-10 shrink-0" />
       <span className="flex flex-col leading-none">
-        <span className="text-[15px] font-bold tracking-[-.02em]">LoveMeAfter</span>
+        <span className="brand-wordmark whitespace-nowrap text-lg font-black tracking-[.055em] sm:text-xl">LOVEMEAFTER</span>
         {!compact && (
-          <span className={`mt-0.5 text-[9px] font-semibold tracking-[.16em] uppercase ${sub}`}>
+          <span className={`mt-1 text-[9px] font-bold tracking-[.2em] uppercase ${sub}`}>
             BUILDERS
           </span>
         )}
