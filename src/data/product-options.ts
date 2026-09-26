@@ -2,6 +2,11 @@ export type ProductOption = {
   brand: string;
   line: string;
   domain: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  productUrl?: string;
+  highlights?: string[];
+  suiteLinks?: { label: string; url: string }[];
   history: string;
   why: string;
   warranty: string;
@@ -14,6 +19,163 @@ export type ProductFamily = {
   options: ProductOption[];
 };
 
+const SUITE_LINKS: Record<string, [string, string][]> = {
+  "gaf.com": [
+    ["Timberline HDZ shingles", "https://www.gaf.com/en-us/roofing-materials/residential-roofing-materials/shingles/timberline-hdz"],
+    ["All residential shingle lines", "https://www.gaf.com/en-us/roofing-materials/residential-roofing-materials/shingles"],
+    ["Starter strip shingles", "https://www.gaf.com/en-us/roofing-materials/residential-roofing-materials/starter-strip-shingles"],
+    ["Hip & ridge cap shingles", "https://www.gaf.com/en-us/roofing-materials/residential-roofing-materials/hip-and-ridge-cap-shingles"],
+    ["Leak barriers / ice protection", "https://www.gaf.com/en-us/roofing-materials/residential-roofing-materials/leak-barriers"],
+    ["Roof deck protection", "https://www.gaf.com/en-us/roofing-materials/residential-roofing-materials/roof-deck-protection"],
+    ["Attic vents & ventilation", "https://www.gaf.com/en-us/roofing-materials/residential-roofing-materials/attic-vents-other-ventilation"],
+    ["GAF warranty information", "https://www.gaf.com/en-us/for-homeowners/warranties"],
+  ],
+  "owenscorning.com": [
+    ["Duration shingles", "https://www.owenscorning.com/en-us/roofing/shingles/trudefinition-duration"],
+    ["Duration FLEX", "https://www.owenscorning.com/en-us/roofing/shingles/trudefinition-duration-flex"],
+    ["Duration STORM", "https://www.owenscorning.com/en-us/roofing/shingles/trudefinition-duration-storm"],
+    ["Duration COOL", "https://www.owenscorning.com/en-us/roofing/shingles/trudefinition-duration-cool"],
+    ["Designer shingle lines", "https://www.owenscorning.com/en-us/roofing/shingles/trudefinition-duration-designer"],
+    ["Roof components & documents", "https://www.owenscorning.com/en-us/roofing/documents"],
+    ["Installation instructions", "https://www.owenscorning.com/en-us/roofing/install-instructions"],
+  ],
+  "certainteed.com": [
+    ["Residential roofing product suite", "https://www.certainteed.com/products/residential-roofing"],
+    ["Landmark shingles", "https://www.certainteed.com/products/residential-roofing-products/landmark"],
+    ["Landmark PRO", "https://www.certainteed.com/products/residential-roofing-products/landmark-pro"],
+    ["Roof starter shingles", "https://www.certainteed.com/products/residential-roofing-products/high-performance-starter"],
+    ["Hip & ridge products", "https://www.certainteed.com/products/residential-roofing-products"],
+    ["Ridge ventilation", "https://www.certainteed.com/products/residential-roofing-products/ridge-vent"],
+    ["Siding & trim products", "https://www.certainteed.com/products/siding-products"],
+    ["Roofing warranty information", "https://www.certainteed.com/warranties"],
+  ],
+  "jameshardie.com": [
+    ["All Hardie products", "https://www.jameshardie.com/product-catalog/"],
+    ["HardiePlank lap siding", "https://www.jameshardie.com/product-catalog/exterior-siding-products/hardie-plank-lap-siding/"],
+    ["HardiePanel vertical siding", "https://www.jameshardie.com/product-catalog/exterior-siding-products/hardie-panel-siding/"],
+    ["HardieShingle siding", "https://www.jameshardie.com/product-catalog/exterior-siding-products/hardie-shingle-siding/"],
+    ["HardieTrim products", "https://www.jameshardie.com/product-catalog/trim-products/"],
+    ["HardieSoffit panels", "https://www.jameshardie.com/product-catalog/soffit-products/hardie-soffit-panels/"],
+    ["Installation guidance & technical documents", "https://www.jameshardie.com/installation-instructions-technical-docs/"],
+  ],
+  "lpcorp.com": [
+    ["LP SmartSide siding & trim", "https://lpcorp.com/products/siding-trim"],
+    ["Lap siding", "https://lpcorp.com/products/siding-trim/lap-siding"],
+    ["Panel siding", "https://lpcorp.com/products/siding-trim/panel-siding"],
+    ["Shake siding", "https://lpcorp.com/products/siding-trim/shake-siding"],
+    ["Trim & fascia", "https://lpcorp.com/products/siding-trim/trim"],
+    ["Installation resources", "https://lpcorp.com/resources"],
+  ],
+  "andersenwindows.com": [
+    ["Compare Andersen product series", "https://www.andersenwindows.com/windows-and-doors/series"],
+    ["100 Series", "https://www.andersenwindows.com/windows-and-doors/series/100-series"],
+    ["200 Series", "https://www.andersenwindows.com/windows-and-doors/series/200-series"],
+    ["400 Series", "https://www.andersenwindows.com/windows-and-doors/series/400-series"],
+    ["A-Series architectural collection", "https://www.andersenwindows.com/windows-and-doors/series/a-series"],
+    ["E-Series", "https://www.andersenwindows.com/windows-and-doors/series/e-series"],
+    ["Patio doors", "https://www.andersenwindows.com/windows-and-doors/doors"],
+    ["Compare windows & doors", "https://www.andersenwindows.com/windows-and-doors/series"],
+  ],
+  "pella.com": [
+    ["Explore Pella windows", "https://www.pella.com/windows/"],
+    ["Explore Pella doors", "https://www.pella.com/doors/"],
+    ["Product series and materials", "https://www.pella.com/windows/"],
+    ["Care and warranty resources", "https://www.pella.com/support/"],
+  ],
+  "marvin.com": [
+    ["Marvin product collections", "https://www.marvin.com/products"],
+    ["Essential collection", "https://www.marvin.com/products/essential"],
+    ["Elevate collection", "https://www.marvin.com/products/elevate"],
+    ["Signature collection", "https://www.marvin.com/products/signature"],
+    ["Windows & doors", "https://www.marvin.com/products/windows"],
+  ],
+  "trex.com": [
+    ["All Trex outdoor-living products", "https://www.trex.com/products/"],
+    ["Compare decking tiers & colors", "https://www.trex.com/products/decking/"],
+    ["Transcend Lineage decking", "https://www.trex.com/products/decking/lineage/"],
+    ["Railing systems", "https://www.trex.com/products/railing/"],
+    ["Deck lighting", "https://www.trex.com/products/deck-lighting/"],
+    ["Deck drainage", "https://www.trex.com/products/deck-drainage/"],
+    ["Fascia & cladding", "https://www.trex.com/products/fascia/"],
+    ["Fasteners & accessories", "https://www.trex.com/products/fasteners/"],
+    ["Fencing", "https://www.trex.com/products/fencing/"],
+    ["Outdoor furniture", "https://www.trex.com/products/furniture/"],
+    ["Care, cleaning & warranties", "https://www.trex.com/customer-support/"],
+    ["Color selector & samples", "https://www.trex.com/deck-ideas/colors/"],
+  ],
+  "belgard.com": [
+    ["All Belgard products", "https://www.belgard.com/products/"],
+    ["Patio pavers & slabs", "https://www.belgard.com/products/patios-paths/patio-pavers/"],
+    ["Driveway pavers", "https://www.belgard.com/products/driveways/driveway-pavers/"],
+    ["Permeable pavers", "https://www.belgard.com/products/patios-paths/permeable-patio-pavers/"],
+    ["Outdoor porcelain pavers", "https://www.belgard.com/products/patios-paths/porcelain-pavers/"],
+    ["Retaining wall systems", "https://www.belgard.com/products/wall-systems/retaining-walls/"],
+    ["Caps, coping & edgers", "https://www.belgard.com/products/hardscape-accessories/paver-caps-coping-edgers/"],
+    ["Outdoor kitchens & fire features", "https://www.belgard.com/outdoor-living/"],
+    ["Installation, care & catalogs", "https://www.belgard.com/resources/"],
+  ],
+  "kohler.com": [
+    ["Curated kitchen & bath collections", "https://www.kohler.com/en/products/kohler-collections"],
+    ["Bathroom faucets", "https://www.kohler.com/en/products/bathroom-faucets"],
+    ["Kitchen faucets", "https://www.kohler.com/en/products/kitchen-faucets"],
+    ["Bathroom sets", "https://www.kohler.com/en/products/bathroom-sets"],
+    ["Bathtubs & hydrotherapy", "https://www.kohler.com/en/products/bathtubs"],
+    ["Showers, sinks, toilets & bidets", "https://www.kohler.com/en"],
+    ["Care & replacement parts", "https://www.kohler.com/en/support/find-a-service-part"],
+  ],
+  "moen.com": [
+    ["Moen kitchen products", "https://www.moen.com/kitchen/"],
+    ["Moen bathroom products", "https://www.moen.com/bathroom/"],
+    ["Faucets, showers & accessories", "https://www.moen.com/"],
+    ["Smart water monitor & shutoff", "https://www.moen.com/flo"],
+    ["Sinks, filtration & disposals", "https://www.moen.com/"],
+    ["Identify a product or find parts", "https://www.moen.com/parts/"],
+  ],
+  "carrier.com": [
+    ["Carrier residential product catalog", "https://www.carrier.com/residential/en/us/products/"],
+    ["Heat pumps", "https://www.carrier.com/residential/en/us/products/heat-pumps/"],
+    ["Air conditioners", "https://www.carrier.com/residential/en/us/products/air-conditioners/"],
+    ["Furnaces", "https://www.carrier.com/residential/en/us/products/gas-furnaces/"],
+    ["Ductless systems", "https://www.carrier.com/residential/en/us/products/ductless-systems/"],
+    ["Indoor air quality", "https://www.carrier.com/residential/en/us/products/indoor-air-quality/"],
+    ["Thermostats & controls", "https://www.carrier.com/residential/en/us/products/thermostats/"],
+    ["Product literature & manuals", "https://www.carrier.com/residential/en/us/homeowner-resources/product-literature/"],
+  ],
+  "schluter.com": [
+    ["Shower systems", "https://www.schluter.com/schluter-us/en_US/Shower-System/c/SS"],
+    ["KERDI waterproofing", "https://www.schluter.com/schluter-us/en_US/Membranes/Waterproofing-%28KERDI%29/c/P-W"],
+    ["Drains & shower bases", "https://www.schluter.com/schluter-us/en_US/Shower-System/Drains/c/SS-D"],
+    ["Profiles & movement joints", "https://www.schluter.com/schluter-us/en_US/Profiles/c/P"],
+    ["Installation resources", "https://www.schluter.com/schluter-us/en_US/"],
+  ],
+  "deltafaucet.com": [
+    ["Kitchen faucets", "https://www.deltafaucet.com/kitchen"],
+    ["Bathroom faucets", "https://www.deltafaucet.com/bathroom"],
+    ["Shower systems", "https://www.deltafaucet.com/bathroom/showering"],
+    ["Toilets & accessories", "https://www.deltafaucet.com/bathroom"],
+    ["Parts & support", "https://www.deltafaucet.com/service-parts"],
+  ],
+  "bradfordwhite.com": [
+    ["Residential water heaters", "https://www.bradfordwhite.com/residential-products/"],
+    ["Gas water heaters", "https://www.bradfordwhite.com/residential-products/"],
+    ["Heat-pump water heaters", "https://www.bradfordwhite.com/residential-products/"],
+    ["Product documents & support", "https://www.bradfordwhite.com/"],
+  ],
+  "lutron.com": [
+    ["Residential lighting controls", "https://www.lutron.com/us/en/residential"],
+    ["Caséta smart lighting", "https://www.casetawireless.com/us/en"],
+    ["RadioRA 3", "https://www.lutron.com/us/en/residential-lighting-control/ra3"],
+    ["Dimmers, switches & shades", "https://www.lutron.com/us/en/residential"],
+  ],
+  "enphase.com": [
+    ["Home energy systems", "https://enphase.com/homeowners"],
+    ["Microinverters", "https://enphase.com/installers/microinverters"],
+    ["IQ Battery storage", "https://enphase.com/homeowners/home-solar-batteries"],
+    ["Monitoring & app", "https://enphase.com/homeowners/enlighten"],
+    ["Warranty resources", "https://enphase.com/warranty"],
+  ],
+};
+
 const option = (
   brand: string,
   line: string,
@@ -22,7 +184,22 @@ const option = (
   why: string,
   warranty: string,
   officialUrl: string,
-): ProductOption => ({ brand, line, domain, history, why, warranty, officialUrl });
+  imageUrl?: string,
+  highlights?: string[],
+): ProductOption => ({
+  brand,
+  line,
+  domain,
+  history,
+  why,
+  warranty,
+  officialUrl,
+  imageUrl,
+  imageAlt: `${brand} ${line} manufacturer product image`,
+  productUrl: officialUrl,
+  highlights,
+  suiteLinks: SUITE_LINKS[domain]?.map(([label, url]) => ({ label, url })),
+});
 
 /**
  * Manufacturer and product-line choices shown to homeowners before a scope is
@@ -34,9 +211,9 @@ export const PRODUCT_FAMILIES: Record<string, ProductFamily> = {
     title: "Roofing system choices",
     intro: "A roof is a system: shingles or panels, underlayment, flashing, ventilation, ice and water protection, and the accessories that make the warranty meaningful.",
     options: [
-      option("GAF", "Timberline HDZ shingles", "gaf.com", "Founded in 1886, GAF grew into one of North America's largest roofing-material manufacturers.", "A familiar contractor network, broad color range, and a complete system approach for common residential roofs.", "Limited manufacturer coverage varies by product; enhanced system coverage can depend on qualifying components, installer status, registration, and maintenance.", "https://www.gaf.com/en-us"),
-      option("Owens Corning", "Duration shingles", "owenscorning.com", "Owens Corning began in 1938 and became a major building-materials company known for fiberglass and roofing systems.", "SureNail reinforcement, recognizable product tiers, and strong availability across many residential markets.", "Limited shingle and system warranties vary by line and installation; the current Owens Corning warranty controls coverage, exclusions, and transfer terms.", "https://www.owenscorning.com/en-us/roofing"),
-      option("CertainTeed", "Landmark shingles", "certainteed.com", "CertainTeed traces its building-products history to 1904 and is part of Saint-Gobain's North American materials network.", "A wide architectural shingle palette and useful good/better/best product tiers for design-conscious homes.", "Limited warranty terms vary by product and system; upgraded coverage may require specified components and a credentialed installer.", "https://www.certainteed.com/residential-roofing"),
+      option("GAF", "Timberline HDZ shingles", "gaf.com", "Founded in 1886, GAF grew into one of North America's largest roofing-material manufacturers.", "A familiar contractor network, broad color range, and a complete system approach for common residential roofs.", "Limited manufacturer coverage varies by product; enhanced system coverage can depend on qualifying components, installer status, registration, and maintenance.", "https://www.gaf.com/en-us/roofing-materials/residential-roofing-materials/shingles/timberline-hdz", "https://www.gaf.com/-/media/GAF/Residential/Products/Shingles/Timberline/Timberline-HDZ/Timberline-HDZ_Weathered-Wood_Hero.webp", ["Shingle color and profile", "Starter strip shingles", "Leak barrier / ice & water protection", "Roof deck protection", "Hip and ridge caps", "Ridge ventilation", "Drip edge & flashing details", "Attic ventilation components"]),
+      option("Owens Corning", "TruDefinition Duration roofing system", "owenscorning.com", "Owens Corning began in 1938 and became a major building-materials company known for fiberglass and roofing systems.", "The Duration range includes standard, FLEX, STORM, COOL, and designer variants; accessory components complete the roof assembly.", "Limited shingle and system warranties vary by line and installation; the current Owens Corning warranty controls coverage, exclusions, and transfer terms.", "https://www.owenscorning.com/en-us/roofing/shingles/trudefinition-duration", undefined, ["Duration, FLEX, STORM, COOL and designer shingle variants", "Starter shingles", "Hip & ridge shingles", "Underlayment and ice barrier", "Intake and exhaust ventilation", "Roofing accessories"]),
+      option("CertainTeed", "Landmark roofing system", "certainteed.com", "CertainTeed traces its building-products history to 1904 and is part of Saint-Gobain's North American materials network.", "Compare Landmark, Landmark PRO, ClimateFlex, designer shingles, starters, hip-and-ridge finishes, leak barriers, deck protection, and ridge ventilation as a complete assembly.", "Limited warranty terms vary by product and system; upgraded coverage may require specified components and a credentialed installer.", "https://www.certainteed.com/products/residential-roofing", "https://certainteed.widen.net/content/clnq40gzwb/web/roofing-shingle-options-composite.webp?crop=yes&k=c&w=316&h=236&v=47cfebf7-a560-4bda-8955-0a20e1054d17&itok=NpZ6hP_c", ["Landmark & Landmark PRO", "ClimateFlex and designer lines", "Starter shingles", "Hip & ridge cap", "Leak barrier and underlayment", "Ridge ventilation", "Siding, trim & insulation coordination"]),
       option("IKO", "Dynasty shingles", "iko.com", "IKO has manufactured roofing and building products for more than 60 years across North America and other markets.", "A high-definition shingle option with strong color variation and a system designed around wind and weather exposure.", "IKO limited warranty coverage depends on the exact product, installation, registration, and applicable jurisdiction.", "https://www.iko.com/na/"),
       option("DuPont", "Tyvek Protec underlayments", "dupont.com", "DuPont introduced Tyvek in the 1960s and expanded the material into building-envelope and weatherization applications.", "A dedicated roof-underlayment choice that helps manage water and temporary exposure beneath the finished roof covering.", "Product-specific limited warranty; underlayment coverage is not the same as the shingle manufacturer's labor or system warranty.", "https://www.dupont.com/tyvek.html"),
     ],
@@ -46,7 +223,7 @@ export const PRODUCT_FAMILIES: Record<string, ProductFamily> = {
     intro: "The visible siding is only one layer. We compare profile, trim, moisture management, paint or color technology, maintenance, and the manufacturer's installation requirements.",
     options: [
       option("Alside", "Charter Oak and Ascend siding", "alside.com", "Alside has supplied residential siding, windows, doors, and accessories to the remodeling market for decades.", "A broad vinyl and composite-style selection with familiar profiles, trim packages, and regional availability.", "Limited product warranties vary by line, finish, color, and transfer; installation and maintenance requirements apply.", "https://www.alside.com/"),
-      option("James Hardie", "HardiePlank and HardiePanel fiber cement", "jameshardie.com", "James Hardie began in Australia in the late 19th century and developed a large fiber-cement building-products business.", "Fiber-cement durability, strong architectural profiles, and a finish system designed for regional climate conditions.", "Limited product and finish warranties vary by product and finish; correct installation, painting, and maintenance are essential.", "https://www.jameshardie.com/"),
+      option("James Hardie", "HardiePlank, HardiePanel, HardieShingle & trim", "jameshardie.com", "James Hardie began in Australia in the late 19th century and developed a large fiber-cement building-products business.", "The exterior suite spans lap, vertical panel, shingle, trim, and soffit components, with finish and climate guidance tied to region.", "Limited product and finish warranties vary by product and finish; correct installation, painting, and maintenance are essential.", "https://www.jameshardie.com/product-catalog/", "https://images.ctfassets.net/dzi2asncd44t/6NXuKLWjKIUy3hcw8je6k0/b0b84a79ec8913fdd3f82fe9f7b60100/RS26489_JamesHardie_Shot05_022-scr.jpg", ["HardiePlank lap siding", "HardiePanel vertical siding", "HardieShingle siding", "HardieTrim boards & battens", "HardieSoffit panels", "ColorPlus finish options", "Weather barrier & touch-up products"]),
       option("LP", "SmartSide engineered wood siding", "lpcorp.com", "LP Building Solutions has made engineered wood and structural building products for more than 50 years.", "A warm wood appearance with engineered treatment, practical trim options, and a lighter installation profile than some masonry products.", "Limited warranty terms vary by SmartSide product and finish; installation, clearance, and maintenance rules matter.", "https://lpcorp.com/products/siding-trim"),
       option("CertainTeed", "Monogram and MainStreet vinyl siding", "certainteed.com", "CertainTeed's long building-products history includes one of the industry's broadest residential exterior catalogs.", "Many profile, color, and trim combinations for homeowners who want predictable maintenance and a coordinated exterior.", "Limited lifetime-style and finish warranties vary by product and homeowner status; review the current document before selection.", "https://www.certainteed.com/siding"),
       option("Westlake Royal", "Cedar Renditions and Celect", "westlakeroyalbuildingproducts.com", "Westlake Royal Building Products combines established North American exterior-product brands and manufacturing operations.", "Useful for modern panelized looks, trim coordination, and low-maintenance exterior design directions.", "Product-specific limited warranties apply; color, installation, and transfer provisions vary by line.", "https://www.westlakeroyalbuildingproducts.com/"),
@@ -56,7 +233,7 @@ export const PRODUCT_FAMILIES: Record<string, ProductFamily> = {
     title: "Window choices",
     intro: "We compare frame material, glass, operation, opening condition, noise, ventilation, trim, and the warranty behind the exact unit—not just a sample in a showroom.",
     options: [
-      option("Andersen", "400 Series and A-Series", "andersenwindows.com", "Andersen began in 1903 and became one of the best-known American window and door manufacturers.", "A broad replacement and new-construction ecosystem with many grille, glass, hardware, and trim choices.", "Limited warranties vary by series and component; glass, hardware, installation, and transfer terms are documented separately.", "https://www.andersenwindows.com/"),
+      option("Andersen", "100, 200, 400, A-Series, E-Series & Big Doors", "andersenwindows.com", "Andersen began in 1903 and became one of the best-known American window and door manufacturers.", "Series span composite, wood, architectural, custom-color, patio, and expansive moving-glass options; match product type and material to the opening and design.", "Limited warranties vary by series and component; glass, hardware, installation, and transfer terms are documented separately.", "https://www.andersenwindows.com/windows-and-doors/series", "https://edge.sitecorecloud.io/andersencor0d3d-andersencorae0f-prod102c-dc69/media/Project/AndersenCorporation/AndersenWindows/AndersenWindows/images/windows-and-doors/series-pages/our-series/carousel-images/400-series/400-series-16823.jpg?h=600&iar=0&w=900", ["100 Series Fibrex composite", "200 Series wood windows & patio doors", "400 Series windows & doors", "A-Series architectural collection", "E-Series custom sizes and colors", "Gliding & hinged patio doors", "Big Doors moving-glass systems", "Screens, grilles, hardware & trim"]),
       option("Pella", "250 Series and Impervia", "pella.com", "Pella has manufactured windows and doors since 1925 and maintains a large residential product range.", "Useful good/better/best choices for homeowners balancing price, frame material, sightlines, and performance.", "Limited warranties vary by product and component; installation, registration, and transfer terms must be reviewed for the selected unit.", "https://www.pella.com/"),
       option("Marvin", "Essential and Elevate", "marvin.com", "Marvin is a family-owned window and door manufacturer with roots going back to 1912.", "Strong design control for architectural proportions, larger openings, and projects where interior and exterior finish matter equally.", "Limited manufacturer's warranties vary by collection and component; finish, glass, hardware, and installation coverage are not identical.", "https://www.marvin.com/"),
       option("JELD-WEN", "V-4500 and Siteline", "jeld-wen.com", "JELD-WEN grew from a small Oregon millwork operation founded in 1960 into a global window and door manufacturer.", "Many replacement sizes and materials with broad distribution for practical renovation scopes.", "Limited warranties vary by product, material, glass, and finish; current terms and exclusions govern.", "https://www.jeld-wen.com/"),
@@ -95,7 +272,7 @@ export const PRODUCT_FAMILIES: Record<string, ProductFamily> = {
     title: "Decking and porch choices",
     intro: "We compare structure, decking, railing, fasteners, stair components, heat, slip, maintenance, and the warranty behind the surface.",
     options: [
-      option("Trex", "Transcend and Trex Select", "trex.com", "Trex helped popularize recycled-composite decking in the 1990s and remains a major outdoor-living manufacturer.", "Low-maintenance composite boards, coordinated railing, and a wide set of colors and profiles.", "Limited residential warranties vary by collection and use; cleaning, installation, and transfer terms apply.", "https://www.trex.com/"),
+      option("Trex", "Full outdoor-living suite", "trex.com", "Trex helped popularize recycled-composite decking in the 1990s and remains a major outdoor-living manufacturer.", "Six deck-board tiers plus coordinated rails, lighting, drainage, cladding, fascia, fencing, fasteners, furniture, kitchens, pergolas, lattice, spiral stairs, and other outdoor-living details.", "Limited residential warranties vary by collection and use; cleaning, installation, and transfer terms apply.", "https://www.trex.com/products/", "https://images.trex.com/is/image/trexcompany/lin-3inch-001-rn-decking-sample-profile-RNTL35000:Smallest", ["Signature, Transcend Lineage, Transcend, Select & Enhance decking", "Refuge PVC decking", "Composite, aluminum, cable, glass, mesh & steel railing", "Deck rail, post-cap & stair lighting", "Deck drainage & under-deck dry space", "Cladding, fascia & lattice", "Hidden fasteners, plugs, screws & tools", "Fencing and spiral stairs", "Pergolas, outdoor kitchens & furniture"]),
       option("TimberTech", "Terrain, Reserve, and Legacy", "timbertech.com", "TimberTech grew from composite-decking technology and is now part of the AZEK outdoor-living portfolio.", "Useful good/better/best paths with natural visual texture and coordinated deck, trim, and railing products.", "Limited product warranties vary by collection; exact coverage depends on installation, use, and registration.", "https://www.timbertech.com/"),
       option("Fiberon", "Good Life and Paramount", "fiberondecking.com", "Fiberon has developed composite and PVC decking products for residential outdoor living for more than two decades.", "A practical choice for balancing color, price, low maintenance, and board profile.", "Limited warranties vary by product line and application; installation and care requirements apply.", "https://www.fiberondecking.com/"),
       option("Deckorators", "Voyage and mineral-based decking", "deckorators.com", "Deckorators has built a broad outdoor-living catalog of decking, railing, and accessories.", "Mineral-based and composite options help when weight, moisture, and low-maintenance performance matter.", "Limited product warranties vary by line and use; follow the current installation guide.", "https://www.deckorators.com/"),
@@ -114,7 +291,7 @@ export const PRODUCT_FAMILIES: Record<string, ProductFamily> = {
     title: "Paver, concrete, and masonry choices",
     intro: "We compare base preparation, drainage, paver or slab material, edge restraint, joints, sealers, and the freeze-thaw demands of the site.",
     options: [
-      option("Belgard", "Pavers, slabs, and retaining-wall systems", "belgard.com", "Belgard has become a major North American hardscape brand for residential pavers, walls, and outdoor-living products.", "A coordinated catalog for driveways, patios, walls, steps, borders, and outdoor rooms.", "Product warranties vary by category and installation; base, drainage, jointing, and maintenance are essential to performance.", "https://www.belgard.com/"),
+      option("Belgard", "Complete hardscape & outdoor-living catalog", "belgard.com", "Belgard has become a major North American hardscape brand for residential pavers, walls, and outdoor-living products.", "Design a coordinated outdoor scope from pavers and slabs through walls, porcelain, caps, coping, steps, kitchens, and fire features.", "Product warranties vary by category and installation; base, drainage, jointing, and maintenance are essential to performance.", "https://www.belgard.com/products/", undefined, ["Patio and walkway pavers & slabs", "Driveway pavers", "Permeable pavers and grid systems", "Outdoor porcelain pavers", "Retaining and freestanding wall systems", "Steps, caps, coping & edgers", "Outdoor kitchens and fire features", "Drainage and base-system coordination"]),
       option("Unilock", "Pavers and outdoor-living systems", "unilock.com", "Unilock has manufactured concrete paving products in North America since the 1970s.", "Strong pattern, color, and edge-detail options for design-forward patios and walks.", "Limited product warranties vary by product and installation; movement, base, drainage, and maintenance exclusions apply.", "https://unilock.com/"),
       option("Cambridge", "Pavingstones and wall systems", "cambridgepavers.com", "Cambridge Pavers has supplied concrete paving and wall products to the residential market for decades.", "Useful for traditional and contemporary patterns with coordinated borders and wall components.", "Limited product warranties vary by line; installation workmanship, base, and drainage are separately controlled.", "https://www.cambridgepavers.com/"),
       option("QUIKRETE", "Concrete and repair systems", "quikrete.com", "QUIKRETE has supplied packaged concrete and repair products to homeowners and contractors since 1940.", "Widely available mixes, repair products, and setting materials for concrete, masonry, and small hardscape scopes.", "Product-specific limited warranties vary; surface preparation, mix, cure, and site conditions control results.", "https://www.quikrete.com/"),
@@ -144,7 +321,7 @@ export const PRODUCT_FAMILIES: Record<string, ProductFamily> = {
     title: "Bathroom, tile, and waterproofing choices",
     intro: "A beautiful bathroom begins behind the tile. We compare waterproofing, tile, fixtures, ventilation, glass, accessibility, and the manufacturer's installation system.",
     options: [
-      option("Kohler", "Bathroom fixtures and fittings", "kohler.com", "Kohler was founded in 1873 and has grown from plumbing fixtures into a global kitchen, bath, and design company.", "A deep fixture, bath, shower, and accessory catalog for coordinated designs.", "Limited warranties vary by product and finish; registration, installation, water conditions, and care apply.", "https://www.kohler.com/"),
+      option("Kohler", "Complete kitchen & bath collections", "kohler.com", "Kohler was founded in 1873 and has grown from plumbing fixtures into a global kitchen, bath, and design company.", "Collections coordinate faucets, sinks, toilets, bidets, showers, tubs, accessories, vanities, and smart products for a consistent room design.", "Limited warranties vary by product and finish; registration, installation, water conditions, and care apply.", "https://www.kohler.com/en/products/kohler-collections", undefined, ["Bathroom faucet collections", "Kitchen faucets & sinks", "Toilets, smart toilets & bidets", "Showers, valves & showering systems", "Bathtubs & hydrotherapy", "Bathroom sets & accessories", "Vanities and storage", "Replacement parts and service"]),
       option("Delta", "Faucets and shower systems", "deltafaucet.com", "Delta Faucet began in 1954 and became known for residential faucet and shower innovation.", "Strong everyday availability, broad style range, and serviceable parts support.", "Limited lifetime-style warranties vary by product and owner; finish and electronic components may differ.", "https://www.deltafaucet.com/"),
       option("Schluter", "KERDI waterproofing and shower systems", "schluter.com", "Schluter-Systems grew from European tile-installation products into a major waterproofing and transition-system manufacturer.", "A system approach for shower waterproofing, drains, uncoupling, edges, and transitions.", "Limited system warranty depends on using specified components and following the installation handbook; tile and labor warranties are separate.", "https://www.schluter.com/"),
       option("Wedi", "Building panel and shower systems", "wedi.net", "Wedi developed waterproof building panels and prefabricated shower systems in Germany.", "Lightweight, integrated waterproof panels and shower components for a controlled installation sequence.", "Limited product-system warranties vary by country and installation; exact current documents apply.", "https://www.wedi.net/"),
@@ -165,7 +342,7 @@ export const PRODUCT_FAMILIES: Record<string, ProductFamily> = {
     title: "Heating and cooling choices",
     intro: "We compare system size, efficiency, comfort, controls, duct condition, serviceability, electrical requirements, and the warranty behind the equipment.",
     options: [
-      option("Carrier", "Infinity and Performance systems", "carrier.com", "Carrier was founded in 1915 by Willis Carrier, widely credited with modern air conditioning.", "Deep equipment range, communicating controls, heat-pump options, and contractor familiarity.", "Limited parts and compressor warranties vary by model, registration, and installer; labor coverage is separate.", "https://www.carrier.com/residential/en/us/"),
+      option("Carrier", "Infinity, Performance & Comfort systems", "carrier.com", "Carrier was founded in 1915 by Willis Carrier, widely credited with modern air conditioning.", "Compare air conditioners, heat pumps, furnaces, fan coils, thermostats, air purification, humidification, and system controls as a matched comfort solution.", "Limited parts and compressor warranties vary by model, registration, and installer; labor coverage is separate.", "https://www.carrier.com/residential/en/us/", "https://images.carriercms.com/image/upload/v1683828998/carrier/residential-hvac/products/heat-pumps/infinity-24-heat-pump-with-greenspeed-intelligence-25VNA4.png", ["Infinity, Performance & Comfort equipment tiers", "Air conditioners and heat pumps", "Gas and oil furnaces", "Fan coils, evaporator coils & air handlers", "Ductless systems", "Thermostats and system controls", "Air purifiers, humidifiers & dehumidifiers", "Ventilation and indoor-air accessories"]),
       option("Trane", "XV and XR systems", "trane.com", "Trane's mechanical-engineering history dates to the 19th century and it remains a major HVAC manufacturer.", "A wide lineup with strong comfort-control and heat-pump options for different climates.", "Limited equipment warranties vary by model and registration; labor, refrigerant, and maintenance are separate.", "https://www.trane.com/residential/en/"),
       option("Lennox", "Signature and Merit systems", "lennox.com", "Lennox has manufactured heating and cooling equipment since 1895.", "Useful range from premium communicating systems to straightforward replacement equipment.", "Limited parts warranties vary by model, registration, and installation; exact terms apply.", "https://www.lennox.com/"),
       option("Mitsubishi Electric", "M-Series and Hyper-Heat", "mitsubishicomfort.com", "Mitsubishi Electric has operated since 1921 and developed a major North American ductless and heat-pump business.", "Excellent for room-by-room control, additions, older homes, and cold-climate heat-pump planning.", "Limited equipment warranties vary by product, installer requirements, and registration; labor is separate.", "https://www.mitsubishicomfort.com/"),
@@ -177,7 +354,7 @@ export const PRODUCT_FAMILIES: Record<string, ProductFamily> = {
     intro: "We separate the fixture you see from the pipe, valve, shutoff, venting, and water-heating system behind it.",
     options: [
       option("Kohler", "Faucets, toilets, baths, and fittings", "kohler.com", "Founded in 1873, Kohler is one of the longest-established names in residential plumbing and bath design.", "Coordinated design families and broad replacement-part support for kitchens and baths.", "Limited warranties vary by product, finish, electronics, and owner; installation and water conditions apply.", "https://www.kohler.com/"),
-      option("Moen", "Faucets and shower systems", "moen.com", "Moen introduced its first single-handle faucet in 1947 and became a major fixture manufacturer.", "Serviceable everyday fixtures with broad style and finish availability.", "Limited lifetime-style warranties vary by product and owner; electronic and finish components can differ.", "https://www.moen.com/"),
+      option("Moen", "Kitchen, bath & smart-water suite", "moen.com", "Moen introduced its first single-handle faucet in 1947 and became a major fixture manufacturer.", "The catalog extends beyond faucets to showers, bath safety, sinks, accessories, filtration, garbage disposals, and smart leak monitoring/shutoff.", "Limited lifetime-style warranties vary by product and owner; electronic and finish components can differ.", "https://www.moen.com/", undefined, ["Kitchen faucets & accessories", "Bathroom faucets", "Showerheads, valves & smart showers", "Sinks and bath fixtures", "Grab bars and bath safety", "Whole-home smart water shutoff", "Water filtration", "Garbage disposals", "Replacement parts"]),
       option("Bradford White", "Residential water heaters", "bradfordwhite.com", "Bradford White has manufactured water heaters in the United States since 1881.", "Contractor-focused water-heating equipment with common service paths and many fuel types.", "Limited tank and component warranties vary by model, application, and professional installation requirements.", "https://www.bradfordwhite.com/"),
       option("Navien", "Tankless and combi boilers", "navien.com", "Navien has developed high-efficiency tankless water heaters and boilers since the 1970s.", "Useful where space, continuous hot water, efficiency, or hydronic comfort is a priority.", "Limited heat-exchanger, parts, and labor terms vary by model, registration, and installation.", "https://www.navien.com/"),
     ],
