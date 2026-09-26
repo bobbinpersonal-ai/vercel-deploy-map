@@ -117,12 +117,12 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
   if (compact) {
     return (
       <>
-        <section className="border-y border-white/10 bg-white/75 py-8" aria-labelledby="manufacturer-choices-heading">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <section className="border-y border-white/10 bg-[#211824] py-8 text-white" aria-labelledby="manufacturer-choices-heading">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#f3a4c2]">Manufacturer choices</p>
-                <h2 id="manufacturer-choices-heading" className="mt-2 max-w-2xl font-display text-2xl font-semibold text-[#f0e8ef] sm:text-3xl">
+                <h2 id="manufacturer-choices-heading" className="mt-2 max-w-2xl font-display text-2xl font-semibold text-white sm:text-3xl">
                   We show you the product behind the promise.
                 </h2>
               </div>

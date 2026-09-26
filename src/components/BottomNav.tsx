@@ -3,6 +3,7 @@ import { PROJECT_INDEX } from "@/data/project-index";
 import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 import { BRAND_PILLS } from "@/data/brand-pills";
 import { getProductFamily } from "@/data/product-options";
+import { PRODUCT_FAMILIES } from "@/data/product-options";
 import { BrandProductExample } from "@/components/BrandProductExample";
 import { AlertTriangle, ArrowLeft, ArrowRight, ArrowUpRight, HardHat, House, MapPin, Phone, Wallet, Wrench } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -229,11 +230,7 @@ export function BottomNav() {
     railRef.current?.scrollBy({ left: direction * Math.max(220, railRef.current.clientWidth * 0.72), behavior: "smooth" });
   };
   const selectedProduct = selectedBrand
-    ? getProductFamily(selectedBrand.brand.slug).options.find((option) => {
-        const selectedName = selectedBrand.brand.brand.toLowerCase();
-        const optionName = option.brand.toLowerCase();
-        return selectedName === optionName || selectedName.includes(optionName) || optionName.includes(selectedName);
-      })
+    ? getProductFamily(selectedBrand.brand.slug).options.find((option) => option.domain === selectedBrand.brand.domain)
     : undefined;
 
   return (
@@ -356,7 +353,7 @@ export function BottomNav() {
         </div>
       </div>
       <Dialog open={Boolean(selectedBrand)} onOpenChange={(open) => { if (!open) setSelectedBrand(null); }}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto rounded-3xl border-white/15 bg-[#211824] p-0 text-white shadow-[0_30px_100px_rgba(0,0,0,.55)] sm:max-w-md [&>button]:right-5 [&>button]:top-5 [&>button]:text-white/65 [&>button:hover]:text-white">
+        <DialogContent className="max-h-[88vh] overflow-y-auto rounded-3xl border-white/15 bg-[#211824] p-0 text-white shadow-[0_30px_100px_rgba(0,0,0,.55)] sm:max-w-xl [&>button]:right-5 [&>button]:top-5 [&>button]:text-white/65 [&>button:hover]:text-white">
           {selectedBrand && (
             <div>
               <div className="border-b border-white/10 bg-white/[.035] px-6 py-6 pr-14">
@@ -377,6 +374,7 @@ export function BottomNav() {
                   label={selectedProduct?.line ?? selectedBrand.brand.note}
                   brand={selectedBrand.brand.brand}
                   productLine={selectedProduct?.line}
+                  domain={selectedBrand.brand.domain}
                 />
                 <DialogHeader className="text-left">
                   <DialogDescription className="text-sm leading-6 text-white/85">{selectedBrand.brand.note}. Product availability and specifications vary by project and location.</DialogDescription>

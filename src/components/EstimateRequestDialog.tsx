@@ -22,6 +22,10 @@ function matchProject(service?: string) {
 
 const TIMING = ["As soon as practical", "Within 30 days", "1–3 months", "Just exploring"];
 
+function escapeHtml(value: string) {
+  return value.replace(/[&<>\"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" })[character] ?? character);
+}
+
 export function EstimateRequestDialog() {
   const [open, setOpen] = useState(false);
   const [project, setProject] = useState("");
@@ -85,21 +89,41 @@ export function EstimateRequestDialog() {
     const formData = new FormData(event.currentTarget);
     const selectedProject = String(formData.get("project") ?? "Other / not sure");
     try {
-      await addDoc(collection(db, "leads"), {
-        name: String(formData.get("name") ?? ""),
-        phone: String(formData.get("phone") ?? ""),
-        email: String(formData.get("email") ?? ""),
-        address: String(formData.get("address") ?? ""),
-        city: String(formData.get("city") ?? ""),
+      const lead = {
+        name: String(formData.get("name") ?? "").trim(),
+        phone: String(formData.get("phone") ?? "").trim(),
+        email: String(formData.get("email") ?? "").trim(),
+        address: String(formData.get("address") ?? "").trim(),
+        city: String(formData.get("city") ?? "").trim(),
         service: selectedProject,
         timing: String(formData.get("timing") ?? ""),
-        notes: String(formData.get("priorities") ?? ""),
+        notes: String(formData.get("priorities") ?? "").trim(),
         consultationSlot: requestedVisit,
         estimatedValue: 0,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
         stage: requestedVisit ? "appointment_requested" : "new",
         source: "sitewide_free_assessment_dialog",
+      };
+      const leadRef = await addDoc(collection(db, "leads"), lead);
+      const details = [
+        ["Name", lead.name], ["Phone", lead.phone], ["Email", lead.email || "Not provided"],
+        ["Project", lead.service], ["Timing", lead.timing || "Not specified"],
+        ["Address", [lead.address, lead.city].filter(Boolean).join(", ") || "Not provided"],
+        ["Priorities", lead.notes || "Not provided"],
+        ["Requested visit", requestedVisit ? `${requestedVisit.dateLabel} · ${requestedVisit.time}` : "Not requested"],
+        ["Lead record", leadRef.id],
+      ] as const;
+      const text = ["New LoveMeAfter free assessment request", "", ...details.map(([label, value]) => `${label}: ${value}`)].join("\n");
+      const html = `<div style="font-family:Arial,sans-serif;color:#211824;max-width:640px"><p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8c4b69">New free assessment request</p><h1 style="font-size:24px">A homeowner is ready to talk.</h1><table style="width:100%;border-collapse:collapse">${details.map(([label, value]) => `<tr><th style="padding:10px 12px;text-align:left;border-top:1px solid #eee;vertical-align:top">${escapeHtml(label)}</th><td style="padding:10px 12px;border-top:1px solid #eee">${escapeHtml(value)}</td></tr>`).join("")}</table></div>`;
+      await addDoc(collection(db, "mail"), {
+        to: ["hello@lovemeafter.com"],
+        from: "LoveMeAfter <hello@lovemeafter.com>",
+        ...(lead.email ? { replyTo: lead.email } : {}),
+        message: { subject: `New home assessment · ${lead.service || "Project to be determined"}`, text, html },
+        source: "sitewide_free_assessment_dialog",
+        leadId: leadRef.id,
+        createdAt: serverTimestamp(),
       });
       void trackEvent("estimate_request_submitted", { service: selectedProject, source: "sitewide_assessment_dialog" });
       setSubmitted(true);
