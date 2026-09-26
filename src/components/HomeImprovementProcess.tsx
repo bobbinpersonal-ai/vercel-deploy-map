@@ -68,7 +68,7 @@ const PROCESS_ITEMS: ProcessItem[] = [
   {
     badge: "08 · Follow up",
     title: "Know what was done and who to call next.",
-    description: "You receive closeout details and the relevant product and workmanship warranty information. We follow up on open items and remain available for project questions after the crew leaves.",
+    description: "You receive closeout details and the relevant product and workmanship warranty information. Eligible installation work is backed by LoveMeAfter’s 50-year workmanship warranty under its written terms; manufacturer product coverage is separate and varies by product. We follow up on open items and remain available for project questions after the crew leaves.",
     icon: Sparkles,
   },
 ];

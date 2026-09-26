@@ -356,8 +356,9 @@ export default function Landing() {
           <div className="grid gap-6 sm:grid-cols-3">
             <div><p className="text-3xl font-semibold tracking-[-.05em]">{PROJECT_INDEX_COUNT} project types</p><p className="mt-1 text-sm text-[#65705e]">Exterior · interior · systems · property</p></div>
             <div><p className="text-3xl font-semibold tracking-[-.05em]">Prompt</p><p className="mt-1 text-sm text-[#65705e]">Follow-up in active markets</p></div>
-            <div><p className="text-3xl font-semibold tracking-[-.05em]">10 years</p><p className="mt-1 text-sm text-[#65705e]">Minimum workmanship warranty</p></div>
+            <div><p className="text-3xl font-semibold tracking-[-.05em]">50 years</p><p className="mt-1 text-sm text-[#65705e]">Workmanship warranty</p></div>
           </div>
+          <p className="mt-6 text-sm leading-6 text-[#596357]">LoveMeAfter’s 50-year workmanship warranty covers eligible installation work under its written terms. Some manufacturer product warranties also extend up to 50 years for eligible products; product coverage is separate and depends on the manufacturer’s current warranty.</p>
           <div className="mt-8 border-t border-[#1d211d]/10 pt-7">
             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
               <div>

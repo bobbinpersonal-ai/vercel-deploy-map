@@ -187,8 +187,8 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
           </div>
 
           <div className="mt-8 rounded-2xl border border-white/10 bg-[#211824] p-5 text-sm leading-6 text-white/75 sm:p-6">
-            <p className="font-semibold text-white">Warranty clarity matters.</p>
-            <p className="mt-1 text-white/70">A manufacturer's limited warranty is not automatically a promise that every installation, labor item, finish, or failure is covered. Keep the chosen product, complete scope, product documentation, registration steps, maintenance requirements, exclusions, and service contact together in your home records.</p>
+            <p className="font-semibold text-white">Two warranties. Two kinds of coverage.</p>
+            <p className="mt-1 text-white/70">LoveMeAfter provides a 50-year workmanship warranty for eligible installation work under its written terms. Some manufacturer product warranties also extend up to 50 years for eligible products; manufacturer coverage is separate, product-specific, and subject to the manufacturer’s current terms, registration, maintenance, and exclusions. Neither warranty automatically covers every product, labor item, finish, or failure.</p>
           </div>
           <p className="mt-4 text-[10px] leading-4 text-white/55">Every product choice includes an image. Images are labeled as manufacturer product photos when hosted by that manufacturer; otherwise, they are clearly marked illustrative product references and may not depict the exact brand, model, or configuration.</p>
         </div>
