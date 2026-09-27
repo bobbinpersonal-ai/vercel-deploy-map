@@ -23,17 +23,6 @@ const REFERENCE_IMAGE_IDS: [RegExp, number][] = [
   [/insulat|weatheriz|rockwool|johns manville/i, 8082327],
 ];
 
-const VERIFIED_MANUFACTURER_IMAGE_HOSTS = new Set([
-  "images.trex.com",
-  "images.carriercms.com",
-  "certainteed.widen.net",
-  "images.ctfassets.net",
-  "edge.sitecorecloud.io",
-  "www.belgard.com",
-  "www.catalystfence.com",
-  "www.masterhalco.com",
-]);
-
 const pexelsPhoto = (id: number) =>
   `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=1200`;
 
@@ -47,19 +36,27 @@ export function getIllustrativeProductImage(product: ProductOption) {
   };
 }
 
+function getProductImageSource(imageUrl: string) {
+  if (imageUrl.startsWith("/images/products/")) return "Uploaded product image" as const;
+
+  try {
+    const url = new URL(imageUrl);
+    if (url.protocol !== "https:" || !url.hostname || url.hostname === "images.pexels.com") return null;
+    return "Product photo" as const;
+  } catch {
+    return null;
+  }
+}
+
 export function getProductImage(product: ProductOption) {
   if (product.imageUrl) {
-    try {
-      const host = new URL(product.imageUrl).hostname.toLowerCase();
-      if (VERIFIED_MANUFACTURER_IMAGE_HOSTS.has(host)) {
-        return {
-          url: product.imageUrl,
-          source: "Manufacturer product photo" as const,
-          alt: product.imageAlt ?? `${product.brand} ${product.line} product photo`,
-        };
-      }
-    } catch {
-      // Invalid or relative image URLs use the safe category-matched reference.
+    const source = getProductImageSource(product.imageUrl);
+    if (source) {
+      return {
+        url: product.imageUrl,
+        source,
+        alt: product.imageAlt ?? `${product.brand} ${product.line} product photo`,
+      };
     }
   }
 
