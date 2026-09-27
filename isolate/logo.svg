@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">LoveMeAfter construction heart logo</title>
-  <desc id="desc">A lime heart inside a home with a small construction hammer on a deep green rounded square</desc>
-  <rect width="512" height="512" rx="112" fill="#182019"/>
-  <path d="M106 238 256 112l150 126v166c0 14-11 25-25 25H131c-14 0-25-11-25-25V238Z" fill="#263227" stroke="#d5ec77" stroke-width="18" stroke-linejoin="round"/>
-  <path d="m78 249 178-151 178 151" fill="none" stroke="#d5ec77" stroke-width="25" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M219 429V317c0-21 17-38 38-38s38 17 38 38v112" fill="#182019" stroke="#d5ec77" stroke-width="14"/>
-  <path d="M256 260c-12-25-54-21-54 14 0 35 54 67 54 67s54-32 54-67c0-35-42-39-54-14Z" fill="#d5ec77" stroke="#182019" stroke-width="11" stroke-linejoin="round"/>
+  <title id="title">LoveMeAfter home and hammer logo</title>
+  <desc id="desc">A white home with an architectural entry and hammer on a deep plum rounded square</desc>
+  <rect width="512" height="512" rx="112" fill="#211824"/>
+  <path d="M78 249 256 98l178 151" fill="none" stroke="#ff3b98" stroke-width="25" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M106 238v166c0 14 11 25 25 25h250c14 0 25-11 25-25V238" fill="#302733" stroke="#ff3b98" stroke-width="18" stroke-linejoin="round"/>
+  <path d="M180 429V348M332 429V348" stroke="#ff9ccc" stroke-width="14" stroke-linecap="round" opacity=".65"/>
+  <rect x="216" y="288" width="80" height="141" rx="12" fill="#211824" stroke="#fff5fa" stroke-width="14"/>
+  <circle cx="270" cy="362" r="7" fill="#ff9ccc"/>
+  <path d="M154 286h42v42h-42zM316 286h42v42h-42z" fill="#ff9ccc"/>
   <g transform="translate(334 86) rotate(35 38 70)">
-    <path d="M36 36h18v116H36z" fill="#f7f5f0"/>
-    <path d="M0 0h90v42c0 12-10 22-22 22H22C10 64 0 54 0 42V0Z" fill="#d5ec77" stroke="#182019" stroke-width="10" stroke-linejoin="round"/>
-    <path d="M22 16h46" stroke="#182019" stroke-width="9" stroke-linecap="round"/>
+    <path d="M36 36h18v116H36z" fill="#fff5fa"/>
+    <path d="M0 0h90v42c0 12-10 22-22 22H22C10 64 0 54 0 42V0Z" fill="#ff3b98" stroke="#211824" stroke-width="10" stroke-linejoin="round"/>
+    <path d="M22 16h46" stroke="#211824" stroke-width="9" stroke-linecap="round"/>
   </g>
-  <circle cx="114" cy="397" r="13" fill="#d5ec77"/>
-  <circle cx="398" cy="397" r="13" fill="#d5ec77"/>
 </svg>
