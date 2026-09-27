@@ -10,6 +10,26 @@ service cloud.firestore {
       allow create: if true;
       allow read, update, delete: if signedIn();
     }
+
+    // The public assessment form may only queue a notification to our fixed inbox,
+    // and only in the same atomic write as its corresponding lead.
+    match /mail/{mailId} {
+      allow create: if request.resource.data.keys().hasOnly(["to", "from", "replyTo", "message", "source", "leadId", "createdAt"])
+        && request.resource.data.keys().hasAll(["to", "from", "message", "source", "leadId", "createdAt"])
+        && request.resource.data.to == ["hello@lovemeafter.com"]
+        && request.resource.data.from == "LoveMeAfter <hello@lovemeafter.com>"
+        && request.resource.data.source == "sitewide_free_assessment_dialog"
+        && request.resource.data.leadId is string
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.message is map
+        && request.resource.data.message.keys().hasOnly(["subject", "text", "html"])
+        && request.resource.data.message.keys().hasAll(["subject", "text", "html"])
+        && request.resource.data.message.subject is string
+        && request.resource.data.message.text is string
+        && request.resource.data.message.html is string
+        && getAfter(/databases/$(database)/documents/leads/$(request.resource.data.leadId)).data.source == "sitewide_free_assessment_dialog";
+      allow read, update, delete: if signedIn();
+    }
     match /contractorApplications/{applicationId} {
       allow create: if true;
       allow read, update, delete: if signedIn();

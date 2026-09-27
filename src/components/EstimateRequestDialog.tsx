@@ -1,4 +1,4 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { collection, doc, serverTimestamp, writeBatch } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, LoaderCircle, MapPin, X } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
@@ -95,6 +95,9 @@ export function EstimateRequestDialog() {
     const formData = new FormData(event.currentTarget);
     const selectedProject = String(formData.get("project") ?? "Other / not sure");
     try {
+      if (requestedVisit && (!requestedVisit.date || !requestedVisit.time || !requestedVisit.dateLabel)) {
+        throw new Error("Please choose a valid preferred appointment time.");
+      }
       const lead = {
         name: String(formData.get("name") ?? "").trim(),
         phone: String(formData.get("phone") ?? "").trim(),
@@ -111,7 +114,8 @@ export function EstimateRequestDialog() {
         stage: requestedVisit ? "appointment_requested" : "new",
         source: "sitewide_free_assessment_dialog",
       };
-      const leadRef = await addDoc(collection(db, "leads"), lead);
+      const leadRef = doc(collection(db, "leads"));
+      const mailRef = doc(collection(db, "mail"));
       const details = [
         ["Name", lead.name], ["Phone", lead.phone], ["Email", lead.email || "Not provided"],
         ["Project", lead.service], ["Timing", lead.timing || "Not specified"],
@@ -122,7 +126,9 @@ export function EstimateRequestDialog() {
       ] as const;
       const text = ["New LoveMeAfter free assessment request", "", ...details.map(([label, value]) => `${label}: ${value}`)].join("\n");
       const html = `<div style="font-family:Arial,sans-serif;color:#211824;max-width:640px"><p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8c4b69">New free assessment request</p><h1 style="font-size:24px">A homeowner is ready to talk.</h1><table style="width:100%;border-collapse:collapse">${details.map(([label, value]) => `<tr><th style="padding:10px 12px;text-align:left;border-top:1px solid #eee;vertical-align:top">${escapeHtml(label)}</th><td style="padding:10px 12px;border-top:1px solid #eee">${escapeHtml(value)}</td></tr>`).join("")}</table></div>`;
-      await addDoc(collection(db, "mail"), {
+      const batch = writeBatch(db);
+      batch.set(leadRef, lead);
+      batch.set(mailRef, {
         to: ["hello@lovemeafter.com"],
         from: "LoveMeAfter <hello@lovemeafter.com>",
         ...(lead.email ? { replyTo: lead.email } : {}),
@@ -131,10 +137,14 @@ export function EstimateRequestDialog() {
         leadId: leadRef.id,
         createdAt: serverTimestamp(),
       });
+      await batch.commit();
       void trackEvent("estimate_request_submitted", { service: selectedProject, source: "sitewide_assessment_dialog" });
       setSubmitted(true);
-    } catch {
-      setError("We couldn’t send this just now. Please try again or call us at 424 426 0760.");
+    } catch (value) {
+      console.error("Could not save assessment request and email notification", value);
+      setError(value instanceof Error && value.message === "Please choose a valid preferred appointment time."
+        ? value.message
+        : "We couldn’t submit this just now, so no request was saved. Please try again or call us at 424 426 0760.");
     } finally {
       setIsSubmitting(false);
     }
@@ -178,7 +188,7 @@ export function EstimateRequestDialog() {
                 <span className="flex size-16 items-center justify-center rounded-full border border-[#ef8eb4]/40 bg-[#ef8eb4]/10 text-[#ffc6dc]"><CheckCircle2 className="size-8" /></span>
                 <p className="mt-6 text-[10px] font-bold tracking-[.2em] text-[#ffc6dc] uppercase">Request received</p>
                 <h3 className="mt-3 font-serif text-3xl tracking-[-.04em] sm:text-4xl">We’ll take it from here.</h3>
-                <p className="mt-3 max-w-md text-sm leading-6 text-white/75">A coordinator will review what you shared and follow up. No obligation to move forward.</p>
+                <p className="mt-3 max-w-md text-sm leading-6 text-white/75">Your request was saved and an email notification was queued for our team. A coordinator will follow up to confirm details and your preferred visit time. Your appointment is not booked until the team confirms it.</p>
                 <Button type="button" onClick={() => setOpen(false)} className="mt-7 rounded-full bg-[#ef8eb4] px-6 font-semibold text-[#24131d] hover:bg-[#f6b0ca]">Done</Button>
               </div>
             ) : (
@@ -191,7 +201,7 @@ export function EstimateRequestDialog() {
                   <label className="block"><span className="mb-2 block text-xs font-semibold text-white/85">When are you hoping to start?</span><select name="timing" defaultValue="" className="h-12 w-full rounded-xl border border-white/15 bg-[#302733] px-4 text-sm text-white outline-none transition focus:border-[#ef8eb4]/80 focus:ring-2 focus:ring-[#ef8eb4]/20"><option value="">Choose timing</option>{TIMING.map((item) => <option key={item}>{item}</option>)}</select></label>
                   <label className="block"><span className="mb-2 block text-xs font-semibold text-white/85">Where is the home? <span className="font-normal text-white/50">(optional)</span></span><div className="relative"><MapPin className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/45" /><input name="address" autoComplete="street-address" placeholder="Street address" className="h-12 w-full rounded-xl border border-white/15 bg-white/[.06] pl-10 pr-4 text-sm text-white outline-none transition placeholder:text-white/40 focus:border-[#ef8eb4]/80 focus:ring-2 focus:ring-[#ef8eb4]/20" /></div></label>
                   <label className="block"><span className="mb-2 block text-xs font-semibold text-white/85">City, state &amp; ZIP <span className="font-normal text-white/50">(optional)</span></span><input name="city" autoComplete="address-level2" placeholder="City, state & ZIP" className="h-12 w-full rounded-xl border border-white/15 bg-white/[.06] px-4 text-sm text-white outline-none transition placeholder:text-white/40 focus:border-[#ef8eb4]/80 focus:ring-2 focus:ring-[#ef8eb4]/20" /></label>
-                  {requestedVisit && <div className="rounded-xl border border-[#ef8eb4]/30 bg-[#ef8eb4]/[.08] px-4 py-3 text-sm text-white/85 sm:col-span-2"><span className="font-semibold text-[#ffc6dc]">Requested in-home visit:</span> {requestedVisit.dateLabel} · {requestedVisit.time} (45 minutes). The team will follow up to confirm availability.</div>}
+                  {requestedVisit && <div className="rounded-xl border border-[#ef8eb4]/30 bg-[#ef8eb4]/[.08] px-4 py-3 text-sm text-white/85 sm:col-span-2"><span className="font-semibold text-[#ffc6dc]">Preferred in-home visit:</span> {requestedVisit.dateLabel} · {requestedVisit.time} (45 minutes). This is a request, not a confirmed booking; the team will verify availability and follow up.</div>}
                   <label className="block sm:col-span-2"><span className="mb-2 block text-xs font-semibold text-white/85">What matters most? <span className="font-normal text-white/50">(optional)</span></span><textarea name="priorities" rows={3} placeholder="Comfort, protection, less maintenance, resale, budget, timing…" className="w-full resize-y rounded-xl border border-white/15 bg-white/[.06] px-4 py-3 text-sm leading-5 text-white outline-none transition placeholder:text-white/40 focus:border-[#ef8eb4]/80 focus:ring-2 focus:ring-[#ef8eb4]/20" /></label>
                 </div>
                 {error && <p role="alert" className="mt-4 rounded-xl border border-red-300/25 bg-red-950/35 px-4 py-3 text-sm leading-5 text-red-100">{error}</p>}
