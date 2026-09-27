@@ -48,6 +48,15 @@ function getProductImageSource(imageUrl: string) {
   }
 }
 
+function getManufacturerPagePreview(product: ProductOption) {
+  const pageUrl = product.productUrl ?? product.officialUrl;
+  return {
+    url: `https://s.wordpress.com/mshots/v1/${encodeURIComponent(pageUrl)}?w=1200`,
+    source: "Manufacturer page preview" as const,
+    alt: `${product.brand} ${product.line} page preview from ${new URL(pageUrl).hostname}`,
+  };
+}
+
 export function getProductImage(product: ProductOption) {
   if (product.imageUrl) {
     const source = getProductImageSource(product.imageUrl);
@@ -60,5 +69,5 @@ export function getProductImage(product: ProductOption) {
     }
   }
 
-  return getIllustrativeProductImage(product);
+  return getManufacturerPagePreview(product);
 }
