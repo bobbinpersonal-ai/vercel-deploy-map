@@ -62,6 +62,7 @@ const ProjectProcess = lazyRoute(() => import("./pages/ProjectProcess.tsx"));
 const Conditions = lazyRoute(() => import("./pages/Conditions.tsx"));
 const Trades = lazyRoute(() => import("./pages/Trades.tsx"));
 const ContractorPartners = lazyRoute(() => import("./pages/ContractorPartners.tsx"));
+const PartnershipNetwork = lazyRoute(() => import("./pages/PartnershipNetwork.tsx"));
 const ContractorApplications = lazyRoute(() => import("./pages/ContractorApplications.tsx"));
 const MarketContractors = lazyRoute(() => import("./pages/MarketContractors.tsx"));
 const AuthPage = lazyRoute(() => import("./pages/Auth.tsx"));
@@ -210,6 +211,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/conditions" element={<Conditions />} />
             <Route path="/trades" element={<Trades />} />
             <Route path="/contractors" element={<ContractorPartners />} />
+            <Route path="/partnerships" element={<PartnershipNetwork />} />
             <Route path="/contractors/:slug" element={<MarketContractors />} />
             <Route path="/areas" element={<Areas />} />
             <Route path="/areas/:slug" element={<AreaLanding />} />
