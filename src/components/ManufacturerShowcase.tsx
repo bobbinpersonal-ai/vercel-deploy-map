@@ -18,7 +18,6 @@ function ProductImage({ product, className = "" }: { product: ProductOption; cla
   return (
     <div className={`relative overflow-hidden ${className}`}>
       <img src={resolvedImage.url} alt={resolvedImage.alt} loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setFailed(true)} className="size-full w-full object-cover" />
-      <span className="absolute bottom-3 left-3 rounded-full border border-white/20 bg-[#111714]/85 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.12em] text-white/90 backdrop-blur">{resolvedImage.source}</span>
     </div>
   );
 }
@@ -125,7 +124,7 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
                 </h2>
               </div>
               <p className="max-w-md text-sm leading-6 text-white/70">
-                Tap a manufacturer to review product fit, warranty caveats, and the installation details to confirm in the written scope.
+                Tap a manufacturer to explore product lines, warranties, and installation details.
               </p>
             </div>
             <div className="mt-6 flex flex-wrap gap-3">
@@ -162,7 +161,7 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
                 The product choices behind your project.
               </h2>
               <p className="mt-4 text-base leading-7 text-white/75">{family.intro}</p>
-              <p className="mt-3 text-sm leading-6 text-white/70">Compare the complete installed system, not just the visible finish. Choose a brand to see its official suite, product imagery, details, and current manufacturer information.</p>
+              <p className="mt-3 text-sm leading-6 text-white/70">Compare the complete installed system, not just the visible finish. Choose a brand to explore its product suite and details.</p>
               <a href="#manufacturer-options" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#d5ec77]">Explore manufacturer options <ArrowDown className="size-4" /></a>
             </div>
             <div className="overflow-hidden rounded-3xl border border-white/10 bg-[#172019] p-5 sm:p-7">
@@ -190,7 +189,6 @@ export function ManufacturerShowcase({ slug, compact = false }: ManufacturerShow
             <p className="font-semibold text-white">Two warranties. Two kinds of coverage.</p>
             <p className="mt-1 text-white/70">LoveMeAfter provides a 50-year workmanship warranty for eligible installation work under its written terms. Some manufacturer product warranties also extend up to 50 years for eligible products; manufacturer coverage is separate, product-specific, and subject to the manufacturer’s current terms, registration, maintenance, and exclusions. Neither warranty automatically covers every product, labor item, finish, or failure.</p>
           </div>
-          <p className="mt-4 text-[10px] leading-4 text-white/55">Every product choice includes an image. Images are labeled as manufacturer product photos when hosted by that manufacturer; otherwise, they are clearly marked illustrative product references and may not depict the exact brand, model, or configuration.</p>
         </div>
       </section>
       <ProductDetailsDialog product={selectedProduct} onClose={() => setSelectedProduct(null)} />

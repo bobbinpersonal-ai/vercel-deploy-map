@@ -37,10 +37,9 @@ export function BrandProductExample({ slug, label, brand, productLine, domain }:
           />
         ) : (
           <div className="flex size-full items-center justify-center bg-[radial-gradient(ellipse_at_50%_45%,rgba(239,142,180,.2),transparent_65%),linear-gradient(140deg,#352a38,#211824)] px-8 text-center">
-            <div><p className="text-[10px] font-bold tracking-[.16em] text-[#ffc6dc] uppercase">Manufacturer product line</p><OfficialBrandLogo brand={activeProduct?.brand ?? brand} domain={activeProduct?.domain ?? domain} className="mx-auto mt-4 size-12 rounded-lg bg-white p-2" /><p className="mt-3 text-lg font-semibold text-white">{activeProduct?.brand ?? brand}</p><p className="mt-1 text-sm text-white/75">{activeProduct?.line ?? productLine ?? label}</p><p className="mt-3 text-[10px] text-white/50">Open manufacturer product page for its current product image.</p></div>
+            <div><p className="text-[10px] font-bold tracking-[.16em] text-[#ffc6dc] uppercase">Manufacturer product line</p><OfficialBrandLogo brand={activeProduct?.brand ?? brand} domain={activeProduct?.domain ?? domain} className="mx-auto mt-4 size-12 rounded-lg bg-white p-2" /><p className="mt-3 text-lg font-semibold text-white">{activeProduct?.brand ?? brand}</p><p className="mt-1 text-sm text-white/75">{activeProduct?.line ?? productLine ?? label}</p></div>
           </div>
         )}
-        <span className="absolute left-4 top-4 rounded-full border border-white/25 bg-[#211824]/80 px-3 py-1 text-[10px] font-bold tracking-[.12em] text-white backdrop-blur">{resolvedProductImage?.source ?? "PRODUCT FAMILY"}</span>
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#211824] via-[#211824]/75 to-transparent px-5 pb-4 pt-12">
           <p className="text-[10px] font-bold tracking-[.16em] text-[#ffc6dc] uppercase">{activeProduct?.brand ?? brand} · {activeProduct?.line ?? "Product collection"}</p>
           {activeProduct?.productUrl && <a href={activeProduct.productUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-white underline-offset-4 hover:text-[#ffc6dc] hover:underline">See manufacturer's product details <ExternalLink className="size-3" /></a>}
@@ -59,7 +58,7 @@ export function BrandProductExample({ slug, label, brand, productLine, domain }:
           </div>
         </div>
       )}
-      <figcaption className="px-4 py-3 text-xs leading-5 text-white/75">Images are labeled as manufacturer photos when official; otherwise they are illustrative examples, not the exact manufacturer product. Confirm exact configurations, specifications, and local availability for your project.</figcaption>
+
     </figure>
   );
 }

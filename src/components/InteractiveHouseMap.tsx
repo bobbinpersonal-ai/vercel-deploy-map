@@ -53,7 +53,7 @@ export function InteractiveHouseMap() {
         <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] bg-[#d8e2d0]">
           <img
             src={px(VIEWS[view].image, 1600)}
-            alt={`${VIEWS[view].label} reference photo`}
+            alt={VIEWS[view].label}
             className="absolute inset-0 size-full object-cover transition duration-700"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#101610]/60 via-transparent to-transparent" />

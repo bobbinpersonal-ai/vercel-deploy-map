@@ -209,7 +209,7 @@ export default function ProjectProcess() {
                 <figure key={label} className="group overflow-hidden rounded-2xl border border-[#1d211d]/10 bg-white">
                   <img
                     src={`https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=700`}
-                    alt={`${label} illustrative field reference`}
+                    alt={label}
                     loading="lazy"
                     className="h-40 w-full object-cover transition duration-700 group-hover:scale-[1.04]"
                   />

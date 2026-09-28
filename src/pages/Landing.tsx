@@ -2,7 +2,6 @@ import { trackEvent } from "@/lib/firebase";
 import { usePageMeta } from "@/components/PageMeta";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   BadgeCheck,
@@ -34,7 +33,7 @@ import { HomeImprovementProcess } from "@/components/HomeImprovementProcess";
 import { BrandPillsShowcase } from "@/components/BrandPillsShowcase";
 import { openEstimateRequest } from "@/lib/estimate-request";
 
-/** Real product photography shown on the homepage, grouped by the trade. */
+/** Project and material photos shown on the homepage, grouped by the trade. */
 const PRODUCT_STRIP: [string, string, number][] = [
   ["Kitchen", "Cabinetry", 8146322],
   ["Kitchen", "Sink & faucet", 19836790],
@@ -89,6 +88,17 @@ const CONSTRUCTION_GALLERY: [string, string, number][] = [
   ["Project coordination", "Crew meeting on site", 8070723],
 ];
 
+const HERO_PROJECTS: [string, string, string][] = [
+  ["Roofing", "roofing", px(237907, 1400)],
+  ["Kitchens", "kitchens", px(4030055, 1000)],
+  ["Bathrooms", "bathrooms", px(6238612, 1000)],
+  ["Windows", "windows", px(39634957, 1000)],
+  ["Siding", "siding", "/images/products/imgi_5_Alside_CHO_Beauty5-1024x551.jpg"],
+  ["Decks & porches", "decks", px(33017851, 1000)],
+  ["Flooring", "flooring", px(11126101, 1000)],
+  ["Heating & cooling", "hvac", px(18725613, 1000)],
+  ["Patios & outdoor spaces", "patios", px(10855255, 1000)],
+];
 
 const PHONE_DISPLAY = "424 426 0760";
 const PHONE_HREF = "tel:+14244260760";
@@ -272,42 +282,52 @@ export default function Landing() {
         </div>
       )}
 
-      <section id="top" className="landing-hero relative isolate min-h-[730px] bg-transparent text-white">
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(20,12,22,.92)_0%,rgba(20,12,22,.67)_44%,rgba(20,12,22,.22)_100%),linear-gradient(0deg,rgba(20,12,22,.24),transparent_45%),url('https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=2400&q=90')] bg-cover bg-[center_58%]" />
-        <div className="fixed inset-0 z-0 overflow-hidden bg-[#182019] pointer-events-none">
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=2400&q=90')] bg-cover bg-center"
-          />
-
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,12,22,.70)_0%,rgba(20,12,22,.42)_46%,rgba(20,12,22,.10)_100%)]" />
-        </div>
-        <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-5 pb-20 pt-36 sm:px-8 lg:grid-cols-[1.08fr_.92fr] lg:px-10 lg:pb-28 lg:pt-48">
-          <div className="max-w-2xl">
-            <div className="mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase"><span className="size-2 rounded-full bg-[#d5ec77]" /> Free assessment · no-pressure start</div>
-            <h1 className="text-5xl leading-[.96] font-semibold tracking-[-.06em] sm:text-7xl lg:text-[6.4rem]">Make home feel <span className="text-[#d5ec77]">right again.</span></h1>
-            <p className="mt-8 max-w-lg text-lg leading-8 text-white/80">We take on projects with a clear homeowner benefit: protecting your home, improving everyday life, or supporting its long-term value. If the work doesn’t make sense for you, we’ll say so.</p>
-            <div className="mt-10 flex flex-wrap gap-3"><Button onClick={goToEstimate} className="h-14 rounded-full bg-[#d5ec77] px-7 text-base font-semibold text-[#1d211d] hover:bg-[#e1f895]">Start with a free assessment <ArrowUpRight className="ml-2 size-5" /></Button><button onClick={goToSchedule} className="flex h-14 items-center gap-2 rounded-full border border-white/35 px-6 text-sm font-medium hover:bg-white/10"><CalendarDays className="size-4" /> Book an in-person design consultation</button><a href={PHONE_HREF} className="flex h-14 items-center gap-2 rounded-full border border-white/25 px-6 text-sm font-medium hover:bg-white/10"><Phone className="size-4" /> Talk to a human</a></div>
-            <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3 text-sm text-white/75"><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> No obligation</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> Written scope</span><span className="flex items-center gap-2"><Check className="size-4 text-[#d5ec77]" /> Required credentials verified for the scope</span></div>
-            <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl border border-white/30 bg-[#141b15]/55 px-4 py-3 backdrop-blur-md">
-              <span className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[.16em] text-[#d5ec77] uppercase"><CircleDollarSign className="size-4" /> Financing available</span>
-              <span className="max-w-md text-xs leading-5 text-white/85">Spread the cost instead of paying it all at once — compare options from recognized home improvement lenders.</span>
-              <Link to="/financing" className="text-xs font-semibold text-[#d5ec77] underline underline-offset-4">See lenders <ArrowUpRight className="ml-0.5 inline size-3.5" /></Link>
+      <section id="top" className="landing-hero relative isolate bg-[#f3f0e8] text-[#1d211d]">
+        <div className="mx-auto max-w-7xl px-4 pb-7 pt-28 sm:px-8 sm:pt-32 lg:px-10 lg:pt-36">
+          <div className="mb-6 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-[10px] font-bold tracking-[.18em] text-[#71803d] uppercase">Home projects, at a glance</p>
+              <h1 className="mt-2 text-4xl leading-[.94] tracking-[-.055em] sm:text-6xl">Make home feel <span className="text-[#93442e]">right again.</span></h1>
+            </div>
+            <div className="flex items-center justify-between gap-4 sm:justify-end">
+              <p className="max-w-[220px] text-xs leading-5 text-[#62695f] sm:text-sm">From the roof to the rooms you live in every day.</p>
+              <Button onClick={goToEstimate} className="h-11 shrink-0 rounded-full bg-[#93442e] px-5 text-sm font-semibold text-white hover:bg-[#793923]">Free assessment <ArrowUpRight className="ml-1 size-4" /></Button>
             </div>
           </div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, delay: .15 }} className="self-end rounded-3xl border border-white/15 bg-[#182019]/90 p-6 text-white shadow-2xl backdrop-blur-xl sm:p-8 lg:mb-1">
-            <p className="text-xs font-semibold tracking-[.16em] text-[#d5ec77] uppercase">A clearer way to decide</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-.05em] sm:text-4xl">Know what the project gives back.</h2>
-            <p className="mt-4 text-sm leading-6 text-white/75">Start with the home outcome—not a product pitch. We’ll help you weigh protection, everyday comfort, maintenance, and resale against a written scope and real price.</p>
-            <div className="mt-7 space-y-4 border-t border-white/10 pt-6">
-              {[[ShieldCheck, "Protect what you own", "Get ahead of avoidable damage and costly repeat repairs."], [House, "Feel the difference daily", "Make rooms quieter, more comfortable, safer, or easier to maintain."], [CircleDollarSign, "Choose a payment path", "Compare cash, your own financing, or optional lender offers—subject to approval."]].map(([Icon, title, detail]) => {
-                const BenefitIcon = Icon as typeof ShieldCheck;
-                return <div key={title as string} className="flex gap-3"><span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#d5ec77]/10 text-[#d5ec77]"><BenefitIcon className="size-4" /></span><div><p className="text-sm font-semibold">{title as string}</p><p className="mt-1 text-xs leading-5 text-white/65">{detail as string}</p></div></div>;
-              })}
+          <div className="grid auto-rows-[118px] grid-cols-2 gap-2 sm:auto-rows-[170px] sm:gap-3 md:auto-rows-[180px] md:grid-cols-4">
+            {HERO_PROJECTS.map(([label, slug, image], index) => (
+              <Link key={label} to={`/services/${slug}`} aria-label={`Explore ${label.toLowerCase()} projects`} className={`group relative min-h-0 overflow-hidden bg-[#d9ded0] ${index === 0 ? "col-span-2 row-span-2 min-h-[245px] sm:min-h-[350px] md:min-h-0" : ""}`}>
+                <img src={image} alt={label} fetchPriority={index < 2 ? "high" : "auto"} loading={index < 2 ? "eager" : "lazy"} decoding="async" className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-transparent transition group-hover:from-black/75" />
+                <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-3 text-sm font-semibold text-white sm:p-4 sm:text-base"><span>{label}</span><ArrowUpRight className="size-4 shrink-0 opacity-70 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-4 flex items-center justify-between gap-4 text-xs text-[#62695f]">
+            <span>Exterior · kitchens · baths · systems · outdoor living</span>
+            <Link to="/services" className="shrink-0 font-semibold text-[#93442e]">All project types <ArrowUpRight className="ml-1 inline size-3.5" /></Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative z-10 bg-[#1d211d] text-white">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-8 sm:py-16 lg:px-10 lg:py-20">
+          <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-[10px] font-bold tracking-[.18em] text-[#d5ec77] uppercase">The signs a home needs attention</p>
+              <h2 className="mt-2 max-w-2xl text-3xl leading-[.98] tracking-[-.045em] sm:text-5xl">Small problems can leave a big mark.</h2>
             </div>
-            <Button onClick={goToEstimate} className="mt-8 h-12 w-full rounded-full bg-[#d5ec77] text-sm font-bold text-[#1d211d] hover:bg-[#e1f895]">Get my free home assessment <ArrowUpRight className="ml-2 size-4" /></Button>
-            <p className="mt-3 text-center text-[11px] leading-5 text-white/55">No obligation · written scope · required credentials verified for the work</p>
-          </motion.div>
+            <Link to="/conditions" className="inline-flex shrink-0 items-center text-sm font-semibold text-[#d5ec77]">Explore home conditions <ArrowUpRight className="ml-1 size-4" /></Link>
+          </div>
+          <div className="grid auto-rows-[112px] grid-cols-2 gap-2 sm:auto-rows-[145px] sm:grid-cols-4 sm:gap-3">
+            {DAMAGE_PHOTOS.slice(0, 10).map(([label, id], index) => (
+              <figure key={label} className={`group relative overflow-hidden bg-[#30382f] ${index === 0 || index === 6 ? "col-span-2 row-span-2" : index === 3 ? "col-span-2" : ""}`}>
+                <img src={px(id, 850)} alt={label} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                <figcaption className="absolute inset-x-0 bottom-0 p-3 text-xs font-semibold text-white sm:p-4 sm:text-sm">{label}</figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -470,7 +490,7 @@ export default function Landing() {
           <div className="mt-9 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {CONSTRUCTION_GALLERY.map(([trade, label, id], index) => (
               <figure key={label} className={`group relative overflow-hidden rounded-2xl bg-[#101510] ${index === 0 || index === 5 ? "row-span-2 min-h-[240px] sm:min-h-[320px]" : "min-h-[150px] sm:min-h-[155px]"}`}>
-                <img src={px(id, 900)} alt={`${label} reference photo`} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-105" />
+                <img src={px(id, 900)} alt={label} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f1610]/85 via-[#0f1610]/10 to-transparent" />
                 <figcaption className="absolute inset-x-0 bottom-0 p-4">
                   <span className="text-[9px] font-bold tracking-[.14em] text-[#d5ec77] uppercase">{trade}</span>
@@ -479,11 +499,10 @@ export default function Landing() {
               </figure>
             ))}
           </div>
-          <p className="mt-4 text-xs leading-5 text-white/55">Illustrative reference photography—not completed LoveMeAfter projects. Our team documents each home and job separately.</p>
         </div>
       </section>
 
-      <section className="video-through-section relative z-10 border-y border-[#1d211d]/10 bg-[#182019]/88 text-white backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-24"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase">What we actually find</p><h2 className="mt-4 max-w-2xl text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-5xl">Storm damage, rot, mold, and failed work.</h2><p className="mt-5 max-w-2xl text-base leading-7 text-white/70">Half of this business is seeing what other people missed or covered up. Here is the kind of condition our crews document before anyone writes a scope.</p></div><Link to="/conditions" className="inline-flex shrink-0 items-center text-sm font-semibold text-[#d5ec77]">Open the field conditions library <ArrowUpRight className="ml-1 size-4" /></Link></div><div className="mt-10 grid auto-rows-[96px] grid-cols-2 gap-3 sm:auto-rows-[118px] sm:grid-cols-4">{DAMAGE_PHOTOS.slice(0, 10).map(([label, id], index) => <figure key={label} className={`group relative overflow-hidden rounded-2xl bg-[#101510] ${index === 0 || index === 6 ? "col-span-2 row-span-2" : index === 3 ? "col-span-2" : ""}`}><div className="absolute inset-0 bg-cover bg-center transition duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${px(id, 700)})` }} /><div className="absolute inset-0 bg-gradient-to-t from-[#0f1610]/85 via-transparent to-transparent" /><figcaption className="absolute inset-x-0 bottom-0 p-3 text-[11px] font-semibold text-white">{label}</figcaption></figure>)}</div><div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start"><p className="text-xs leading-5 text-white/55">Field condition examples help explain what an inspection may uncover. Your home gets its own photos and written scope.</p><aside className="rounded-2xl border border-white/10 bg-[#211824] p-5 text-white sm:p-6"><p className="text-xs font-semibold tracking-[.14em] text-[#ef8eb4] uppercase">What return can mean</p><ul className="mt-4 space-y-3 text-sm leading-6 text-white/75"><li><strong className="text-white">Prevent escalation:</strong> address documented water entry before it spreads.</li><li><strong className="text-white">Improve daily life:</strong> make rooms safer, more comfortable, or easier to maintain.</li><li><strong className="text-white">Support resale:</strong> use local scope and sourced benchmarks—not a guaranteed percentage.</li></ul></aside></div></div></section>
+      <section className="video-through-section relative z-10 border-y border-[#1d211d]/10 bg-[#182019]/88 text-white backdrop-blur-sm"><div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-24"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div>              <p className="text-xs font-semibold tracking-[.18em] text-[#d5ec77] uppercase">Problems worth catching early</p><h2 className="mt-4 max-w-2xl text-4xl font-semibold leading-[.96] tracking-[-.055em] sm:text-5xl">Storm damage, rot, mold, and failed work.</h2><p className="mt-5 max-w-2xl text-base leading-7 text-white/70">Water intrusion, worn materials, and storm damage can grow into bigger repairs when left unaddressed.</p></div><Link to="/conditions" className="inline-flex shrink-0 items-center text-sm font-semibold text-[#d5ec77]">Open the field conditions library <ArrowUpRight className="ml-1 size-4" /></Link></div><div className="mt-10 grid auto-rows-[96px] grid-cols-2 gap-3 sm:auto-rows-[118px] sm:grid-cols-4">            {DAMAGE_PHOTOS.slice(0, 10).map(([label, id], index) => <figure key={label} className={`group relative overflow-hidden rounded-2xl bg-[#101510] ${index === 0 || index === 6 ? "col-span-2 row-span-2" : index === 3 ? "col-span-2" : ""}`}><div className="absolute inset-0 bg-cover bg-center transition duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${px(id, 700)})` }} /><div className="absolute inset-0 bg-gradient-to-t from-[#0f1610]/85 via-transparent to-transparent" /><figcaption className="absolute inset-x-0 bottom-0 p-3 text-[11px] font-semibold text-white">{label}</figcaption></figure>)}</div><div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start"><p className="text-xs leading-5 text-white/55">Your home gets a thorough inspection and a written scope before work begins.</p><aside className="rounded-2xl border border-white/10 bg-[#211824] p-5 text-white sm:p-6"><p className="text-xs font-semibold tracking-[.14em] text-[#ef8eb4] uppercase">What return can mean</p><ul className="mt-4 space-y-3 text-sm leading-6 text-white/75"><li><strong className="text-white">Prevent escalation:</strong> address documented water entry before it spreads.</li><li><strong className="text-white">Improve daily life:</strong> make rooms safer, more comfortable, or easier to maintain.</li><li><strong className="text-white">Support resale:</strong> use local scope and sourced benchmarks—not a guaranteed percentage.</li></ul></aside></div></div></section>
 
       <section className="video-through-section relative z-10 mx-auto grid max-w-7xl gap-12 bg-[#f7f5f0]/68 px-5 py-24 text-[#1d211d] backdrop-blur-sm sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:px-10 lg:py-32"><div><p className="text-xs font-semibold tracking-[.18em] text-[#71803d] uppercase">A better standard</p><h2 className="mt-4 text-4xl font-semibold leading-[1] tracking-[-.055em] sm:text-6xl">The details are the difference.</h2><p className="mt-6 max-w-md text-lg leading-8 text-[#596357]">We built LoveMeAfter around the parts homeowners usually have to chase: a callback, a real scope, proof of insurance, and someone accountable when the work is done.</p><Button onClick={goToEstimate} className="mt-8 rounded-full bg-[#1d211d] px-6 text-white hover:bg-[#30382f]">Start with a free assessment <ArrowUpRight className="ml-1 size-4" /></Button></div><div className="grid gap-3 sm:grid-cols-2"><div className="overflow-hidden rounded-2xl bg-[#eaf0d0]"><div className="h-44 bg-cover bg-center" style={{ backgroundImage: `url(${px(photoId(WORKER_PHOTOS, "Foreman on site"), 900)})` }} /><div className="p-7"><BadgeCheck className="size-6 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">A documented project review</h3><p className="mt-2 text-sm leading-6 text-[#65705e]">Before work begins, insurance, references, and credentials required for the trade and location are part of the project review. We keep the applicable records on file.</p></div></div><div className="overflow-hidden rounded-2xl bg-[#ece9e0]"><div className="h-44 bg-cover bg-center" style={{ backgroundImage: `url(${px(photoId(JOBSITE_PHOTOS, "Inspection checklist"), 900)})` }} /><div className="p-7"><ClipboardCheck className="size-6 text-[#71803d]" /><h3 className="mt-6 text-xl font-semibold">A written scope</h3><p className="mt-2 text-sm leading-6 text-[#65705e]">You get the inspection photos, what is included, what can wait, and what the work will actually cost — in writing, before you commit to anything.</p></div></div><div className="rounded-2xl bg-[#1d211d] p-7 text-white sm:col-span-2"><CircleDollarSign className="size-6 text-[#d5ec77]" /><h3 className="mt-10 text-xl font-semibold">No surprise fees, no pressure</h3><p className="mt-2 max-w-lg text-sm leading-6 text-white/75">The estimate is free. The decision stays yours — pay in full, or spread the cost with an optional home improvement loan from a recognized lender. We earn the job by being clear enough to trust.</p><Link to="/financing" className="mt-4 inline-flex items-center text-xs font-semibold text-[#d5ec77]">Compare lender options <ArrowUpRight className="ml-1 size-3.5" /></Link></div></div></section>
 

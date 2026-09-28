@@ -359,20 +359,8 @@
 }
 
 .site-theme .landing-hero {
-  min-height: min(860px, 100svh);
+  min-height: auto;
   isolation: isolate;
-}
-
-.site-theme .landing-hero > div:first-child {
-  filter: saturate(0.72);
-}
-
-.site-theme .landing-hero > div:nth-child(2) > div:first-child {
-  opacity: 0.48;
-}
-
-.site-theme .landing-hero > div:nth-child(2) > div:last-child {
-  background: linear-gradient(90deg, rgb(24 29 24 / 72%) 0%, rgb(24 29 24 / 38%) 58%, rgb(24 29 24 / 10%) 100%);
 }
 
 .site-theme .landing-hero h1 {

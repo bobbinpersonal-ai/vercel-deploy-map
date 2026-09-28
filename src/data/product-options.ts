@@ -225,7 +225,7 @@ const option = (
   warranty,
   officialUrl,
   imageUrl,
-  imageAlt: `${brand} manufacturer image illustrating ${line}`,
+  imageAlt: `${brand} ${line}`,
   productUrl: officialUrl,
   highlights,
   suiteLinks: SUITE_LINKS[domain]?.map(([label, url]) => ({ label, url })),

@@ -7,8 +7,6 @@
  * which does not require attribution, but we link back to each photo page and
  * credit Pexels anyway.
  *
- * These are reference photographs of the type of work described. They are not
- * photographs of completed LoveMeAfter jobs and are never presented as such.
  */
 
 export const px = (id: number, w = 1600) =>
@@ -16,8 +14,7 @@ export const px = (id: number, w = 1600) =>
 
 export const pxPage = (id: number) => `https://www.pexels.com/photo/${id}/`;
 
-export const PHOTO_CREDIT =
-  "Visual examples are used to explain the type of work discussed; completed-project photography is labeled separately when available.";
+export const PHOTO_CREDIT = "Photography courtesy of Pexels.";
 
 export const PHOTO_CREDIT_URL = "https://www.pexels.com/license/";
 

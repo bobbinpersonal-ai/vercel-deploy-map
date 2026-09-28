@@ -32,7 +32,7 @@ export function getIllustrativeProductImage(product: ProductOption) {
   return {
     url: pexelsPhoto(imageId),
     source: "Illustrative product reference" as const,
-    alt: `${product.line} example image; illustrative reference, not the exact ${product.brand} product`,
+    alt: product.line,
   };
 }
 
@@ -53,7 +53,7 @@ function getManufacturerPagePreview(product: ProductOption) {
   return {
     url: `https://s.wordpress.com/mshots/v1/${encodeURIComponent(pageUrl)}?w=1200`,
     source: "Manufacturer page preview" as const,
-    alt: `${product.brand} ${product.line} page preview from ${new URL(pageUrl).hostname}`,
+    alt: `${product.brand} ${product.line}`,
   };
 }
 
@@ -64,7 +64,7 @@ export function getProductImage(product: ProductOption) {
       return {
         url: product.imageUrl,
         source,
-        alt: product.imageAlt ?? `${product.brand} ${product.line} product photo`,
+        alt: product.imageAlt ?? `${product.brand} ${product.line}`,
       };
     }
   }
