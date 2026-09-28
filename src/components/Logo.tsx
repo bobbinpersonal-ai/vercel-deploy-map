@@ -11,7 +11,7 @@ export function LogoMark({ className, ...props }: SVGProps<SVGSVGElement>) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="LoveMeAfter home and hammer logo"
+      aria-label="LoveMeAfter Builders logo"
       className={className}
       {...props}
     >
@@ -55,10 +55,10 @@ export function Logo({
     <span className={`flex items-center gap-2.5 ${ink} ${className}`}>
       <LogoMark className="size-10 shrink-0" />
       <span className="flex flex-col leading-none">
-        <span className="brand-wordmark whitespace-nowrap text-lg font-bold tracking-[.025em] sm:text-xl">LoveMeAfter</span>
+        <span className="brand-wordmark whitespace-nowrap text-lg font-bold tracking-[.025em] sm:text-xl">LOVEMEAFTER</span>
         {!compact && (
           <span className={`mt-1 text-[9px] font-semibold tracking-[.16em] uppercase ${sub}`}>
-            HOMES, WELL CONSIDERED
+            BUILDERS
           </span>
         )}
       </span>
