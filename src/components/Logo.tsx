@@ -1,8 +1,8 @@
 import type { SVGProps } from "react";
 
 /**
- * The LoveMeAfter mark: a framed home with an architectural entry, windows,
- * and a hammer across the roofline. Drawn with currentColor for flexible use.
+ * The LoveMeAfter mark: a spare house silhouette with a clean, architectural
+ * entry and windows. Drawn with currentColor for flexible use.
  */
 export function LogoMark({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
@@ -29,20 +29,9 @@ export function LogoMark({ className, ...props }: SVGProps<SVGSVGElement>) {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M22.5 56.5V45M41.5 56.5V45"
-        stroke="currentColor"
-        strokeWidth="3.2"
-        strokeLinecap="round"
-        opacity="0.4"
-      />
-      <rect x="27" y="36" width="10" height="20.5" rx="1.5" stroke="currentColor" strokeWidth="3.2" />
-      <circle cx="34" cy="46.5" r="1" fill="currentColor" />
-      <path d="M17.5 35.5h5v5h-5zM41.5 35.5h5v5h-5z" fill="currentColor" opacity="0.8" />
-      <g transform="rotate(-37 49 15)">
-        <rect x="38" y="8" width="21" height="12.5" rx="3.5" fill="currentColor" />
-        <rect x="45.8" y="20" width="6.4" height="25" rx="3.2" fill="currentColor" />
-      </g>
+      <path d="M19 35h8v8h-8zM37 35h8v8h-8z" fill="currentColor" opacity="0.8" />
+      <path d="M24 56V45h16v11" stroke="currentColor" strokeWidth="3.2" strokeLinecap="square" />
+      <path d="M39 27 43 9l6 4-4 17" stroke="currentColor" strokeWidth="3.2" strokeLinecap="square" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -60,16 +49,16 @@ export function Logo({
   compact?: boolean;
   className?: string;
 }) {
-  const ink = tone === "black" ? "text-black" : "text-white";
-  const sub = tone === "black" ? "text-[#6b7368]" : "text-white/60";
+  const ink = tone === "black" ? "text-[#252923]" : "text-white";
+  const sub = tone === "black" ? "text-[#6b7368]" : "text-white/65";
   return (
     <span className={`flex items-center gap-2.5 ${ink} ${className}`}>
       <LogoMark className="size-10 shrink-0" />
       <span className="flex flex-col leading-none">
-        <span className="brand-wordmark whitespace-nowrap text-lg font-black tracking-[.055em] sm:text-xl">LOVEMEAFTER</span>
+        <span className="brand-wordmark whitespace-nowrap text-lg font-bold tracking-[.025em] sm:text-xl">LoveMeAfter</span>
         {!compact && (
-          <span className={`mt-1 text-[9px] font-bold tracking-[.2em] uppercase ${sub}`}>
-            BUILDERS
+          <span className={`mt-1 text-[9px] font-semibold tracking-[.16em] uppercase ${sub}`}>
+            HOMES, WELL CONSIDERED
           </span>
         )}
       </span>
