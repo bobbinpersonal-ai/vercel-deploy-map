@@ -130,7 +130,7 @@ export function BottomNav() {
         <div className="border-t border-[#252923]/15 bg-[#eeeae0]">
           <div className="flex items-center px-3 pt-2 sm:px-5">
             <Link to="/" aria-label="lovemeafter.com home" className="inline-flex rounded-sm transition hover:opacity-80">
-              <LogoMark className="size-7 sm:size-8" />
+              <LogoMark className="size-10 sm:size-12" />
             </Link>
           </div>
           <div
