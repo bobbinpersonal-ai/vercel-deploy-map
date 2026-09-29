@@ -3,9 +3,11 @@ import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 import { BRAND_PILLS } from "@/data/brand-pills";
 import { getProductFamily } from "@/data/product-options";
 import { BrandProductExample } from "@/components/BrandProductExample";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Phone } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
+import { openEstimateRequest } from "@/lib/estimate-request";
+import { Logo } from "@/components/Logo";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const RAIL_LENDERS = [
@@ -70,10 +72,11 @@ export function BottomNav() {
       <div
         aria-hidden={!showRail}
         inert={!showRail}
-        className={`fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#171b17]/95 shadow-[0_-12px_36px_rgba(0,0,0,.2)] backdrop-blur-md transition-all duration-300 ${showRail ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-full opacity-0"}`}
+        className={`fixed inset-x-0 bottom-0 z-50 shadow-[0_-12px_36px_rgba(0,0,0,.2)] transition-all duration-300 ${showRail ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-full opacity-0"}`}
       >
+        <div className="border-t border-[#252923]/15 bg-[#eeeae0]">
         <div className="flex items-center gap-1 px-1.5 sm:px-2">
-          <button type="button" onClick={() => moveRail(-1)} className="flex size-8 shrink-0 items-center justify-center rounded-sm border border-white/15 bg-white/[.05] text-white/75 transition hover:border-[#d5ec77]/60 hover:text-[#d5ec77]" aria-label="Scroll project and manufacturer pills left">
+          <button type="button" onClick={() => moveRail(-1)} className="flex size-8 shrink-0 items-center justify-center rounded-sm text-[#252923]/65 transition hover:text-[#93442e]" aria-label="Scroll project and manufacturer pills left">
             <ArrowLeft className="size-4" />
           </button>
           <div
@@ -124,7 +127,7 @@ export function BottomNav() {
                   <Link
                     to={`/services/${project.slug}`}
                     aria-current={activeService === project.slug ? "page" : undefined}
-                    className={`project-rail-pill rounded-sm border px-3.5 py-2 text-xs font-semibold whitespace-nowrap transition sm:text-[13px] ${activeService === project.slug ? "is-active" : ""}`}
+                    className={`project-rail-link px-1 py-2 text-xs font-semibold whitespace-nowrap transition sm:text-[13px] ${activeService === project.slug ? "is-active" : ""}`}
                   >
                     {project.label}
                   </Link>
@@ -134,7 +137,7 @@ export function BottomNav() {
                       type="button"
                       aria-label={`View ${brand.brand} details for ${project.label}`}
                       onClick={() => setSelectedBrand({ brand, projectLabel: project.label })}
-                      className="brand-rail-pill flex shrink-0 items-center gap-2 rounded-sm border px-3 py-2 text-xs font-semibold whitespace-nowrap transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d5ec77] sm:gap-2.5 sm:px-3.5 sm:py-2.5 sm:text-[13px]"
+                      className="brand-rail-pill flex shrink-0 items-center gap-2 rounded-sm border px-3 py-2 text-xs font-semibold whitespace-nowrap transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#93442e] sm:gap-2.5 sm:px-3.5 sm:py-2.5 sm:text-[13px]"
                     >
                       <OfficialBrandLogo brand={brand.brand} domain={brand.domain} className="size-[23px] rounded-full bg-white sm:size-8" />
                       {brand.brand}
@@ -167,9 +170,23 @@ export function BottomNav() {
               </Link>
             </div>
           </div>
-          <button type="button" onClick={() => moveRail(1)} className="flex size-8 shrink-0 items-center justify-center rounded-sm border border-white/15 bg-white/[.05] text-white/75 transition hover:border-[#d5ec77]/60 hover:text-[#d5ec77]" aria-label="Scroll project and manufacturer pills right">
+          <button type="button" onClick={() => moveRail(1)} className="flex size-8 shrink-0 items-center justify-center rounded-sm text-[#252923]/65 transition hover:text-[#93442e]" aria-label="Scroll project and manufacturer pills right">
             <ArrowRight className="size-4" />
           </button>
+        </div>
+        </div>
+        <div className="flex items-center justify-between gap-2 border-t border-white/10 bg-[#171b17] px-3 py-2 sm:px-5">
+          <Link to="/" aria-label="lovemeafter.com home" className="min-w-0 text-white/90 transition hover:text-white">
+            <Logo tone="light" compact className="gap-1.5 [&>svg]:size-7 [&_.brand-wordmark]:text-xs sm:[&>svg]:size-8 sm:[&_.brand-wordmark]:text-sm" />
+          </Link>
+          <div className="flex shrink-0 items-center gap-2">
+            <a href="tel:+14244260760" aria-label="Call LoveMeAfter at 424 426 0760" className="inline-flex h-10 items-center justify-center gap-1.5 rounded-sm border border-white/25 px-3 text-xs font-semibold text-white transition hover:border-white/50 hover:bg-white/10">
+              <Phone className="size-3.5" /><span className="sm:hidden">Call</span><span className="hidden sm:inline">424 426 0760</span>
+            </a>
+            <button type="button" onClick={() => openEstimateRequest()} className="inline-flex h-10 items-center justify-center gap-1 rounded-sm bg-[#93442e] px-3 text-xs font-semibold text-white transition hover:bg-[#7d3928]">
+              Free estimate <ArrowUpRight className="size-3.5" />
+            </button>
+          </div>
         </div>
       </div>
 

@@ -411,17 +411,16 @@
   color: #252923;
 }
 
-.project-rail-pill {
-  border-color: rgb(255 250 242 / 26%);
-  background-color: rgb(255 250 242 / 7%);
-  color: #fffaf2;
+.project-rail-link {
+  color: #252923;
+  text-decoration: none;
+  text-underline-offset: 4px;
 }
 
-.project-rail-pill:hover,
-.project-rail-pill.is-active {
-  border-color: var(--clay-light);
-  background-color: var(--clay);
-  color: #fffaf2;
+.project-rail-link:hover,
+.project-rail-link.is-active {
+  color: #93442e;
+  text-decoration: underline;
 }
 
 .brand-rail-pill {
