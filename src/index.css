@@ -131,8 +131,9 @@
   }
 }
 
-.site-theme main > header {
-  display: none;
+.site-theme header,
+.site-theme nav {
+  display: none !important;
 }
 
 .site-theme {
