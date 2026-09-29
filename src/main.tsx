@@ -1,4 +1,5 @@
 import { Toaster } from "@/components/ui/sonner";
+import { BottomNav } from "@/components/BottomNav";
 import { EstimateRequestDialog } from "@/components/EstimateRequestDialog";
 import { RequireAuth } from "@/components/RequireAuth";
 import React, { StrictMode, useEffect, lazy, Suspense } from "react";
@@ -229,6 +230,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
+        <BottomNav />
         <EstimateRequestDialog />
         </div>
       </BrowserRouter>

@@ -132,7 +132,7 @@
 }
 
 .site-theme header,
-.site-theme nav {
+.site-theme nav:not([aria-label="Browse projects, manufacturers, and financing options"]) {
   display: none !important;
 }
 
@@ -434,6 +434,39 @@
   border-color: var(--clay-light);
   background-color: rgb(209 132 101 / 18%);
   color: #fffaf2;
+}
+
+.finance-rail-pill {
+  color: #fff;
+}
+
+.finance-rail-pill--lightstream {
+  border-color: #68b5d7;
+  background: linear-gradient(120deg, #064b78, #087eaa);
+}
+
+.finance-rail-pill--sofi {
+  border-color: #f2c36b;
+  background: linear-gradient(120deg, #574021, #a36a22);
+}
+
+.finance-rail-pill--upgrade {
+  border-color: #7ed8b2;
+  background: linear-gradient(120deg, #07594a, #12856d);
+}
+
+.finance-rail-pill--best-egg {
+  border-color: #f39c66;
+  background: linear-gradient(120deg, #87391f, #c3662c);
+}
+
+.finance-rail-pill--options {
+  border-color: #c6b7ec;
+  background: linear-gradient(120deg, #3e326c, #7054a7);
+}
+
+.finance-rail-pill:hover {
+  filter: brightness(1.12);
 }
 
 .project-pill-scroller {
