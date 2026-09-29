@@ -131,6 +131,11 @@
   }
 }
 
+.site-theme header,
+.site-theme nav {
+  display: none;
+}
+
 .site-theme {
   --paper: #f3f0e8;
   --paper-light: #fbf9f3;

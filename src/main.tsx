@@ -1,7 +1,5 @@
 import { Toaster } from "@/components/ui/sonner";
-import { BottomNav } from "@/components/BottomNav";
 import { EstimateRequestDialog } from "@/components/EstimateRequestDialog";
-import { TopNav } from "@/components/TopNav";
 import { RequireAuth } from "@/components/RequireAuth";
 import React, { StrictMode, useEffect, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
@@ -199,7 +197,7 @@ createRoot(document.getElementById("root")!).render(
     <RootErrorBoundary>
       <BrowserRouter>
         <RouteSyncer />
-        <div className="site-theme pb-[110px]">
+        <div className="site-theme">
         <Suspense fallback={<RouteLoading />}>
           <Routes>
             <Route path="/" element={<Landing />} />
@@ -231,8 +229,6 @@ createRoot(document.getElementById("root")!).render(
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
-        <TopNav />
-        <BottomNav />
         <EstimateRequestDialog />
         </div>
       </BrowserRouter>

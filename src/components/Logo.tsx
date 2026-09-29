@@ -40,27 +40,11 @@ export function LogoMark({ className, ...props }: SVGProps<SVGSVGElement>) {
  * dark headers. `compact` hides the BUILDERS descriptor for tight bars.
  */
 export function Logo({
-  tone = "black",
-  compact = false,
   className = "",
 }: {
   tone?: "black" | "light";
   compact?: boolean;
   className?: string;
 }) {
-  const ink = tone === "black" ? "text-[#252923]" : "text-white";
-  const sub = tone === "black" ? "text-[#6b7368]" : "text-white/65";
-  return (
-    <span className={`flex items-center gap-2.5 ${ink} ${className}`}>
-      <LogoMark className="size-10 shrink-0" />
-      <span className="flex flex-col leading-none">
-        <span className="brand-wordmark whitespace-nowrap text-lg font-bold tracking-[.025em] sm:text-xl">LOVEMEAFTER</span>
-        {!compact && (
-          <span className={`mt-1 text-[9px] font-semibold tracking-[.16em] uppercase ${sub}`}>
-            BUILDERS
-          </span>
-        )}
-      </span>
-    </span>
-  );
+  return <LogoMark className={`size-10 shrink-0 ${className}`} />;
 }
