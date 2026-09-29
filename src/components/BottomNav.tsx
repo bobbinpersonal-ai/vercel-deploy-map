@@ -1,4 +1,5 @@
 import { PROJECT_INDEX } from "@/data/project-index";
+import { Logo } from "@/components/Logo";
 import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 import { BRAND_PILLS } from "@/data/brand-pills";
 import { getProductFamily } from "@/data/product-options";
@@ -351,7 +352,7 @@ export function BottomNav() {
         </div>
       </div>        <div className="border-t border-white/10 bg-[#171119]/95 backdrop-blur-md">
           <div className="mx-auto flex max-w-7xl items-center gap-3 px-3 py-2.5 sm:px-5 lg:px-8">
-          <Link to="/" aria-label="lovemeafter.com home" className="shrink-0 px-1 text-sm font-semibold tracking-tight text-white/90 transition hover:text-white sm:text-base">lovemeafter.com</Link>
+          <Link to="/" aria-label="lovemeafter.com home" className="shrink-0 px-1 text-white/90 transition hover:text-white"><Logo tone="light" compact className="gap-2 [&>svg]:size-7 [&_.brand-wordmark]:text-xs sm:[&_.brand-wordmark]:text-sm" /></Link>
           <div ref={quickNavRef} className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <nav aria-label="Quick navigation" className="flex w-max items-center gap-1.5">
               {LINKS.map(({ to, label, icon: Icon }) => {

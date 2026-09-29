@@ -131,8 +131,7 @@
   }
 }
 
-.site-theme header,
-.site-theme nav {
+.site-theme main > header {
   display: none;
 }
 

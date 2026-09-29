@@ -1,8 +1,6 @@
 import type { SVGProps } from "react";
 
-/**
- * A house-shaped mosaic mark with warm roof tiles and blue exterior panels.
- */
+/** A house-shaped mosaic mark with warm roof tiles and blue exterior panels. */
 export function LogoMark({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -35,16 +33,24 @@ export function LogoMark({ className, ...props }: SVGProps<SVGSVGElement>) {
   );
 }
 
-/**
- * The full lockup. `tone="black"` is the brand default; use `tone="light"` on
- * dark headers. `compact` hides the BUILDERS descriptor for tight bars.
- */
+/** Compact mosaic-house and website-address lockup. */
 export function Logo({
+  tone = "black",
+  compact = false,
   className = "",
 }: {
   tone?: "black" | "light";
   compact?: boolean;
   className?: string;
 }) {
-  return <LogoMark className={`size-10 shrink-0 ${className}`} />;
+  const ink = tone === "black" ? "text-[#252923]" : "text-white";
+  return (
+    <span className={`flex items-center gap-2.5 ${ink} ${className}`}>
+      <LogoMark className="size-10 shrink-0" />
+      <span className="brand-wordmark whitespace-nowrap text-base font-semibold tracking-tight sm:text-lg">
+        lovemeafter.com
+      </span>
+      {!compact && <span className="sr-only">LoveMeAfter home improvement</span>}
+    </span>
+  );
 }
