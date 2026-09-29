@@ -46,7 +46,6 @@ function lazyRoute<T extends React.ComponentType>(
 }
 
 // Lazy load route components for better code splitting
-const Landing = lazyRoute(() => import("./pages/Landing.tsx"));
 const Careers = lazyRoute(() => import("./pages/Careers.tsx"));
 const CareerRole = lazyRoute(() => import("./pages/CareerRole.tsx"));
 const Services = lazyRoute(() => import("./pages/Services.tsx"));
@@ -201,7 +200,7 @@ createRoot(document.getElementById("root")!).render(
         <div className="site-theme">
         <Suspense fallback={<RouteLoading />}>
           <Routes>
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={<Services />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/careers/roles/:role" element={<CareerRole />} />
             <Route path="/careers/:slug" element={<MarketCareers />} />
