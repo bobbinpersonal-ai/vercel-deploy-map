@@ -282,7 +282,8 @@ export default function Landing() {
         </div>
       )}
 
-      <section id="top" className="landing-hero relative isolate bg-[#f3f0e8] text-[#1d211d]">
+      <section id="top" className="landing-hero relative isolate overflow-hidden bg-[#f3f0e8] text-[#1d211d]">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(243,240,232,.83)_0%,rgba(243,240,232,.94)_48%,#f3f0e8_100%),url('https://images.pexels.com/photos/4913326/pexels-photo-4913326.jpeg?auto=compress&cs=tinysrgb&w=2000')] bg-cover bg-center opacity-90" />
         <div className="mx-auto max-w-7xl px-4 pb-7 pt-28 sm:px-8 sm:pt-32 lg:px-10 lg:pt-36">
           <div className="mb-6 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
