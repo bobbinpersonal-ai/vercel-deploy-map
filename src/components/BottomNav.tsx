@@ -37,6 +37,7 @@ export function BottomNav() {
   const { pathname } = useLocation();
   const optionsRailRef = useRef<HTMLDivElement>(null);
   const [selectedBrand, setSelectedBrand] = useState<{ brand: BrandPillEntry; projectLabel: string } | null>(null);
+  const brandSwipeStart = useRef<{ x: number; y: number } | null>(null);
   const isHidden = HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix));
   const [showRail, setShowRail] = useState(() => !isHidden && isPastRailThreshold());
 
@@ -209,7 +210,22 @@ export function BottomNav() {
       </div>
 
       <Dialog open={Boolean(selectedBrand)} onOpenChange={(open) => { if (!open) setSelectedBrand(null); }}>
-        <DialogContent className="max-h-[88vh] overflow-y-auto rounded-3xl border-white/15 bg-[#211824] p-0 text-white shadow-[0_30px_100px_rgba(0,0,0,.55)] sm:max-w-xl [&>button]:right-5 [&>button]:top-5 [&>button]:text-white/65 [&>button:hover]:text-white">
+        <DialogContent
+          className="max-h-[88vh] overflow-y-auto rounded-3xl border-white/15 bg-[#211824] p-0 text-white shadow-[0_30px_100px_rgba(0,0,0,.55)] sm:max-w-xl [&>button]:right-5 [&>button]:top-5 [&>button]:text-white/65 [&>button:hover]:text-white"
+          onTouchStart={(event) => {
+            const touch = event.touches[0];
+            if (touch) brandSwipeStart.current = { x: touch.clientX, y: touch.clientY };
+          }}
+          onTouchEnd={(event) => {
+            const start = brandSwipeStart.current;
+            const touch = event.changedTouches[0];
+            brandSwipeStart.current = null;
+            if (!start || !touch || event.currentTarget.scrollTop > 0) return;
+            const deltaY = touch.clientY - start.y;
+            const deltaX = touch.clientX - start.x;
+            if (deltaY > 100 && Math.abs(deltaY) > Math.abs(deltaX) * 1.3) setSelectedBrand(null);
+          }}
+        >
           {selectedBrand && (
             <div>
               <div className="border-b border-white/10 bg-white/[.035] px-6 py-6 pr-14">

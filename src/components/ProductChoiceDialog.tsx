@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowUpRight, Check, ExternalLink, ShieldCheck } from "lucide-react";
 import {
   Dialog,
@@ -65,10 +65,26 @@ export function ProductChoiceDialog({
   const family = PRODUCT_FAMILIES[familyKey] ?? PRODUCT_FAMILIES.general;
   const imageUrl = selection?.imageUrl ?? (selection?.imageId ? px(selection.imageId, 1100) : undefined);
   const products = family.options;
+  const swipeStart = useRef<{ x: number; y: number } | null>(null);
 
   return (
     <Dialog open={Boolean(selection)} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto rounded-3xl border-white/15 bg-[#211824]/[.98] p-0 text-white shadow-[0_30px_100px_rgba(0,0,0,.65)] backdrop-blur-2xl sm:max-w-5xl">
+      <DialogContent
+        className="max-h-[90vh] max-w-5xl overflow-y-auto rounded-3xl border-white/15 bg-[#211824]/[.98] p-0 text-white shadow-[0_30px_100px_rgba(0,0,0,.65)] backdrop-blur-2xl sm:max-w-5xl"
+        onTouchStart={(event) => {
+          const touch = event.touches[0];
+          if (touch) swipeStart.current = { x: touch.clientX, y: touch.clientY };
+        }}
+        onTouchEnd={(event) => {
+          const start = swipeStart.current;
+          const touch = event.changedTouches[0];
+          swipeStart.current = null;
+          if (!start || !touch || event.currentTarget.scrollTop > 0) return;
+          const deltaY = touch.clientY - start.y;
+          const deltaX = touch.clientX - start.x;
+          if (deltaY > 100 && Math.abs(deltaY) > Math.abs(deltaX) * 1.3) onClose();
+        }}
+      >
         {selection && (
           <div>
             <div className="grid border-b border-white/10 bg-[#2a202c] sm:grid-cols-[.9fr_1.1fr]">
