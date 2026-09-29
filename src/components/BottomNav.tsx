@@ -26,6 +26,11 @@ const PROJECT_RAIL = PROJECT_INDEX.map((project) => ({
 }));
 
 const HIDDEN_PREFIXES = ["/admin", "/auth", "/login", "/dashboard"];
+const NAV_SCROLL_THRESHOLD = 0.19;
+const isPastRailThreshold = () => {
+  const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+  return window.scrollY / maxScroll >= NAV_SCROLL_THRESHOLD;
+};
 type BrandPillEntry = (typeof BRAND_PILLS)[number];
 
 export function BottomNav() {
@@ -33,11 +38,22 @@ export function BottomNav() {
   const optionsRailRef = useRef<HTMLDivElement>(null);
   const [selectedBrand, setSelectedBrand] = useState<{ brand: BrandPillEntry; projectLabel: string } | null>(null);
   const isHidden = HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix));
-  const showRail = !isHidden;
+  const [showRail, setShowRail] = useState(() => !isHidden && isPastRailThreshold());
+
+  useEffect(() => {
+    const updateVisibility = () => setShowRail(!isHidden && isPastRailThreshold());
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    window.addEventListener("resize", updateVisibility);
+    return () => {
+      window.removeEventListener("scroll", updateVisibility);
+      window.removeEventListener("resize", updateVisibility);
+    };
+  }, [isHidden, pathname]);
 
   useEffect(() => {
     const scroller = optionsRailRef.current;
-    if (!scroller || isHidden) return;
+    if (!scroller || isHidden || !showRail) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
@@ -93,7 +109,7 @@ export function BottomNav() {
       reducedMotion.removeEventListener("change", onVisibilityChange);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  }, [isHidden, pathname]);
+  }, [isHidden, pathname, showRail]);
 
   if (isHidden) return null;
 
