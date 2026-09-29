@@ -112,6 +112,11 @@ export function BottomNav() {
         className={`fixed inset-x-0 bottom-0 z-50 shadow-[0_-12px_36px_rgba(0,0,0,.2)] transition-all duration-300 ${showRail ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-full opacity-0"}`}
       >
         <div className="border-t border-[#252923]/15 bg-[#eeeae0]">
+          <div className="flex items-center px-3 pt-2 sm:px-5">
+            <Link to="/" aria-label="lovemeafter.com home" className="inline-flex rounded-sm transition hover:opacity-80">
+              <LogoMark className="size-7 sm:size-8" />
+            </Link>
+          </div>
           <div
             ref={optionsRailRef}
             className="project-pill-scroller min-w-0 overflow-x-auto overscroll-x-contain py-2 touch-pan-x"
@@ -172,9 +177,8 @@ export function BottomNav() {
           </div>
 
           <div className="flex items-center justify-between gap-2 border-t border-white/10 bg-[#171b17] px-3 py-2 sm:px-5">
-            <Link to="/" aria-label="lovemeafter.com home" className="flex shrink-0 flex-col items-center gap-0.5 text-white/90 transition hover:text-white">
-              <LogoMark className="size-7 sm:size-8" />
-              <span className="text-[10px] font-semibold tracking-tight sm:text-xs">lovemeafter.com</span>
+            <Link to="/" aria-label="lovemeafter.com home" className="shrink-0 text-[10px] font-semibold tracking-tight text-white/90 transition hover:text-white sm:text-xs">
+              lovemeafter.com
             </Link>
             <div className="flex shrink-0 items-center gap-2">
               <a href="tel:+14244260760" aria-label="Call LoveMeAfter at 424 426 0760" className="inline-flex h-10 items-center justify-center gap-1.5 rounded-sm border border-white/25 px-3 text-xs font-semibold text-white transition hover:border-white/50 hover:bg-white/10">
