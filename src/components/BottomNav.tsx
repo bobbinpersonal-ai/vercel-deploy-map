@@ -1,13 +1,13 @@
 import { PROJECT_INDEX } from "@/data/project-index";
+import { LogoMark } from "@/components/Logo";
 import { OfficialBrandLogo } from "@/components/OfficialBrandLogo";
 import { BRAND_PILLS } from "@/data/brand-pills";
 import { getProductFamily } from "@/data/product-options";
 import { BrandProductExample } from "@/components/BrandProductExample";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Phone } from "lucide-react";
+import { ArrowUpRight, Phone } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { openEstimateRequest } from "@/lib/estimate-request";
-import { Logo } from "@/components/Logo";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const RAIL_LENDERS = [
@@ -35,10 +35,7 @@ type BrandPillEntry = (typeof BRAND_PILLS)[number];
 
 export function BottomNav() {
   const { pathname } = useLocation();
-  const railRef = useRef<HTMLDivElement>(null);
-  const pointerDrag = useRef<{ startX: number; startScrollLeft: number; moved: boolean } | null>(null);
-  const suppressClick = useRef(false);
-  const [dragging, setDragging] = useState(false);
+  const optionsRailRef = useRef<HTMLDivElement>(null);
   const [showRail, setShowRail] = useState(isPastRailThreshold);
   const [selectedBrand, setSelectedBrand] = useState<{ brand: BrandPillEntry; projectLabel: string } | null>(null);
   const isHidden = HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix));
@@ -54,15 +51,71 @@ export function BottomNav() {
     };
   }, [isHidden, pathname]);
 
+  useEffect(() => {
+    const scroller = optionsRailRef.current;
+    if (!scroller || isHidden || !showRail) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let lastFrameTime = 0;
+    let direction = 1;
+    let pausedUntil = 0;
+
+    const stop = () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = 0;
+      lastFrameTime = 0;
+    };
+    const animate = (time: number) => {
+      if (reducedMotion.matches || document.visibilityState !== "visible") {
+        stop();
+        return;
+      }
+      const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+      if (time >= pausedUntil && maxScroll > 4 && !scroller.contains(document.activeElement)) {
+        const elapsed = lastFrameTime ? Math.min(time - lastFrameTime, 40) : 0;
+        scroller.scrollLeft += direction * elapsed * 0.012;
+        if (scroller.scrollLeft >= maxScroll - 1) direction = -1;
+        else if (scroller.scrollLeft <= 1) direction = 1;
+      }
+      lastFrameTime = time;
+      frame = window.requestAnimationFrame(animate);
+    };
+    const start = () => {
+      if (!frame && !reducedMotion.matches) frame = window.requestAnimationFrame(animate);
+    };
+    const pauseBriefly = () => {
+      pausedUntil = performance.now() + 2500;
+      lastFrameTime = 0;
+    };
+    const onVisibilityChange = () => {
+      if (document.visibilityState !== "visible") stop();
+      else start();
+    };
+    scroller.addEventListener("pointerdown", pauseBriefly);
+    scroller.addEventListener("touchstart", pauseBriefly, { passive: true });
+    scroller.addEventListener("wheel", pauseBriefly, { passive: true });
+    scroller.addEventListener("focusin", pauseBriefly);
+    reducedMotion.addEventListener("change", onVisibilityChange);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    start();
+
+    return () => {
+      stop();
+      scroller.removeEventListener("pointerdown", pauseBriefly);
+      scroller.removeEventListener("touchstart", pauseBriefly);
+      scroller.removeEventListener("wheel", pauseBriefly);
+      scroller.removeEventListener("focusin", pauseBriefly);
+      reducedMotion.removeEventListener("change", onVisibilityChange);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [isHidden, pathname, showRail]);
+
   if (isHidden) return null;
 
   const activeService = pathname.startsWith("/services/")
     ? pathname.replace("/services/", "").split("/")[0]
     : null;
-  const moveRail = (direction: -1 | 1) => {
-    const rail = railRef.current;
-    rail?.scrollBy({ left: direction * Math.max(220, rail.clientWidth * 0.72), behavior: "smooth" });
-  };
   const selectedProduct = selectedBrand
     ? getProductFamily(selectedBrand.brand.slug).options.find((option) => option.domain === selectedBrand.brand.domain)
     : undefined;
@@ -75,117 +128,78 @@ export function BottomNav() {
         className={`fixed inset-x-0 bottom-0 z-50 shadow-[0_-12px_36px_rgba(0,0,0,.2)] transition-all duration-300 ${showRail ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-full opacity-0"}`}
       >
         <div className="border-t border-[#252923]/15 bg-[#eeeae0]">
-        <div className="flex items-center gap-1 px-1.5 sm:px-2">
-          <button type="button" onClick={() => moveRail(-1)} className="flex size-8 shrink-0 items-center justify-center rounded-sm text-[#252923]/65 transition hover:text-[#93442e]" aria-label="Scroll project and manufacturer pills left">
-            <ArrowLeft className="size-4" />
-          </button>
           <div
-            ref={railRef}
-            className={`project-pill-scroller min-w-0 flex-1 overflow-x-auto overscroll-x-contain py-2 touch-pan-x ${dragging ? "cursor-grabbing select-none" : "cursor-grab"}`}
-            aria-label="Browse projects, manufacturers, and financing options"
-            onPointerDown={(event) => {
-              if (event.pointerType === "mouse" && event.button !== 0) return;
-              suppressClick.current = false;
-              pointerDrag.current = { startX: event.clientX, startScrollLeft: event.currentTarget.scrollLeft, moved: false };
-              if (event.pointerType === "mouse") setDragging(true);
-            }}
-            onPointerMove={(event) => {
-              const drag = pointerDrag.current;
-              if (!drag || event.pointerType !== "mouse") return;
-              const distance = event.clientX - drag.startX;
-              if (Math.abs(distance) > 4) drag.moved = true;
-              if (drag.moved) {
-                event.preventDefault();
-                event.currentTarget.scrollLeft = drag.startScrollLeft - distance;
-              }
-            }}
-            onPointerUp={() => {
-              if (pointerDrag.current?.moved) suppressClick.current = true;
-              pointerDrag.current = null;
-              setDragging(false);
-            }}
-            onPointerCancel={() => { pointerDrag.current = null; setDragging(false); }}
-            onPointerLeave={() => {
-              if (pointerDrag.current?.moved) suppressClick.current = true;
-              pointerDrag.current = null;
-              setDragging(false);
-            }}
-            onClickCapture={(event) => {
-              if (suppressClick.current) {
-                suppressClick.current = false;
-                event.preventDefault();
-                event.stopPropagation();
-              }
-            }}
-            onWheel={(event) => {
-              if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) event.currentTarget.scrollLeft += event.deltaY;
-            }}
+            ref={optionsRailRef}
+            className="project-pill-scroller min-w-0 overflow-x-auto overscroll-x-contain py-2 touch-pan-x"
+            aria-label="Services and finance options"
           >
-            <div className="flex w-max items-center gap-2.5 px-1">
-              {PROJECT_RAIL.map(({ project, brands }, projectIndex) => (
-                <div key={project.slug} className="flex shrink-0 items-center gap-2">
+            <div className="flex w-max items-center gap-5 px-4 sm:gap-7 sm:px-6">
+              {PROJECT_INDEX.map((project, index) => (
+                <span key={project.slug} className="flex shrink-0 items-center gap-5 sm:gap-7">
                   <Link
                     to={`/services/${project.slug}`}
                     aria-current={activeService === project.slug ? "page" : undefined}
-                    className={`project-rail-link px-1 py-2 text-xs font-semibold whitespace-nowrap transition sm:text-[13px] ${activeService === project.slug ? "is-active" : ""}`}
+                    className={`project-rail-link text-xs font-semibold whitespace-nowrap transition sm:text-[13px] ${activeService === project.slug ? "is-active" : ""}`}
                   >
                     {project.label}
                   </Link>
-                  {brands.map((brand) => (
-                    <button
-                      key={`${brand.domain}-${brand.brand}`}
-                      type="button"
-                      aria-label={`View ${brand.brand} details for ${project.label}`}
-                      onClick={() => setSelectedBrand({ brand, projectLabel: project.label })}
-                      className="brand-rail-pill flex shrink-0 items-center gap-2 rounded-sm border px-3 py-2 text-xs font-semibold whitespace-nowrap transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#93442e] sm:gap-2.5 sm:px-3.5 sm:py-2.5 sm:text-[13px]"
-                    >
-                      <OfficialBrandLogo brand={brand.brand} domain={brand.domain} className="size-[23px] rounded-full bg-white sm:size-8" />
-                      {brand.brand}
-                    </button>
-                  ))}
-                  {project.slug === "lighting" && (
-                    <Link to="/services/lighting" className="flex shrink-0 items-center gap-1.5 rounded-sm border border-[#e9b66a]/45 bg-[#e9b66a]/10 px-3 py-1.5 text-[10px] font-semibold whitespace-nowrap text-[#ffdfb0] transition hover:border-[#e9b66a] hover:bg-[#e9b66a]/20">
-                      <span aria-hidden="true">✦</span> Holiday lighting
-                    </Link>
-                  )}
-                  {(projectIndex + 1) % 10 === 0 && RAIL_LENDERS[(projectIndex + 1) / 10 - 1] && (() => {
-                    const lender = RAIL_LENDERS[(projectIndex + 1) / 10 - 1];
+                  {(index + 1) % 10 === 0 && RAIL_LENDERS[(index + 1) / 10 - 1] && (() => {
+                    const lender = RAIL_LENDERS[(index + 1) / 10 - 1];
                     return (
                       <Link
-                        key={`lender-${projectIndex}`}
                         to="/financing"
+                        key={`finance-${lender.slug}`}
                         title={`${lender.name} financing options; approval, rates, offers, and terms vary.`}
                         className={`finance-rail-pill finance-rail-pill--${lender.slug} flex shrink-0 items-center gap-2 rounded-sm border px-2.5 py-1.5 text-[10px] font-bold whitespace-nowrap transition sm:px-3 sm:text-xs`}
                       >
-                        <OfficialBrandLogo brand={lender.name} domain={lender.domain} className="size-[23px] rounded-full bg-white sm:size-8" />
-                        <span>{lender.name}</span>
-                        <ArrowUpRight className="size-3.5" />
+                        <OfficialBrandLogo brand={lender.name} domain={lender.domain} className="size-6 rounded-full bg-white sm:size-8" />
+                        {lender.name}<ArrowUpRight className="size-3.5" />
                       </Link>
                     );
                   })()}
-                </div>
+                </span>
               ))}
-              <Link to="/financing" title="Promotions and deferred-payment offers vary by lender, eligibility, and current terms." className="finance-rail-pill finance-rail-pill--options flex shrink-0 items-center rounded-sm border px-3 py-2 text-[10px] font-semibold whitespace-nowrap transition sm:text-xs">
+              <Link to="/financing" className="finance-rail-pill finance-rail-pill--options flex shrink-0 items-center rounded-sm border px-3 py-2 text-[10px] font-semibold whitespace-nowrap transition sm:text-xs">
                 Finance options
               </Link>
             </div>
           </div>
-          <button type="button" onClick={() => moveRail(1)} className="flex size-8 shrink-0 items-center justify-center rounded-sm text-[#252923]/65 transition hover:text-[#93442e]" aria-label="Scroll project and manufacturer pills right">
-            <ArrowRight className="size-4" />
-          </button>
-        </div>
-        </div>
-        <div className="flex items-center justify-between gap-2 border-t border-white/10 bg-[#171b17] px-3 py-2 sm:px-5">
-          <Link to="/" aria-label="lovemeafter.com home" className="min-w-0 text-white/90 transition hover:text-white">
-            <Logo tone="light" compact className="gap-1.5 [&>svg]:size-7 [&_.brand-wordmark]:text-xs sm:[&>svg]:size-8 sm:[&_.brand-wordmark]:text-sm" />
-          </Link>
-          <div className="flex shrink-0 items-center gap-2">
-            <a href="tel:+14244260760" aria-label="Call LoveMeAfter at 424 426 0760" className="inline-flex h-10 items-center justify-center gap-1.5 rounded-sm border border-white/25 px-3 text-xs font-semibold text-white transition hover:border-white/50 hover:bg-white/10">
-              <Phone className="size-3.5" /><span className="sm:hidden">Call</span><span className="hidden sm:inline">424 426 0760</span>
-            </a>
-            <button type="button" onClick={() => openEstimateRequest()} className="inline-flex h-10 items-center justify-center gap-1 rounded-sm bg-[#93442e] px-3 text-xs font-semibold text-white transition hover:bg-[#7d3928]">
-              Free estimate <ArrowUpRight className="size-3.5" />
-            </button>
+
+          <div className="border-t border-[#252923]/10 bg-[#f7f4ec]">
+            <div className="flex items-center gap-1 px-1.5 sm:px-2">
+              <div className="hidden w-10 shrink-0 sm:block" aria-hidden="true" />
+              <div className="brand-pill-scroller min-w-0 flex-1 overflow-x-auto overscroll-x-contain py-2 touch-pan-x" role="group" aria-label="Browse manufacturer options">
+                <div className="flex w-max items-center gap-2 px-1">
+                  {PROJECT_RAIL.flatMap(({ project, brands }) => brands.map((brand) => (
+                    <button
+                      key={`${project.slug}-${brand.domain}-${brand.brand}`}
+                      type="button"
+                      aria-label={`View ${brand.brand} details for ${project.label}`}
+                      onClick={() => setSelectedBrand({ brand, projectLabel: project.label })}
+                      className="brand-rail-pill flex shrink-0 items-center gap-2 rounded-sm border px-3 py-2 text-xs font-semibold whitespace-nowrap transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#93442e] sm:px-3.5 sm:text-[13px]"
+                    >
+                      <OfficialBrandLogo brand={brand.brand} domain={brand.domain} className="size-[23px] rounded-full bg-white sm:size-8" />
+                      {brand.brand}
+                    </button>
+                  )))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-2 border-t border-white/10 bg-[#171b17] px-3 py-2 sm:px-5">
+            <Link to="/" aria-label="lovemeafter.com home" className="flex shrink-0 flex-col items-center gap-0.5 text-white/90 transition hover:text-white">
+              <LogoMark className="size-7 sm:size-8" />
+              <span className="text-[10px] font-semibold tracking-tight sm:text-xs">lovemeafter.com</span>
+            </Link>
+            <div className="flex shrink-0 items-center gap-2">
+              <a href="tel:+14244260760" aria-label="Call LoveMeAfter at 424 426 0760" className="inline-flex h-10 items-center justify-center gap-1.5 rounded-sm border border-white/25 px-3 text-xs font-semibold text-white transition hover:border-white/50 hover:bg-white/10">
+                <Phone className="size-3.5" /><span className="sm:hidden">Call</span><span className="hidden sm:inline">424 426 0760</span>
+              </a>
+              <button type="button" onClick={() => openEstimateRequest()} className="inline-flex h-10 items-center justify-center gap-1 rounded-sm bg-[#93442e] px-3 text-xs font-semibold text-white transition hover:bg-[#7d3928]">
+                Free estimate <ArrowUpRight className="size-3.5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>

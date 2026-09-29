@@ -424,15 +424,15 @@
 }
 
 .brand-rail-pill {
-  border-color: rgb(209 132 101 / 56%);
-  background-color: rgb(255 250 242 / 8%);
-  color: #fffaf2;
+  border-color: rgb(37 41 35 / 18%);
+  background-color: #fbf9f3;
+  color: #252923;
 }
 
 .brand-rail-pill:hover {
-  border-color: var(--clay-light);
-  background-color: rgb(209 132 101 / 18%);
-  color: #fffaf2;
+  border-color: #93442e;
+  background-color: #eeeae0;
+  color: #93442e;
 }
 
 .finance-rail-pill {
