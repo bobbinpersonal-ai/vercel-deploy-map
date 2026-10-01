@@ -51,6 +51,12 @@ const CareerRole = lazyRoute(() => import("./pages/CareerRole.tsx"));
 const Services = lazyRoute(() => import("./pages/Services.tsx"));
 const SellYourHouse = lazyRoute(() => import("./pages/HomeBuyers.tsx").then((module) => ({ default: module.SellYourHouse })));
 const SellYourLand = lazyRoute(() => import("./pages/HomeBuyers.tsx").then((module) => ({ default: module.SellYourLand })));
+const SellYourHouseSpanish = lazyRoute(() => import("./pages/HomeBuyers.tsx").then((module) => ({ default: module.SellYourHouseSpanish })));
+const SellYourLandSpanish = lazyRoute(() => import("./pages/HomeBuyers.tsx").then((module) => ({ default: module.SellYourLandSpanish })));
+const InvestorsPage = lazyRoute(() => import("./pages/BuyerPrograms.tsx").then((module) => ({ default: module.InvestorsPage })));
+const ReferralPage = lazyRoute(() => import("./pages/BuyerPrograms.tsx").then((module) => ({ default: module.ReferralPage })));
+const PrivacyPage = lazyRoute(() => import("./pages/BuyerLegal.tsx").then((module) => ({ default: module.PrivacyPage })));
+const TermsPage = lazyRoute(() => import("./pages/BuyerLegal.tsx").then((module) => ({ default: module.TermsPage })));
 const Areas = lazyRoute(() => import("./pages/Areas.tsx"));
 const Insights = lazyRoute(() => import("./pages/Insights.tsx"));
 const TopicPost = lazyRoute(() => import("./pages/TopicPost.tsx"));
@@ -209,6 +215,12 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/services" element={<Services />} />
             <Route path="/sell-your-house" element={<SellYourHouse />} />
             <Route path="/sell-your-land" element={<SellYourLand />} />
+            <Route path="/es/vender-casa" element={<SellYourHouseSpanish />} />
+            <Route path="/es/vender-terreno" element={<SellYourLandSpanish />} />
+            <Route path="/investors" element={<InvestorsPage />} />
+            <Route path="/refer" element={<ReferralPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
             <Route path="/services/:service" element={<ProjectProcess />} />
             <Route path="/conditions" element={<Conditions />} />
             <Route path="/trades" element={<Trades />} />

@@ -25,7 +25,7 @@ const PROJECT_RAIL = PROJECT_INDEX.map((project) => ({
   ),
 }));
 
-const HIDDEN_PREFIXES = ["/admin", "/auth", "/login", "/dashboard", "/sell-your-house", "/sell-your-land"];
+const HIDDEN_PREFIXES = ["/admin", "/auth", "/login", "/dashboard", "/sell-your-house", "/sell-your-land", "/es/", "/investors", "/refer", "/privacy", "/terms"];
 const NAV_SCROLL_THRESHOLD = 0.19;
 const isPastRailThreshold = () => {
   const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
