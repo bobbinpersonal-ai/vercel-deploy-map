@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router";
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, CircleDollarSign, ClipboardCheck, Hammer, House, LoaderCircle, MapPin, Trees } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight, Check, CircleDollarSign, ClipboardCheck, Hammer, House, LoaderCircle, MapPin, Phone, Trees } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 import { usePageMeta } from "@/components/PageMeta";
 import { collection, doc, serverTimestamp, writeBatch } from "firebase/firestore";
@@ -13,6 +13,10 @@ const STATES = [
   ["AL", "Alabama"], ["AK", "Alaska"], ["AZ", "Arizona"], ["AR", "Arkansas"], ["CA", "California"], ["CO", "Colorado"], ["CT", "Connecticut"], ["DE", "Delaware"], ["DC", "District of Columbia"], ["FL", "Florida"], ["GA", "Georgia"], ["HI", "Hawaii"], ["ID", "Idaho"], ["IL", "Illinois"], ["IN", "Indiana"], ["IA", "Iowa"], ["KS", "Kansas"], ["KY", "Kentucky"], ["LA", "Louisiana"], ["ME", "Maine"], ["MD", "Maryland"], ["MA", "Massachusetts"], ["MI", "Michigan"], ["MN", "Minnesota"], ["MS", "Mississippi"], ["MO", "Missouri"], ["MT", "Montana"], ["NE", "Nebraska"], ["NV", "Nevada"], ["NH", "New Hampshire"], ["NJ", "New Jersey"], ["NM", "New Mexico"], ["NY", "New York"], ["NC", "North Carolina"], ["ND", "North Dakota"], ["OH", "Ohio"], ["OK", "Oklahoma"], ["OR", "Oregon"], ["PA", "Pennsylvania"], ["RI", "Rhode Island"], ["SC", "South Carolina"], ["SD", "South Dakota"], ["TN", "Tennessee"], ["TX", "Texas"], ["UT", "Utah"], ["VT", "Vermont"], ["VA", "Virginia"], ["WA", "Washington"], ["WV", "West Virginia"], ["WI", "Wisconsin"], ["WY", "Wyoming"],
 ] as const;
 
+const BUYING_STATES = STATES.filter(([code]) => code !== "DC").map(([, name]) => name);
+const BUYER_PHONE = "424-426-0760";
+const BUYER_PHONE_HREF = "tel:+14244260760";
+
 const FIELD_PHOTOS = [
   { label: "Roofing installation", image: 32050399, trade: "Roofing" },
   { label: "Framing and carpentry", image: 32357250, trade: "Carpentry" },
@@ -23,7 +27,7 @@ const FIELD_PHOTOS = [
 const PAGE_COPY = {
   house: {
     title: "A more thoughtful way to sell a house.",
-    intro: "Tell us about the home and what you need next. We’ll review the location and details, then let you know whether a direct purchase conversation makes sense.",
+    intro: "We buy houses in all 50 states. Tell us about your property and what you need next; our team will review the details and discuss whether a direct purchase makes sense.",
     eyebrow: "LoveMeAfter Home Buyers · Homes",
     propertyLabel: "Home type",
     propertyOptions: ["Single-family home", "Condo or townhome", "Multi-family property", "Manufactured home", "Other / not sure"],
@@ -32,7 +36,7 @@ const PAGE_COPY = {
   },
   land: {
     title: "Have land you’re ready to let go of?",
-    intro: "Vacant lots, infill parcels, inherited land, and acreage each have different details. Share the basics and we’ll review whether the location fits.",
+    intro: "We buy land in all 50 states. Vacant lots, infill parcels, inherited land, and acreage each have different details—share the basics and our team will review the property.",
     eyebrow: "LoveMeAfter Home Buyers · Land",
     propertyLabel: "Land type",
     propertyOptions: ["Vacant residential lot", "Infill parcel", "Acreage", "Inherited land", "Other / not sure"],
@@ -53,8 +57,8 @@ export default function HomeBuyers({ kind }: { kind: BuyerKind }) {
   usePageMeta(
     kind === "house" ? "Sell a House | LoveMeAfter Home Buyers" : "Sell Land | LoveMeAfter Home Buyers",
     kind === "house"
-      ? "Share details about a house you may want to sell. LoveMeAfter Home Buyers reviews property location and details before discussing a possible direct purchase."
-      : "Share details about land you may want to sell. LoveMeAfter Home Buyers reviews location and property details before discussing a possible direct purchase.",
+      ? "Sell a house in any of the 50 U.S. states. Share property details with LoveMeAfter Home Buyers to start a no-obligation review."
+      : "Sell land in any of the 50 U.S. states. Share property details with LoveMeAfter Home Buyers to start a no-obligation review.",
     kind === "house" ? "/sell-your-house" : "/sell-your-land",
   );
 
@@ -134,10 +138,13 @@ export default function HomeBuyers({ kind }: { kind: BuyerKind }) {
             <LogoMark className="size-10" />
             <span className="text-sm font-extrabold tracking-[.02em] sm:text-base">LoveMeAfter <span className="font-medium text-[#65735b]">Home Buyers</span></span>
           </Link>
-          <div role="navigation" aria-label="Home buyer pages" className="flex items-center gap-3 text-xs font-semibold sm:gap-6 sm:text-sm">
-            <Link to="/sell-your-house" className={kind === "house" ? "text-[#93442e]" : "text-[#696a60] hover:text-[#252923]"}>Houses</Link>
-            <Link to="/sell-your-land" className={kind === "land" ? "text-[#93442e]" : "text-[#696a60] hover:text-[#252923]"}>Land</Link>
-            <Link to="/" className="hidden text-[#696a60] hover:text-[#252923] sm:inline">Construction services</Link>
+          <div className="flex items-center gap-3 sm:gap-6">
+            <div role="navigation" aria-label="Home buyer pages" className="flex items-center gap-3 text-xs font-semibold sm:gap-6 sm:text-sm">
+              <Link to="/sell-your-house" className={kind === "house" ? "text-[#93442e]" : "text-[#696a60] hover:text-[#252923]"}>Houses</Link>
+              <Link to="/sell-your-land" className={kind === "land" ? "text-[#93442e]" : "text-[#696a60] hover:text-[#252923]"}>Land</Link>
+              <Link to="/" className="hidden text-[#696a60] hover:text-[#252923] sm:inline">Construction services</Link>
+            </div>
+            <a href={BUYER_PHONE_HREF} className="inline-flex size-10 items-center justify-center border border-[#252923]/15 text-[#93442e] transition hover:bg-[#e9e5db] sm:h-10 sm:w-auto sm:gap-2 sm:px-3" aria-label={`Call LoveMeAfter Home Buyers at ${BUYER_PHONE}`}><Phone className="size-4" /><span className="hidden text-xs font-semibold sm:inline">{BUYER_PHONE}</span></a>
           </div>
         </div>
       </div>
@@ -150,8 +157,9 @@ export default function HomeBuyers({ kind }: { kind: BuyerKind }) {
             <p className="flex items-center gap-2 text-[10px] font-bold tracking-[.19em] text-[#65735b] uppercase"><MapPin className="size-3.5" />{page.eyebrow}</p>
             <h1 className="mt-5 max-w-3xl text-5xl leading-[.91] tracking-[-.055em] sm:text-7xl">{page.title}</h1>
             <p className="mt-6 max-w-2xl text-base leading-7 text-[#62695f] sm:text-lg sm:leading-8">{page.intro}</p>
-            <p className="mt-4 max-w-xl text-sm leading-6 text-[#62695f]">We review properties in markets where we’re prepared to operate. Share the property’s state and we’ll confirm whether we can consider it.</p>
-            <a href="#property-form" className="mt-8 inline-flex h-12 items-center gap-2 bg-[#93442e] px-5 text-sm font-semibold text-white transition hover:bg-[#793923]">Tell us about the property <ArrowDown className="size-4" /></a>
+            <div className="mt-6 inline-flex items-center gap-2 border border-[#65735b]/25 bg-[#fbf9f3]/85 px-3 py-2 text-xs font-semibold text-[#526047]"><MapPin className="size-4" /> Buying in all 50 U.S. states</div>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-[#62695f]">Property review, purchase availability, and written terms depend on the property and applicable local requirements.</p>
+            <div className="mt-8 flex flex-wrap gap-3"><a href="#property-form" className="inline-flex h-12 items-center gap-2 bg-[#93442e] px-5 text-sm font-semibold text-white transition hover:bg-[#793923]">Tell us about the property <ArrowDown className="size-4" /></a><a href={BUYER_PHONE_HREF} className="inline-flex h-12 items-center gap-2 border border-[#252923]/20 bg-[#fbf9f3]/85 px-5 text-sm font-semibold text-[#252923] transition hover:bg-[#e9e5db]"><Phone className="size-4" /> Call {BUYER_PHONE}</a></div>
           </div>
           <div className="relative min-h-[330px] sm:min-h-[450px]">
             <div className="absolute inset-x-8 top-3 h-[72%] overflow-hidden rounded-sm shadow-xl sm:inset-x-12">
@@ -168,6 +176,16 @@ export default function HomeBuyers({ kind }: { kind: BuyerKind }) {
               <p className="mt-1 text-xs leading-5 text-[#696a60]">We understand how condition and repair scope can shape the options worth discussing.</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="nationwide-coverage" className="border-y border-[#252923]/10 bg-[#e9e5db]">
+        <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-16 lg:px-10">
+          <div className="grid gap-5 sm:grid-cols-[.75fr_1.25fr] sm:items-end">
+            <div><p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">Nationwide home buyers</p><h2 id="nationwide-coverage" className="mt-3 text-4xl leading-[.97] tracking-[-.045em] sm:text-5xl">We buy in all 50 states.</h2></div>
+            <p className="max-w-2xl text-sm leading-6 text-[#62695f]">From Alabama to Wyoming, LoveMeAfter Home Buyers buys houses and land nationwide—in all 50 states. Submit the property’s state to start a review; a form submission is not an offer or a guarantee that a particular property will qualify.</p>
+          </div>
+          <ul aria-label="States where we buy property" className="mt-8 flex flex-wrap gap-2">{BUYING_STATES.map((state) => <li key={state} className="border border-[#252923]/10 bg-[#fbf9f3] px-3 py-2 text-xs font-medium text-[#41483f]">{state}</li>)}</ul>
         </div>
       </section>
 
@@ -197,7 +215,7 @@ export default function HomeBuyers({ kind }: { kind: BuyerKind }) {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[.7fr_1.3fr] lg:px-10">
-        <div><p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">A straightforward process</p><h2 className="mt-4 text-4xl leading-[.97] tracking-[-.045em] sm:text-5xl">First, we learn what matters to you.</h2><div className="mt-8 space-y-6">{[["01", "Share the basics", "Tell us who to contact, where the property is, and what you’d like to do."], ["02", "We review the details", "Our team checks the information and whether the property is in a market we can serve."], ["03", "Discuss possible options", "If there’s a fit, Bobbin or an authorized representative can discuss possible written terms. Submitting a form is not an offer or contract."]].map(([number, title, copy]) => <div key={number} className="flex gap-4 border-t border-[#252923]/12 pt-5"><span className="text-xs font-bold text-[#93442e]">{number}</span><div><h3 className="text-xl">{title}</h3><p className="mt-1 text-sm leading-6 text-[#62695f]">{copy}</p></div></div>)}</div></div>
+        <div><p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">A straightforward process</p><h2 className="mt-4 text-4xl leading-[.97] tracking-[-.045em] sm:text-5xl">First, we learn what matters to you.</h2><div className="mt-8 space-y-6">{[["01", "Share the basics", "Tell us who to contact, where the property is, and what you’d like to do."], ["02", "We review the details", "Our team reviews the property details and applicable local requirements for its state."], ["03", "Discuss possible options", "If there’s a fit, Bobbin or an authorized representative can discuss possible written terms. Submitting a form is not an offer or contract."]].map(([number, title, copy]) => <div key={number} className="flex gap-4 border-t border-[#252923]/12 pt-5"><span className="text-xs font-bold text-[#93442e]">{number}</span><div><h3 className="text-xl">{title}</h3><p className="mt-1 text-sm leading-6 text-[#62695f]">{copy}</p></div></div>)}</div></div>
         <div id="property-form" className="scroll-mt-8 border border-[#252923]/12 bg-[#e9e5db] p-5 sm:p-8">
           {submitted ? <div className="flex min-h-[420px] flex-col items-start justify-center"><span className="flex size-12 items-center justify-center bg-[#dce4cf] text-[#526047]"><Check className="size-5" /></span><p className="mt-6 text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">Inquiry received</p><h2 className="mt-3 text-4xl">Thanks for sharing the details.</h2><p className="mt-4 max-w-lg text-sm leading-6 text-[#62695f]">Your property inquiry has been submitted for review. A member of the team may follow up using the contact information you provided. No purchase offer or appointment has been made.</p><button type="button" onClick={() => setSubmitted(false)} className="mt-6 text-sm font-semibold text-[#93442e]">Submit another property <ArrowRight className="ml-1 inline size-4" /></button></div> : <>
             <p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">Property inquiry · no obligation</p><h2 className="mt-3 text-4xl leading-[.98] tracking-[-.045em]">Tell us about your {kind === "house" ? "house" : "land"}.</h2><p className="mt-3 text-sm leading-6 text-[#62695f]">Fields marked * are required. We’ll use these details to review your inquiry.</p>
@@ -225,9 +243,9 @@ export default function HomeBuyers({ kind }: { kind: BuyerKind }) {
         </div>
       </section>
 
-      <section className="border-y border-[#252923]/10 bg-[#fbf9f3]"><div className="mx-auto grid max-w-7xl gap-6 px-5 py-10 text-xs leading-5 text-[#696a60] sm:grid-cols-2 sm:px-8 lg:px-10"><p>LoveMeAfter Home Buyers is a home-buying inquiry page, not an offer to represent a property owner as an agent or broker. Coverage and purchase availability vary by state and location. Submitting this form does not create a contract or guarantee an offer.</p><p>Any purchase, assignment of contract rights, disclosures, timelines, deposits, and other terms depend on a written agreement and applicable law. Where assignment is contemplated, it will be disclosed in writing as required before signing. Please seek independent legal, tax, and financial advice as needed.</p></div></section>
+      <section className="border-y border-[#252923]/10 bg-[#fbf9f3]"><div className="mx-auto grid max-w-7xl gap-6 px-5 py-10 text-xs leading-5 text-[#696a60] sm:grid-cols-2 sm:px-8 lg:px-10"><p>LoveMeAfter Home Buyers buys houses and land in all 50 U.S. states. Property review, purchase availability, and transaction terms depend on the property and applicable local requirements. This is a home-buying inquiry page, not an offer to represent a property owner as an agent or broker. Submitting this form does not create a contract or guarantee an offer.</p><p>Any purchase, assignment of contract rights, disclosures, timelines, deposits, and other terms depend on a written agreement and applicable law. Where assignment is contemplated, it will be disclosed in writing as required before signing. Please seek independent legal, tax, and financial advice as needed.</p></div></section>
 
-      <footer className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-8 text-xs text-[#696a60] sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10"><Link to="/" className="font-semibold text-[#252923]">LoveMeAfter.com</Link><span>LoveMeAfter Home Buyers · House and land inquiries</span><Link to={kind === "house" ? "/sell-your-land" : "/sell-your-house"} className="inline-flex items-center font-semibold text-[#93442e]">{kind === "house" ? "Selling land instead?" : "Selling a house instead?"} <ArrowUpRight className="ml-1 size-3.5" /></Link></footer>
+      <footer className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-8 text-xs text-[#696a60] sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10"><Link to="/" className="font-semibold text-[#252923]">LoveMeAfter.com</Link><span>LoveMeAfter Home Buyers · Buying in all 50 states</span><a href={BUYER_PHONE_HREF} className="inline-flex items-center gap-1 font-semibold text-[#93442e]">Call {BUYER_PHONE} <ArrowUpRight className="size-3.5" /></a><Link to={kind === "house" ? "/sell-your-land" : "/sell-your-house"} className="inline-flex items-center font-semibold text-[#93442e]">{kind === "house" ? "Selling land instead?" : "Selling a house instead?"} <ArrowUpRight className="ml-1 size-3.5" /></Link></footer>
     </main>
   );
 }
