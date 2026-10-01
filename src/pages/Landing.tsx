@@ -247,6 +247,7 @@ export default function Landing() {
           </a>
           <div className="hidden items-center gap-5 text-sm whitespace-nowrap text-white/75 xl:flex">
             <Link to="/services" className="transition-colors hover:text-white">Services</Link>
+            <Link to="/sell-your-house" className="transition-colors hover:text-white">Sell a property</Link>
             <Link to="/areas" className="transition-colors hover:text-white">Service areas</Link>
             <Link to="/insights" className="transition-colors hover:text-white">Expert guides</Link>
             <Link to="/financing" className="transition-colors hover:text-white">Financing</Link>
@@ -260,7 +261,7 @@ export default function Landing() {
         {menuOpen && (
           <div className="absolute inset-x-4 top-20 rounded-2xl bg-[#182019] p-5 shadow-2xl xl:hidden">
             <button onClick={() => setMenuOpen(false)} className="absolute right-4 top-4"><X className="size-5" /></button>
-            <div className="flex flex-col gap-5 pt-4 text-sm"><Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link><Link to="/areas" onClick={() => setMenuOpen(false)}>Service areas</Link><Link to="/insights" onClick={() => setMenuOpen(false)}>Expert guides</Link><Link to="/conditions" onClick={() => setMenuOpen(false)}>Field conditions</Link><Link to="/trades" onClick={() => setMenuOpen(false)}>Trade network</Link><Link to="/financing" onClick={() => setMenuOpen(false)}>Financing</Link><Link to="/contractors" onClick={() => setMenuOpen(false)}>Work with us</Link><Link to="/login" onClick={() => setMenuOpen(false)}>Team login</Link><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] text-[#1d211d]">Get a free assessment</Button></div>
+            <div className="flex flex-col gap-5 pt-4 text-sm"><Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link><Link to="/sell-your-house" onClick={() => setMenuOpen(false)}>Sell a property</Link><Link to="/areas" onClick={() => setMenuOpen(false)}>Service areas</Link><Link to="/insights" onClick={() => setMenuOpen(false)}>Expert guides</Link><Link to="/conditions" onClick={() => setMenuOpen(false)}>Field conditions</Link><Link to="/trades" onClick={() => setMenuOpen(false)}>Trade network</Link><Link to="/financing" onClick={() => setMenuOpen(false)}>Financing</Link><Link to="/contractors" onClick={() => setMenuOpen(false)}>Work with us</Link><Link to="/login" onClick={() => setMenuOpen(false)}>Team login</Link><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><Button onClick={goToEstimate} className="rounded-full bg-[#d5ec77] text-[#1d211d]">Get a free assessment</Button></div>
           </div>
         )}
       </header>

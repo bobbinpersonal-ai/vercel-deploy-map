@@ -49,6 +49,8 @@ function lazyRoute<T extends React.ComponentType>(
 const Careers = lazyRoute(() => import("./pages/Careers.tsx"));
 const CareerRole = lazyRoute(() => import("./pages/CareerRole.tsx"));
 const Services = lazyRoute(() => import("./pages/Services.tsx"));
+const SellYourHouse = lazyRoute(() => import("./pages/HomeBuyers.tsx").then((module) => ({ default: module.SellYourHouse })));
+const SellYourLand = lazyRoute(() => import("./pages/HomeBuyers.tsx").then((module) => ({ default: module.SellYourLand })));
 const Areas = lazyRoute(() => import("./pages/Areas.tsx"));
 const Insights = lazyRoute(() => import("./pages/Insights.tsx"));
 const TopicPost = lazyRoute(() => import("./pages/TopicPost.tsx"));
@@ -205,6 +207,8 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/careers/roles/:role" element={<CareerRole />} />
             <Route path="/careers/:slug" element={<MarketCareers />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/sell-your-house" element={<SellYourHouse />} />
+            <Route path="/sell-your-land" element={<SellYourLand />} />
             <Route path="/services/:service" element={<ProjectProcess />} />
             <Route path="/conditions" element={<Conditions />} />
             <Route path="/trades" element={<Trades />} />

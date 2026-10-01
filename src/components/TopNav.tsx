@@ -33,6 +33,7 @@ export function TopNav() {
 
   const links = [
     ["/services", "Services"],
+    ["/sell-your-house", "Sell a property"],
     ["/areas", "Service areas"],
     ["/insights", "Expert guides"],
     ["/conditions", "Field conditions"],
