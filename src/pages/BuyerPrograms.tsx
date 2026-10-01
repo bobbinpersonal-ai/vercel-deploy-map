@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { ArrowUpRight, Check, ClipboardList, HandCoins, LoaderCircle } from "lucide-react";
 import { Link } from "react-router";
-import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { collection, doc, serverTimestamp, writeBatch } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { LogoMark } from "@/components/Logo";
 import { usePageMeta } from "@/components/PageMeta";
@@ -24,12 +24,17 @@ export default function BuyerProgram({ program }: { program: Program }) {
     const form = event.currentTarget;
     const data = new FormData(form);
     try {
-      await setDoc(doc(collection(db, "leads")), {
+      const source = investor ? "investor_buyer_signup" : "property_referral_signup";
+      const leadRef = doc(collection(db, "leads"));
+      const mailRef = doc(collection(db, "mail"));
+      const details = Object.fromEntries([...data.entries()].filter(([key]) => key !== "feeNotice" && key !== "proofOfFunds"));
+      const batch = writeBatch(db);
+      batch.set(leadRef, {
         name: String(data.get("name") ?? "").trim(),
         email: String(data.get("email") ?? "").trim(),
         phone: String(data.get("phone") ?? "").trim(),
         service: investor ? "Investor buyer registration" : "Property referral inquiry",
-        source: investor ? "investor_buyer_signup" : "property_referral_signup",
+        source,
         stage: "new",
         ...(investor ? {
           company: String(data.get("company") ?? "").trim(),
@@ -45,6 +50,19 @@ export default function BuyerProgram({ program }: { program: Program }) {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
+      batch.set(mailRef, {
+        to: ["hello@lovemeafter.com"],
+        from: "LoveMeAfter <hello@lovemeafter.com>",
+        message: {
+          subject: investor ? "New investor buyer registration" : "New property referral inquiry",
+          text: JSON.stringify(details, null, 2),
+          html: `<div style="font-family:Arial,sans-serif;color:#252923"><h2>New ${investor ? "investor buyer" : "property referral"} inquiry</h2><p>Lead record: ${leadRef.id}</p><p>See the plain-text message for submitted details.</p></div>`,
+        },
+        source,
+        leadId: leadRef.id,
+        createdAt: serverTimestamp(),
+      });
+      await batch.commit();
       setSubmitted(true);
       form.reset();
     } catch (cause) {

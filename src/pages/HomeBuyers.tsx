@@ -12,7 +12,7 @@ const STATES = [
   ["AL", "Alabama"], ["AK", "Alaska"], ["AZ", "Arizona"], ["AR", "Arkansas"], ["CA", "California"], ["CO", "Colorado"], ["CT", "Connecticut"], ["DE", "Delaware"], ["FL", "Florida"], ["GA", "Georgia"], ["HI", "Hawaii"], ["ID", "Idaho"], ["IL", "Illinois"], ["IN", "Indiana"], ["IA", "Iowa"], ["KS", "Kansas"], ["KY", "Kentucky"], ["LA", "Louisiana"], ["ME", "Maine"], ["MD", "Maryland"], ["MA", "Massachusetts"], ["MI", "Michigan"], ["MN", "Minnesota"], ["MS", "Mississippi"], ["MO", "Missouri"], ["MT", "Montana"], ["NE", "Nebraska"], ["NV", "Nevada"], ["NH", "New Hampshire"], ["NJ", "New Jersey"], ["NM", "New Mexico"], ["NY", "New York"], ["NC", "North Carolina"], ["ND", "North Dakota"], ["OH", "Ohio"], ["OK", "Oklahoma"], ["OR", "Oregon"], ["PA", "Pennsylvania"], ["RI", "Rhode Island"], ["SC", "South Carolina"], ["SD", "South Dakota"], ["TN", "Tennessee"], ["TX", "Texas"], ["UT", "Utah"], ["VT", "Vermont"], ["VA", "Virginia"], ["WA", "Washington"], ["WV", "West Virginia"], ["WI", "Wisconsin"], ["WY", "Wyoming"],
 ] as const;
 
-const BUYING_STATES = STATES.filter(([code]) => code !== "DC").map(([, name]) => name);
+const BUYING_STATES = STATES.map(([, name]) => name);
 const BUYER_PHONE = "424-426-0760";
 const BUYER_PHONE_HREF = "tel:+14244260760";
 
@@ -86,6 +86,7 @@ export default function HomeBuyers({ kind, spanish = false }: { kind: BuyerKind;
   const [error, setError] = useState("");
   const page = spanish ? PAGE_COPY_ES[kind] : PAGE_COPY[kind];
   const faqs = spanish ? BUYER_FAQS_ES : BUYER_FAQS;
+  const safeFaqJson = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([question, answer]) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) }).replace(/</g, "\\u003c");
   const PropertyIcon = page.icon;
 
   usePageMeta(
@@ -199,9 +200,9 @@ export default function HomeBuyers({ kind, spanish = false }: { kind: BuyerKind;
             <p className="mt-6 max-w-2xl text-base leading-7 text-[#62695f] sm:text-lg sm:leading-8">{page.intro}</p>
             <div className="mt-6 inline-flex items-center gap-2 border border-[#65735b]/25 bg-[#fbf9f3]/85 px-3 py-2 text-xs font-semibold text-[#526047]"><MapPin className="size-4" /> {spanish ? "Consultas desde los 50 estados" : "Inquiries from all 50 U.S. states"}</div>
             <p className="mt-3 max-w-xl text-sm leading-6 text-[#62695f]">{spanish ? "Una compra en efectivo tal como está puede evitar reparaciones y visitas. El precio puede ser menor que el de una venta en el mercado abierto. Revisaremos la dirección antes de hablar de términos." : "An as-is cash purchase may avoid repair work and showings. The price may be lower than selling on the open market. We’ll review the address before discussing terms."}</p>
-            <div className="mt-8 flex flex-wrap gap-3"><a href="#property-form" className="inline-flex h-12 items-center gap-2 bg-[#93442e] px-5 text-sm font-semibold text-white transition hover:bg-[#793923]">{spanish ? "Envíe los datos de la propiedad" : "Tell us about the property"} <ArrowDown className="size-4" /></a><a href={BUYER_PHONE_HREF} className="inline-flex h-12 items-center gap-2 border border-[#252923]/20 bg-[#fbf9f3]/85 px-5 text-sm font-semibold text-[#252923] transition hover:bg-[#e9e5db]"><Phone className="size-4" /> {spanish ? "Llame al" : "Call"} {BUYER_PHONE}</a></div>
+            <div className="mt-8"><a href="#property-form" className="inline-flex h-12 items-center gap-2 bg-[#93442e] px-5 text-sm font-semibold text-white transition hover:bg-[#793923]">{spanish ? "Envíe los datos de la propiedad" : "Tell us about the property"} <ArrowDown className="size-4" /></a></div>
           </div>
-            <div className="relative flex min-h-[330px] items-center justify-center border border-[#252923]/10 bg-[#e9e5db] p-6 sm:min-h-[450px] sm:p-10">
+          <div className="relative flex min-h-[330px] items-center justify-center border border-[#252923]/10 bg-[#e9e5db] p-6 sm:min-h-[450px] sm:p-10">
             <div aria-hidden="true" className="absolute inset-5 border border-[#252923]/10 sm:inset-8" />
             <div className="relative w-full max-w-md border border-[#252923]/10 bg-[#fbf9f3] p-6 shadow-xl sm:p-8">
               <span className="flex size-12 items-center justify-center bg-[#252923] text-[#d7b880]"><PropertyIcon className="size-6" /></span>
@@ -231,7 +232,7 @@ export default function HomeBuyers({ kind, spanish = false }: { kind: BuyerKind;
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20 lg:px-10">              <div className="grid gap-4 md:grid-cols-3">
+      <section className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20 lg:px-10"><div className="grid gap-4 md:grid-cols-3">
           <article className="border border-[#252923]/10 bg-[#fbf9f3] p-6 sm:p-7"><CircleDollarSign className="size-5 text-[#93442e]" /><h2 className="mt-5 text-2xl">{spanish ? "Compra tal como está" : "As-is purchase"}</h2><p className="mt-2 text-sm leading-6 text-[#62695f]">{spanish ? "Pregunte por una posible compra en efectivo sin hacer primero las reparaciones. Toda oferta depende de la ubicación, la revisión y los términos escritos." : "Ask about a possible cash purchase without first completing repairs. Any offer depends on location, review, and written terms."}</p></article>
           <article className="border border-[#252923]/10 bg-[#fbf9f3] p-6 sm:p-7"><Hammer className="size-5 text-[#93442e]" /><h2 className="mt-5 text-2xl">{spanish ? "Conversación sobre renovación" : "Renovation conversation"}</h2><p className="mt-2 text-sm leading-6 text-[#62695f]">{spanish ? "En algunas casas, la experiencia en construcción puede ayudarnos a evaluar una compra y una posible renovación. La disponibilidad y el ajuste varían." : "For some homes, construction experience may help us evaluate a purchase and renovation path. Availability and fit vary."}</p></article>
           <article className="border border-[#252923]/10 bg-[#fbf9f3] p-6 sm:p-7"><ClipboardCheck className="size-5 text-[#93442e]" /><h2 className="mt-5 text-2xl">{spanish ? "Próximos pasos claros" : "Clear next steps"}</h2><p className="mt-2 text-sm leading-6 text-[#62695f]">{spanish ? "Empiece con los datos de la propiedad. Los revisaremos y explicaremos si tiene sentido conversar; no tiene que aceptar una oferta." : "Start with property details. We’ll review them and explain whether a conversation makes sense. You don’t have to accept an offer."}</p></article>

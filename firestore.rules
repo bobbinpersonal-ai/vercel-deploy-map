@@ -18,7 +18,7 @@ service cloud.firestore {
         && request.resource.data.keys().hasAll(["to", "from", "message", "source", "leadId", "createdAt"])
         && request.resource.data.to == ["hello@lovemeafter.com"]
         && request.resource.data.from == "LoveMeAfter <hello@lovemeafter.com>"
-        && request.resource.data.source in ["sitewide_free_assessment_dialog", "national_sell_house_page", "national_sell_land_page"]
+        && request.resource.data.source in ["sitewide_free_assessment_dialog", "national_sell_house_page", "national_sell_land_page", "investor_buyer_signup", "property_referral_signup"]
         && request.resource.data.leadId is string
         && request.resource.data.createdAt == request.time
         && request.resource.data.message is map
