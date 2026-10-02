@@ -38,16 +38,32 @@ export function usePageMeta(title: string, description?: string, path?: string) 
 
     const canonical = document.querySelector('link[rel="canonical"]');
     const previousCanonical = canonical?.getAttribute("href") ?? null;
+    const previousOgUrl = document.querySelector('meta[property="og:url"]')?.getAttribute("content") ?? null;
+    const previousOgImage = document.querySelector('meta[property="og:image"]')?.getAttribute("content") ?? null;
+    const previousOgImageAlt = document.querySelector('meta[property="og:image:alt"]')?.getAttribute("content") ?? null;
+    const previousTwitterImage = document.querySelector('meta[name="twitter:image"]')?.getAttribute("content") ?? null;
     if (canonical) {
-      const url = `${window.location.origin}${path ?? window.location.pathname}`;
+      const url = path?.startsWith("https://") || path?.startsWith("http://")
+        ? path
+        : `${window.location.origin}${path ?? window.location.pathname}`;
       canonical.setAttribute("href", url);
       setContent('meta[property="og:url"]', url);
+    }
+    if (path === "/" && canonical) {
+      const heroImage = "https://lovemeafter.com/images/home/hero-home.jpg";
+      setContent('meta[property="og:image"]', heroImage);
+      setContent('meta[property="og:image:alt"]', "[NEEDS PHOTO] Add approved LoveMeAfter home exterior photo");
+      setContent('meta[name="twitter:image"]', heroImage);
     }
 
     return () => {
       document.title = previousTitle;
       if (description && descriptionTag) descriptionTag.setAttribute("content", previousDescription);
       if (canonical && previousCanonical) canonical.setAttribute("href", previousCanonical);
+      if (previousOgUrl) setContent('meta[property="og:url"]', previousOgUrl);
+      if (previousOgImage) setContent('meta[property="og:image"]', previousOgImage);
+      if (previousOgImageAlt) setContent('meta[property="og:image:alt"]', previousOgImageAlt);
+      if (previousTwitterImage) setContent('meta[name="twitter:image"]', previousTwitterImage);
     };
   }, [title, description, path]);
 }

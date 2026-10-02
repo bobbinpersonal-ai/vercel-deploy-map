@@ -49,6 +49,8 @@ function lazyRoute<T extends React.ComponentType>(
 const Careers = lazyRoute(() => import("./pages/Careers.tsx"));
 const CareerRole = lazyRoute(() => import("./pages/CareerRole.tsx"));
 const Services = lazyRoute(() => import("./pages/Services.tsx"));
+const BuyerHome = lazyRoute(() => import("./pages/BuyerHome.tsx").then((module) => ({ default: module.BuyerHomeEnglish })));
+const BuyerHomeSpanish = lazyRoute(() => import("./pages/BuyerHome.tsx").then((module) => ({ default: module.BuyerHomeSpanish })));
 const SellYourHouse = lazyRoute(() => import("./pages/HomeBuyers.tsx").then((module) => ({ default: module.SellYourHouse })));
 const SellYourLand = lazyRoute(() => import("./pages/HomeBuyers.tsx").then((module) => ({ default: module.SellYourLand })));
 const SellYourHouseSpanish = lazyRoute(() => import("./pages/HomeBuyers.tsx").then((module) => ({ default: module.SellYourHouseSpanish })));
@@ -208,7 +210,8 @@ createRoot(document.getElementById("root")!).render(
         <div className="site-theme">
         <Suspense fallback={<RouteLoading />}>
           <Routes>
-            <Route path="/" element={<Services />} />
+            <Route path="/" element={<BuyerHome />} />
+            <Route path="/es" element={<BuyerHomeSpanish />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/careers/roles/:role" element={<CareerRole />} />
             <Route path="/careers/:slug" element={<MarketCareers />} />
