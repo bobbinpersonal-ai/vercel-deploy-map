@@ -50,9 +50,9 @@ export function usePageMeta(title: string, description?: string, path?: string) 
       setContent('meta[property="og:url"]', url);
     }
     if (path === "/" && canonical) {
-      const heroImage = "https://lovemeafter.com/images/home/hero-home.jpg";
+      const heroImage = "https://images.pexels.com/photos/5524336/pexels-photo-5524336.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop";
       setContent('meta[property="og:image"]', heroImage);
-      setContent('meta[property="og:image:alt"]', "[NEEDS PHOTO] Add approved LoveMeAfter home exterior photo");
+      setContent('meta[property="og:image:alt"]', "Illustrative residential exterior photo from Pexels; not a LoveMeAfter project");
       setContent('meta[name="twitter:image"]', heroImage);
     }
 

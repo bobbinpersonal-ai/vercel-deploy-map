@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import { usePageMeta } from "@/components/PageMeta";
-import { Logo } from "@/components/Logo";
+import { PHOTO_CREDIT_URL, px, pxPage } from "@/data/photos";
 import {
   ArrowDown,
   ArrowRight,
@@ -55,7 +55,8 @@ type Copy = {
   videoLabel: string;
   videoNote: string;
   photoSlots: string[];
-  propertyPhotos: string[];
+  propertyPhotos: [string, number][];
+  photoCredit: string;
   explore: string;
   situationsEyebrow: string;
   situationsTitle: string;
@@ -81,16 +82,17 @@ const EN: Copy = {
   heroEyebrow: "LoveMeAfter Home Buyers · A LoveMeAfter Construction company",
   divisionNote: "[NEEDS FACT: Confirm the Home Buyers division and LoveMeAfter Construction relationship before publishing this company attribution.]",
   heroTitle: "We buy houses and land.",
-  heroText: "If a property needs work, is sitting empty, or no longer fits your plans, send us the details. We accept inquiries nationwide, then confirm whether we can review the location. An inquiry isn’t an offer or a promise to buy.",
+  heroText: "If a property needs work, is sitting empty, or no longer fits your plans, send us the details. We accept inquiries nationwide, then confirm whether we can review the location. A form isn’t an instant offer or cash payout.",
   house: "Sell your house",
   land: "Sell your land",
   call: "Call",
-  photoLabel: "[NEEDS PHOTO] Add an approved, people-free home exterior photo",
-  photoNote: "[NEEDS PHOTO: Provide approved photos. Current illustration is a placeholder, not a photograph.]",
-  teaser: "See a rough range in 30 seconds",
+  photoLabel: "Suburban home exterior at sunset · illustrative stock photo",
+  photoNote: "Illustrative stock photo. Not a LoveMeAfter project.",
+  photoCredit: "Photo: Pexels",
+  teaser: "Check a rough estimate · not an offer",
   trust: ["Inquiries accepted from all 50 states", "[NEEDS FACT] As-is purchases without repairs", "[NEEDS FACT] No agent commissions", "Discuss timing before any agreement"],
   tradeoff: "[NEEDS FACT: Confirm whether as-is purchases and no agent commissions apply to your deals before publishing those points as facts.]",
-  calculatorHandoff: "The estimates are carried in the link. The existing inquiry form doesn’t import them yet, so include the figures in your notes if you want them reviewed.",
+  calculatorHandoff: "Your estimates travel in the link, not an instant offer or cash payout. The existing inquiry form doesn’t import them yet, so include the figures in your notes if you’d like them reviewed.",
   processEyebrow: "A clear place to start",
   processTitle: "How it works",
   steps: [["Send the details", "Share the location, condition, and what you’re considering."], ["We review the property", "We’ll check the information and whether the location may fit."], ["Talk through written terms", "If there’s a possible fit, we’ll discuss terms in writing. You decide what to do next."]],
@@ -100,7 +102,7 @@ const EN: Copy = {
   value: "Estimated after-repair value ($)",
   repairs: "Estimated repairs ($)",
   range: "Rough starting range",
-  sendNumbers: "Continue with these numbers",
+  sendNumbers: "Continue to the house inquiry",
   disclaimer: "This is a rough starting point, not an offer, appraisal, or promise to buy. Actual terms depend on review, location, costs, and a written agreement.",
   whyEyebrow: "What a direct sale can mean",
   whyTitle: "Three things to weigh",
@@ -111,7 +113,7 @@ const EN: Copy = {
   videoLabel: "Construction video [NEEDS FACT: confirm it shows LoveMeAfter work]",
   videoNote: "[NEEDS FACT: Confirm this video shows LoveMeAfter work and is approved for public use.]",
   photoSlots: ["[NEEDS PHOTO] Before", "[NEEDS PHOTO] During", "[NEEDS PHOTO] After"],
-  propertyPhotos: ["[NEEDS PHOTO] Vacant land parcel, aerial view", "[NEEDS PHOTO] Fixer-upper exterior, honest condition", "[NEEDS PHOTO] Renovated home exterior", "[NEEDS PHOTO] Roofline detail", "[NEEDS PHOTO] Kitchen detail", "[NEEDS PHOTO] Yard detail", "[NEEDS PHOTO] Second land parcel", "[NEEDS PHOTO] Rural or wooded land"],
+  propertyPhotos: [["Aerial view across farmland", 2264699], ["Older home exterior, shown as an example", 4916186], ["White home exterior with a front porch", 5661021], ["Close detail of a house roof", 10025299], ["Bright kitchen interior", 19807422], ["Home exterior beside a garden", 12608773], ["Aerial view across farm fields", 28412626], ["Open field bordered by trees", 21856659]],
   explore: "Explore construction services",
   situationsEyebrow: "Properties aren’t all alike",
   situationsTitle: "You may be dealing with…",
@@ -144,16 +146,17 @@ const ES: Copy = {
   heroEyebrow: "LoveMeAfter Home Buyers · Una empresa de LoveMeAfter Construction",
   divisionNote: "[NEEDS FACT: Confirme la relación entre Home Buyers y LoveMeAfter Construction antes de publicar esta atribución empresarial.]",
   heroTitle: "Compramos casas y terrenos. Tal como están.",
-  heroText: "Si una propiedad necesita reparaciones, está vacía o ya no encaja con sus planes, envíenos los datos. Aceptamos consultas de todo el país y confirmaremos si podemos revisar esa ubicación. Una consulta no es una oferta ni una promesa de compra.",
+  heroText: "Si una propiedad necesita reparaciones, está vacía o ya no encaja con sus planes, envíenos los datos. Aceptamos consultas de todo el país y confirmaremos si podemos revisar esa ubicación. El formulario no es una oferta inmediata ni un pago en efectivo.",
   house: "Vender su casa",
   land: "Vender su terreno",
   call: "Llamar",
-  photoLabel: "[NEEDS PHOTO] Añadir una foto aprobada del exterior de una casa, sin personas",
-  photoNote: "[NEEDS PHOTO: Envíe fotos aprobadas. La ilustración actual es un marcador, no una fotografía.]",
-  teaser: "Vea un rango aproximado en 30 segundos",
+  photoLabel: "Exterior de una casa suburbana al atardecer · foto de archivo ilustrativa",
+  photoNote: "Foto de archivo ilustrativa. No es un proyecto de LoveMeAfter.",
+  photoCredit: "Foto: Pexels",
+  teaser: "Consulte un cálculo · no es una oferta",
   trust: ["Consultas desde los 50 estados", "[NEEDS FACT] Compra tal como está, sin reparar primero", "[NEEDS FACT] Sin comisiones de agente", "Hablemos del plazo antes de cualquier acuerdo"],
   tradeoff: "[NEEDS FACT: Confirme si las compras tal como están y la ausencia de comisiones de agente aplican a sus operaciones antes de publicar esos puntos como hechos.]",
-  calculatorHandoff: "Los cálculos se incluyen en el enlace. El formulario de consulta actual todavía no los importa. Si quiere que los revisemos, incluya las cifras en sus notas.",
+  calculatorHandoff: "Los cálculos viajan en el enlace; no son una oferta ni un pago inmediato. El formulario actual aún no los importa. Si desea que los revisemos, incluya las cifras en sus notas.",
   processEyebrow: "Un comienzo claro",
   processTitle: "Cómo funciona",
   steps: [["Envíe los datos", "Comparta la ubicación, el estado y lo que está considerando."], ["Revisamos la propiedad", "Revisaremos la información y si la ubicación podría ser viable."], ["Hablamos de términos por escrito", "Si puede haber una opción, hablaremos de los términos por escrito. Usted decide qué hacer después."]],
@@ -163,7 +166,7 @@ const ES: Copy = {
   value: "Valor estimado después de reparaciones ($)",
   repairs: "Reparaciones estimadas ($)",
   range: "Rango aproximado inicial",
-  sendNumbers: "Continuar con estos números",
+  sendNumbers: "Continuar a la consulta sobre una casa",
   disclaimer: "Es un punto de partida aproximado, no una oferta, tasación ni promesa de compra. Los términos reales dependen de la revisión, la ubicación, los costos y un acuerdo por escrito.",
   whyEyebrow: "Lo que puede implicar una venta directa",
   whyTitle: "Tres cosas que debe considerar",
@@ -174,7 +177,7 @@ const ES: Copy = {
   videoLabel: "Video de construcción [NEEDS FACT: confirmar que muestra trabajo de LoveMeAfter]",
   videoNote: "[NEEDS FACT: Confirme que este video muestra trabajo de LoveMeAfter y que está aprobado para uso público.]",
   photoSlots: ["[NEEDS PHOTO] Antes", "[NEEDS PHOTO] Durante", "[NEEDS PHOTO] Después"],
-  propertyPhotos: ["[NEEDS PHOTO] Terreno vacío, vista aérea", "[NEEDS PHOTO] Exterior de una casa para reparar, estado real", "[NEEDS PHOTO] Exterior de una casa renovada", "[NEEDS PHOTO] Detalle de techo", "[NEEDS PHOTO] Detalle de cocina", "[NEEDS PHOTO] Detalle de jardín", "[NEEDS PHOTO] Segundo terreno", "[NEEDS PHOTO] Terreno rural o arbolado"],
+  propertyPhotos: [["Vista aérea de terreno agrícola", 2264699], ["Exterior de una casa antigua como ejemplo", 4916186], ["Exterior de una casa blanca con porche", 5661021], ["Detalle del techo de una casa", 10025299], ["Interior luminoso de una cocina", 19807422], ["Exterior de una casa junto a un jardín", 12608773], ["Vista aérea de campos agrícolas", 28412626], ["Campo abierto junto a árboles", 21856659]],
   explore: "Ver servicios de construcción",
   situationsEyebrow: "Cada propiedad es distinta",
   situationsTitle: "Quizás se encuentre ante…",
@@ -207,14 +210,22 @@ const buttonPrimary = `inline-flex min-h-12 items-center justify-center gap-2 bg
 const buttonSecondary = `inline-flex min-h-12 items-center justify-center gap-2 border border-[#252923]/25 bg-[#fbf9f3] px-5 py-3 text-sm font-semibold text-[#252923] transition hover:bg-[#e9e5db] ${FOCUS}`;
 const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
-function PhotoSlot({ label, className = "" }: { label: string; className?: string }) {
-  return (      <div role="img" aria-label={label} className={`relative isolate flex items-end overflow-hidden border border-[#252923]/15 bg-[#dcd8cd] ${className}`}>
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(145deg,rgba(101,115,91,.34),transparent_45%),linear-gradient(15deg,#c5c4b3,#e3d7c3_55%,#ece6da)]" />
-      <div aria-hidden="true" className="absolute inset-x-[12%] bottom-[18%] h-[36%] border border-[#252923]/15 bg-[#d3c8b7]/75" />
-      <div aria-hidden="true" className="absolute inset-x-[8%] bottom-[12%] h-[8%] bg-[#65735b]/35" />
-      <div aria-hidden="true" className="absolute right-[14%] top-[12%] h-[27%] w-[25%] border border-[#252923]/10 bg-[#fbf9f3]/30" />
-      <span aria-hidden="true" className="relative m-3 max-w-[85%] border border-[#252923]/15 bg-[#fbf9f3]/95 px-3 py-2 text-[10px] font-semibold leading-4 text-[#252923] sm:m-4 sm:text-xs">{label}</span>
+function PhotoSlot({ label, src, className = "", eager = false }: { label: string; src: string; className?: string; eager?: boolean }) {
+  return (
+    <div className={`relative isolate overflow-hidden border border-[#252923]/15 bg-[#dcd8cd] ${className}`}>
+      <img src={src} alt={label} width="1200" height="900" loading={eager ? "eager" : "lazy"} fetchPriority={eager ? "high" : "auto"} decoding="async" className="absolute inset-0 h-full w-full object-cover transition duration-700 hover:scale-[1.03]" />
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#191b17]/35 via-transparent to-transparent" />
+      <a href={pxPage(Number(src.match(/photos\/(\d+)/)?.[1] ?? 0))} target="_blank" rel="noreferrer" className="absolute right-3 top-3 text-[9px] font-medium text-white/90 underline underline-offset-2 drop-shadow">Pexels</a>
     </div>
+  );
+}
+
+function HouseMark({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" aria-hidden="true" className={className} fill="none">
+      <path d="M5 22.5 24 7l19 15.5" stroke="#93442e" strokeWidth="3" strokeLinecap="square" strokeLinejoin="miter" />
+      <path d="M11 20v22h26V20M20 42V29h8v13" stroke="#252923" strokeWidth="2.5" strokeLinecap="square" strokeLinejoin="miter" />
+    </svg>
   );
 }
 
@@ -263,7 +274,7 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
     <main className="min-h-screen bg-[#f3f0e8] text-[#252923]">
       <div role="banner" className="sticky top-0 z-40 border-b border-[#252923]/10 bg-[#fbf9f3]/95 backdrop-blur">
         <div role="navigation" aria-label={spanish ? "Navegación principal" : "Main navigation"} className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-8 lg:px-10">
-          <Link to={spanish ? "/es" : "/"} aria-label="LoveMeAfter Home Buyers" className="flex shrink-0 items-center gap-2"><Logo compact className="gap-2" /><span className="hidden border-l border-[#252923]/15 pl-2 text-xs font-semibold text-[#65735b] sm:inline">Home Buyers</span></Link>
+          <Link to={spanish ? "/es" : "/"} aria-label="LoveMeAfter Home Buyers" className="flex shrink-0 items-center gap-2"><HouseMark className="size-9" /><span className="text-xs font-semibold leading-tight text-[#252923] sm:text-sm">LoveMeAfter<br className="sm:hidden" /> Home Buyers</span></Link>
           <div className="hidden items-center gap-4 text-xs font-semibold lg:flex xl:gap-6 xl:text-sm">
             <Link to={housePath} className={`hover:text-[#93442e] ${FOCUS}`}>{copy.nav[0]}</Link>
             <Link to={landPath} className={`hover:text-[#93442e] ${FOCUS}`}>{copy.nav[1]}</Link>
@@ -299,8 +310,11 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
             <a href={PHONE_HREF} className={`mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#93442e] underline-offset-4 hover:underline ${FOCUS}`}><Phone className="size-4" />{copy.call} {PHONE}</a>
           </div>
           <div className="relative min-h-[310px] sm:min-h-[420px]">
-            <PhotoSlot label={copy.photoLabel} className="absolute inset-0 min-h-[310px] sm:min-h-[420px]" />
-            <p className="sr-only">{copy.photoNote}</p>
+            <PhotoSlot label={copy.photoLabel} src={px(5524336, 1800)} eager className="absolute inset-0 min-h-[310px] sm:min-h-[420px]" />
+            <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 bg-gradient-to-t from-[#191b17]/80 to-transparent px-4 pb-16 pt-14 sm:px-5 sm:pb-20">
+              <a href={pxPage(5524336)} target="_blank" rel="noreferrer" className={`text-[9px] text-white underline underline-offset-2 drop-shadow ${FOCUS}`}>{copy.photoCredit}</a>
+              <span className="max-w-[65%] text-right text-[9px] leading-4 text-white/90 drop-shadow">{copy.photoNote}</span>
+            </div>
             <a href="#calculator" className={`absolute bottom-4 left-4 right-4 flex items-center justify-between gap-4 border border-[#252923]/15 bg-[#fbf9f3] p-4 shadow-xl transition hover:-translate-y-1 sm:bottom-6 sm:left-auto sm:right-6 sm:w-[min(84%,360px)] sm:p-5 ${FOCUS}`}>
               <span><span className="block text-xs font-bold text-[#65735b]">{copy.teaser}</span><span className="mt-1 block text-sm font-semibold">{spanish ? "Pruebe la calculadora" : "Try the calculator"}</span></span><ArrowDown className="size-5 shrink-0 text-[#93442e]" />
             </a>
@@ -335,7 +349,7 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
               <label className="text-xs font-semibold">{copy.value}<span className="mt-2 flex h-12 items-center border border-[#252923]/15 bg-white px-3"><span className="text-sm text-[#696a60]">$</span><input type="number" min="0" step="1000" inputMode="numeric" value={value} onChange={(event) => setValue(Math.max(0, Number(event.target.value) || 0))} className="h-full min-w-0 flex-1 bg-transparent px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-[#65735b]" aria-label={copy.value} /></span></label>
               <label className="text-xs font-semibold">{copy.repairs}<span className="mt-2 flex h-12 items-center border border-[#252923]/15 bg-white px-3"><span className="text-sm text-[#696a60]">$</span><input type="number" min="0" step="500" inputMode="numeric" value={repairs} onChange={(event) => setRepairs(Math.max(0, Number(event.target.value) || 0))} className="h-full min-w-0 flex-1 bg-transparent px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-[#65735b]" aria-label={copy.repairs} /></span></label>
             </div>
-            <div aria-live="polite" className="mt-6 border border-[#65735b]/25 bg-[#f3f0e8] p-5 sm:p-6"><p className="text-[10px] font-bold tracking-[.16em] text-[#65735b] uppercase">{copy.range}</p><p className="mt-2 text-3xl leading-none tabular-nums sm:text-4xl">{money.format(Math.round(estimates[0]))} <span className="text-[#93442e]">–</span> {money.format(Math.round(estimates[1]))}</p>            <p className="mt-2 text-xs text-[#62695f]">{copy.formula}</p></div>
+            <div aria-live="polite" className="mt-6 border border-[#65735b]/25 bg-[#f3f0e8] p-5 sm:p-6"><p className="text-[10px] font-bold tracking-[.16em] text-[#65735b] uppercase">{copy.range}</p><p className="mt-2 text-3xl leading-none tabular-nums sm:text-4xl">{money.format(Math.round(estimates[0]))} <span className="text-[#93442e]">–</span> {money.format(Math.round(estimates[1]))}</p><p className="mt-2 text-xs text-[#62695f]">{copy.formula}</p></div>
             <p className="sr-only">{copy.calculated}: {money.format(Math.round(estimates[0]))} to {money.format(Math.round(estimates[1]))}</p>
             <p className="mt-5 text-xs leading-5 text-[#62695f]">{copy.calculatorHandoff}</p>
             <div className="mt-4"><LeadLink href={estimateHref}>
@@ -353,9 +367,10 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
             return <article key={title} className="border border-[#252923]/10 bg-[#fbf9f3] p-6 sm:p-7"><span className="flex size-11 items-center justify-center bg-[#e9e5db] text-[#93442e]"><Icon className="size-5" /></span><h3 className="mt-5 text-2xl">{title}</h3><p className="mt-2 text-sm leading-6 text-[#62695f]">{text}</p></article>;
           })}
         </div>
-        <div aria-label={spanish ? "Fotos pendientes de aprobación" : "Photo slots awaiting approved images"} className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {copy.propertyPhotos.map((label) => <PhotoSlot key={label} label={label} className="aspect-[4/3]" />)}
+        <div aria-label={spanish ? "Fotos ilustrativas de casas y terrenos" : "Illustrative home and land photographs"} className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {copy.propertyPhotos.map(([label, id]) => <a key={id} href={pxPage(id)} target="_blank" rel="noreferrer" className={`group block overflow-hidden border border-[#252923]/10 bg-[#fbf9f3] ${FOCUS}`}><PhotoSlot label={`${label} (illustrative stock photo)`} src={px(id, 900)} className="aspect-[4/3]" /><span className="block min-h-12 px-3 py-2 text-[11px] font-medium leading-4 text-[#62695f] group-hover:text-[#93442e]">{label}<ArrowUpRight className="ml-1 inline size-3" /></span></a>)}
         </div>
+        <p className="mt-3 text-[11px] text-[#696a60]">{copy.photoCredit} <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className={`underline underline-offset-2 ${FOCUS}`}>Pexels License</a></p>
       </motion.section>
 
       <motion.section {...reveal} id="construction" className="scroll-mt-24 bg-[#252923] text-[#fbf9f3]">
@@ -365,13 +380,14 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
             <div><video className="aspect-video w-full border border-white/20 bg-black object-cover" src="/copy_5E397E73-24D9-4597-8204-60EA4CE89EDD.mp4" controls playsInline preload="metadata" aria-label={copy.videoLabel} /><p className="mt-2 text-xs leading-5 text-white/70">{copy.videoNote}</p></div>
           </div>
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
-            {copy.photoSlots.map((label) => <PhotoSlot key={label} label={label} className="aspect-[4/3]" />)}
+            {copy.photoSlots.map((label) => <div key={label} className="flex aspect-[4/3] items-end border border-dashed border-white/35 bg-white/[.04] p-4 text-xs font-medium text-white/80">{label}</div>)}
           </div>
+          <p className="mt-3 text-[11px] leading-5 text-white/70">{spanish ? "[NEEDS PHOTO: Añada fotos verificadas de LoveMeAfter antes/durante/después del proyecto.]" : "[NEEDS PHOTO: Add verified LoveMeAfter before/during/after project stills here.]"}</p>
         </div>
       </motion.section>
 
-      <motion.section {...reveal} id="situations" className="scroll-mt-24 mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20 lg:px-10">
-        <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr]"><div><p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">{copy.situationsEyebrow}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.situationsTitle}</h2></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{copy.situations.map((situation, index) => { const Icon = [House, Wrench, House, MapPin, ClipboardList, Trees][index]; return <article key={situation} className="flex min-h-32 flex-col justify-between border border-[#252923]/10 bg-[#fbf9f3] p-5"><Icon className="size-5 text-[#93442e]" /><h3 className="mt-5 text-lg leading-snug">{situation}</h3></article>; })}</div></div>
+      <motion.section {...reveal} id="situations" className="scroll-mt-24 mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20 lg:px-10">          <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr]"><div><p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">{copy.situationsEyebrow}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.situationsTitle}</h2></div><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{copy.situations.map((situation, index) => { const Icon = [House, Wrench, House, MapPin, ClipboardList, Trees][index]; const imageId = [22485304, 4916186, 8579963, 10628470, 18729447, 13324677][index]; return <article key={situation} className="overflow-hidden border border-[#252923]/10 bg-[#fbf9f3]"><PhotoSlot label={`${situation} · illustrative property stock photo`} src={px(imageId, 700)} className="aspect-[16/10]" /><div className="flex min-h-24 items-start gap-3 p-4"><Icon className="mt-0.5 size-4 shrink-0 text-[#93442e]" /><h3 className="text-lg leading-snug">{situation}</h3></div></article>; })}</div></div>
+        <p className="mt-4 text-[11px] leading-5 text-[#696a60]">{copy.photoCredit} <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className={`underline underline-offset-2 ${FOCUS}`}>Pexels License</a></p>
       </motion.section>
 
       <motion.section {...reveal} className="border-y border-[#252923]/10 bg-[#fbf9f3]">
@@ -389,7 +405,7 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
 
       <footer className="border-t border-[#252923]/10 bg-[#f3f0e8]">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-9 sm:px-8 md:grid-cols-[1fr_2fr] lg:px-10">
-          <div><Link to={spanish ? "/es" : "/"} aria-label="LoveMeAfter home"><Logo /></Link><p className="mt-3 text-xs text-[#62695f]">LoveMeAfter Home Buyers</p><a href={PHONE_HREF} className={`mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#93442e] ${FOCUS}`}><Phone className="size-4" />{PHONE}</a><p className="mt-2 text-xs text-[#62695f]">{copy.footerClaim}</p></div>
+          <div><Link to={spanish ? "/es" : "/"} aria-label="LoveMeAfter Home Buyers" className="inline-flex items-center gap-3"><HouseMark className="size-10" /><span className="text-sm font-semibold">LoveMeAfter Home Buyers</span></Link><p className="mt-3 text-xs text-[#62695f]">LoveMeAfter Home Buyers</p><a href={PHONE_HREF} className={`mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#93442e] ${FOCUS}`}><Phone className="size-4" />{PHONE}</a><p className="mt-2 text-xs text-[#62695f]">{copy.footerClaim}</p></div>
           <div role="navigation" aria-label={spanish ? "Enlaces del pie de página" : "Footer links"} className="grid grid-cols-2 gap-x-5 gap-y-3 text-sm font-medium sm:grid-cols-3"><Link className={`hover:text-[#93442e] ${FOCUS}`} to={housePath}>{copy.house}</Link><Link className={`hover:text-[#93442e] ${FOCUS}`} to={landPath}>{copy.land}</Link><Link className={`hover:text-[#93442e] ${FOCUS}`} to="/investors">{copy.investors}</Link><Link className={`hover:text-[#93442e] ${FOCUS}`} to="/refer">{copy.refer}</Link><Link className={`hover:text-[#93442e] ${FOCUS}`} to="/services">{copy.nav[2]}</Link><Link className={`hover:text-[#93442e] ${FOCUS}`} to="/privacy">{copy.privacy}</Link><Link className={`hover:text-[#93442e] ${FOCUS}`} to="/terms">{copy.terms}</Link></div>
         </div>
         <div className="border-t border-[#252923]/10 px-5 py-4 text-center text-[11px] text-[#696a60]">© LoveMeAfter · {copy.footerClaim}</div>
