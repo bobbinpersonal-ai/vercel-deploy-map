@@ -1,7 +1,8 @@
 import { useEffect, type ReactNode } from "react";
 import { Link } from "react-router";
 import { usePageMeta } from "@/components/PageMeta";
-import { LogoMark } from "@/components/Logo";  import { PHOTO_CREDIT_URL, px } from "@/data/photos";
+import { LogoMark } from "@/components/Logo";
+import { PHOTO_CREDIT_URL, px } from "@/data/photos";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -145,14 +146,14 @@ const ES: Copy = {
   terms: "Términos",
 };
 
-const FOCUS = "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#93442e]";
-const buttonPrimary = `inline-flex min-h-12 items-center justify-center gap-2 bg-[#252923] px-6 py-3 text-sm font-semibold tracking-[.01em] text-[#fbf9f3] transition hover:bg-[#44483f] ${FOCUS}`;
-const buttonSecondary = `inline-flex min-h-12 items-center justify-center gap-2 px-1 py-3 text-sm font-medium text-[#252923] underline decoration-[#94713f]/65 underline-offset-4 transition hover:text-[#94713f] hover:decoration-[#94713f] ${FOCUS}`;
+const FOCUS = "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
+const buttonPrimary = `inline-flex min-h-12 items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-semibold tracking-[.01em] text-black transition hover:bg-white/85 ${FOCUS}`;
+const buttonSecondary = `inline-flex min-h-12 items-center justify-center gap-2 px-1 py-3 text-sm font-medium text-white underline decoration-white/60 underline-offset-4 transition hover:text-white/70 hover:decoration-white ${FOCUS}`;
 function PhotoSlot({ label, src, className = "", eager = false }: { label: string; src: string; className?: string; eager?: boolean }) {
   return (
-    <div className={`relative isolate overflow-hidden border border-[#252923]/15 bg-[#dcd8cd] ${className}`}>
-      <img src={src} alt={label} width="1200" height="900" loading={eager ? "eager" : "lazy"} fetchPriority={eager ? "high" : "auto"} decoding="async" className="absolute inset-0 h-full w-full object-cover transition duration-700 hover:scale-[1.03]" />
-      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#191b17]/20 via-transparent to-transparent" />
+    <div className={`relative isolate overflow-hidden border border-white/15 bg-black ${className}`}>
+      <img src={src} alt={label} width="1200" height="900" loading={eager ? "eager" : "lazy"} fetchPriority={eager ? "high" : "auto"} decoding="async" className="absolute inset-0 h-full w-full object-cover grayscale transition duration-700 hover:scale-[1.03]" />
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
     </div>
   );
 }
@@ -187,45 +188,45 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
   const reveal = reduceMotion ? {} : { initial: { opacity: 0, y: 18 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.14 }, transition: { duration: 0.45 } };
 
   return (
-    <main className="relative isolate min-h-screen text-[#252923]">
+    <main className="relative isolate min-h-screen bg-black text-white [color-scheme:dark]">
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 -z-10 bg-cover bg-center"
-        style={{ backgroundImage: `linear-gradient(rgba(243,240,232,.12), rgba(243,240,232,.22)), url("${px(5524336, 1800)}")` }}
+        className="pointer-events-none fixed inset-0 -z-10 bg-cover bg-center grayscale"
+        style={{ backgroundImage: `linear-gradient(rgba(0,0,0,.34), rgba(0,0,0,.58)), url("${px(5524336, 1800)}")` }}
       />
-      <div role="banner" className="sticky top-0 z-40 border-b border-[#252923]/10 bg-[#f3f0e8]/78 backdrop-blur-md">
+      <div role="banner" className="sticky top-0 z-40 border-b border-white/15 bg-black/75 text-white backdrop-blur-md">
         <div role="navigation" aria-label={spanish ? "Navegación principal" : "Main navigation"} className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-4 sm:px-8 lg:px-10">
           <Link to={spanish ? "/es" : "/"} aria-label="LoveMeAfter Home Buyers" className="flex shrink-0 items-center"><LogoMark className="size-10 sm:size-11" /></Link>
-          <div className="hidden items-center gap-5 text-[11px] font-medium tracking-[.04em] lg:flex xl:gap-7 xl:text-xs">
-            <Link to={housePath} className={`hover:text-[#93442e] ${FOCUS}`}>{copy.nav[0]}</Link>
-            <Link to={landPath} className={`hover:text-[#93442e] ${FOCUS}`}>{copy.nav[1]}</Link>
-            <a href="#construction" className={`hover:text-[#93442e] ${FOCUS}`}>{copy.nav[2]}</a>
-            <Link to="/investors" className={`hover:text-[#93442e] ${FOCUS}`}>{copy.nav[3]}</Link>
-            <Link to="/refer" className={`hover:text-[#93442e] ${FOCUS}`}>{copy.nav[4]}</Link>
+          <div className="hidden items-center gap-5 text-[11px] font-medium tracking-[.04em] text-white/85 lg:flex xl:gap-7 xl:text-xs">
+            <Link to={housePath} className={`hover:text-white/65 ${FOCUS}`}>{copy.nav[0]}</Link>
+            <Link to={landPath} className={`hover:text-white/65 ${FOCUS}`}>{copy.nav[1]}</Link>
+            <a href="#construction" className={`hover:text-white/65 ${FOCUS}`}>{copy.nav[2]}</a>
+            <Link to="/investors" className={`hover:text-white/65 ${FOCUS}`}>{copy.nav[3]}</Link>
+            <Link to="/refer" className={`hover:text-white/65 ${FOCUS}`}>{copy.nav[4]}</Link>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link to={spanish ? "/" : "/es"} lang={spanish ? "en" : "es"} className={`px-2 py-2 text-xs font-semibold text-[#65735b] hover:text-[#252923] ${FOCUS}`} aria-label={spanish ? "Read in English" : "Leer en español"}>{spanish ? "English" : "Español"}</Link>
-            <a href={PHONE_HREF} className={`inline-flex min-h-10 items-center justify-center gap-2 border-b border-[#94713f] px-2 text-xs font-semibold text-[#252923] transition hover:text-[#94713f] ${FOCUS}`} aria-label={`${copy.call} ${PHONE}`}><Phone className="size-4" /><span className="sm:hidden">{spanish ? "Llamar" : "Call"}</span><span className="hidden sm:inline">{PHONE}</span></a>
+            <Link to={spanish ? "/" : "/es"} lang={spanish ? "en" : "es"} className={`px-2 py-2 text-xs font-semibold text-white/70 hover:text-white ${FOCUS}`} aria-label={spanish ? "Read in English" : "Leer en español"}>{spanish ? "English" : "Español"}</Link>
+            <a href={PHONE_HREF} className={`inline-flex min-h-10 items-center justify-center gap-2 border-b border-white/60 px-2 text-xs font-semibold text-white transition hover:border-white hover:text-white/70 ${FOCUS}`} aria-label={`${copy.call} ${PHONE}`}><Phone className="size-4" /><span className="sm:hidden">{spanish ? "Llamar" : "Call"}</span><span className="hidden sm:inline">{PHONE}</span></a>
           </div>
         </div>
-        <div role="navigation" aria-label={spanish ? "Enlaces rápidos" : "Quick links"} className="mx-auto flex max-w-7xl gap-5 overflow-x-auto px-4 pb-3 text-xs font-semibold lg:hidden">
-          <Link to={spanish ? "/es/vender-casa" : "/sell-your-house"} className={`shrink-0 text-[#93442e] ${FOCUS}`}>{copy.nav[0]}</Link>
-          <Link to={spanish ? "/es/vender-terreno" : "/sell-your-land"} className={`shrink-0 text-[#93442e] ${FOCUS}`}>{copy.nav[1]}</Link>
-          <a href="#construction" className={`shrink-0 text-[#62695f] ${FOCUS}`}>{copy.nav[2]}</a>
-          <Link to="/investors" className={`shrink-0 text-[#62695f] ${FOCUS}`}>{copy.nav[3]}</Link>
-          <Link to="/refer" className={`shrink-0 text-[#62695f] ${FOCUS}`}>{copy.nav[4]}</Link>
+        <div role="navigation" aria-label={spanish ? "Enlaces rápidos" : "Quick links"} className="mx-auto flex max-w-7xl gap-5 overflow-x-auto border-t border-white/10 px-4 pb-3 pt-2 text-xs font-semibold text-white/85 lg:hidden">
+          <Link to={spanish ? "/es/vender-casa" : "/sell-your-house"} className={`shrink-0 text-white ${FOCUS}`}>{copy.nav[0]}</Link>
+          <Link to={spanish ? "/es/vender-terreno" : "/sell-your-land"} className={`shrink-0 text-white ${FOCUS}`}>{copy.nav[1]}</Link>
+          <a href="#construction" className={`shrink-0 text-white/65 ${FOCUS}`}>{copy.nav[2]}</a>
+          <Link to="/investors" className={`shrink-0 text-white/65 ${FOCUS}`}>{copy.nav[3]}</Link>
+          <Link to="/refer" className={`shrink-0 text-white/65 ${FOCUS}`}>{copy.nav[4]}</Link>
         </div>
       </div>
 
-      <section className="border-b border-[#252923]/10">
-        <div className="mx-auto flex min-h-[72vh] max-w-7xl items-center bg-[#fbf9f3]/68 px-5 py-16 backdrop-blur-sm sm:px-8 sm:py-20 lg:min-h-[78vh] lg:px-10 lg:py-24">
+      <section className="border-b border-white/15">
+        <div className="mx-auto flex min-h-[72vh] max-w-7xl items-center bg-black/42 px-5 py-16 backdrop-blur-[2px] sm:px-8 sm:py-20 lg:min-h-[78vh] lg:px-10 lg:py-24">
           <div className="max-w-3xl">
-            <p className="text-[10px] font-semibold tracking-[.2em] text-[#94713f] uppercase sm:text-[11px]">{copy.heroEyebrow}</p>
+            <p className="text-[10px] font-semibold tracking-[.2em] text-white/70 uppercase sm:text-[11px]">{copy.heroEyebrow}</p>
             <h1 className="mt-5 max-w-[13ch] text-5xl leading-[.93] tracking-[-.035em] sm:text-6xl lg:text-[5.25rem]">{copy.heroTitle}</h1>
-            <p className="mt-6 max-w-2xl text-sm leading-7 text-[#454940] sm:text-base sm:leading-8">{copy.heroText}</p>
+            <p className="mt-6 max-w-2xl text-sm leading-7 text-white/80 sm:text-base sm:leading-8">{copy.heroText}</p>
             <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
               <a href={PHONE_HREF} className={buttonPrimary}><Phone className="size-4" />{copy.call} {PHONE}</a>
-              <span className="text-xs text-[#454940]">{spanish ? "O" : "Or"}</span>
+              <span className="text-xs text-white/70">{spanish ? "O" : "Or"}</span>
               <LeadLink href={housePath} secondary>{copy.house}<ArrowRight className="size-4" /></LeadLink>
               <LeadLink href={landPath} secondary>{copy.land}<ArrowRight className="size-4" /></LeadLink>
             </div>
@@ -233,68 +234,68 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
         </div>
       </section>
 
-      <section aria-label={spanish ? "Información sobre consultas" : "Inquiry details"} className="border-b border-[#252923]/10 bg-[#ede9e0]/72 backdrop-blur-sm">
-        <div className="mx-auto grid max-w-7xl divide-y divide-[#252923]/15 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-8 lg:px-10">
-          {copy.trust.map((item) => <div key={item} className="flex items-center gap-4 py-5 sm:px-5 lg:py-6"><span aria-hidden="true" className="h-px w-7 shrink-0 bg-[#94713f]" /><span className="max-w-52 text-[11px] font-medium leading-5 tracking-[.025em] text-[#454940]">{item}</span></div>)}
+      <section aria-label={spanish ? "Información sobre consultas" : "Inquiry details"} className="border-b border-white/15 bg-black/55 text-white backdrop-blur-sm">
+        <div className="mx-auto grid max-w-7xl divide-y divide-white/15 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-8 lg:px-10">
+          {copy.trust.map((item) => <div key={item} className="flex items-center gap-4 py-5 sm:px-5 lg:py-6"><span aria-hidden="true" className="h-px w-7 shrink-0 bg-white/60" /><span className="max-w-52 text-[11px] font-medium leading-5 tracking-[.025em] text-white/85">{item}</span></div>)}
         </div>
       </section>
 
-      <motion.section {...reveal} className="mx-auto max-w-7xl bg-[#f3f0e8]/62 px-5 py-16 backdrop-blur-sm sm:px-8 sm:py-24 lg:px-10">
+      <motion.section {...reveal} className="mx-auto max-w-7xl bg-black/62 px-5 py-16 text-white backdrop-blur-sm sm:px-8 sm:py-24 lg:px-10">
         <div className="grid gap-8 lg:grid-cols-[.75fr_1.25fr] lg:items-start">
-          <div><p className="text-[10px] font-semibold tracking-[.2em] text-[#94713f] uppercase">{copy.processEyebrow}</p><h2 className="mt-3 max-w-[13ch] text-4xl leading-[.98] sm:text-5xl">{copy.processTitle}</h2></div>
+          <div><p className="text-[10px] font-semibold tracking-[.2em] text-white/70 uppercase">{copy.processEyebrow}</p><h2 className="mt-3 max-w-[13ch] text-4xl leading-[.98] sm:text-5xl">{copy.processTitle}</h2></div>
           <div role="list" className="grid gap-0 sm:grid-cols-3 sm:gap-7">
-            {copy.steps.map(([title, text], index) => <div role="listitem" key={title} className="border-t border-[#252923]/20 py-5 sm:pt-5"><span className="font-serif text-3xl text-[#93442e]">0{index + 1}</span><h3 className="mt-4 text-2xl">{title}</h3><p className="mt-2 max-w-xs text-sm leading-6 text-[#62695f]">{text}</p></div>)}
+            {copy.steps.map(([title, text], index) => <div role="listitem" key={title} className="border-t border-white/20 py-5 sm:pt-5"><span className="font-serif text-3xl text-white/65">0{index + 1}</span><h3 className="mt-4 text-2xl">{title}</h3><p className="mt-2 max-w-xs text-sm leading-6 text-white/70">{text}</p></div>)}
           </div>
         </div>
       </motion.section>
 
-      <motion.section {...reveal} className="mx-auto max-w-7xl bg-[#f3f0e8]/62 px-5 py-16 backdrop-blur-sm sm:px-8 sm:py-24 lg:px-10">
-        <div className="mb-9 grid gap-4 md:grid-cols-[.75fr_1.25fr] md:items-end"><div><p className="text-[10px] font-semibold tracking-[.2em] text-[#94713f] uppercase">{copy.whyEyebrow}</p><h2 className="mt-3 max-w-[14ch] text-4xl leading-none sm:text-5xl">{copy.whyTitle}</h2></div><p className="max-w-lg text-sm leading-6 text-[#62695f]">{spanish ? "No hay dos propiedades ni dos decisiones iguales. Estas son algunas razones por las que la gente nos llama." : "No two properties—or decisions—are alike. Here are a few reasons people call us."}</p></div>
+      <motion.section {...reveal} className="mx-auto max-w-7xl bg-black/62 px-5 py-16 text-white backdrop-blur-sm sm:px-8 sm:py-24 lg:px-10">
+        <div className="mb-9 grid gap-4 md:grid-cols-[.75fr_1.25fr] md:items-end"><div><p className="text-[10px] font-semibold tracking-[.2em] text-white/70 uppercase">{copy.whyEyebrow}</p><h2 className="mt-3 max-w-[14ch] text-4xl leading-none sm:text-5xl">{copy.whyTitle}</h2></div><p className="max-w-lg text-sm leading-6 text-white/70">{spanish ? "No hay dos propiedades ni dos decisiones iguales. Estas son algunas razones por las que la gente nos llama." : "No two properties—or decisions—are alike. Here are a few reasons people call us."}</p></div>
         <div className="grid gap-x-12 md:grid-cols-2">
-          {copy.benefits.map(([title, text]) => <article key={title} className="border-t border-[#252923]/15 py-5 sm:py-6"><h3 className="text-2xl leading-tight">{title}</h3><p className="mt-2 max-w-xl text-sm leading-6 text-[#62695f]">{text}</p></article>)}
+          {copy.benefits.map(([title, text]) => <article key={title} className="border-t border-white/15 py-5 sm:py-6"><h3 className="text-2xl leading-tight">{title}</h3><p className="mt-2 max-w-xl text-sm leading-6 text-white/70">{text}</p></article>)}
         </div>
         <div aria-label={spanish ? "Fotos ilustrativas de casas y terrenos" : "Illustrative home and land photographs"} className="mt-12 grid grid-cols-2 gap-2 md:grid-cols-12 md:auto-rows-[90px] md:gap-3 lg:auto-rows-[112px]">
           {copy.propertyPhotos.map(([label, id], index) => {
             const layout = ["col-span-2 md:col-span-7 md:row-span-3", "col-span-1 md:col-span-5 md:row-span-2", "col-span-1 md:col-span-5 md:row-span-2", "col-span-1 md:col-span-4 md:row-span-2", "col-span-1 md:col-span-4 md:row-span-2", "col-span-2 md:col-span-4 md:row-span-2", "col-span-1 md:col-span-4 md:row-span-2", "col-span-1 md:col-span-4 md:row-span-2"][index];
-            return <div key={id} className={`group relative overflow-hidden bg-[#e3dfd4] ${layout}`}><PhotoSlot label={`${label} (illustrative stock photo)`} src={px(id, 1100)} className="absolute inset-0 h-full w-full" /><span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#191b17]/65 to-transparent px-4 pb-4 pt-12 font-serif text-base text-white sm:px-5 sm:pb-5 sm:text-lg">{label}</span></div>;
+            return <div key={id} className={`group relative overflow-hidden bg-black ${layout}`}><PhotoSlot label={`${label} (illustrative stock photo)`} src={px(id, 1100)} className="absolute inset-0 h-full w-full" /><span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-4 pt-12 font-serif text-base text-white sm:px-5 sm:pb-5 sm:text-lg">{label}</span></div>;
           })}
         </div>
-        <p className="mt-3 text-[10px] tracking-[.04em] text-[#696a60]">Illustrative stock photography · <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className={`underline underline-offset-2 ${FOCUS}`}>Pexels License</a></p>
+        <p className="mt-3 text-[10px] tracking-[.04em] text-white/70">Illustrative stock photography · <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className={`underline underline-offset-2 ${FOCUS}`}>Pexels License</a></p>
       </motion.section>
 
-      <motion.section {...reveal} id="construction" className="scroll-mt-24 bg-[#252923]/82 text-[#fbf9f3] backdrop-blur-sm">
+      <motion.section {...reveal} id="construction" className="scroll-mt-24 border-y border-white/15 bg-black/78 text-white backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24 lg:px-10">
           <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
-            <div><p className="text-[10px] font-semibold tracking-[.2em] text-[#d7b880] uppercase">{copy.constructionEyebrow}</p><h2 className="mt-3 max-w-[12ch] text-4xl leading-[.98] sm:text-5xl">{copy.constructionTitle}</h2><p className="mt-5 max-w-xl text-sm leading-6 text-white/75">{copy.constructionText}</p></div>
-            <div><div className="grid grid-cols-12 items-end gap-2 border-l border-[#d7b880]/40 pl-3 sm:gap-3 sm:pl-5">{copy.constructionPhotos.map(([label, id], index) => { const photoSize = ["col-span-7", "col-span-5 -mb-6", "col-span-7 col-start-6"][index]; return <div key={id} className={`relative overflow-hidden ${photoSize}`}><PhotoSlot label={`${label} · illustrative construction stock photo`} src={px(id, 1000)} className={index === 1 ? "aspect-[4/5]" : "aspect-[5/4]"} /></div>; })}</div><div className="mt-5 flex flex-col justify-between gap-4 border-t border-white/20 pt-4 sm:flex-row sm:items-end"><p className="max-w-xs text-[10px] leading-4 tracking-[.03em] text-white/60">{copy.constructionPhotoNote} <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className={`underline underline-offset-2 ${FOCUS}`}>Pexels License</a></p><Link to="/services" className={`inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white ${FOCUS}`}>{copy.explore}<ArrowUpRight className="size-4" /></Link></div></div>
+            <div><p className="text-[10px] font-semibold tracking-[.2em] text-white/70 uppercase">{copy.constructionEyebrow}</p><h2 className="mt-3 max-w-[12ch] text-4xl leading-[.98] sm:text-5xl">{copy.constructionTitle}</h2><p className="mt-5 max-w-xl text-sm leading-6 text-white/70">{copy.constructionText}</p></div>
+            <div><div className="grid grid-cols-12 items-end gap-2 border-l border-white/40 pl-3 sm:gap-3 sm:pl-5">{copy.constructionPhotos.map(([label, id], index) => { const photoSize = ["col-span-7", "col-span-5 -mb-6", "col-span-7 col-start-6"][index]; return <div key={id} className={`relative overflow-hidden ${photoSize}`}><PhotoSlot label={`${label} · illustrative construction stock photo`} src={px(id, 1000)} className={index === 1 ? "aspect-[4/5]" : "aspect-[5/4]"} /></div>; })}</div><div className="mt-5 flex flex-col justify-between gap-4 border-t border-white/20 pt-4 sm:flex-row sm:items-end"><p className="max-w-xs text-[10px] leading-4 tracking-[.03em] text-white/60">{copy.constructionPhotoNote} <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className={`underline underline-offset-2 ${FOCUS}`}>Pexels License</a></p><Link to="/services" className={`inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white ${FOCUS}`}>{copy.explore}<ArrowUpRight className="size-4" /></Link></div></div>
           </div>
         </div>
       </motion.section>
 
-      <motion.section {...reveal} id="situations" className="scroll-mt-24 border-y border-[#252923]/10 bg-[#ede9e0]/62 backdrop-blur-sm">
-        <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[.7fr_1.3fr] lg:px-10"><div><p className="text-[10px] font-semibold tracking-[.2em] text-[#94713f] uppercase">{copy.situationsEyebrow}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.situationsTitle}</h2></div><ul className="grid gap-x-10 sm:grid-cols-2">{copy.situations.map((situation) => <li key={situation} className="border-t border-[#252923]/20 py-4 text-base">{situation}</li>)}</ul></div>
+      <motion.section {...reveal} id="situations" className="scroll-mt-24 border-y border-white/15 bg-black/58 text-white backdrop-blur-sm">
+        <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[.7fr_1.3fr] lg:px-10"><div><p className="text-[10px] font-semibold tracking-[.2em] text-white/70 uppercase">{copy.situationsEyebrow}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.situationsTitle}</h2></div><ul className="grid gap-x-10 sm:grid-cols-2">{copy.situations.map((situation) => <li key={situation} className="border-t border-white/20 py-4 text-base text-white/85">{situation}</li>)}</ul></div>
       </motion.section>
 
-      <motion.section {...reveal} className="border-y border-[#252923]/10 bg-[#fbf9f3]/76 backdrop-blur-sm">
-        <div className="mx-auto max-w-4xl px-5 py-16 sm:px-8 sm:py-24"><p className="text-[10px] font-semibold tracking-[.2em] text-[#94713f] uppercase">{copy.faqEyebrow}</p><h2 className="mt-3 text-4xl sm:text-5xl">{copy.faqTitle}</h2><div className="mt-7 divide-y divide-[#252923]/10 border-y border-[#252923]/10">{copy.faqs.map(([question, answer]) => <details key={question} className="group py-5"><summary className={`cursor-pointer list-none pr-8 text-base font-semibold marker:content-none ${FOCUS}`}>{question}<span aria-hidden="true" className="float-right text-[#93442e] group-open:rotate-45">+</span></summary><p className="mt-3 max-w-3xl text-sm leading-6 text-[#62695f]">{answer}</p></details>)}</div></div>
+      <motion.section {...reveal} className="border-y border-white/15 bg-black/64 text-white backdrop-blur-sm">
+        <div className="mx-auto max-w-4xl px-5 py-16 sm:px-8 sm:py-24"><p className="text-[10px] font-semibold tracking-[.2em] text-white/70 uppercase">{copy.faqEyebrow}</p><h2 className="mt-3 text-4xl sm:text-5xl">{copy.faqTitle}</h2><div className="mt-7 divide-y divide-white/15 border-y border-white/15">{copy.faqs.map(([question, answer]) => <details key={question} className="group py-5"><summary className={`cursor-pointer list-none pr-8 text-base font-semibold text-white marker:content-none ${FOCUS}`}>{question}<span aria-hidden="true" className="float-right text-white/70 group-open:rotate-45">+</span></summary><p className="mt-3 max-w-3xl text-sm leading-6 text-white/70">{answer}</p></details>)}</div></div>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
       </motion.section>
 
-      <motion.section {...reveal} className="border-b border-[#252923]/10 bg-[#ede9e0]/62 backdrop-blur-sm">
-        <div className="mx-auto grid max-w-7xl gap-6 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[.75fr_1.25fr] lg:items-center lg:px-10"><div><p className="text-[10px] font-semibold tracking-[.2em] text-[#94713f] uppercase">50 states · inquiries accepted</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.statesTitle}</h2></div><p className="max-w-2xl text-sm leading-6 text-[#62695f]">{copy.statesText}</p></div>
+      <motion.section {...reveal} className="border-b border-white/15 bg-black/58 text-white backdrop-blur-sm">
+        <div className="mx-auto grid max-w-7xl gap-6 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[.75fr_1.25fr] lg:items-center lg:px-10"><div><p className="text-[10px] font-semibold tracking-[.2em] text-white/70 uppercase">50 states · inquiries accepted</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.statesTitle}</h2></div><p className="max-w-2xl text-sm leading-6 text-white/70">{copy.statesText}</p></div>
       </motion.section>
 
-      <section className="bg-[#ede9e0]/66 backdrop-blur-sm">
+      <section className="bg-black/62 text-white backdrop-blur-sm">
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-16 sm:px-8 sm:py-20 lg:flex-row lg:items-center lg:justify-between lg:px-10">
-          <div><p className="text-[10px] font-semibold tracking-[.2em] text-[#94713f] uppercase">{spanish ? "Cuando esté listo" : "When you’re ready"}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.finalTitle}</h2><p className="mt-3 max-w-xl text-sm leading-6 text-[#62695f]">{copy.finalText}</p></div><div className="flex flex-col gap-3 sm:items-start"><a href={PHONE_HREF} className={buttonPrimary}><Phone className="size-4" />{copy.call} {PHONE}</a><div className="flex flex-wrap items-center gap-4 text-xs"><LeadLink href={housePath} secondary>{copy.house}<ArrowRight className="size-4" /></LeadLink><LeadLink href={landPath} secondary>{copy.land}<ArrowRight className="size-4" /></LeadLink></div></div></div>
+          <div><p className="text-[10px] font-semibold tracking-[.2em] text-white/70 uppercase">{spanish ? "Cuando esté listo" : "When you’re ready"}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.finalTitle}</h2><p className="mt-3 max-w-xl text-sm leading-6 text-white/70">{copy.finalText}</p></div><div className="flex flex-col gap-3 sm:items-start"><a href={PHONE_HREF} className={buttonPrimary}><Phone className="size-4" />{copy.call} {PHONE}</a><div className="flex flex-wrap items-center gap-4 text-xs"><LeadLink href={housePath} secondary>{copy.house}<ArrowRight className="size-4" /></LeadLink><LeadLink href={landPath} secondary>{copy.land}<ArrowRight className="size-4" /></LeadLink></div></div></div>
       </section>
 
-      <footer className="border-t border-[#252923]/10 bg-[#f3f0e8]/82 backdrop-blur-sm">
+      <footer className="border-t border-white/15 bg-black/82 text-white backdrop-blur-sm">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 sm:px-8 md:grid-cols-[1fr_2fr] lg:px-10">
-          <div><Link to={spanish ? "/es" : "/"} aria-label="LoveMeAfter Home Buyers" className="inline-flex items-center gap-3"><LogoMark className="size-10" /><span className="text-sm font-semibold">LoveMeAfter Home Buyers</span></Link><p className="mt-3 text-xs text-[#62695f]">LoveMeAfter Home Buyers</p><a href={PHONE_HREF} className={`mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#93442e] ${FOCUS}`}><Phone className="size-4" />{PHONE}</a><p className="mt-2 text-xs text-[#62695f]">{copy.footerClaim}</p></div>
-          <div role="navigation" aria-label={spanish ? "Enlaces del pie de página" : "Footer links"} className="grid grid-cols-2 gap-x-5 gap-y-3 text-sm font-medium sm:grid-cols-3"><Link className={`hover:text-[#93442e] ${FOCUS}`} to={housePath}>{copy.house}</Link><Link className={`hover:text-[#93442e] ${FOCUS}`} to={landPath}>{copy.land}</Link><Link className={`hover:text-[#93442e] ${FOCUS}`} to="/investors">{copy.investors}</Link><Link className={`hover:text-[#93442e] ${FOCUS}`} to="/refer">{copy.refer}</Link><Link className={`hover:text-[#93442e] ${FOCUS}`} to="/services">{copy.nav[2]}</Link><Link className={`hover:text-[#93442e] ${FOCUS}`} to="/privacy">{copy.privacy}</Link><Link className={`hover:text-[#93442e] ${FOCUS}`} to="/terms">{copy.terms}</Link></div>
+          <div><Link to={spanish ? "/es" : "/"} aria-label="LoveMeAfter Home Buyers" className="inline-flex items-center gap-3"><LogoMark className="size-10" /><span className="text-sm font-semibold">LoveMeAfter Home Buyers</span></Link><p className="mt-3 text-xs text-white/60">LoveMeAfter Home Buyers</p><a href={PHONE_HREF} className={`mt-3 inline-flex items-center gap-2 text-sm font-semibold text-white ${FOCUS}`}><Phone className="size-4" />{PHONE}</a><p className="mt-2 text-xs text-white/60">{copy.footerClaim}</p></div>
+          <div role="navigation" aria-label={spanish ? "Enlaces del pie de página" : "Footer links"} className="grid grid-cols-2 gap-x-5 gap-y-3 text-sm font-medium sm:grid-cols-3"><Link className={`hover:text-white/65 ${FOCUS}`} to={housePath}>{copy.house}</Link><Link className={`hover:text-white/65 ${FOCUS}`} to={landPath}>{copy.land}</Link><Link className={`hover:text-white/65 ${FOCUS}`} to="/investors">{copy.investors}</Link><Link className={`hover:text-white/65 ${FOCUS}`} to="/refer">{copy.refer}</Link><Link className={`hover:text-white/65 ${FOCUS}`} to="/services">{copy.nav[2]}</Link><Link className={`hover:text-white/65 ${FOCUS}`} to="/privacy">{copy.privacy}</Link><Link className={`hover:text-white/65 ${FOCUS}`} to="/terms">{copy.terms}</Link></div>
         </div>
-        <div className="border-t border-[#252923]/10 px-5 py-4 text-center text-[11px] text-[#696a60]">© LoveMeAfter · {copy.footerClaim}</div>
+        <div className="border-t border-white/15 px-5 py-4 text-center text-[11px] text-white/55">© LoveMeAfter · {copy.footerClaim}</div>
       </footer>
     </main>
   );
