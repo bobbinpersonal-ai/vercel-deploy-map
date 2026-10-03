@@ -38,7 +38,8 @@ export function BottomNav() {
   const [selectedBrand, setSelectedBrand] = useState<{ brand: BrandPillEntry; projectLabel: string } | null>(null);
   const brandSwipeStart = useRef<{ x: number; y: number } | null>(null);
   const isConstructionRoute = pathname === "/services" || pathname.startsWith("/services/");
-  const isHidden = !isConstructionRoute;
+  const isWholesalingRoute = pathname === "/" || pathname === "/es" || ["/sell-your-house", "/sell-your-land", "/es/vender-casa", "/es/vender-terreno", "/investors", "/refer"].includes(pathname);
+  const isHidden = !isConstructionRoute || isWholesalingRoute;
   const [showRail, setShowRail] = useState(() => !isHidden && isPastRailThreshold());
 
   useEffect(() => {

@@ -39,6 +39,8 @@ type Copy = {
   constructionEyebrow: string;
   constructionTitle: string;
   constructionText: string;
+  constructionPhotos: [string, number][];
+  constructionPhotoNote: string;
   propertyPhotos: [string, number][];
   photoCredit: string;
   explore: string;
@@ -62,25 +64,27 @@ type Copy = {
 const EN: Copy = {
   nav: ["Sell your house", "Sell land", "Construction", "Investors", "Refer"],
   heroEyebrow: "LoveMeAfter Home Buyers",
-  heroTitle: "We buy houses and land.",
-  heroText: "If a property needs work, is sitting empty, or no longer fits your plans, call and tell us about it. We’ll listen, learn what matters to you, and talk through the property before discussing possible terms. We accept inquiries nationwide and confirm whether we can review the location.",
+  heroTitle: "Ready to let go of a house or land? Let’s talk about what comes next.",
+  heroText: "Some properties hold a lifetime of memories. Others have become one more responsibility on a full plate. Either way, you deserve a thoughtful conversation—not a rushed answer. Call us to share what’s happening. We’ll listen, learn what matters, and talk through whether a sale could fit your next chapter. We accept inquiries nationwide and confirm whether we can review the location.",
   house: "Sell your house",
   land: "Sell your land",
   call: "Talk with us",
   photoLabel: "Suburban home exterior at sunset · illustrative stock photo",
   photoNote: "Illustrative stock photo. Not a LoveMeAfter project.",
   photoCredit: "Photo: Pexels",
-  trust: ["Inquiries accepted from all 50 states", "Talk directly with our team", "Discuss timing before any agreement"],
-  processEyebrow: "A clear place to start",
-  processTitle: "How it works",
-  steps: [["Start with a call", "Tell us where the property is, what condition it’s in, and what you’re hoping to do."], ["We review the details", "We’ll learn more about the property and confirm whether we can review its location."], ["Discuss possible next steps", "If there may be a fit, we’ll talk through the property and any possible terms. Nothing is agreed unless it’s in writing."]],
-  whyEyebrow: "A thoughtful place to begin",
-  whyTitle: "Every property starts with a conversation.",
-  benefits: [["Share what matters", "Tell us about the property, its condition, and what you hope to accomplish."], ["Ask questions directly", "Talk through the details with our team and ask what information we need to review."], ["Take time with next steps", "If there may be a fit, review any proposed terms in writing and decide what works for you." ]],
-  constructionEyebrow: "LoveMeAfter Construction",
-  constructionTitle: "Thoughtful work starts with a closer look.",
-  constructionText: "Explore our construction services and see how we approach residential projects, planning, and renovation work.",
-  propertyPhotos: [["Aerial view across farmland", 2264699], ["Older home exterior, shown as an example", 4916186], ["White home exterior with a front porch", 5661021], ["Close detail of a house roof", 10025299], ["Bright kitchen interior", 19807422], ["Home exterior beside a garden", 12608773], ["Aerial view across farm fields", 28412626], ["Open field bordered by trees", 21856659]],
+  trust: ["A real conversation, without pressure", "Homes and land considered", "Clear next steps before any agreement"],
+  processEyebrow: "Start where you are",
+  processTitle: "A conversation can make the next step clearer.",
+  steps: [["Tell us what’s going on", "Share the property’s location, condition, and what you need from a sale."], ["We look at the whole picture", "Our team reviews the property and confirms whether its location is one we can consider."], ["Talk through what could work", "If there may be a fit, we’ll discuss possible terms with you. You can review everything in writing before deciding." ]],
+  whyEyebrow: "A better way to explore a sale",
+  whyTitle: "A practical path through a personal decision.",
+  benefits: [["Be heard first", "Tell us what’s happening in your own words. We’ll listen before we talk about the property."], ["Construction experience", "We work in construction and understand the work a home may need. If we buy it, we can put that experience toward improving the property for its next chapter."], ["Houses, vacant homes, and land", "Tell us what you own and what you’re hoping to do. We’ll help you find the right next step."], ["No need to make it picture-perfect", "Inherited, vacant, dated, or in need of work? Start with the facts you have. We’ll talk through the details together."], ["Clear terms, in writing", "If there may be a fit, we’ll explain the possible terms and give you time to review them in writing."], ["Your decision stays yours", "A conversation does not commit you to a sale. Take the time you need to decide what’s right for you."]],
+  constructionEyebrow: "Our construction experience",
+  constructionTitle: "We see more than the repair list.",
+  constructionText: "We work in residential construction, so we know to look beyond what needs fixing. If we purchase a property, that experience can help us plan and carry out upgrades that make sense for its next chapter. A purchase and a construction project are separate decisions; any terms are discussed directly and provided in writing.",
+  constructionPhotos: [["Home renovation on scaffolding", 27134625], ["Indoor renovation work", 32990521], ["Worker repairing a home", 16767783]],
+  constructionPhotoNote: "Illustrative construction stock photos—not LoveMeAfter project photos.",
+  propertyPhotos: [["Aerial view of farmland", 7457220], ["Suburban neighborhood from above", 17286412], ["White home exterior with a front porch", 5661021], ["Close detail of a house roof", 10025299], ["Bright kitchen interior", 19807422], ["Home exterior beside a garden", 12608773], ["Cultivated agricultural land", 7457218], ["Older suburban home", 8579963]],
   explore: "Explore construction services",
   situationsEyebrow: "Properties aren’t all alike",
   situationsTitle: "You may be dealing with…",
@@ -98,7 +102,7 @@ const EN: Copy = {
   statesTitle: "Send an inquiry from any state.",
   statesText: "We accept inquiries about houses and land from all 50 states. We’ll confirm whether we can review a specific location before discussing a purchase. This isn’t a claim that we’ve bought property in every state.",
   finalTitle: "Tell us about your property.",
-  finalText: "Call to start a conversation about your property. Prefer to begin online? Choose the house or land page and share a few details.",
+  finalText: "Whether the property is a house or a stretch of land, the first step can be simple: tell us what’s happening and what you hope comes next.",
   footerClaim: "Inquiries from all 50 states.",
   investors: "Investors",
   refer: "Refer a property",
@@ -109,25 +113,27 @@ const EN: Copy = {
 const ES: Copy = {
   nav: ["Vender su casa", "Vender terreno", "Construcción", "Inversionistas", "Referir"],
   heroEyebrow: "LoveMeAfter Home Buyers",
-  heroTitle: "Compramos casas y terrenos.",
-  heroText: "Si una propiedad necesita reparaciones, está vacía o ya no encaja con sus planes, llámenos y cuéntenos. Escucharemos, conoceremos sus prioridades y hablaremos sobre la propiedad antes de conversar sobre posibles términos. Aceptamos consultas de todo el país y confirmamos si podemos revisar esa ubicación.",
+  heroTitle: "¿Listo para dejar ir una casa o un terreno? Hablemos de lo que sigue.",
+  heroText: "Algunas propiedades guardan toda una vida de recuerdos. Otras se han convertido en una responsabilidad más en medio de tantas cosas. En cualquier caso, merece una conversación atenta, no una respuesta apresurada. Llámenos y cuéntenos qué ocurre. Escucharemos, entenderemos lo que importa y hablaremos sobre si una venta podría encajar con su próxima etapa. Aceptamos consultas de todo el país y confirmaremos si podemos revisar esa ubicación.",
   house: "Vender su casa",
   land: "Vender su terreno",
   call: "Hable con nosotros",
   photoLabel: "Exterior de una casa suburbana al atardecer · foto de archivo ilustrativa",
   photoNote: "Foto de archivo ilustrativa. No es un proyecto de LoveMeAfter.",
   photoCredit: "Foto: Pexels",
-  trust: ["Consultas desde los 50 estados", "Hable directamente con nuestro equipo", "Hablemos del plazo antes de cualquier acuerdo"],
-  processEyebrow: "Un comienzo claro",
-  processTitle: "Cómo funciona",
-  steps: [["Comience con una llamada", "Cuéntenos dónde está la propiedad, en qué estado se encuentra y qué le gustaría hacer."], ["Revisamos los detalles", "Conoceremos más sobre la propiedad y confirmaremos si podemos revisar esa ubicación."], ["Hablamos de los próximos pasos", "Si podría haber una opción, hablaremos sobre la propiedad y los posibles términos. Nada se acuerda hasta que conste por escrito."]],
-  whyEyebrow: "Un buen comienzo",
-  whyTitle: "Cada propiedad comienza con una conversación.",
-  benefits: [["Comparta lo que le importa", "Cuéntenos sobre la propiedad, su estado y lo que espera lograr."], ["Haga preguntas directamente", "Hable sobre los detalles con nuestro equipo y pregunte qué información necesitamos revisar."], ["Tómese tiempo para decidir", "Si podría haber una opción, revise por escrito cualquier término propuesto y decida qué le conviene." ]],
-  constructionEyebrow: "LoveMeAfter Construction",
-  constructionTitle: "Un buen trabajo comienza con una mirada atenta.",
-  constructionText: "Explore nuestros servicios de construcción y conozca nuestro enfoque para proyectos residenciales, planificación y renovación.",
-  propertyPhotos: [["Vista aérea de terreno agrícola", 2264699], ["Exterior de una casa antigua como ejemplo", 4916186], ["Exterior de una casa blanca con porche", 5661021], ["Detalle del techo de una casa", 10025299], ["Interior luminoso de una cocina", 19807422], ["Exterior de una casa junto a un jardín", 12608773], ["Vista aérea de campos agrícolas", 28412626], ["Campo abierto junto a árboles", 21856659]],
+  trust: ["Una conversación real, sin presión", "Casas y terrenos en consideración", "Próximos pasos claros antes de cualquier acuerdo"],
+  processEyebrow: "Empiece desde donde está",
+  processTitle: "Una conversación puede aclarar el próximo paso.",
+  steps: [["Cuéntenos qué ocurre", "Comparta la ubicación, el estado de la propiedad y qué necesita de una venta."], ["Consideramos el panorama completo", "Nuestro equipo revisa la propiedad y confirma si podemos considerar esa ubicación."], ["Hablemos de lo que podría funcionar", "Si podría haber una opción, conversaremos sobre posibles términos. Podrá revisar todo por escrito antes de decidir." ]],
+  whyEyebrow: "Una mejor forma de explorar una venta",
+  whyTitle: "Un camino práctico para una decisión personal.",
+  benefits: [["Primero, le escuchamos", "Cuéntenos lo que ocurre con sus propias palabras. Escucharemos antes de hablar de los detalles de la propiedad."], ["Experiencia en construcción", "Trabajamos en construcción y entendemos lo que una casa podría necesitar. Si la compramos, podemos usar esa experiencia para mejorarla de cara a su próxima etapa."], ["Casas, propiedades vacías y terrenos", "Cuéntenos qué tiene y qué espera hacer. Le ayudaremos a encontrar el siguiente paso adecuado."], ["No tiene que dejarla perfecta", "¿Heredada, vacía, antigua o necesita trabajo? Empiece con los datos que tenga. Hablaremos juntos de los detalles."], ["Términos claros y por escrito", "Si podría haber una opción, explicaremos los posibles términos y tendrá tiempo para revisarlos por escrito."], ["La decisión es suya", "Conversar no le compromete a vender. Tómese el tiempo necesario para decidir qué le conviene." ]],
+  constructionEyebrow: "Nuestra experiencia en construcción",
+  constructionTitle: "Vemos más que una lista de reparaciones.",
+  constructionText: "Trabajamos en construcción residencial, así que miramos más allá de lo que necesita arreglo. Si compramos una propiedad, esa experiencia puede ayudarnos a planificar y realizar mejoras adecuadas para su próxima etapa. La compra y un proyecto de construcción son decisiones distintas; cualquier término se conversa directamente y se entrega por escrito.",
+  constructionPhotos: [["Renovación de una casa con andamios", 27134625], ["Trabajo de renovación interior", 32990521], ["Reparación exterior de una casa", 16767783]],
+  constructionPhotoNote: "Fotos de archivo ilustrativas de construcción; no son proyectos de LoveMeAfter.",
+  propertyPhotos: [["Vista aérea de terreno agrícola", 7457220], ["Barrio residencial visto desde arriba", 17286412], ["Exterior de una casa blanca con porche", 5661021], ["Detalle del techo de una casa", 10025299], ["Interior luminoso de una cocina", 19807422], ["Exterior de una casa junto a un jardín", 12608773], ["Terreno agrícola cultivado", 7457218], ["Casa suburbana antigua", 8579963]],
   explore: "Ver servicios de construcción",
   situationsEyebrow: "Cada propiedad es distinta",
   situationsTitle: "Quizás se encuentre ante…",
@@ -145,7 +151,7 @@ const ES: Copy = {
   statesTitle: "Envíe una consulta desde cualquier estado.",
   statesText: "Aceptamos consultas sobre casas y terrenos de los 50 estados. Confirmaremos si podemos revisar una ubicación específica antes de hablar de una compra. Esto no significa que hayamos comprado propiedades en todos los estados.",
   finalTitle: "Cuéntenos sobre su propiedad.",
-  finalText: "Llámenos para comenzar una conversación sobre su propiedad. ¿Prefiere empezar en línea? Elija la página de casas o terrenos y comparta algunos datos.",
+  finalText: "Ya sea una casa o un terreno, el primer paso puede ser sencillo: cuéntenos qué ocurre y qué espera para el futuro.",
   footerClaim: "Consultas desde los 50 estados.",
   investors: "Inversionistas",
   refer: "Referir una propiedad",
@@ -225,7 +231,7 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
         <div className="mx-auto grid max-w-7xl gap-9 px-5 py-10 sm:px-8 sm:py-16 lg:grid-cols-[.96fr_1.04fr] lg:items-center lg:gap-12 lg:px-10 lg:py-20">
           <div>
             <p className="text-[10px] font-bold tracking-[.17em] text-[#65735b] uppercase sm:text-xs">{copy.heroEyebrow}</p>
-            <h1 className="mt-4 max-w-[12ch] text-5xl leading-[.91] tracking-[-.045em] sm:text-6xl lg:text-7xl">{copy.heroTitle}</h1>
+            <h1 className="mt-4 max-w-[15ch] text-5xl leading-[.91] tracking-[-.045em] sm:text-6xl lg:text-7xl">{copy.heroTitle}</h1>
             <p className="mt-5 max-w-xl text-sm leading-6 text-[#62695f] sm:text-base sm:leading-7">{copy.heroText}</p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a href={PHONE_HREF} className={buttonPrimary}><Phone className="size-4" />{copy.call} {PHONE}</a>
@@ -264,14 +270,14 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
 
       <motion.section {...reveal} className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20 lg:px-10">
         <div className="mb-8 max-w-2xl"><p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">{copy.whyEyebrow}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.whyTitle}</h2></div>
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {copy.benefits.map(([title, text], index) => {
-            const Icon = [House, Wrench, ClipboardList][index];
+            const Icon = [Phone, Wrench, House, MapPin, ClipboardList, Clock3][index];
             return <article key={title} className="border border-[#252923]/10 bg-[#fbf9f3] p-6 sm:p-7"><span className="flex size-11 items-center justify-center bg-[#e9e5db] text-[#93442e]"><Icon className="size-5" /></span><h3 className="mt-5 text-2xl">{title}</h3><p className="mt-2 text-sm leading-6 text-[#62695f]">{text}</p></article>;
           })}
         </div>
         <div aria-label={spanish ? "Fotos ilustrativas de casas y terrenos" : "Illustrative home and land photographs"} className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {copy.propertyPhotos.map(([label, id]) => <a key={id} href={pxPage(id)} target="_blank" rel="noreferrer" className={`group block overflow-hidden border border-[#252923]/10 bg-[#fbf9f3] ${FOCUS}`}><PhotoSlot label={`${label} (illustrative stock photo)`} src={px(id, 900)} className="aspect-[4/3]" /><span className="block min-h-12 px-3 py-2 text-[11px] font-medium leading-4 text-[#62695f] group-hover:text-[#93442e]">{label}<ArrowUpRight className="ml-1 inline size-3" /></span></a>)}
+          {copy.propertyPhotos.map(([label, id]) => <div key={id} className="group block overflow-hidden border border-[#252923]/10 bg-[#fbf9f3]"><PhotoSlot label={`${label} (illustrative stock photo)`} src={px(id, 900)} className="aspect-[4/3]" /><span className="block min-h-12 px-3 py-2 text-[11px] font-medium leading-4 text-[#62695f] group-hover:text-[#93442e]">{label}</span></div>)}
         </div>
         <p className="mt-3 text-[11px] text-[#696a60]">{copy.photoCredit} <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className={`underline underline-offset-2 ${FOCUS}`}>Pexels License</a></p>
       </motion.section>
@@ -280,7 +286,7 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
         <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20 lg:px-10">
           <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
             <div><p className="text-[10px] font-bold tracking-[.18em] text-[#d7b880] uppercase">{copy.constructionEyebrow}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.constructionTitle}</h2><p className="mt-5 max-w-xl text-sm leading-6 text-white/75">{copy.constructionText}</p></div>
-            <div className="flex min-h-56 flex-col items-start justify-between border border-white/20 bg-white/[.04] p-6 sm:p-8"><p className="max-w-sm text-lg leading-7 text-white/85">{spanish ? "Más información sobre nuestro trabajo de construcción residencial." : "Learn more about our residential construction work."}</p><Link to="/services" className={`mt-8 inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition hover:bg-white/10 ${FOCUS}`}>{copy.explore}<ArrowUpRight className="size-4" /></Link></div>
+            <div><div className="grid grid-cols-3 gap-2 sm:gap-3">{copy.constructionPhotos.map(([label, id]) => <div key={id} className="group block overflow-hidden border border-white/15"><PhotoSlot label={`${label} · illustrative construction stock photo`} src={px(id, 800)} className="aspect-[4/5]" /><span className="block min-h-12 bg-white/[.06] px-2 py-2 text-[10px] leading-4 text-white/80 sm:px-3 sm:text-xs">{label}</span></div>)}</div><p className="mt-3 text-[10px] leading-4 text-white/60">{copy.constructionPhotoNote} <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className={`underline underline-offset-2 ${FOCUS}`}>Pexels License</a></p><Link to="/services" className={`mt-5 inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition hover:bg-white/10 ${FOCUS}`}>{copy.explore}<ArrowUpRight className="size-4" /></Link></div>
           </div>
         </div>
       </motion.section>
