@@ -6,13 +6,7 @@ import { PHOTO_CREDIT_URL, px, pxPage } from "@/data/photos";
 import {
   ArrowRight,
   ArrowUpRight,
-  ClipboardList,
-  Clock3,
-  House,
-  MapPin,
   Phone,
-  Trees,
-  Wrench,
 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -63,27 +57,28 @@ type Copy = {
 
 const EN: Copy = {
   nav: ["Sell your house", "Sell land", "Construction", "Investors", "Refer"],
-  heroEyebrow: "LoveMeAfter Home Buyers",
-  heroTitle: "Ready to let go of a house or land? Let’s talk about what comes next.",
-  heroText: "Some properties hold a lifetime of memories. Others have become one more responsibility on a full plate. Either way, you deserve a thoughtful conversation—not a rushed answer. Call us to share what’s happening. We’ll listen, learn what matters, and talk through whether a sale could fit your next chapter. We accept inquiries nationwide and confirm whether we can review the location.",
+  heroEyebrow: "LoveMeAfter Home Buyers · Houses & land",
+  heroTitle: "When it’s time to let go, start with a conversation.",
+  heroText: "A house or a piece of land can carry a lot of history—and a lot to take care of. Tell us what’s happening. We’ll listen, talk through the property, and explore whether a sale could make sense for what comes next. We accept inquiries nationwide and confirm whether we can review the location.",
   house: "Sell your house",
   land: "Sell your land",
   call: "Talk with us",
   photoLabel: "Suburban home exterior at sunset · illustrative stock photo",
   photoNote: "Illustrative stock photo. Not a LoveMeAfter project.",
   photoCredit: "Photo: Pexels",
-  trust: ["A real conversation, without pressure", "Homes and land considered", "Clear next steps before any agreement"],
-  processEyebrow: "Start where you are",
-  processTitle: "A conversation can make the next step clearer.",
-  steps: [["Tell us what’s going on", "Share the property’s location, condition, and what you need from a sale."], ["We look at the whole picture", "Our team reviews the property and confirms whether its location is one we can consider."], ["Talk through what could work", "If there may be a fit, we’ll discuss possible terms with you. You can review everything in writing before deciding." ]],
-  whyEyebrow: "A better way to explore a sale",
-  whyTitle: "A practical path through a personal decision.",
-  benefits: [["Be heard first", "Tell us what’s happening in your own words. We’ll listen before we talk about the property."], ["Construction experience", "We work in construction and understand the work a home may need. If we buy it, we can put that experience toward improving the property for its next chapter."], ["Houses, vacant homes, and land", "Tell us what you own and what you’re hoping to do. We’ll help you find the right next step."], ["No need to make it picture-perfect", "Inherited, vacant, dated, or in need of work? Start with the facts you have. We’ll talk through the details together."], ["Clear terms, in writing", "If there may be a fit, we’ll explain the possible terms and give you time to review them in writing."], ["Your decision stays yours", "A conversation does not commit you to a sale. Take the time you need to decide what’s right for you."]],
-  constructionEyebrow: "Our construction experience",
-  constructionTitle: "We see more than the repair list.",
-  constructionText: "We work in residential construction, so we know to look beyond what needs fixing. If we purchase a property, that experience can help us plan and carry out upgrades that make sense for its next chapter. A purchase and a construction project are separate decisions; any terms are discussed directly and provided in writing.",
+  trust: ["Houses, land, and homes that need work", "A person-to-person conversation", "Any proposed terms shared in writing"],
+  processEyebrow: "The first conversation",
+  processTitle: "No script to follow. Just the details that matter to you.",
+  steps: [["Tell us the situation", "Where is the property? What’s its condition? What would you like to happen next?"], ["We take a closer look", "We review the property details and confirm whether we can consider its location."], ["Decide with the facts", "If there may be a fit, we’ll talk through possible terms and share them in writing for you to review." ]],
+  whyEyebrow: "What a direct conversation can offer",
+  whyTitle: "The details are different for everyone.",
+  benefits: [["Start with your situation", "No need to have the perfect words or every answer. Tell us what’s happening."], ["We understand the work", "We also do residential construction. If we buy a home, we can put that experience to work improving it for its next chapter."], ["Houses and land", "Ask about a house, a vacant property, or land. We’ll help you find the right place to start."], ["A property that needs attention", "Inherited, dated, vacant, or full of unfinished repairs? Share what you know; we’ll take it from there together."], ["Terms you can review", "If there may be a fit, we’ll explain the possible terms and put them in writing."], ["Room to make your decision", "An initial conversation isn’t an agreement to sell. Consider your options and decide what feels right for you."]],
+  constructionEyebrow: "A buyer who understands the work",
+  constructionTitle: "We know a house is more than its punch list.",
+  constructionText: "We also do residential construction. That experience helps us see what a home may need beyond a quick walkthrough. If we buy it, we can put those skills toward thoughtful upgrades for its next chapter. The sale and any construction work are separate decisions.",
   constructionPhotos: [["Home renovation on scaffolding", 27134625], ["Indoor renovation work", 32990521], ["Worker repairing a home", 16767783]],
-  constructionPhotoNote: "Illustrative construction stock photos—not LoveMeAfter project photos.",
+  constructionPhotoNote: "Illustrative construction photos · Pexels",
+
   propertyPhotos: [["Aerial view of farmland", 7457220], ["Suburban neighborhood from above", 17286412], ["White home exterior with a front porch", 5661021], ["Close detail of a house roof", 10025299], ["Bright kitchen interior", 19807422], ["Home exterior beside a garden", 12608773], ["Cultivated agricultural land", 7457218], ["Older suburban home", 8579963]],
   explore: "Explore construction services",
   situationsEyebrow: "Properties aren’t all alike",
@@ -112,27 +107,28 @@ const EN: Copy = {
 
 const ES: Copy = {
   nav: ["Vender su casa", "Vender terreno", "Construcción", "Inversionistas", "Referir"],
-  heroEyebrow: "LoveMeAfter Home Buyers",
-  heroTitle: "¿Listo para dejar ir una casa o un terreno? Hablemos de lo que sigue.",
-  heroText: "Algunas propiedades guardan toda una vida de recuerdos. Otras se han convertido en una responsabilidad más en medio de tantas cosas. En cualquier caso, merece una conversación atenta, no una respuesta apresurada. Llámenos y cuéntenos qué ocurre. Escucharemos, entenderemos lo que importa y hablaremos sobre si una venta podría encajar con su próxima etapa. Aceptamos consultas de todo el país y confirmaremos si podemos revisar esa ubicación.",
+  heroEyebrow: "LoveMeAfter Home Buyers · Casas y terrenos",
+  heroTitle: "Cuando llegue el momento de dejar ir, empecemos conversando.",
+  heroText: "Una casa o un terreno pueden guardar mucha historia y también muchas responsabilidades. Cuéntenos qué ocurre. Escucharemos, hablaremos sobre la propiedad y veremos si una venta podría tener sentido para lo que sigue. Aceptamos consultas de todo el país y confirmaremos si podemos revisar esa ubicación.",
   house: "Vender su casa",
   land: "Vender su terreno",
   call: "Hable con nosotros",
   photoLabel: "Exterior de una casa suburbana al atardecer · foto de archivo ilustrativa",
   photoNote: "Foto de archivo ilustrativa. No es un proyecto de LoveMeAfter.",
   photoCredit: "Foto: Pexels",
-  trust: ["Una conversación real, sin presión", "Casas y terrenos en consideración", "Próximos pasos claros antes de cualquier acuerdo"],
-  processEyebrow: "Empiece desde donde está",
-  processTitle: "Una conversación puede aclarar el próximo paso.",
-  steps: [["Cuéntenos qué ocurre", "Comparta la ubicación, el estado de la propiedad y qué necesita de una venta."], ["Consideramos el panorama completo", "Nuestro equipo revisa la propiedad y confirma si podemos considerar esa ubicación."], ["Hablemos de lo que podría funcionar", "Si podría haber una opción, conversaremos sobre posibles términos. Podrá revisar todo por escrito antes de decidir." ]],
-  whyEyebrow: "Una mejor forma de explorar una venta",
-  whyTitle: "Un camino práctico para una decisión personal.",
-  benefits: [["Primero, le escuchamos", "Cuéntenos lo que ocurre con sus propias palabras. Escucharemos antes de hablar de los detalles de la propiedad."], ["Experiencia en construcción", "Trabajamos en construcción y entendemos lo que una casa podría necesitar. Si la compramos, podemos usar esa experiencia para mejorarla de cara a su próxima etapa."], ["Casas, propiedades vacías y terrenos", "Cuéntenos qué tiene y qué espera hacer. Le ayudaremos a encontrar el siguiente paso adecuado."], ["No tiene que dejarla perfecta", "¿Heredada, vacía, antigua o necesita trabajo? Empiece con los datos que tenga. Hablaremos juntos de los detalles."], ["Términos claros y por escrito", "Si podría haber una opción, explicaremos los posibles términos y tendrá tiempo para revisarlos por escrito."], ["La decisión es suya", "Conversar no le compromete a vender. Tómese el tiempo necesario para decidir qué le conviene." ]],
-  constructionEyebrow: "Nuestra experiencia en construcción",
-  constructionTitle: "Vemos más que una lista de reparaciones.",
-  constructionText: "Trabajamos en construcción residencial, así que miramos más allá de lo que necesita arreglo. Si compramos una propiedad, esa experiencia puede ayudarnos a planificar y realizar mejoras adecuadas para su próxima etapa. La compra y un proyecto de construcción son decisiones distintas; cualquier término se conversa directamente y se entrega por escrito.",
+  trust: ["Casas, terrenos y propiedades que necesitan trabajo", "Una conversación personal", "Términos propuestos por escrito"],
+  processEyebrow: "La primera conversación",
+  processTitle: "No hay un guion. Solo los detalles que le importan.",
+  steps: [["Cuéntenos la situación", "¿Dónde está la propiedad? ¿En qué estado se encuentra? ¿Qué le gustaría que ocurriera?"], ["La revisamos con atención", "Revisamos los detalles y confirmamos si podemos considerar esa ubicación."], ["Decida con la información", "Si podría haber una opción, hablaremos de los posibles términos y se los daremos por escrito para que los revise." ]],
+  whyEyebrow: "Lo que puede aportar una conversación directa",
+  whyTitle: "Cada situación tiene sus propios detalles.",
+  benefits: [["Empezamos por su situación", "No necesita encontrar las palabras perfectas ni tener todas las respuestas. Cuéntenos qué ocurre."], ["Entendemos el trabajo", "También hacemos construcción residencial. Si compramos una casa, podemos usar esa experiencia para mejorarla de cara a su próxima etapa."], ["Casas y terrenos", "Consulte por una casa, una propiedad vacía o un terreno. Le ayudaremos a encontrar el punto de partida adecuado."], ["Una propiedad que necesita atención", "¿Heredada, antigua, vacía o con reparaciones pendientes? Comparta lo que sabe; lo revisaremos juntos."], ["Términos para revisar", "Si podría haber una opción, explicaremos los posibles términos y se los daremos por escrito."], ["Tiempo para decidir", "Una conversación inicial no es un acuerdo de venta. Considere sus opciones y decida qué le conviene." ]],
+  constructionEyebrow: "Un comprador que entiende el trabajo",
+  constructionTitle: "Una casa es más que una lista de reparaciones.",
+  constructionText: "También hacemos construcción residencial. Esa experiencia nos ayuda a ver lo que una casa podría necesitar más allá de una visita rápida. Si la compramos, podemos usar nuestras habilidades para hacer mejoras bien pensadas para su próxima etapa. La venta y cualquier trabajo de construcción son decisiones distintas.",
   constructionPhotos: [["Renovación de una casa con andamios", 27134625], ["Trabajo de renovación interior", 32990521], ["Reparación exterior de una casa", 16767783]],
-  constructionPhotoNote: "Fotos de archivo ilustrativas de construcción; no son proyectos de LoveMeAfter.",
+  constructionPhotoNote: "Fotos ilustrativas de construcción · Pexels",
+
   propertyPhotos: [["Vista aérea de terreno agrícola", 7457220], ["Barrio residencial visto desde arriba", 17286412], ["Exterior de una casa blanca con porche", 5661021], ["Detalle del techo de una casa", 10025299], ["Interior luminoso de una cocina", 19807422], ["Exterior de una casa junto a un jardín", 12608773], ["Terreno agrícola cultivado", 7457218], ["Casa suburbana antigua", 8579963]],
   explore: "Ver servicios de construcción",
   situationsEyebrow: "Cada propiedad es distinta",
@@ -233,16 +229,16 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
             <p className="text-[10px] font-bold tracking-[.17em] text-[#65735b] uppercase sm:text-xs">{copy.heroEyebrow}</p>
             <h1 className="mt-4 max-w-[15ch] text-5xl leading-[.91] tracking-[-.045em] sm:text-6xl lg:text-7xl">{copy.heroTitle}</h1>
             <p className="mt-5 max-w-xl text-sm leading-6 text-[#62695f] sm:text-base sm:leading-7">{copy.heroText}</p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
               <a href={PHONE_HREF} className={buttonPrimary}><Phone className="size-4" />{copy.call} {PHONE}</a>
+              <span className="text-xs text-[#62695f]">{spanish ? "O" : "Or"}</span>
               <LeadLink href={housePath} secondary>{copy.house}<ArrowRight className="size-4" /></LeadLink>
               <LeadLink href={landPath} secondary>{copy.land}<ArrowRight className="size-4" /></LeadLink>
             </div>
-            <p className="mt-3 text-xs leading-5 text-[#62695f]">{spanish ? "Cuéntenos sobre la propiedad y hablaremos de los próximos pasos." : "Tell us about the property and we’ll talk through next steps."}</p>
           </div>
-          <div className="relative min-h-[310px] sm:min-h-[420px]">
-            <PhotoSlot label={copy.photoLabel} src={px(5524336, 1800)} eager className="absolute inset-0 min-h-[310px] sm:min-h-[420px]" />
-            <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 bg-gradient-to-t from-[#191b17]/80 to-transparent px-4 pb-4 pt-14 sm:px-5 sm:pb-5">
+          <div className="relative min-h-[310px] sm:min-h-[470px] lg:min-h-[540px]">
+            <PhotoSlot label={copy.photoLabel} src={px(5524336, 1800)} eager className="absolute inset-0 min-h-[310px] sm:min-h-[470px] lg:min-h-[540px]" />
+            <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 bg-gradient-to-t from-[#191b17]/75 to-transparent px-4 pb-4 pt-16 sm:px-5 sm:pb-5">
               <a href={pxPage(5524336)} target="_blank" rel="noreferrer" className={`text-[9px] text-white underline underline-offset-2 drop-shadow ${FOCUS}`}>{copy.photoCredit}</a>
               <span className="max-w-[65%] text-right text-[9px] leading-4 text-white/90 drop-shadow">{copy.photoNote}</span>
             </div>
@@ -251,33 +247,30 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
       </section>
 
       <section aria-label={spanish ? "Información sobre consultas" : "Inquiry details"} className="border-b border-[#252923]/10 bg-[#e9e5db]">
-        <div className="mx-auto grid max-w-7xl divide-y divide-[#252923]/10 px-5 sm:grid-cols-2 sm:divide-x sm:divide-y-0 sm:px-8 lg:grid-cols-3 lg:px-10">
-          {copy.trust.map((item, index) => {
-            const Icon = [MapPin, Phone, Clock3][index];
-            return <div key={item} className="flex items-center gap-3 py-4 text-xs font-semibold leading-5 sm:px-4 lg:py-5"><Icon className="size-5 shrink-0 text-[#93442e]" /><span>{item}</span></div>;
-          })}
+        <div className="mx-auto grid max-w-7xl divide-y divide-[#252923]/15 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-8 lg:px-10">
+          {copy.trust.map((item, index) => <div key={item} className="flex items-baseline gap-4 py-4 sm:px-5 lg:py-5"><span className="font-serif text-2xl text-[#93442e]">0{index + 1}</span><span className="max-w-52 text-xs font-medium leading-5 text-[#454940]">{item}</span></div>)}
         </div>
       </section>
 
       <motion.section {...reveal} className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20 lg:px-10">
         <div className="grid gap-8 lg:grid-cols-[.75fr_1.25fr] lg:items-start">
           <div><p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">{copy.processEyebrow}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.processTitle}</h2></div>
-          <div className="grid gap-0 sm:grid-cols-3 sm:gap-4">
-            {copy.steps.map(([title, text], index) => <article key={title} className="border-t border-[#252923]/15 py-5 sm:border sm:bg-[#fbf9f3] sm:p-5"><span className="text-xs font-bold text-[#93442e]">0{index + 1}</span><h3 className="mt-3 text-2xl">{title}</h3><p className="mt-2 text-sm leading-6 text-[#62695f]">{text}</p></article>)}
+          <div role="list" className="grid gap-0 sm:grid-cols-3 sm:gap-7">
+            {copy.steps.map(([title, text], index) => <div role="listitem" key={title} className="border-t border-[#252923]/20 py-5 sm:pt-5"><span className="font-serif text-3xl text-[#93442e]">0{index + 1}</span><h3 className="mt-4 text-2xl">{title}</h3><p className="mt-2 max-w-xs text-sm leading-6 text-[#62695f]">{text}</p></div>)}
           </div>
         </div>
       </motion.section>
 
       <motion.section {...reveal} className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20 lg:px-10">
-        <div className="mb-8 max-w-2xl"><p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">{copy.whyEyebrow}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.whyTitle}</h2></div>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {copy.benefits.map(([title, text], index) => {
-            const Icon = [Phone, Wrench, House, MapPin, ClipboardList, Clock3][index];
-            return <article key={title} className="border border-[#252923]/10 bg-[#fbf9f3] p-6 sm:p-7"><span className="flex size-11 items-center justify-center bg-[#e9e5db] text-[#93442e]"><Icon className="size-5" /></span><h3 className="mt-5 text-2xl">{title}</h3><p className="mt-2 text-sm leading-6 text-[#62695f]">{text}</p></article>;
-          })}
+        <div className="mb-9 grid gap-4 md:grid-cols-[.75fr_1.25fr] md:items-end"><div><p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">{copy.whyEyebrow}</p><h2 className="mt-3 max-w-[14ch] text-4xl leading-none sm:text-5xl">{copy.whyTitle}</h2></div><p className="max-w-lg text-sm leading-6 text-[#62695f]">{spanish ? "No hay dos propiedades ni dos decisiones iguales. Estas son algunas razones por las que la gente nos llama." : "No two properties—or decisions—are alike. Here are a few reasons people call us."}</p></div>
+        <div role="list" className="grid gap-x-12 md:grid-cols-2">
+          {copy.benefits.map(([title, text], index) => <div role="listitem" key={title} className="grid grid-cols-[2.5rem_1fr] gap-x-4 border-t border-[#252923]/15 py-5 sm:py-6"><span className="pt-1 font-serif text-2xl text-[#93442e]">0{index + 1}</span><div><h3 className="text-2xl leading-tight">{title}</h3><p className="mt-2 max-w-xl text-sm leading-6 text-[#62695f]">{text}</p></div></div>)}
         </div>
-        <div aria-label={spanish ? "Fotos ilustrativas de casas y terrenos" : "Illustrative home and land photographs"} className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {copy.propertyPhotos.map(([label, id]) => <div key={id} className="group block overflow-hidden border border-[#252923]/10 bg-[#fbf9f3]"><PhotoSlot label={`${label} (illustrative stock photo)`} src={px(id, 900)} className="aspect-[4/3]" /><span className="block min-h-12 px-3 py-2 text-[11px] font-medium leading-4 text-[#62695f] group-hover:text-[#93442e]">{label}</span></div>)}
+        <div aria-label={spanish ? "Fotos ilustrativas de casas y terrenos" : "Illustrative home and land photographs"} className="mt-12 grid grid-cols-2 gap-2 md:grid-cols-12 md:auto-rows-[90px] md:gap-3 lg:auto-rows-[112px]">
+          {copy.propertyPhotos.map(([label, id], index) => {
+            const layout = ["col-span-2 md:col-span-7 md:row-span-3", "col-span-1 md:col-span-5 md:row-span-2", "col-span-1 md:col-span-5 md:row-span-2", "col-span-1 md:col-span-4 md:row-span-2", "col-span-1 md:col-span-4 md:row-span-2", "col-span-2 md:col-span-4 md:row-span-2", "col-span-1 md:col-span-4 md:row-span-2", "col-span-1 md:col-span-4 md:row-span-2"][index];
+            return <div key={id} className={`group relative overflow-hidden bg-[#e3dfd4] ${layout}`}><PhotoSlot label={`${label} (illustrative stock photo)`} src={px(id, 1100)} className="absolute inset-0 h-full w-full" /><span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#191b17]/75 to-transparent px-3 pb-3 pt-10 text-[11px] font-medium text-white sm:px-4 sm:pb-4">{label}</span></div>;
+          })}
         </div>
         <p className="mt-3 text-[11px] text-[#696a60]">{copy.photoCredit} <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className={`underline underline-offset-2 ${FOCUS}`}>Pexels License</a></p>
       </motion.section>
@@ -286,13 +279,13 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
         <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20 lg:px-10">
           <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
             <div><p className="text-[10px] font-bold tracking-[.18em] text-[#d7b880] uppercase">{copy.constructionEyebrow}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.constructionTitle}</h2><p className="mt-5 max-w-xl text-sm leading-6 text-white/75">{copy.constructionText}</p></div>
-            <div><div className="grid grid-cols-3 gap-2 sm:gap-3">{copy.constructionPhotos.map(([label, id]) => <div key={id} className="group block overflow-hidden border border-white/15"><PhotoSlot label={`${label} · illustrative construction stock photo`} src={px(id, 800)} className="aspect-[4/5]" /><span className="block min-h-12 bg-white/[.06] px-2 py-2 text-[10px] leading-4 text-white/80 sm:px-3 sm:text-xs">{label}</span></div>)}</div><p className="mt-3 text-[10px] leading-4 text-white/60">{copy.constructionPhotoNote} <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className={`underline underline-offset-2 ${FOCUS}`}>Pexels License</a></p><Link to="/services" className={`mt-5 inline-flex min-h-12 items-center gap-2 border border-white/30 px-5 text-sm font-semibold text-white transition hover:bg-white/10 ${FOCUS}`}>{copy.explore}<ArrowUpRight className="size-4" /></Link></div>
+            <div><div className="grid grid-cols-12 items-end gap-2 sm:gap-3">{copy.constructionPhotos.map(([label, id], index) => { const photoSize = ["col-span-7", "col-span-5 -mb-6", "col-span-7 col-start-6"][index]; return <div key={id} className={`relative overflow-hidden ${photoSize}`}><PhotoSlot label={`${label} · illustrative construction stock photo`} src={px(id, 1000)} className={index === 1 ? "aspect-[4/5]" : "aspect-[5/4]"} /></div>; })}</div><div className="mt-5 flex flex-col justify-between gap-4 border-t border-white/20 pt-4 sm:flex-row sm:items-end"><p className="max-w-xs text-[10px] leading-4 text-white/60">{copy.constructionPhotoNote} <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className={`underline underline-offset-2 ${FOCUS}`}>Pexels License</a></p><Link to="/services" className={`inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white ${FOCUS}`}>{copy.explore}<ArrowUpRight className="size-4" /></Link></div></div>
           </div>
         </div>
       </motion.section>
 
-      <motion.section {...reveal} id="situations" className="scroll-mt-24 mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20 lg:px-10">          <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr]"><div><p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">{copy.situationsEyebrow}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.situationsTitle}</h2></div><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{copy.situations.map((situation, index) => { const Icon = [House, Wrench, House, MapPin, ClipboardList, Trees][index]; const imageId = [22485304, 4916186, 8579963, 10628470, 18729447, 13324677][index]; return <article key={situation} className="overflow-hidden border border-[#252923]/10 bg-[#fbf9f3]"><PhotoSlot label={`${situation} · illustrative property stock photo`} src={px(imageId, 700)} className="aspect-[16/10]" /><div className="flex min-h-24 items-start gap-3 p-4"><Icon className="mt-0.5 size-4 shrink-0 text-[#93442e]" /><h3 className="text-lg leading-snug">{situation}</h3></div></article>; })}</div></div>
-        <p className="mt-4 text-[11px] leading-5 text-[#696a60]">{copy.photoCredit} <a href={PHOTO_CREDIT_URL} target="_blank" rel="noreferrer" className={`underline underline-offset-2 ${FOCUS}`}>Pexels License</a></p>
+      <motion.section {...reveal} id="situations" className="scroll-mt-24 border-y border-[#252923]/10 bg-[#e9e5db]">
+        <div className="mx-auto grid max-w-7xl gap-8 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-[.7fr_1.3fr] lg:px-10"><div><p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">{copy.situationsEyebrow}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.situationsTitle}</h2></div><ul className="grid gap-x-10 sm:grid-cols-2">{copy.situations.map((situation) => <li key={situation} className="border-t border-[#252923]/20 py-4 text-base">{situation}</li>)}</ul></div>
       </motion.section>
 
       <motion.section {...reveal} className="border-y border-[#252923]/10 bg-[#fbf9f3]">
@@ -305,7 +298,7 @@ export default function BuyerHome({ spanish = false }: { spanish?: boolean }) {
       </motion.section>
 
       <section className="bg-[#fbf9f3]">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-14 sm:px-8 sm:py-16 lg:flex-row lg:items-center lg:justify-between lg:px-10"><div><h2 className="text-4xl leading-none sm:text-5xl">{copy.finalTitle}</h2><p className="mt-3 max-w-xl text-sm leading-6 text-[#62695f]">{copy.finalText}</p></div><div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap"><a href={PHONE_HREF} className={buttonPrimary}><Phone className="size-4" />{copy.call} {PHONE}</a><LeadLink href={housePath} secondary>{copy.house}<ArrowRight className="size-4" /></LeadLink><LeadLink href={landPath} secondary>{copy.land}<ArrowRight className="size-4" /></LeadLink></div></div>
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-14 sm:px-8 sm:py-16 lg:flex-row lg:items-center lg:justify-between lg:px-10">            <div><p className="text-[10px] font-bold tracking-[.18em] text-[#65735b] uppercase">{spanish ? "Cuando esté listo" : "When you’re ready"}</p><h2 className="mt-3 text-4xl leading-none sm:text-5xl">{copy.finalTitle}</h2><p className="mt-3 max-w-xl text-sm leading-6 text-[#62695f]">{copy.finalText}</p></div><div className="flex flex-col gap-3 sm:items-start"><a href={PHONE_HREF} className={buttonPrimary}><Phone className="size-4" />{copy.call} {PHONE}</a><div className="flex flex-wrap items-center gap-4 text-xs"><LeadLink href={housePath} secondary>{copy.house}<ArrowRight className="size-4" /></LeadLink><LeadLink href={landPath} secondary>{copy.land}<ArrowRight className="size-4" /></LeadLink></div></div></div>
       </section>
 
       <footer className="border-t border-[#252923]/10 bg-[#f3f0e8]">
