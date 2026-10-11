@@ -4,7 +4,7 @@ import { usePageMeta } from "@/components/PageMeta";
 import { TopNav, PHONE_DISPLAY, PHONE_HREF } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 
-const eyebrow = "text-[11px] font-bold tracking-[.18em] text-[#2f8f5b] uppercase";
+const eyebrow = "text-[11px] font-bold tracking-[.18em] text-[#a36a27] uppercase";
 
 type CityCopy = {
   name: string;
@@ -90,22 +90,22 @@ export default function LawnArea() {
 
   if (!copy) {
     return (
-      <div className="flex min-h-screen flex-col bg-white">
+      <div className="flex min-h-screen flex-col bg-[#fffefa]">
         <TopNav />
         <main className="flex-1">
           <section className="mx-auto max-w-3xl px-5 py-24 text-center sm:px-8">
             <p className={eyebrow}>Service area</p>
-            <h1 className="mt-4 text-4xl text-[#14372a] sm:text-5xl">We might still reach you.</h1>
-            <p className="mt-5 text-base leading-7 text-[#4c5b52]">
+            <h1 className="mt-4 text-4xl text-[#12304d] sm:text-5xl">We might still reach you.</h1>
+            <p className="mt-5 text-base leading-7 text-[#4e5964]">
               Our daily routes cover Dallas–Fort Worth — Dallas, Fort Worth, Arlington, Plano, Garland, and Irving. If you’re nearby, call us and we’ll confirm your address in a minute.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <a href={PHONE_HREF} className="inline-flex min-h-12 items-center gap-2 rounded-md bg-[#175a3b] px-6 py-3 text-sm font-bold text-white hover:bg-[#14502f]"><Phone className="size-4" />{PHONE_DISPLAY}</a>
-              <Link to="/get-quote" className="inline-flex min-h-12 items-center gap-2 rounded-md border border-[#175a3b]/35 bg-white px-6 py-3 text-sm font-bold text-[#14502f] hover:bg-[#eaf2ed]">Get My Price<ArrowRight className="size-4" /></Link>
+              <a href={PHONE_HREF} className="inline-flex min-h-12 items-center gap-2 rounded-md bg-[#174f8d] px-6 py-3 text-sm font-bold text-white hover:bg-[#0b3f78]"><Phone className="size-4" />{PHONE_DISPLAY}</a>
+              <Link to="/get-quote" className="inline-flex min-h-12 items-center gap-2 rounded-md border border-[#174f8d]/35 bg-white px-6 py-3 text-sm font-bold text-[#0b3f78] hover:bg-[#f4ead7]">Get My Price<ArrowRight className="size-4" /></Link>
             </div>
             <div className="mt-10 flex flex-wrap justify-center gap-2.5">
               {Object.entries(CITIES).map(([slug, cityCopy]) => (
-                <Link key={slug} to={`/areas/texas/${slug}`} className="rounded-full border border-[#175a3b]/25 px-5 py-2.5 text-sm font-semibold text-[#14502f] hover:bg-[#eaf2ed]">{cityCopy.name}</Link>
+                <Link key={slug} to={`/areas/texas/${slug}`} className="rounded-full border border-[#174f8d]/25 px-5 py-2.5 text-sm font-semibold text-[#0b3f78] hover:bg-[#f4ead7]">{cityCopy.name}</Link>
               ))}
             </div>
           </section>
@@ -116,18 +116,18 @@ export default function LawnArea() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex min-h-screen flex-col bg-[#fffefa]">
       <TopNav />
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-[#14372a] text-white">
-          <div aria-hidden="true" className="photo-placeholder--dark absolute inset-0 opacity-40" />
-          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#0f2b20] via-[#14372a]/85 to-transparent" />
+        <section className="relative overflow-hidden bg-[#12304d] text-white">
+          <img src="/images/products/imgi_5_Alside_CHO_Beauty5-1024x551.jpg" alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover object-center opacity-35" />
+          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#102b45]/95 via-[#12304d]/80 to-[#12304d]/30" />
           <div className="relative mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
-            <p className={eyebrow + " text-[#8fd6ac]"}>Lawn care in {copy.name}, Texas</p>
+            <p className={eyebrow + " text-[#ffdfa0]"}>Lawn care in {copy.name}, Texas</p>
             <h1 className="mt-4 max-w-[18ch] text-4xl leading-[1.03] sm:text-5xl lg:text-[3.5rem]">{copy.headline}</h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/85">{copy.localNote}</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/get-quote" className="inline-flex min-h-12 items-center gap-2 rounded-md bg-white px-6 py-3 text-sm font-bold text-[#14502f] transition hover:bg-[#eaf2ed]">Get My Price<ArrowRight className="size-4" /></Link>
+              <Link to="/get-quote" className="inline-flex min-h-12 items-center gap-2 rounded-md bg-white px-6 py-3 text-sm font-bold text-[#0b3f78] transition hover:bg-[#f4ead7]">Get My Price<ArrowRight className="size-4" /></Link>
               <a href={PHONE_HREF} className="inline-flex min-h-12 items-center gap-2 rounded-md border border-white/40 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"><Phone className="size-4" />{PHONE_DISPLAY}</a>
             </div>
           </div>
@@ -137,43 +137,42 @@ export default function LawnArea() {
           <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
             <div className="grid gap-10 lg:grid-cols-[1.1fr_.9fr]">
               <div>
-                <h2 className="text-3xl text-[#14372a] sm:text-4xl">What we do in {copy.name}</h2>
+                <h2 className="text-3xl text-[#12304d] sm:text-4xl">What we do in {copy.name}</h2>
                 <div className="mt-6 space-y-5">
                   {copy.paragraphs.map((paragraph) => (
-                    <p key={paragraph.slice(0, 24)} className="text-base leading-7 text-[#3d4c43]">{paragraph}</p>
+                    <p key={paragraph.slice(0, 24)} className="text-base leading-7 text-[#3d4650]">{paragraph}</p>
                   ))}
                 </div>
-                <div className="mt-8 rounded-xl border border-[#1c2620]/12 bg-[#f9fbf9] p-6">
+                <div className="mt-8 rounded-xl border border-[#1c2620]/12 bg-[#fffefa] p-6">
                   <p className={eyebrow}>Services & prices</p>
                   <ul className="mt-4 divide-y divide-[#1c2620]/12">
                     {SERVICES.map(([name, price, href]) => (
                       <li key={name} className="flex flex-wrap items-center justify-between gap-3 py-4">
                         <div>
-                          <Link to={href} className="text-lg font-bold text-[#14372a] hover:text-[#175a3b]">{name}</Link>
-                          <p className="mt-1 text-xs text-[#5c6b62]">One-time job · priced from your photos</p>
+                          <Link to={href} className="text-lg font-bold text-[#12304d] hover:text-[#174f8d]">{name}</Link>
+                          <p className="mt-1 text-xs text-[#5d6268]">One-time job · priced from your photos</p>
                         </div>
-                        <span className="rounded-full bg-[#eaf2ed] px-4 py-1.5 text-sm font-extrabold text-[#14502f]">{price}</span>
+                        <span className="rounded-full bg-[#f4ead7] px-4 py-1.5 text-sm font-extrabold text-[#0b3f78]">{price}</span>
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-4 rounded-md bg-[#eaf2ed] px-4 py-3 text-sm font-semibold text-[#14502f]">Mow + fertilization combo: 15% off the second service.</p>
-                  <Link to="/get-quote" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#175a3b] hover:text-[#14502f]">
+                  <p className="mt-4 rounded-md bg-[#f4ead7] px-4 py-3 text-sm font-semibold text-[#0b3f78]">Mow + fertilization combo: 15% off the second service.</p>
+                  <Link to="/get-quote" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#174f8d] hover:text-[#0b3f78]">
                     Get my {copy.name} price<ArrowRight className="size-4" />
                   </Link>
                 </div>
               </div>
               <div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div role="img" aria-label="before placeholder" className="photo-placeholder--before relative aspect-[4/5] overflow-hidden rounded-xl">
-                    <span className="absolute inset-x-3 bottom-3 rounded-md bg-black/45 px-3 py-1.5 text-xs font-semibold text-white">Before · placeholder</span>
-                  </div>
-                  <div role="img" aria-label="after placeholder" className="photo-placeholder relative aspect-[4/5] overflow-hidden rounded-xl">
-                    <span className="absolute inset-x-3 bottom-3 rounded-md bg-black/45 px-3 py-1.5 text-xs font-semibold text-white">After · placeholder</span>
-                  </div>
+                <p className="text-xs font-bold tracking-[.16em] text-[#a36a27] uppercase">Home-improvement inspiration</p>
+                <h3 className="mt-3 text-2xl leading-tight text-[#12304d]">The outside makes the first impression.</h3>
+                <p className="mt-3 text-sm leading-6 text-[#5d6268]">These exterior images are home-improvement inspiration, not lawn-care results. For the yard, we focus on clean cuts, crisp edges, and a tidy finish.</p>
+                <div className="mt-6 grid grid-cols-2 gap-3">
+                  <img src="/images/products/imgi_5_Alside_CHO_Beauty5-1024x551.jpg" alt="Home exterior shown as home-improvement inspiration" loading="lazy" className="aspect-[4/5] w-full rounded-xl object-cover" />
+                  <img src="/images/products/imgi_7_Alside_GreenbriarVintage_Beauty-683x1024.png" alt="Exterior detail shown as home-improvement inspiration" loading="lazy" className="aspect-[4/5] w-full rounded-xl object-cover" />
                 </div>
                 <ul className="mt-6 space-y-3">
                   {["One-time jobs at firm prices", "Booked today, mowed tomorrow", "Gates closed, everything blown clean", "Photo note when the job is done"].map((item) => (
-                    <li key={item} className="flex gap-2.5 text-sm leading-6 text-[#26332b]"><Check className="mt-1 size-4 shrink-0 text-[#2f8f5b]" />{item}</li>
+                    <li key={item} className="flex gap-2.5 text-sm leading-6 text-[#26313d]"><Check className="mt-1 size-4 shrink-0 text-[#a36a27]" />{item}</li>
                   ))}
                 </ul>
               </div>
@@ -181,14 +180,14 @@ export default function LawnArea() {
           </div>
         </section>
 
-        <section className="bg-[#175a3b] text-white">
+        <section className="bg-[#174f8d] text-white">
           <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-14 sm:px-8 sm:py-16 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h2 className="max-w-[20ch] text-3xl leading-[1.05] sm:text-4xl">Get your {copy.name} yard on the schedule.</h2>
               <p className="mt-3 max-w-xl text-sm leading-6 text-white/80">Send your photos now and we’ll call you within 5 minutes with your firm price.</p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Link to="/get-quote" className="inline-flex min-h-12 items-center gap-2 rounded-md bg-white px-6 py-3 text-sm font-bold text-[#14502f] transition hover:bg-[#eaf2ed]">Get My Price<ArrowRight className="size-4" /></Link>
+              <Link to="/get-quote" className="inline-flex min-h-12 items-center gap-2 rounded-md bg-white px-6 py-3 text-sm font-bold text-[#0b3f78] transition hover:bg-[#f4ead7]">Get My Price<ArrowRight className="size-4" /></Link>
               <a href={PHONE_HREF} className="inline-flex min-h-12 items-center gap-2 rounded-md border border-white/40 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"><Phone className="size-4" />{PHONE_DISPLAY}</a>
             </div>
           </div>

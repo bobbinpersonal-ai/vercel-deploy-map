@@ -49,31 +49,31 @@
   --card-foreground: #1c2620;
   --popover: #ffffff;
   --popover-foreground: #1c2620;
-  --primary: #175a3b;
+  --primary: #174f8d;
   --primary-foreground: #ffffff;
-  --secondary: #eaf2ed;
-  --secondary-foreground: #14372a;
-  --muted: #f2f6f3;
-  --muted-foreground: #5c6b62;
-  --accent: #e2efe7;
-  --accent-foreground: #14372a;
+  --secondary: #f4ead7;
+  --secondary-foreground: #0b3f78;
+  --muted: #fffaf0;
+  --muted-foreground: #5d6268;
+  --accent: #ffdfa0;
+  --accent-foreground: #12304d;
   --destructive: #b3261e;
   --border: rgb(28 38 32 / 14%);
   --input: rgb(28 38 32 / 18%);
-  --ring: #175a3b;
-  --chart-1: #175a3b;
-  --chart-2: #2f8f5b;
-  --chart-3: #c7a34a;
+  --ring: #174f8d;
+  --chart-1: #174f8d;
+  --chart-2: #438bd0;
+  --chart-3: #c88a36;
   --chart-4: #3a6b7c;
   --chart-5: #7c8b80;
-  --sidebar: #f2f6f3;
-  --sidebar-foreground: #1c2620;
-  --sidebar-primary: #175a3b;
+  --sidebar: #fffaf0;
+  --sidebar-foreground: #12304d;
+  --sidebar-primary: #174f8d;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e2efe7;
-  --sidebar-accent-foreground: #14372a;
-  --sidebar-border: rgb(28 38 32 / 14%);
-  --sidebar-ring: #175a3b;
+  --sidebar-accent: #f4ead7;
+  --sidebar-accent-foreground: #0b3f78;
+  --sidebar-border: rgb(18 48 77 / 14%);
+  --sidebar-ring: #174f8d;
 }
 
 .dark {
@@ -83,26 +83,26 @@
   --card-foreground: #eef4f0;
   --popover: #14201a;
   --popover-foreground: #eef4f0;
-  --primary: #5cbf8a;
+  --primary: #77abe0;
   --primary-foreground: #0e1512;
-  --secondary: #1b2a23;
+  --secondary: #1d2b3b;
   --secondary-foreground: #eef4f0;
-  --muted: #1b2a23;
-  --muted-foreground: #a8b8af;
-  --accent: #22352b;
-  --accent-foreground: #eef4f0;
+  --muted: #1d2b3b;
+  --muted-foreground: #a8b2bf;
+  --accent: #332b1e;
+  --accent-foreground: #ffdfa0;
   --destructive: #e2716a;
   --border: rgb(238 244 240 / 14%);
   --input: rgb(238 244 240 / 20%);
-  --ring: #5cbf8a;
-  --sidebar: #14201a;
+  --ring: #77abe0;
+  --sidebar: #14202b;
   --sidebar-foreground: #eef4f0;
-  --sidebar-primary: #5cbf8a;
+  --sidebar-primary: #77abe0;
   --sidebar-primary-foreground: #0e1512;
-  --sidebar-accent: #1b2a23;
+  --sidebar-accent: #1d2b3b;
   --sidebar-accent-foreground: #eef4f0;
   --sidebar-border: rgb(238 244 240 / 14%);
-  --sidebar-ring: #5cbf8a;
+  --sidebar-ring: #77abe0;
 }
 
 @layer base {
@@ -158,28 +158,11 @@
 }
 
 ::selection {
-  background: rgb(23 90 59 / 18%);
+  background: rgb(23 79 141 / 18%);
   color: #1c2620;
 }
 
-/* Clearly-marked photo placeholders until the owner's real photos arrive. */
-.photo-placeholder {
-  background:
-    linear-gradient(135deg, rgba(255 255 255 / 16%), rgba(0 0 0 / 12%)),
-    repeating-linear-gradient(115deg, #2f8f5b 0 26px, #2b8254 26px 52px);
-}
-
-.photo-placeholder--before {
-  background:
-    linear-gradient(135deg, rgba(255 255 255 / 10%), rgba(0 0 0 / 22%)),
-    repeating-linear-gradient(115deg, #8a9789 0 26px, #7e8c7d 26px 52px);
-}
-
-.photo-placeholder--dark {
-  background:
-    linear-gradient(135deg, rgba(255 255 255 / 12%), rgba(0 0 0 / 24%)),
-    repeating-linear-gradient(115deg, #1c3327 0 26px, #193022 26px 52px);
-}
+/* Construction-era photo placeholders removed: pages now use real project imagery or no imagery. */
 
 @media (prefers-reduced-motion: reduce) {
   *,

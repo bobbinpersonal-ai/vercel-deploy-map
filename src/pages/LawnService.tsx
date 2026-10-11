@@ -6,19 +6,7 @@ import { usePageMeta } from "@/components/PageMeta";
 import { TopNav, PHONE_DISPLAY, PHONE_HREF } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 
-const eyebrow = "text-[11px] font-bold tracking-[.18em] text-[#2f8f5b] uppercase";
-
-function PhotoPlaceholder({ label, variant = "after", className = "" }: { label: string; variant?: "before" | "after"; className?: string }) {
-  return (
-    <div
-      role="img"
-      aria-label={`${label} placeholder`}
-      className={`relative overflow-hidden rounded-xl ${variant === "before" ? "photo-placeholder--before" : "photo-placeholder"} ${className}`}
-    >
-      <span className="absolute inset-x-3 bottom-3 rounded-md bg-black/45 px-3 py-1.5 text-xs font-semibold text-white">{label} · placeholder</span>
-    </div>
-  );
-}
+const eyebrow = "text-[11px] font-bold tracking-[.18em] text-[#a36a27] uppercase";
 
 export type ServiceKey = "mowing" | "fertilization" | "weed-control";
 
@@ -92,7 +80,7 @@ const EN: Record<ServiceKey, ServiceCopy> = {
       "A note on what to expect and when",
       "Straight advice on what your yard needs next—no pressure",
     ],
-    beforeAfterTitle: "One treatment, visible difference.",
+    beforeAfterTitle: "Make the most of Texas growing season.",
     beforeLabel: "Before",
     afterLabel: "After",
     faqTitle: "Fertilization questions",
@@ -123,7 +111,7 @@ const EN: Record<ServiceKey, ServiceCopy> = {
       "Notes on what to expect over the following days",
       "A firm price before we book—no add-ons on arrival",
     ],
-    beforeAfterTitle: "The worst spot in the yard, handled.",
+    beforeAfterTitle: "Target the weeds where they’re taking hold.",
     beforeLabel: "Before",
     afterLabel: "After",
     faqTitle: "Weed control questions",
@@ -188,7 +176,7 @@ const ES: Record<ServiceKey, ServiceCopy> = {
       "Una nota sobre qué esperar y cuándo",
       "Consejos claros sobre lo que su jardín necesita después, sin presión",
     ],
-    beforeAfterTitle: "Un tratamiento, diferencia visible.",
+    beforeAfterTitle: "Aproveche la temporada de crecimiento en Texas.",
     beforeLabel: "Antes",
     afterLabel: "Después",
     faqTitle: "Preguntas sobre fertilización",
@@ -219,7 +207,7 @@ const ES: Record<ServiceKey, ServiceCopy> = {
       "Notas sobre qué esperar en los días siguientes",
       "Precio firme antes de agendar, sin cargos extra al llegar",
     ],
-    beforeAfterTitle: "El punto más difícil del jardín, resuelto.",
+    beforeAfterTitle: "Tratamos las malezas donde están creciendo.",
     beforeLabel: "Antes",
     afterLabel: "Después",
     faqTitle: "Preguntas sobre control de malezas",
@@ -265,11 +253,11 @@ export default function LawnService({ service, spanish = false }: { service: Ser
     <div className="flex min-h-screen flex-col bg-white">
       <TopNav />
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-[#14372a] text-white">
-          <div aria-hidden="true" className="photo-placeholder--dark absolute inset-0 opacity-40" />
-          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#0f2b20] via-[#14372a]/85 to-transparent" />
+        <section className="relative overflow-hidden bg-[#12304d] text-white">
+          <img src="/images/products/imgi_5_Alside_CHO_Beauty5-1024x551.jpg" alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover object-center opacity-35" />
+          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#102b45]/95 via-[#12304d]/80 to-[#12304d]/30" />
           <div className="relative mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
-            <p className={eyebrow + " text-[#8fd6ac]"}>{copy.eyebrow}</p>
+            <p className={eyebrow + " text-[#ffdfa0]"}>{copy.eyebrow}</p>
             <h1 className="mt-4 max-w-[16ch] text-4xl leading-[1.03] sm:text-5xl lg:text-[3.75rem]">{copy.headline}</h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/85 sm:text-lg">{copy.intro}</p>
             <div className="mt-8 inline-flex flex-col rounded-xl border border-white/20 bg-white/10 px-6 py-4">
@@ -277,7 +265,7 @@ export default function LawnService({ service, spanish = false }: { service: Ser
               <span className="mt-1 max-w-md text-xs font-medium text-white/80">{copy.priceNote}</span>
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/get-quote" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 py-3 text-base font-bold text-[#14502f] transition hover:bg-[#eaf2ed]">
+              <Link to="/get-quote" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 py-3 text-base font-bold text-[#0b3f78] transition hover:bg-[#f4ead7]">
                 {spanish ? "Pedir mi precio" : "Get My Price"}<ArrowRight className="size-4" />
               </Link>
               <a href={PHONE_HREF} className="inline-flex min-h-12 items-center gap-2 rounded-md border border-white/40 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10">
@@ -294,34 +282,32 @@ export default function LawnService({ service, spanish = false }: { service: Ser
                 <p className={eyebrow}>{copy.includedTitle}</p>
                 <ul className="mt-6 space-y-4">
                   {copy.included.map((item) => (
-                    <li key={item} className="flex gap-3 border-t border-[#1c2620]/12 pt-4 text-base leading-6 text-[#26332b]">
-                      <Check className="mt-1 size-5 shrink-0 text-[#2f8f5b]" />{item}
+                    <li key={item} className="flex gap-3 border-t border-[#1c2620]/12 pt-4 text-base leading-6 text-[#26313d]">
+                      <Check className="mt-1 size-5 shrink-0 text-[#a36a27]" />{item}
                     </li>
                   ))}
                 </ul>
               </div>
-              <div>
-                <h2 className="text-2xl text-[#14372a]">{copy.beforeAfterTitle}</h2>
-                <div className="mt-6 grid grid-cols-2 gap-3">
-                  <PhotoPlaceholder label={copy.beforeLabel} variant="before" className="aspect-[4/5]" />
-                  <PhotoPlaceholder label={copy.afterLabel} variant="after" className="aspect-[4/5]" />
-                </div>
+              <div className="flex flex-col justify-center border-l-2 border-[#b98555] pl-6">
+                <span className="text-xs font-bold tracking-[.16em] text-[#a56f3f] uppercase">{spanish ? "Servicio de una sola visita" : "A single, well-finished visit"}</span>
+                <h2 className="mt-4 text-2xl text-[#12304d]">{copy.beforeAfterTitle}</h2>
+                <p className="mt-3 text-sm leading-6 text-[#5d6268]">{spanish ? "Compartiremos fotos del trabajo de césped cuando estén disponibles. Por ahora, cada precio y alcance se confirma con usted antes de agendar." : "We’ll share lawn-care project photos as they become available. For now, every price and scope is confirmed with you before scheduling."}</p>
               </div>
             </div>
           </div>
         </motion.section>
 
-        <motion.section {...reveal} className="bg-[#f2f6f3]">
+        <motion.section {...reveal} className="bg-[#fffaf0]">
           <div className="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
-            <h2 className="text-3xl text-[#14372a] sm:text-4xl">{copy.faqTitle}</h2>
+            <h2 className="text-3xl text-[#12304d] sm:text-4xl">{copy.faqTitle}</h2>
             <div className="mt-8 divide-y divide-[#1c2620]/12 border-y border-[#1c2620]/12">
               {copy.faqs.map(([question, answer]) => (
                 <details key={question} className="group py-5">
-                  <summary className="cursor-pointer list-none pr-8 text-base font-bold text-[#14372a] marker:content-none">
+                  <summary className="cursor-pointer list-none pr-8 text-base font-bold text-[#12304d] marker:content-none">
                     {question}
-                    <span aria-hidden="true" className="float-right text-[#2f8f5b] transition group-open:rotate-45">+</span>
+                    <span aria-hidden="true" className="float-right text-[#a36a27] transition group-open:rotate-45">+</span>
                   </summary>
-                  <p className="mt-3 text-sm leading-6 text-[#4c5b52]">{answer}</p>
+                  <p className="mt-3 text-sm leading-6 text-[#4e5964]">{answer}</p>
                 </details>
               ))}
             </div>
@@ -329,14 +315,14 @@ export default function LawnService({ service, spanish = false }: { service: Ser
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
         </motion.section>
 
-        <section className="bg-[#175a3b] text-white">
+        <section className="bg-[#174f8d] text-white">
           <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-14 sm:px-8 sm:py-16 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h2 className="max-w-[18ch] text-3xl leading-[1.05] sm:text-4xl">{copy.ctaTitle}</h2>
               <p className="mt-3 max-w-xl text-sm leading-6 text-white/80">{copy.ctaText}</p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Link to="/get-quote" className="inline-flex min-h-12 items-center gap-2 rounded-md bg-white px-6 py-3 text-sm font-bold text-[#14502f] transition hover:bg-[#eaf2ed]">
+              <Link to="/get-quote" className="inline-flex min-h-12 items-center gap-2 rounded-md bg-white px-6 py-3 text-sm font-bold text-[#0b3f78] transition hover:bg-[#f4ead7]">
                 {spanish ? "Pedir mi precio" : "Get My Price"}<ArrowRight className="size-4" />
               </Link>
               <a href={PHONE_HREF} className="inline-flex min-h-12 items-center gap-2 rounded-md border border-white/40 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10">
