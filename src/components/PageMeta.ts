@@ -15,10 +15,10 @@ function setContent(selector: string, content: string) {
 /**
  * Route-level document metadata.
  *
- * LoveMeAfter is a client-rendered single page app, so every URL is served the
- * same static `<head>`. Running this hook per route gives each page its own
- * title, description, canonical URL and social preview text instead of one
- * generic site-wide blurb.
+ * LoveMeAfter Lawn Care is a client-rendered single page app, so every URL is
+ * served the same static `<head>`. Running this hook per route gives each page
+ * its own title, description, canonical URL and social preview text instead of
+ * one generic site-wide blurb.
  */
 export function usePageMeta(title: string, description?: string, path?: string) {
   useEffect(() => {
@@ -52,7 +52,7 @@ export function usePageMeta(title: string, description?: string, path?: string) 
     if (path === "/" && canonical) {
       const heroImage = "https://images.pexels.com/photos/5524336/pexels-photo-5524336.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop";
       setContent('meta[property="og:image"]', heroImage);
-      setContent('meta[property="og:image:alt"]', "Illustrative residential exterior photo from Pexels; not a LoveMeAfter project");
+      setContent('meta[property="og:image:alt"]', "Lawn care placeholder photo from Pexels; real yard photos coming soon");
       setContent('meta[name="twitter:image"]', heroImage);
     }
 

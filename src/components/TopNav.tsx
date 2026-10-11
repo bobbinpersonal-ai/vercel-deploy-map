@@ -1,64 +1,62 @@
-import { ArrowUpRight, Menu, Phone, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Menu, Phone, X } from "lucide-react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router";
-import { Logo } from "@/components/Logo";
-import { openEstimateRequest } from "@/lib/estimate-request";
+import { LogoMark } from "@/components/Logo";
 
-const PHONE_DISPLAY = "424 426 0760";
-const PHONE_HREF = "tel:+14244260760";
-const HIDDEN_PREFIXES = ["/admin", "/auth", "/login", "/dashboard"];
-const NAV_SCROLL_THRESHOLD = 0.1;
-const isNearTop = () => {
-  const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
-  return window.scrollY / maxScroll < NAV_SCROLL_THRESHOLD;
-};
+export const PHONE_DISPLAY = "(424) 426-0760";
+export const PHONE_HREF = "tel:+14244260760";
+
+const LINKS = [
+  ["/services/mowing", "Mowing"],
+  ["/services/fertilization", "Fertilization"],
+  ["/services/weed-control", "Weed control"],
+  ["/areas/texas/dallas", "Service areas"],
+] as const;
 
 export function TopNav() {
   const { pathname } = useLocation();
-  const [visible, setVisible] = useState(isNearTop);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const update = () => setVisible(isNearTop());
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, [pathname]);
-
-  if (pathname === "/" || HIDDEN_PREFIXES.some((prefix) => pathname.startsWith(prefix))) return null;
-
-  const links = [
-    ["/services", "Services"],
-    ["/sell-your-house", "Sell a property"],
-    ["/areas", "Service areas"],
-    ["/insights", "Expert guides"],
-    ["/conditions", "Field conditions"],
-    ["/trades", "Trade network"],
-    ["/financing", "Financing"],
-  ] as const;
+  const quotePath = pathname.startsWith("/es") ? "/get-quote" : "/get-quote";
 
   return (
-    <header aria-hidden={!visible} inert={!visible} className={`fixed inset-x-0 top-0 z-[45] text-white transition-all duration-500 ${visible ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-3 opacity-0"}`}>
-      <div className="absolute inset-0 -z-10 border-b border-white/10 bg-[#182019]/82 shadow-[0_8px_32px_rgba(0,0,0,.24)] backdrop-blur-md" />
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-10">
-        <Link to="/" className="flex items-center" onClick={() => setMenuOpen(false)}>
-          <Logo tone="light" compact={false} className="gap-2" />
+    <header className="sticky top-0 z-40 border-b border-[#1c2620]/10 bg-white/95 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-3 sm:px-8">
+        <Link to={pathname.startsWith("/es") ? "/es" : "/"} className="flex items-center gap-2.5" onClick={() => setMenuOpen(false)}>
+          <LogoMark className="size-9 shrink-0" />
+          <span className="leading-tight">
+            <span className="block text-[15px] font-extrabold tracking-[-.02em] text-[#14372a]">LoveMeAfter</span>
+            <span className="block text-[10px] font-semibold tracking-[.16em] text-[#2f8f5b] uppercase">Lawn Care · Texas</span>
+          </span>
         </Link>
-        <div className="hidden items-center gap-6 text-sm text-white/75 lg:flex">
-          {links.map(([to, label]) => <Link key={to} to={to} className="transition hover:text-white">{label}</Link>)}
-          <Link to="/contractors" className="transition hover:text-white">Work with us</Link>
-          <a href={PHONE_HREF} className="flex items-center gap-2 text-white"><Phone className="size-4" />{PHONE_DISPLAY}</a>
-          <button type="button" onClick={() => openEstimateRequest()} className="flex items-center gap-1.5 rounded-full bg-[#d5ec77] px-4 py-2 font-semibold text-[#1d211d] hover:bg-[#e1f895]">Free assessment <ArrowUpRight className="size-3.5" /></button>
+        <nav aria-label="Main navigation" className="hidden items-center gap-6 text-sm font-semibold text-[#1c2620] lg:flex">
+          {LINKS.map(([to, label]) => (
+            <Link key={to} to={to} className="transition hover:text-[#175a3b]">{label}</Link>
+          ))}
+          <Link to={quotePath} className="rounded-md bg-[#175a3b] px-4 py-2 text-white transition hover:bg-[#14502f]">Get My Price</Link>
+          <a href={PHONE_HREF} className="flex items-center gap-2 text-[#175a3b]">
+            <Phone className="size-4" />{PHONE_DISPLAY}
+          </a>
+        </nav>
+        <div className="flex items-center gap-2 lg:hidden">
+          <a href={PHONE_HREF} className="flex items-center gap-1.5 rounded-md bg-[#175a3b] px-3 py-2 text-sm font-semibold text-white">
+            <Phone className="size-4" />Call
+          </a>
+          <button type="button" aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)} className="rounded-md p-2 text-[#14372a] hover:bg-[#eaf2ed]">
+            {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
         </div>
-        <button type="button" aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)} className="rounded-full p-2 hover:bg-white/10 lg:hidden">
-          {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
-      </nav>
-      {menuOpen && <div className="mx-4 mb-3 rounded-2xl border border-white/10 bg-[#182019] p-5 shadow-2xl lg:hidden"><div className="flex flex-col gap-4 text-sm">{links.map(([to, label]) => <Link key={to} to={to} onClick={() => setMenuOpen(false)}>{label}</Link>)}<Link to="/contractors" onClick={() => setMenuOpen(false)}>Work with us</Link><a href={PHONE_HREF}>Call {PHONE_DISPLAY}</a><button type="button" onClick={() => { setMenuOpen(false); openEstimateRequest(); }} className="rounded-full bg-[#d5ec77] px-4 py-3 text-center font-semibold text-[#1d211d]">Get a free assessment</button></div></div>}
+      </div>
+      {menuOpen && (
+        <div className="border-t border-[#1c2620]/10 bg-white px-5 pb-5 pt-3 lg:hidden">
+          <div className="flex flex-col gap-1 text-sm font-semibold text-[#1c2620]">
+            {LINKS.map(([to, label]) => (
+              <Link key={to} to={to} onClick={() => setMenuOpen(false)} className="rounded-md px-2 py-2.5 hover:bg-[#eaf2ed]">{label}</Link>
+            ))}
+            <Link to={quotePath} onClick={() => setMenuOpen(false)} className="mt-2 rounded-md bg-[#175a3b] px-4 py-3 text-center text-white">Get My Price</Link>
+            <a href={PHONE_HREF} onClick={() => setMenuOpen(false)} className="rounded-md px-2 py-2.5 text-[#175a3b] hover:bg-[#eaf2ed]">Call {PHONE_DISPLAY}</a>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
